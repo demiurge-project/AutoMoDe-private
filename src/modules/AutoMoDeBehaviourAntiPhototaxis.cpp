@@ -44,6 +44,9 @@ namespace argos {
 	/****************************************/
 
 	void AutoMoDeBehaviourAntiPhototaxis::ControlStep() {
+
+		m_pcRobotDAO->SetRangeAndBearingMessageToSend(m_bBroadcastStateAndMessage);
+
 		CCI_EPuckLightSensor::TReadings sReadings = m_pcRobotDAO->GetLightInput();
 	 	CCI_EPuckLightSensor::TReadings::iterator it;
 		CVector2 sLightVectorSum(0,CRadians::ZERO);
@@ -68,7 +71,15 @@ namespace argos {
 	/****************************************/
 	/****************************************/
 
-	void AutoMoDeBehaviourAntiPhototaxis::Init() {}
+	void AutoMoDeBehaviourAntiPhototaxis::Init() {
+		std::map<std::string, Real>::iterator itMes = m_mapParameters.find("brd");
+		if (itMes != m_mapParameters.end()) {
+			m_bBroadcastStateAndMessage = itMes->second;
+		} else {
+			LOGERR << "[FATAL] Missing parameter for the following behaviour:" << m_strLabel << std::endl;
+			THROW_ARGOSEXCEPTION("Missing Parameter");
+		}
+	}
 
 	/****************************************/
 	/****************************************/

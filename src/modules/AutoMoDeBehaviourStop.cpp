@@ -44,6 +44,9 @@ namespace argos {
 	/****************************************/
 
 	void AutoMoDeBehaviourStop::ControlStep() {
+
+		m_pcRobotDAO->SetRangeAndBearingMessageToSend(m_bBroadcastStateAndMessage);
+
 		m_pcRobotDAO->SetWheelsVelocity(0,0);
 		m_bLocked = false;
 	}
@@ -52,6 +55,13 @@ namespace argos {
 	/****************************************/
 
 	void AutoMoDeBehaviourStop::Init() {
+		std::map<std::string, Real>::iterator itMes = m_mapParameters.find("brd");
+		if (itMes != m_mapParameters.end()) {
+			m_bBroadcastStateAndMessage = itMes->second;
+		} else {
+			LOGERR << "[FATAL] Missing parameter for the following behaviour:" << m_strLabel << std::endl;
+			THROW_ARGOSEXCEPTION("Missing Parameter");
+		}
 	}
 
 	/****************************************/

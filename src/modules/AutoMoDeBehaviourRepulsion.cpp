@@ -44,6 +44,9 @@ namespace argos {
 	/****************************************/
 
 	void AutoMoDeBehaviourRepulsion::ControlStep() {
+
+		m_pcRobotDAO->SetRangeAndBearingMessageToSend(m_bBroadcastStateAndMessage);
+
 		CCI_EPuckRangeAndBearingSensor::TPackets sLastPackets = m_pcRobotDAO->GetRangeAndBearingMessages();
 		CCI_EPuckRangeAndBearingSensor::TPackets::iterator it;
 		CVector2 sRabVectorSum(0,CRadians::ZERO);
@@ -73,6 +76,14 @@ namespace argos {
 		std::map<std::string, Real>::iterator it = m_mapParameters.find("rep");
 		if (it != m_mapParameters.end()) {
 			m_unRepulsionParameter = it->second;
+		} else {
+			LOGERR << "[FATAL] Missing parameter for the following behaviour:" << m_strLabel << std::endl;
+			THROW_ARGOSEXCEPTION("Missing Parameter");
+		}
+
+		std::map<std::string, Real>::iterator itMes = m_mapParameters.find("brd");
+		if (itMes != m_mapParameters.end()) {
+			m_bBroadcastStateAndMessage = itMes->second;
 		} else {
 			LOGERR << "[FATAL] Missing parameter for the following behaviour:" << m_strLabel << std::endl;
 			THROW_ARGOSEXCEPTION("Missing Parameter");

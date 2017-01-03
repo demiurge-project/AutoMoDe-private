@@ -98,6 +98,16 @@ namespace argos {
 			void SetRangeAndBearingMessages(CCI_EPuckRangeAndBearingSensor::TPackets s_packets);
 
 			/*
+			 * Setter for the message to send with range and bearing
+			 */
+			void SetRangeAndBearingMessageToSend(UInt8 un_message);
+
+			/*
+			 * Getter for number of messaging neighbors.
+			 */
+			UInt8 GetNumberMessagingNeighbors(UInt8 un_message);
+
+			/*
 			 * Setter for the wheels velocity.
 			 */
 			void SetWheelsVelocity(const Real& un_left_velocity, const Real& un_right_velocity);

@@ -56,12 +56,24 @@ namespace argos {
 			LOGERR << "[FATAL] Missing parameter for the following behaviour:" << m_strLabel << std::endl;
 			THROW_ARGOSEXCEPTION("Missing Parameter");
 		}
+
+		std::map<std::string, Real>::iterator itMes = m_mapParameters.find("brd");
+		if (itMes != m_mapParameters.end()) {
+			m_bBroadcastStateAndMessage = itMes->second;
+		} else {
+			LOGERR << "[FATAL] Missing parameter for the following behaviour:" << m_strLabel << std::endl;
+			THROW_ARGOSEXCEPTION("Missing Parameter");
+		}
+
 	}
 
 	/****************************************/
 	/****************************************/
 
 	void AutoMoDeBehaviourExploration::ControlStep() {
+
+		m_pcRobotDAO->SetRangeAndBearingMessageToSend(m_bBroadcastStateAndMessage);
+
 		switch (m_eExplorationState) {
 			case RANDOM_WALK: {
 				m_pcRobotDAO->SetWheelsVelocity(m_fWheelSpeed, m_fWheelSpeed);
