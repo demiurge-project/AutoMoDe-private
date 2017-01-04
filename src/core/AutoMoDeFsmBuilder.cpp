@@ -97,12 +97,19 @@ namespace argos {
 			case 5:
 				cNewBehaviour = new AutoMoDeBehaviourRepulsion();
 				break;
+			case 6:
+				cNewBehaviour = new AutoMoDeBehaviourAttractionToMessage();
+				break;
+			case 7:
+				cNewBehaviour = new AutoMoDeBehaviourRepulsionToMessage();
+				break;
+
 		}
 		cNewBehaviour->SetIndex(unBehaviourIndex);
 		cNewBehaviour->SetIdentifier(unBehaviourIdentifier);
 
 		// Checking for parameters
-		std::string vecPossibleParameters[] = {"rwm", "att", "rep"};
+		std::string vecPossibleParameters[] = {"rwm", "att", "rep", "brd"};
 		UInt8 unNumberPossibleParameters = sizeof(vecPossibleParameters) / sizeof(vecPossibleParameters[0]);
 		for (UInt8 i = 0; i < unNumberPossibleParameters; i++) {
 			std::string strCurrentParameter = vecPossibleParameters[i];
@@ -186,6 +193,12 @@ namespace argos {
 					break;
 				case 5:
 					cNewCondition = new AutoMoDeConditionFixedProbability();
+					break;
+				case 6:
+					cNewCondition = new AutoMoDeConditionMessageCount();
+					break;
+				case 7:
+					cNewCondition = new AutoMoDeConditionInvertedMessageCount();
 					break;
 			}
 

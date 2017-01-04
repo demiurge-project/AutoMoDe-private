@@ -17,6 +17,8 @@ set(AUTOMODE_HEADERS
 	modules/AutoMoDeBehaviourPhototaxis.h
 	modules/AutoMoDeBehaviourAttraction.h
 	modules/AutoMoDeBehaviourRepulsion.h
+	modules/AutoMoDeBehaviourAttractionToMessage.h
+	modules/AutoMoDeBehaviourRepulsionToMessage.h
 	modules/AutoMoDeBehaviourStop.h
 	modules/AutoMoDeBehaviourExploration.h
 	# Conditions
@@ -26,6 +28,8 @@ set(AUTOMODE_HEADERS
 	modules/AutoMoDeConditionGrayFloor.h
 	modules/AutoMoDeConditionNeighborsCount.h
 	modules/AutoMoDeConditionInvertedNeighborsCount.h
+	modules/AutoMoDeConditionMessageCount.h
+	modules/AutoMoDeConditionInvertedMessageCount.h
 	modules/AutoMoDeConditionFixedProbability.h)
 
 # Sources
@@ -43,6 +47,8 @@ set(AUTOMODE_SOURCES
 	modules/AutoMoDeBehaviourPhototaxis.cpp
 	modules/AutoMoDeBehaviourAttraction.cpp
 	modules/AutoMoDeBehaviourRepulsion.cpp
+	modules/AutoMoDeBehaviourAttractionToMessage.cpp
+	modules/AutoMoDeBehaviourRepulsionToMessage.cpp
 	modules/AutoMoDeBehaviourStop.cpp
 	modules/AutoMoDeBehaviourExploration.cpp
 	# Conditions
@@ -52,6 +58,8 @@ set(AUTOMODE_SOURCES
 	modules/AutoMoDeConditionGrayFloor.cpp
 	modules/AutoMoDeConditionNeighborsCount.cpp
 	modules/AutoMoDeConditionInvertedNeighborsCount.cpp
+	modules/AutoMoDeConditionMessageCount.cpp
+	modules/AutoMoDeConditionInvertedMessageCount.cpp
 	modules/AutoMoDeConditionFixedProbability.cpp)
 
 if(ARGOS_BUILD_FOR_SIMULATOR)

@@ -14,10 +14,12 @@
 #include "AutoMoDeFsmHistory.h"
 #include "../modules/AutoMoDeBehaviour.h"
 #include "../modules/AutoMoDeBehaviourAttraction.h"
+#include "../modules/AutoMoDeBehaviourAttractionToMessage.h"
 #include "../modules/AutoMoDeBehaviourAntiPhototaxis.h"
 #include "../modules/AutoMoDeBehaviourExploration.h"
 #include "../modules/AutoMoDeBehaviourPhototaxis.h"
 #include "../modules/AutoMoDeBehaviourRepulsion.h"
+#include "../modules/AutoMoDeBehaviourRepulsionToMessage.h"
 #include "../modules/AutoMoDeBehaviourStop.h"
 #include "../modules/AutoMoDeCondition.h"
 #include "../modules/AutoMoDeConditionBlackFloor.h"
@@ -26,6 +28,8 @@
 #include "../modules/AutoMoDeConditionFixedProbability.h"
 #include "../modules/AutoMoDeConditionNeighborsCount.h"
 #include "../modules/AutoMoDeConditionInvertedNeighborsCount.h"
+#include "../modules/AutoMoDeConditionInvertedMessageCount.h"
+#include "../modules/AutoMoDeConditionMessageCount.h"
 
 #include <string>
 #include <ctime>

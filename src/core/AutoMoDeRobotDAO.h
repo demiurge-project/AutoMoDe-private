@@ -152,6 +152,11 @@ namespace argos {
 			 */
 			CRandom::CRNG* GetRandomNumberGenerator() const;
 
+			/*
+			 * Getter for the message to send.
+			 */
+			const UInt8& GetMessageToSend() const;
+
 		private:
 			/*
 			 * The proximity sensors input.
@@ -202,6 +207,11 @@ namespace argos {
 			 * Pointer to the range-and-bearing messages buffer.
 			 */
 			AutoMoDeRabBuffer m_pcRabMessageBuffer;
+
+			/*
+			 * Pointer to the range-and-bearing messages buffer.
+			 */
+			 UInt8 m_unMessageToSend;
 	};
 }
 

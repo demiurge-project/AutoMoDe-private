@@ -134,6 +134,16 @@ namespace argos {
 		if (m_pcWheelsActuator != NULL) {
 			m_pcWheelsActuator->SetLinearVelocity(m_pcRobotState->GetRightWheelVelocity(), m_pcRobotState->GetLeftWheelVelocity());
 		}
+		if (m_pcRabSensor != NULL) {
+			UInt8 data[4];
+			//data[0] = m_pcRobotState->GetRobotIdentifier();
+			data[0] = m_unRobotID;
+			data[1] = m_pcRobotState->GetMessageToSend();
+			data[2] = 0;
+			data[3] = 0;
+			m_pcRabActuator->SetData(data);
+		}
+
 
 		/*
 		 * 4. Update variables and sensors

@@ -116,12 +116,7 @@ namespace argos {
 	/****************************************/
 
 	void AutoMoDeRobotDAO::SetRangeAndBearingMessageToSend(UInt8 un_message) {
-		UInt8 data[4];
-		data[0] = GetRobotIdentifier();
-		data[1] = un_message;
-		data[2] = 0;
-		data[3] = 0;
-		m_pcRabActuator->SetData(data);
+		m_unMessageToSend = un_message;
 	}
 
 	/****************************************/
@@ -133,12 +128,19 @@ namespace argos {
 		UInt8 unNumberMessagingNeighbors = 0;
 
 		for (it = sLastPackets.begin(); it != sLastPackets.end(); it++) {
-			if ( ((*it)->Data[0] != (UInt8) GetRobotIdentifier()) && ((it*)->Data[1] == (UInt8) un_message) ) {
-				GetNumberMessagingNeighbors++;
+			if ( ((*it)->Data[0] != (UInt8) GetRobotIdentifier()) && ((*it)->Data[1] == (UInt8) un_message) ) {
+				unNumberMessagingNeighbors+=1;
 			}
 		}
 
 		return unNumberMessagingNeighbors;
+	}
+
+	/****************************************/
+	/****************************************/
+
+	const UInt8& AutoMoDeRobotDAO::GetMessageToSend() const {
+		return m_unMessageToSend;
 	}
 
 	/****************************************/

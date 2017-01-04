@@ -54,7 +54,7 @@ namespace argos {
 		CVector2 sResultVector(0,CRadians::ZERO);
 
 		for (it = sLastPackets.begin(); it != sLastPackets.end(); it++) {
-			if ( ((*it)->Data[0] != (UInt8) m_pcRobotDAO->GetRobotIdentifier()) && ((it*)->Data[1] == (UInt8) m_unRepulsiveMessage) ) {
+			if ( ((*it)->Data[0] != (UInt8) m_pcRobotDAO->GetRobotIdentifier()) && ((*it)->Data[1] == (UInt8) m_unRepulsiveMessage) ) {
 				sRabVectorSum += CVector2(m_unRepulsionParameter / ((*it)->Range + 1),(*it)->Bearing.SignedNormalize());
 			}
 		}
@@ -80,7 +80,7 @@ namespace argos {
 			LOGERR << "[FATAL] Missing parameter for the following behaviour:" << m_strLabel << std::endl;
 			THROW_ARGOSEXCEPTION("Missing Parameter");
 		}
-		m_unAttractiveMessage = 1; //TODO for gianduja we only need this, later maybe we had a parameter
+		m_unRepulsiveMessage = 1; //TODO for gianduja we only need this, later maybe we had a parameter
 
 		// std::map<std::string, Real>::iterator itMes = m_mapParameters.find("brd");
 		// if (itMes != m_mapParameters.end()) {

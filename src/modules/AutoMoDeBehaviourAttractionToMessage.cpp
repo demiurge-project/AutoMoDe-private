@@ -54,7 +54,7 @@ namespace argos {
 		CVector2 sResultVector(0,CRadians::ZERO);
 
 		for (it = sLastPackets.begin(); it != sLastPackets.end(); it++) {
-			if ( ((*it)->Data[0] != (UInt8) m_pcRobotDAO->GetRobotIdentifier()) && ((it*)->Data[1] == (UInt8) m_unAttractiveMessage) ) {
+			if ( ((*it)->Data[0] != (UInt8) m_pcRobotDAO->GetRobotIdentifier()) && ((*it)->Data[1] == (UInt8) m_unAttractiveMessage) ) {
 				sRabVectorSum += CVector2(m_unAttractionParameter / ((*it)->Range + 1),(*it)->Bearing.SignedNormalize());
 			}
 		}
