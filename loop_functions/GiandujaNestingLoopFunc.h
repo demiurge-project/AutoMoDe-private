@@ -1,5 +1,5 @@
-#ifndef GIANDUJA_AGGREGATION_LOOP_FUNC
-#define GIANDUJA_AGGREGATION_LOOP_FUNC
+#ifndef GIANDUJA_NESTING_LOOP_FUNC
+#define GIANDUJA_NESTING_LOOP_FUNC
 
 #include "../src/core/AutoMoDeLoopFunctions.h"
 #include <argos3/core/simulator/space/space.h>
@@ -7,11 +7,11 @@
 
 using namespace argos;
 
-class GiandujaAggregationLoopFunction: public AutoMoDeLoopFunctions {
+class GiandujaNestingLoopFunction: public AutoMoDeLoopFunctions {
   public:
-    GiandujaAggregationLoopFunction();
-    GiandujaAggregationLoopFunction(const GiandujaAggregationLoopFunction& orig);
-    virtual ~GiandujaAggregationLoopFunction();
+    GiandujaNestingLoopFunction();
+    GiandujaNestingLoopFunction(const GiandujaNestingLoopFunction& orig);
+    virtual ~GiandujaNestingLoopFunction();
 
     virtual void Destroy();
 
@@ -19,13 +19,18 @@ class GiandujaAggregationLoopFunction: public AutoMoDeLoopFunctions {
     virtual void PostExperiment();
     virtual void PostStep();
 
+    void PositionRobots();
     Real GetObjectiveFunction();
   private:
     Real m_fRadius;
     CVector2 m_cCoordSpot1;
     CVector2 m_cCoordSpot2;
+    CVector2 m_CCoordRect1;
+    CVector2 m_CCoordRect2;
 
-    UInt32 m_unCostSpot1;
+    UInt8 m_unState;
+    UInt32 m_unCost;
+    UInt32 m_unTbar;
     Real m_fObjectiveFunction;
 };
 

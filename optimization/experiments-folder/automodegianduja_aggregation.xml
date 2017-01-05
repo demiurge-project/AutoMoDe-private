@@ -11,8 +11,8 @@
   <!-- ****************** -->
   <!-- * Loop functions * -->
   <!-- ****************** -->
-  <loop_functions library="../build/argos3-AutoMoDe/loop_functions/libaggregation_loopfunc.so"
-   label="aggregation_loop_functions">
+  <loop_functions library="/home/ken/depots/ken-epuck-argos3/build/argos3-AutoMoDe/loop_functions/libgianduja_aggregation_loopfunc.so"
+   label="gianduja_aggregation_loop_functions">
    <params dist_radius="1.2" number_robots="20"/>
   </loop_functions>
 
@@ -22,7 +22,7 @@
   <controllers>
 	<!-- TRANSMITTER -->
     <automode_controller id="automode"
-                        library="../build/argos3-AutoMoDe/src/libautomode.so">
+                        library="/home/ken/depots/ken-epuck-argos3/build/argos3-AutoMoDe/src/libautomode.so">
       <actuators>
         <epuck_wheels implementation="default" noise_std_dev="0.05"/>
         <epuck_rgb_leds implementation="default" medium="leds"/>
@@ -91,8 +91,16 @@
   <!-- ********** -->
   <!-- * E-Puck * -->
   <!-- ********** -->
+  <!-- <distribute>
+    <position method="uniform" min="-1,-1,0" max="1,1,0" />
+    <orientation method="gaussian" mean="0,0,0" std_dev="360,0,0" />
+    <entity quantity="20" max_trials="100">
+      <e-puck id="epuck">
+        <controller config="automode" />
+      </e-puck>
+    </entity>
+  </distribute> -->
 
-  <!-- The epucks are distributed by the AutoMoDeLoopFunctions. -->
   </arena>
 
   <!-- ******************* -->
@@ -115,14 +123,14 @@
   <!-- * Visualization * -->
   <!-- ***************** -->
   <visualization>
-    <qt-opengl>
+    <!-- <qt-opengl>
       <camera>
         <placement idx="0"
                    position="0,0,4.5"
                    look_at="0,0,0"
                    lens_focal_length="30" />
       </camera>
-    </qt-opengl>
+    </qt-opengl> -->
   </visualization>
 
 </argos-configuration>

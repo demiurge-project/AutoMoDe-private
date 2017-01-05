@@ -4,4 +4,5 @@ link_directories(${ARGOS_LIBRARY_DIRS})
 
 add_library(aggregation_loopfunc SHARED AggregationLoopFunc.h AggregationLoopFunc.cpp)
 add_library(gianduja_aggregation_loopfunc SHARED GiandujaAggregationLoopFunc.h GiandujaAggregationLoopFunc.cpp)
+add_library(gianduja_nesting_loopfunc SHARED GiandujaNestingLoopFunc.h GiandujaNestingLoopFunc.cpp)
 target_link_libraries(aggregation_loopfunc argos3plugin_${ARGOS_BUILD_FOR}_epuck)

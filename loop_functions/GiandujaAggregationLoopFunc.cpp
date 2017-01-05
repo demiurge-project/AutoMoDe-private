@@ -4,9 +4,9 @@
 /****************************************/
 
 GiandujaAggregationLoopFunction::GiandujaAggregationLoopFunction() {
-  m_fRadius = 0.2;
-  m_cCoordSpot1 = CVector2(0.5,-0.3);
-  m_cCoordSpot2 = CVector2(-0.5,-0.3);
+  m_fRadius = 0.3;
+  m_cCoordSpot1 = CVector2(0.5,0.5);
+  m_cCoordSpot2 = CVector2(-0.5,0.5);
   m_unCostSpot1 = 0;
   m_fObjectiveFunction = 0;
 }
