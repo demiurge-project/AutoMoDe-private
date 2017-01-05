@@ -2,4 +2,6 @@
 include_directories(${CMAKE_SOURCE_DIR} ${ARGOS_INCLUDE_DIRS})
 link_directories(${ARGOS_LIBRARY_DIRS})
 
+add_library(gianduja_aggregation_loopfunc SHARED GiandujaAggregationLoopFunc.h GiandujaAggregationLoopFunc.cpp)
+add_library(gianduja_nesting_loopfunc SHARED GiandujaNestingLoopFunc.h GiandujaNestingLoopFunc.cpp)
 add_subdirectory(example)

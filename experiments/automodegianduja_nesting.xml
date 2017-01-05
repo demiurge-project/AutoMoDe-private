@@ -11,7 +11,7 @@
   <!-- ****************** -->
   <!-- * Loop functions * -->
   <!-- ****************** -->
-  <loop_functions library="../build/argos3-AutoMoDe/loop_functions/libgianduja_nesting_loopfunc.so"
+  <loop_functions library="../build/argos3-AutoMoDe/loop-functions/libgianduja_nesting_loopfunc.so"
    label="gianduja_nesting_loop_functions">
    <params dist_radius="1.2" number_robots="20"/>
   </loop_functions>
