@@ -1,7 +1,12 @@
-/*
- * File: AutoMoDeConditionBlackFloor.cpp
- *
- */
+/**
+  * @file <src/modules/AutoMoDeConditionBlackFloor.cpp>
+  *
+  * @author Antoine Ligot - <aligot@ulb.ac.be>
+  *
+  * @package ARGoS3-AutoMoDe
+  *
+  * @license MIT License
+  */
 
  #include "AutoMoDeConditionBlackFloor.h"
 

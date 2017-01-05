@@ -1,6 +1,11 @@
 /*
- * File: AutoMoDeController.cpp
+ * @file <src/core/AutoMoDeController.cpp>
  *
+ * @author Antoine Ligot - <aligot@ulb.ac.be>
+ *
+ * @package ARGoS3-AutoMoDe
+ *
+ * @license MIT License
  */
 
 #include "AutoMoDeController.h"
@@ -17,6 +22,7 @@ namespace argos {
 		m_bMaintainHistory = false;
 		m_bPrintReadableFsm = false;
 		m_strHistoryFolder = "./";
+		m_bFiniteStateMachineGiven = false;
 	}
 
 	/****************************************/
@@ -47,7 +53,7 @@ namespace argos {
 		/*
 		 * If a FSM configuration is given as parameter of the experiment file, create a FSM from it
 		 */
-		if (m_strFsmConfiguration.compare("") != 0) {
+		if (m_strFsmConfiguration.compare("") != 0 && !m_bFiniteStateMachineGiven) {
 			m_pcFsmBuilder = new AutoMoDeFsmBuilder();
 			SetFiniteStateMachine(m_pcFsmBuilder->BuildFiniteStateMachine(m_strFsmConfiguration));
 			if (m_bMaintainHistory) {
@@ -175,6 +181,7 @@ namespace argos {
 		m_pcFiniteStateMachine = pc_finite_state_machine;
 		m_pcFiniteStateMachine->SetRobotDAO(m_pcRobotState);
 		m_pcFiniteStateMachine->Init();
+		m_bFiniteStateMachineGiven = true;
 	}
 
 	REGISTER_CONTROLLER(AutoMoDeController, "automode_controller");

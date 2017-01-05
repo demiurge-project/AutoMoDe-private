@@ -1,6 +1,13 @@
-/**
-  * @file AutoMoDeRabBuffer.cpp
-  */
+/*
+ * @file <src/core/AutoMoDeRabBuffer.cpp>
+ *
+ * @author Antoine Ligot - <aligot@ulb.ac.be>
+ *
+ * @package ARGoS3-AutoMoDe
+ *
+ * @license MIT License
+ */
+
 
 #include "AutoMoDeRabBuffer.h"
 

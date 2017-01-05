@@ -1,7 +1,12 @@
-/*
- * File: AutoMoDeConditionNeighborsCount.cpp
- *
- */
+/**
+  * @file <src/modules/AutoMoDeConditionNeighborsCount.cpp>
+  *
+  * @author Antoine Ligot - <aligot@ulb.ac.be>
+  *
+  * @package ARGoS3-AutoMoDe
+  *
+  * @license MIT License
+  */
 
  #include "AutoMoDeConditionNeighborsCount.h"
 

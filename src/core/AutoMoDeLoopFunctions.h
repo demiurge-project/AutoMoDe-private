@@ -1,7 +1,11 @@
-/**
- * @file AutoMoDeLoopFunctions.h
+/*
+ * @file <src/core/AutoMoDeLoopFunctions.h>
  *
- * @brief
+ * @author Antoine Ligot - <aligot@ulb.ac.be>
+ *
+ * @package ARGoS3-AutoMoDe
+ *
+ * @license MIT License
  */
 
 #ifndef AUTOMODE_LOOP_FUNCTIONS
@@ -30,12 +34,6 @@ class AutoMoDeLoopFunctions: public CLoopFunctions {
     virtual void Reset();
 
     /*
-     * Method used to distribute the robots in a circle.
-     * This replace the original distribution function of the argos simulator.
-     */
-    void PositionRobots();
-
-    /*
      * Method used to remove the robots from the arena.
      */
     void RemoveRobots();
@@ -50,6 +48,8 @@ class AutoMoDeLoopFunctions: public CLoopFunctions {
      */
     Real m_fDistributionRadius;
 
+    CRandom::CRNG* m_pcRng;
+
   public:
 
     /*
@@ -57,8 +57,11 @@ class AutoMoDeLoopFunctions: public CLoopFunctions {
      */
     virtual Real GetObjectiveFunction() = 0;
 
-  private:
-    CRandom::CRNG* m_pcRng;
+    /*
+     * Method used to distribute the robots in a circle of radius m_fDistributionRadius.
+     * This replace the original distribution function of the argos simulator.
+     */
+    virtual void PositionRobots();
 
 };
 

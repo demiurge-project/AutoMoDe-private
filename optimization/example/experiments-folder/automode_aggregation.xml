@@ -4,16 +4,16 @@
   <!-- * Framework * -->
   <!-- ************* -->
   <framework>
-    <experiment length="120"
+    <experiment length="60"
                 ticks_per_second="10" random_seed="0"/>
   </framework>
 
   <!-- ****************** -->
   <!-- * Loop functions * -->
   <!-- ****************** -->
-  <loop_functions library="/home/aligot/Desktop/Arena/argos3-aligot/build/controllers/argos3-AutoMoDe/libaggregation_loopfunc.so"
+  <loop_functions library="../../../build/loop-functions/example/libaggregation_loopfunc.so"
    label="aggregation_loop_functions">
-   <params dist_radius="1.2" number_robots="20"/>
+   <params dist_radius="1.2" number_robots="5"/>
   </loop_functions>
 
   <!-- *************** -->
@@ -22,7 +22,7 @@
   <controllers>
 	<!-- TRANSMITTER -->
     <automode_controller id="automode"
-                        library="/home/aligot/Desktop/Arena/argos3-aligot/build/controllers/argos3-AutoMoDe/libautomode.so">
+                        library="../../../build/src/libautomode.so">
       <actuators>
         <epuck_wheels implementation="default" noise_std_dev="0.05"/>
         <epuck_rgb_leds implementation="default" medium="leds"/>

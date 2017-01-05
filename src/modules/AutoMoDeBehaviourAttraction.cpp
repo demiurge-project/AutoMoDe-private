@@ -1,7 +1,12 @@
-/*
- * File: AutoMoDeBehaviourAttraction.cpp
- *
- */
+/**
+  * @file <src/modules/AutoMoDeBehaviourAttraction.cpp>
+  *
+  * @author Antoine Ligot - <aligot@ulb.ac.be>
+  *
+  * @package ARGoS3-AutoMoDe
+  *
+  * @license MIT License
+  */
 
 #include "AutoMoDeBehaviourAttraction.h"
 

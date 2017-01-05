@@ -10,7 +10,7 @@ parameterFile = "./gianduja_grammar.txt"
 
 ## File that contains logical expressions of parameters value that
 ## valid configurations should not satisfy.
-#forbiddenFile = "./forbidden_config.txt"
+forbiddenFile = "./forbidden_config.txt"
 
 ## Directory where the programs will be run.
 execDir = "./execution-folder"
@@ -19,12 +19,14 @@ execDir = "./execution-folder"
 ## relative to current directory.
 trainInstancesDir = "./experiments-folder"
 
-#The maximum total time in seconds for the runs of targetRunner
-maxExperiments = 1500
+#The maximum total budget for the runs of targetRunner
+maxExperiments = 200
 
 ## Indicates the number of decimal places to be considered for the
 ## real parameters.
 digits = 2
+
+nbIterations = 2
 
 ## END of scenario file
 ############################################################################

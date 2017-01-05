@@ -1,18 +1,24 @@
-/**
- * @file AutoMoDeRobotDAO.h
+/*
+ * @file <src/core/AutoMoDeRobotDAO.h>
+ *
+ * @author Antoine Ligot - <aligot@ulb.ac.be>
+ *
+ * @package ARGoS3-AutoMoDe
+ *
+ * @license MIT License
  *
  * @brief This class represents the status of the robot.
- * It contains the input variables (the sensor inputs) and
- * the output variables (the values for the wheel actuators),
- * as well as the setters and getters to access them.
+ * 				It contains the input variables (the sensor inputs) and
+ * 				the output variables (the values for the wheel actuators),
+ * 				as well as the setters and getters to access them.
  *
- * Only one object of this class should be instanciated, and
- * is to be used as a brigde between the AutoMoDeController and
- * the AutoMoDeFiniteStateMachine classes. In AutoMoDeController,
- * the variables of the object shall be updated at each time step.
- * The different modules of the  AutoMoDeFiniteStateMachine will
- * then use the input variables and update the output variables
- * accordingly.
+ * 				Only one object of this class should be instanciated, and
+ * 				is to be used as a brigde between the AutoMoDeController and
+ * 				the AutoMoDeFiniteStateMachine classes. In AutoMoDeController,
+ * 				the variables of the object shall be updated at each time step.
+ * 				The different modules of the  AutoMoDeFiniteStateMachine will
+ * 				then use the input variables and update the output variables
+ * 				accordingly.
  */
 
 

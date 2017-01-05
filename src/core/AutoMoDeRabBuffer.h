@@ -1,10 +1,16 @@
-/**
-  * @file AutoMoDeRabBuffer.h
-  *
-  * @brief Container that keep range-and-bearing messages for a fixed
-  * period of time. After the time to live of a message is exceded, the
-  * message is discarded.
-  */
+/*
+ * @file <src/core/AutoMoDeRabBuffer.h>
+ *
+ * @author Antoine Ligot - <aligot@ulb.ac.be>
+ *
+ * @package ARGoS3-AutoMoDe
+ *
+ * @license MIT License
+ *
+ * @brief Container that keep range-and-bearing messages for a fixed
+ *        period of time. After the time to live of a message is exceded, the
+ *        message is discarded.
+ */
 
 #ifndef AUTOMODE_RAB_BUFFER_H
 #define AUTOMODE_RAB_BUFFER_H

@@ -68,13 +68,10 @@ if(ARGOS_BUILD_FOR_SIMULATOR)
 
 	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR})
 	add_executable(automode_main AutoMoDeMain.cpp)
-	target_link_libraries(automode_main automode argos3core_${ARGOS_BUILD_FOR}  argos3plugin_${ARGOS_BUILD_FOR}_epuck)
+	target_link_libraries(automode_main automode argos3core_${ARGOS_BUILD_FOR} argos3plugin_${ARGOS_BUILD_FOR}_epuck)
 
 elseif(ARGOS_BUILD_FOR_EPUCK)
-	add_executable(automode
-        ${AUTOMODE_HEADERS}
-        ${AUTOMODE_SOURCES})
+	add_executable(automode ${AUTOMODE_HEADERS} ${AUTOMODE_SOURCES})
 
-	target_link_libraries(automode
-    	argos3plugin_${ARGOS_BUILD_FOR}_epuck)
+	target_link_libraries(automode argos3plugin_${ARGOS_BUILD_FOR}_epuck)
 endif(ARGOS_BUILD_FOR_SIMULATOR)

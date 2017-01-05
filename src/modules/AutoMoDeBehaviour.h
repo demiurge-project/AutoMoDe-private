@@ -1,6 +1,11 @@
 /*
- * File: AutoMoDeBehaviour.h
+ * @file <src/modules/AutoMoDeBehaviour.h>
  *
+ * @author Antoine Ligot - <aligot@ulb.ac.be>
+ *
+ * @package ARGoS3-AutoMoDe
+ *
+ * @license MIT License
  */
 
 #ifndef AUTOMODEBEHAVIOUR_H

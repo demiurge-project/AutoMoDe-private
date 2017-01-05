@@ -1,6 +1,11 @@
 /*
- * File: CEpuckFsmBuilder.cpp
+ * @file <src/core/AutoMoDeFsmBuilder.cpp>
  *
+ * @author Antoine Ligot - <aligot@ulb.ac.be>
+ *
+ * @package ARGoS3-AutoMoDe
+ *
+ * @license MIT License
  */
 
 #include "AutoMoDeFsmBuilder.h"

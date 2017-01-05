@@ -1,7 +1,12 @@
-/*
- * File: AutoMoDeConditionFixedProbability.cpp
- *
- */
+/**
+  * @file <src/modules/AutoMoDeConditionFixedProbability.cpp>
+  *
+  * @author Antoine Ligot - <aligot@ulb.ac.be>
+  *
+  * @package ARGoS3-AutoMoDe
+  *
+  * @license MIT License
+  */
 
  #include "AutoMoDeConditionFixedProbability.h"
 

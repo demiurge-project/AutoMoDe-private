@@ -1,6 +1,11 @@
 /*
- * File: AutoMoDeController.h
+ * @file <src/core/AutoMoDeController.h>
  *
+ * @author Antoine Ligot - <aligot@ulb.ac.be>
+ *
+ * @package ARGoS3-AutoMoDe
+ *
+ * @license MIT License
  */
 
 #ifndef AUTOMODE_CONTROLLER_H
@@ -148,6 +153,8 @@ namespace argos{
 			 * Pointer to the robot omnidirectional camera sensor.
 			 */
 			CCI_EPuckOmnidirectionalCameraSensor* m_pcCameraSensor;
+
+			bool m_bFiniteStateMachineGiven;
 	};
 }
 

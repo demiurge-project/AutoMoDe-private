@@ -1,7 +1,12 @@
-/*
- * File: CEpuckFiniteStateMachine.cpp
- *
- */
+ /*
+  * @file <src/core/AutoMoDeFiniteStateMachine.cpp>
+  *
+  * @author Antoine Ligot - <aligot@ulb.ac.be>
+  *
+  * @package ARGoS3-AutoMoDe
+  *
+  * @license MIT License
+  */
 
 #include "AutoMoDeFiniteStateMachine.h"
 

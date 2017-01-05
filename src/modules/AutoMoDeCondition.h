@@ -1,7 +1,12 @@
-/*
- * File: AutoMoDeCondition.h
- *
- */
+/**
+  * @file <src/modules/AutoMoDeCondition.h>
+  *
+  * @author Antoine Ligot - <aligot@ulb.ac.be>
+  *
+  * @package ARGoS3-AutoMoDe
+  *
+  * @license MIT License
+  */
 
 #ifndef AUTOMODECONDITION_H
 #define AUTOMODECONDITION_H

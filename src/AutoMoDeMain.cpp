@@ -1,3 +1,12 @@
+/*
+ * @file <src/AutoMoDeMain.cpp>
+ *
+ * @author Antoine Ligot - <aligot@ulb.ac.be>
+ *
+ * @package ARGoS3-AutoMoDe
+ *
+ * @license MIT License
+ */
 
 #include <argos3/core/simulator/simulator.h>
 #include <argos3/core/simulator/space/space.h>
@@ -55,7 +64,7 @@ int main(int n_argc, char** ppch_argv) {
 			nCurrentArgument++;
 		}
 		if (!bFsmControllerFound) {
-			//THROW_ARGOSEXCEPTION(ExplainParameters());
+			THROW_ARGOSEXCEPTION(ExplainParameters());
 		}
 
 		// Configure the command line options
@@ -90,6 +99,10 @@ int main(int n_argc, char** ppch_argv) {
 
 				cSimulator.LoadExperiment();
 
+				AutoMoDeLoopFunctions& cLoopFunctions = dynamic_cast<AutoMoDeLoopFunctions&> (cSimulator.GetLoopFunctions());
+
+				cLoopFunctions.PositionRobots();
+
 				// Duplicate the finite state machine and pass it to all robots.
 				CSpace::TMapPerType cEntities = cSimulator.GetSpace().GetEntitiesByType("controller");
 				for (CSpace::TMapPerType::iterator it = cEntities.begin(); it != cEntities.end(); ++it) {
@@ -108,7 +121,7 @@ int main(int n_argc, char** ppch_argv) {
 
 				// Retrieval of the score of the swarm driven by the Finite State Machine
 
-				AutoMoDeLoopFunctions& cLoopFunctions = dynamic_cast<AutoMoDeLoopFunctions&> (cSimulator.GetLoopFunctions());
+				//AutoMoDeLoopFunctions& cLoopFunctions = dynamic_cast<AutoMoDeLoopFunctions&> (cSimulator.GetLoopFunctions());
 				Real fObjectiveFunction = cLoopFunctions.GetObjectiveFunction();
 				std::cout << "Score " << fObjectiveFunction << std::endl;
 

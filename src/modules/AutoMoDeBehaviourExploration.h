@@ -1,7 +1,12 @@
-/*
- * File: AutoMoDeBehaviourExploration.h
- *
- */
+/**
+  * @file <src/modules/AutoMoDeBehaviourExploration.h>
+  *
+  * @author Antoine Ligot - <aligot@ulb.ac.be>
+  *
+  * @package ARGoS3-AutoMoDe
+  *
+  * @license MIT License
+  */
 
 #ifndef AUTOMODE_BEHAVIOUR_EXPLORATION_H
 #define AUTOMODE_BEHAVIOUR_EXPLORATION_H

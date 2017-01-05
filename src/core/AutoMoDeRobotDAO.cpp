@@ -1,8 +1,12 @@
 /*
- * File: AutoMoDeRobotDAO.cpp
+ * @file <src/core/AutoMoDeRobotDAO.cpp>
  *
+ * @author Antoine Ligot - <aligot@ulb.ac.be>
+ *
+ * @package ARGoS3-AutoMoDe
+ *
+ * @license MIT License
  */
-
 
 #include "AutoMoDeRobotDAO.h"
 

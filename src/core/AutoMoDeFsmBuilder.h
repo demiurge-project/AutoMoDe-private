@@ -1,10 +1,16 @@
-/**
- * @file AutoMoDeFsmBuilder.h
+/*
+ * @file <src/core/AutoMoDeFsmBuilder.h>
+ *
+ * @author Antoine Ligot - <aligot@ulb.ac.be>
+ *
+ * @package ARGoS3-AutoMoDe
+ *
+ * @license MIT License
  *
  * @brief This class is used to parse the configuration of
- * the stochastic finite state machine and instanciate the
- * different modules (behaviours and conditions). These modules
- * are added to the AutoMoDeFiniStateMachine created.
+ * 				the stochastic finite state machine and instanciate the
+ * 				different modules (behaviours and conditions). These modules
+ * 				are added to the AutoMoDeFiniStateMachine created.
  */
 
 #ifndef AUTOMODE_FSM_BUILDER_H

@@ -1,7 +1,12 @@
-/*
- * File: AutoMoDeBehaviourPhototaxis.h
- *
- */
+/**
+  * @file <src/modules/AutoMoDeBehaviourPhototaxis.h>
+  *
+  * @author Antoine Ligot - <aligot@ulb.ac.be>
+  *
+  * @package ARGoS3-AutoMoDe
+  *
+  * @license MIT License
+  */
 
 #ifndef AUTOMODE_BEHAVIOUR_PHOTOTAXIS_H
 #define AUTOMODE_BEHAVIOUR_PHOTOTAXIS_H

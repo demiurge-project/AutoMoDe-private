@@ -1,6 +1,11 @@
 /*
- * File: CEpuckFsmHistory.cpp
+ * @file <src/core/AutoMoDeFsmHistory.cpp>
  *
+ * @author Antoine Ligot - <aligot@ulb.ac.be>
+ *
+ * @package ARGoS3-AutoMoDe
+ *
+ * @license MIT License
  */
 
 #include "AutoMoDeFsmHistory.h"

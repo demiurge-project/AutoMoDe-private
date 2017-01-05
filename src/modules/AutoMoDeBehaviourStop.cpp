@@ -1,7 +1,12 @@
-/*
- * File: AutoMoDeBehaviourStop.cpp
- *
- */
+/**
+  * @file <src/modules/AutoMoDeBehaviourStop.cpp>
+  *
+  * @author Antoine Ligot - <aligot@ulb.ac.be>
+  *
+  * @package ARGoS3-AutoMoDe
+  *
+  * @license MIT License
+  */
 
 #include "AutoMoDeBehaviourStop.h"
 

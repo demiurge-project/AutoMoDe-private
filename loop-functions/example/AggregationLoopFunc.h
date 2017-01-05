@@ -1,3 +1,13 @@
+/**
+  * @file <loop-functions/example/AutoMoDeAggregationLoopFunc.h>
+  *
+  * @author Antoine Ligot - <aligot@ulb.ac.be>
+  *
+  * @package ARGoS3-AutoMoDe
+  *
+  * @license MIT License
+  */
+
 #ifndef AGGREGATION_LOOP_FUNC
 #define AGGREGATION_LOOP_FUNC
 

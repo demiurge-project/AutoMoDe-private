@@ -1,7 +1,12 @@
-/*
- * File: AutoMoDeConditionFixedProbability.h
- *
- */
+/**
+  * @file <src/modules/AutoMoDeConditionFixedProbability.h>
+  *
+  * @author Antoine Ligot - <aligot@ulb.ac.be>
+  *
+  * @package ARGoS3-AutoMoDe
+  *
+  * @license MIT License
+  */
 
 #ifndef AUTOMODE_CONDITION_FIXED_PROBABILITY_H
 #define AUTOMODE_CONDITION_FIXED_PROBABILITY_H
@@ -20,7 +25,7 @@ namespace argos {
 			virtual bool Verify();
 			virtual void Reset();
 			virtual void Init();
-			
+
 		private:
 			Real m_fProbability;
 	};

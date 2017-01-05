@@ -1,0 +1,53 @@
+ARGoS-AutoMoDe README
+=====================
+
+What is ARGoS-AutoMoDe?
+-----------------------
+
+
+
+Downloading ARGoS-AutoMoDe
+--------------------------
+
+You can download the development sources through git:
+
+ $ git clone ..... argos3-AutoMoDe
+
+Compiling ARGoS3-AutoMoDe
+-------------------------
+
+Requirements
+~~~~~~~~~~~~
+
+Before executing the following commands, you need to download, compile and install the latest version of ARGoS3: https://github.com/ilpincy/argos3 +
+as well as the plugin for the E-puck robots, ARGoS3-Epuck: +
+https://github.com/lgarattoni/argos3-epuck
+
+Compiling the code
+~~~~~~~~~~~~~~~~~~
+
+The compilation of ARGoS-AutoMoDe is configured through CMake.
+
+Compiling for the simulator
++++++++++++++++++++++++++++
+
+ $ cd argos3-AutoMoDe
+ $ mkdir build
+ $ cd build
+ $ cmake ..
+ $ make
+
+Compiling for the E-puck
+++++++++++++++++++++++++
+
+ $ cd argos3-AutoMoDe
+ $ mkdir build-epuck
+ $ cd build-epuck
+ $ cmake -DCMAKE_TOOLCHAIN_FILE=../src/cmake/TargetEPuck.cmake ..
+ $ make
+
+Using ARGoS-AutoMoDe
+--------------------
+
+2 ways to specify the finite state machine description: command line when using the executable or through the
+configuration of the experiment (.xml file). In both case, the same grammar is used to describe the finite state machines.

@@ -1,10 +1,16 @@
-/**
- * @file AutoMoDeFiniteStateMachine.h
+/*
+ * @file <src/core/AutoMoDeFiniteStateMachine.h>
  *
- * @brief This class represents the stochastic Finite State
- * Machine (FSM) that controls the robot. It contains all the modules
- * (behaviours and conditions) and is responsible for the transitions
- * between them.
+ * @author Antoine Ligot - <aligot@ulb.ac.be>
+ *
+ * @package ARGoS3-AutoMoDe
+ *
+ * @license MIT License
+ *
+ * @brief	This class represents the stochastic Finite State
+ * 				Machine (FSM) that controls the robot. It contains all the modules
+ *       	(behaviours and conditions) and is responsible for the transitions
+ * 				between them.
  */
 
 #ifndef AUTOMODE_FINITE_STATE_MACHINE_H
