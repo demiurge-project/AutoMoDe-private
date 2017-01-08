@@ -73,10 +73,12 @@ void AutoMoDeLoopFunctions::PositionRobots() {
        }
        Real fPosX = b * m_fDistributionRadius * cos(2 * CRadians::PI.GetValue() * (a/b));
        Real fPosY = b * m_fDistributionRadius * sin(2 * CRadians::PI.GetValue() * (a/b));
+       
        bPlaced = MoveEntity((*pcEpuck).GetEmbodiedEntity(),
                             CVector3(fPosX, fPosY, 0),
                             CQuaternion().FromEulerAngles(m_pcRng->Uniform(CRange<CRadians>(CRadians::ZERO,CRadians::TWO_PI)),
                             CRadians::ZERO,CRadians::ZERO),false);
+
     } while(!bPlaced && unTrials < 100);
     if(!bPlaced) {
        THROW_ARGOSEXCEPTION("Can't place robot #" << i);
