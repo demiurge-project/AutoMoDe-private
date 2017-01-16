@@ -13,12 +13,12 @@ IRACE="irace"
 
 # You may need to customize this part according to the setup of your own
 # cluster.
-QUEUE=long
+QUEUE=short
 #MACHINE=opteron2216
-#MACHINE=xeon5410
+MACHINE=xeon5410
 #MACHINE=opteron6128
 #MACHINE=opteron6272
-MACHINE=xeon2680
+#MACHINE=xeon2680
 
 MPIRUN=/opt/openmpi/bin/mpirun
 #PARALLEL_ENV=mpich_fu
