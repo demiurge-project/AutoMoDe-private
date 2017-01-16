@@ -4,8 +4,8 @@
 /****************************************/
 
 GiandujaNestingLoopFunction::GiandujaNestingLoopFunction() {
-  m_fRadius = 0.2;
-  m_cCoordSpot1 = CVector2(0.5,0.5);
+  m_fRadius = 0.1;
+  m_cCoordSpot1 = CVector2(0.6,0.8);
   m_cCoordSpot2 = CVector2(-0.5,0.5);
   m_CCoordRect1 = CVector2(0.8,-0.2);
   m_CCoordRect2 = CVector2(-0.8,-1);
@@ -40,10 +40,10 @@ argos::CColor GiandujaNestingLoopFunction::GetFloorColor(const argos::CVector2& 
     return CColor::BLACK;
   }
 
-  d = (m_cCoordSpot2 - vCurrentPoint).Length();
-  if (d <= m_fRadius) {
-    return CColor::BLACK;
-  }
+  // d = (m_cCoordSpot2 - vCurrentPoint).Length();
+  // if (d <= m_fRadius) {
+  //   return CColor::BLACK;
+  // }
 
   if ( (vCurrentPoint.GetX()<=m_CCoordRect1.GetX()) && (vCurrentPoint.GetX()>=m_CCoordRect2.GetX()) && (vCurrentPoint.GetY()>=m_CCoordRect2.GetY()) && (vCurrentPoint.GetY()<=m_CCoordRect1.GetY()) ) {
     return CColor::GREEN;

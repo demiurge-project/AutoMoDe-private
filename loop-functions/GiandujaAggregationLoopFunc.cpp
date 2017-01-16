@@ -67,14 +67,7 @@ void GiandujaAggregationLoopFunction::PositionRobots() {
            ++unTrials;
            a = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
            b = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
-           // If b < a, swap them
-        //    if (b < a) {
-        //      temp = a;
-        //      a = b;
-        //      b = temp;
-        //    }
-           //Real fPosX = m_CCoordRect2.GetX() + a*fabs(m_CCoordRect2.GetX() - m_CCoordRect1.GetX());
-           //Real fPosY = m_CCoordRect2.GetY() + b*fabs(m_CCoordRect2.GetY() - m_CCoordRect1.GetY());
+
            Real fPosY = -1.0 + a * 0.8;
            Real fPosX = -0.8 + b * 1.6;
 
@@ -95,9 +88,15 @@ void GiandujaAggregationLoopFunction::PositionRobots() {
     /* Consider the light only if it has non zero intensity */
     cLight.SetIntensity(m_pcRng->Uniform(CRange<Real>(0.05f, 0.8f)));
 
-    Real pos = m_pcRng->Uniform(CRange<Real>(-1.0f, 1.0f));
 
-    cLight.MoveTo(CVector3(0, pos, 0.4),CQuaternion().FromEulerAngles(m_pcRng->Uniform(CRange<CRadians>(CRadians::ZERO,CRadians::TWO_PI)),
+    Real ab;
+    Real DistributionRadius = 1.3;
+
+    ab = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
+    Real posX = DistributionRadius * cos(2 * CRadians::PI.GetValue() * ab);
+    Real posY = DistributionRadius * sin(2 * CRadians::PI.GetValue() * ab);
+
+    cLight.MoveTo(CVector3(posX, posY, 0.4),CQuaternion().FromEulerAngles(m_pcRng->Uniform(CRange<CRadians>(CRadians::ZERO,CRadians::TWO_PI)),
     CRadians::ZERO,CRadians::ZERO));
 
 }
