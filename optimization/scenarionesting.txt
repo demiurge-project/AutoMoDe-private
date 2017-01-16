@@ -13,11 +13,11 @@ parameterFile = "./gianduja_grammar.txt"
 forbiddenFile = "./forbidden_config.txt"
 
 ## Directory where the programs will be run.
-#execDir = "./execution-folder"
+#execDir = "./execution-folder2"
 
 ## Directory where tuning instances are located, either absolute path or
 ## relative to current directory.
-trainInstancesDir = "./experiments-folder"
+trainInstancesDir = "./exp2-folder"
 
 #The maximum total budget for the runs of targetRunner
 maxExperiments = 100000
