@@ -11,7 +11,7 @@
   <!-- ****************** -->
   <!-- * Loop functions * -->
   <!-- ****************** -->
-  <loop_functions library="/home/khasselmann/argos3-AutoMoDe/build/loop-functions/libgianduja_aggregation_loopfunc.so"
+  <loop_functions library="../build/argos3-AutoMoDe/loop-functions/libgianduja_aggregation_loopfunc.so"
    label="gianduja_aggregation_loop_functions">
    <params dist_radius="1.2" number_robots="20"/>
   </loop_functions>
@@ -22,7 +22,7 @@
   <controllers>
 	<!-- TRANSMITTER -->
     <automode_controller id="automode"
-                        library="/home/khasselmann/argos3-AutoMoDe/build/src/libautomode.so">
+                        library="../build/argos3-AutoMoDe/src/libautomode.so">
       <actuators>
         <epuck_wheels implementation="default" noise_std_dev="0.05"/>
         <epuck_rgb_leds implementation="default" medium="leds"/>
@@ -56,7 +56,7 @@
          </entity>
     </distribute> -->
 	<light id="light0" position="0,-1.5,0.4" orientation="0,0,0" color="yellow" intensity="0.0" medium="leds"/>
-    
+
 
   <!--Dodecagonal arena with side of length .66-->
   <box id="wall_1" size="0.01,.66,0.08" movable="false">
