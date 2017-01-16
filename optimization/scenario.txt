@@ -6,7 +6,7 @@
 ## value on the command line).
 
 ## File that contains the description of the parameters.
-parameterFile = "./gianduja_grammar.txt"
+parameterFile = "./example/grammar.txt"
 
 ## File that contains logical expressions of parameters value that
 ## valid configurations should not satisfy.
@@ -20,7 +20,7 @@ execDir = "./exec1"
 trainInstancesDir = "./experiments-folder"
 
 #The maximum total budget for the runs of targetRunner
-maxExperiments = 100000
+maxExperiments = 150000
 
 ## Indicates the number of decimal places to be considered for the
 ## real parameters.
