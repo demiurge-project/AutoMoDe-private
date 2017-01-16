@@ -13,7 +13,7 @@ parameterFile = "./gianduja_grammar.txt"
 forbiddenFile = "./forbidden_config.txt"
 
 ## Directory where the programs will be run.
-#execDir = "./execution-folder2"
+execDir = "./exec2"
 
 ## Directory where tuning instances are located, either absolute path or
 ## relative to current directory.
