@@ -18,6 +18,7 @@ class GiandujaNestingLoopFunction: public AutoMoDeLoopFunctions {
     virtual argos::CColor GetFloorColor(const argos::CVector2& c_position_on_plane);
     virtual void PostExperiment();
     virtual void PostStep();
+    virtual void Init(TConfigurationNode& t_tree);
     void PositionRobots();
 
     Real GetObjectiveFunction();
@@ -29,7 +30,8 @@ class GiandujaNestingLoopFunction: public AutoMoDeLoopFunctions {
     CVector2 m_CCoordRect2;
 
     UInt8 m_unState;
-    UInt32 m_unCost;
+    UInt32 m_unCostI;
+    UInt32 m_unCostO;
     UInt32 m_unTbar;
     Real m_fObjectiveFunction;
 };

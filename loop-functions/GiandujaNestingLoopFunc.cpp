@@ -4,15 +4,17 @@
 /****************************************/
 
 GiandujaNestingLoopFunction::GiandujaNestingLoopFunction() {
-  m_fRadius = 0.1;
+  m_fRadius = 0.03;
   m_cCoordSpot1 = CVector2(0.6,0.8);
   m_cCoordSpot2 = CVector2(-0.5,0.5);
   m_CCoordRect1 = CVector2(0.8,-0.2);
   m_CCoordRect2 = CVector2(-0.8,-1);
-  m_unCost = 0;
+  m_unCostI = 0;
+  m_unCostO = 0;
   m_unState = 0;
   m_unTbar = 0;
   m_fObjectiveFunction = 0;
+
 }
 
 /****************************************/
@@ -33,17 +35,21 @@ void GiandujaNestingLoopFunction::Destroy() {}
 /****************************************/
 /****************************************/
 
+void GiandujaNestingLoopFunction::Init(TConfigurationNode& t_tree) {
+    AutoMoDeLoopFunctions::Init(t_tree);
+    Real a =m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
+    Real b =m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
+    m_cCoordSpot1 = CVector2(-0.7+a*1.4,0.6+b*0.4);
+
+}
+
 argos::CColor GiandujaNestingLoopFunction::GetFloorColor(const argos::CVector2& c_position_on_plane) {
   CVector2 vCurrentPoint(c_position_on_plane.GetX(), c_position_on_plane.GetY());
+
   Real d = (m_cCoordSpot1 - vCurrentPoint).Length();
   if (d <= m_fRadius) {
     return CColor::BLACK;
   }
-
-  // d = (m_cCoordSpot2 - vCurrentPoint).Length();
-  // if (d <= m_fRadius) {
-  //   return CColor::BLACK;
-  // }
 
   if ( (vCurrentPoint.GetX()<=m_CCoordRect1.GetX()) && (vCurrentPoint.GetX()>=m_CCoordRect2.GetX()) && (vCurrentPoint.GetY()>=m_CCoordRect2.GetY()) && (vCurrentPoint.GetY()<=m_CCoordRect1.GetY()) ) {
     return CColor::GREEN;
@@ -76,18 +82,9 @@ void GiandujaNestingLoopFunction::PositionRobots() {
        ++unTrials;
        a = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
        b = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
-       // If b < a, swap them
-    //    if (b < a) {
-    //      temp = a;
-    //      a = b;
-    //      b = temp;
-    //    }
-       //Real fPosX = b * m_fDistributionRadius * cos(2 * CRadians::PI.GetValue() * (a/b));
-       //Real fPosY = b * m_fDistributionRadius * sin(2 * CRadians::PI.GetValue() * (a/b));
+
        Real fPosX = m_CCoordRect2.GetX() + a*fabs(m_CCoordRect2.GetX() - m_CCoordRect1.GetX());
        Real fPosY = m_CCoordRect2.GetY() + b*fabs(m_CCoordRect2.GetY() - m_CCoordRect1.GetY());
-       //Real fPosY = -1.0 + a * 0.8;
-       //Real fPosX = -0.8 + b * 1.6;
 
        bPlaced = MoveEntity((*pcEpuck).GetEmbodiedEntity(),
                             CVector3(fPosX, fPosY, 0),
@@ -114,26 +111,26 @@ void GiandujaNestingLoopFunction::PostStep() {
                          pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
 
         Real fDistanceSpot1 = (m_cCoordSpot1 - cEpuckPosition).Length();
-        Real fDistanceSpot2 = (m_cCoordSpot2 - cEpuckPosition).Length();
 
         if (m_unState == 0) {
-            if ((fDistanceSpot1 <= m_fRadius) || (fDistanceSpot2 <= m_fRadius)) {
+            if (fDistanceSpot1 <= m_fRadius) {
                 un_trigger = 1;
             }
-            if ( (cEpuckPosition.GetX()<=m_CCoordRect1.GetX()) && (cEpuckPosition.GetX()>=m_CCoordRect2.GetX()) && (cEpuckPosition.GetY()>=m_CCoordRect2.GetY()) && (cEpuckPosition.GetY()<=m_CCoordRect1.GetY()) ) { //inside nest
-                m_unCost+=1;
+            else if ( (cEpuckPosition.GetX()<=m_CCoordRect1.GetX()) && (cEpuckPosition.GetX()>=m_CCoordRect2.GetX()) && (cEpuckPosition.GetY()>=m_CCoordRect2.GetY()) && (cEpuckPosition.GetY()<=m_CCoordRect1.GetY()) ) { //inside nest
+                m_unCostI+=1;
             }
             m_unTbar +=1;
         }
         else if (m_unState == 1) {
             if ( !((cEpuckPosition.GetX()<=m_CCoordRect1.GetX()) && (cEpuckPosition.GetX()>=m_CCoordRect2.GetX()) && (cEpuckPosition.GetY()>=m_CCoordRect2.GetY()) && (cEpuckPosition.GetY()<=m_CCoordRect1.GetY())) ) { //outside nest
-                m_unCost+=1;
+                m_unCostO+=1;
             }
         }
     }
 
     if (m_unState == 0 && un_trigger == 1) {
         m_unState = 1;
+        LOG << "Found Spot, triggering." << std::endl;
     }
 
 }
@@ -142,8 +139,9 @@ void GiandujaNestingLoopFunction::PostStep() {
 /****************************************/
 
 void GiandujaNestingLoopFunction::PostExperiment() {
-    LOG<< m_unCost <<"::" << m_unTbar;
-    m_fObjectiveFunction = (Real) m_unCost + m_unTbar;
+    LOG<< "CostI :" << m_unCostI << " / CostO :" << m_unCostO << " / Tbar:" << m_unTbar << std::endl;
+    m_fObjectiveFunction = (Real) m_unCostI + m_unCostO + m_unTbar;
+    LOG<< m_fObjectiveFunction << std::endl;
 }
 
 Real GiandujaNestingLoopFunction::GetObjectiveFunction() {
