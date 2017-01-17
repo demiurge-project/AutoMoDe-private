@@ -7,9 +7,12 @@ GiandujaNestingLoopFunction::GiandujaNestingLoopFunction() {
   m_fRadius = 0.07;
   m_cCoordSpot1 = CVector2(0.6,0.8);
   m_cCoordSpot2 = CVector2(-0.5,0.5);
-  m_CCoordRect1 = CVector2(0.8,-0.2);
+
+  m_CCoordRect1Pos = CVector2(0.8,-0.5);
+  m_CCoordRect1 = CVector2(1.25,-0.5);
+
   m_CCoordRect2Pos = CVector2(-0.8,-1);
-  m_CCoordRect2 = CVector2(-0.8,-1.25);
+  m_CCoordRect2 = CVector2(-1.25,-1.25);
 
 
   m_unCostI = 0;
@@ -54,16 +57,16 @@ argos::CColor GiandujaNestingLoopFunction::GetFloorColor(const argos::CVector2& 
   if (d <= m_fRadius) {
     return CColor::BLACK;
   }
-  if (d <= m_fRadius+0.02) {
-    return CColor::YELLOW;
+  if (d <= m_fRadius+0.015) {
+    return CColor::GREEN;
   }
 
-  if ( (vCurrentPoint.GetX()<=m_CCoordRect1.GetX()) && (vCurrentPoint.GetX()>=m_CCoordRect2Pos.GetX()) && (vCurrentPoint.GetY()>=m_CCoordRect2Pos.GetY()) && (vCurrentPoint.GetY()<=m_CCoordRect1.GetY()) ) {
-    return CColor::RED;
-  }
+  // if ( (vCurrentPoint.GetX()<=m_CCoordRect1Pos.GetX()) && (vCurrentPoint.GetX()>=m_CCoordRect2Pos.GetX()) && (vCurrentPoint.GetY()>=m_CCoordRect2Pos.GetY()) && (vCurrentPoint.GetY()<=m_CCoordRect1Pos.GetY()) ) {
+  //   return CColor::GREEN;
+  // }
 
   if ( (vCurrentPoint.GetX()<=m_CCoordRect1.GetX()) && (vCurrentPoint.GetX()>=m_CCoordRect2.GetX()) && (vCurrentPoint.GetY()>=m_CCoordRect2.GetY()) && (vCurrentPoint.GetY()<=m_CCoordRect1.GetY()) ) {
-    return CColor::GREEN;
+    return CColor::WHITE;
   }
 
   return CColor::GRAY50;
@@ -94,8 +97,8 @@ void GiandujaNestingLoopFunction::PositionRobots() {
        a = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
        b = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
 
-       Real fPosX = m_CCoordRect2Pos.GetX() + a*fabs(m_CCoordRect2Pos.GetX() - m_CCoordRect1.GetX());
-       Real fPosY = m_CCoordRect2Pos.GetY() + b*fabs(m_CCoordRect2Pos.GetY() - m_CCoordRect1.GetY());
+       Real fPosX = m_CCoordRect2Pos.GetX() + a*fabs(m_CCoordRect2Pos.GetX() - m_CCoordRect1Pos.GetX());
+       Real fPosY = m_CCoordRect2Pos.GetY() + b*fabs(m_CCoordRect2Pos.GetY() - m_CCoordRect1Pos.GetY());
 
        bPlaced = MoveEntity((*pcEpuck).GetEmbodiedEntity(),
                             CVector3(fPosX, fPosY, 0),
