@@ -4,7 +4,7 @@
 /****************************************/
 
 GiandujaNestingLoopFunction::GiandujaNestingLoopFunction() {
-  m_fRadius = 0.03;
+  m_fRadius = 0.07;
   m_cCoordSpot1 = CVector2(0.6,0.8);
   m_cCoordSpot2 = CVector2(-0.5,0.5);
   m_CCoordRect1 = CVector2(0.8,-0.2);
@@ -140,8 +140,9 @@ void GiandujaNestingLoopFunction::PostStep() {
 
 void GiandujaNestingLoopFunction::PostExperiment() {
     LOG<< "CostI :" << m_unCostI << " / CostO :" << m_unCostO << " / Tbar:" << m_unTbar << std::endl;
+    LOG<< m_unCostI + m_unCostO + m_unTbar << std::endl;
     m_fObjectiveFunction = (Real) m_unCostI + m_unCostO + m_unTbar;
-    LOG<< m_fObjectiveFunction << std::endl;
+
 }
 
 Real GiandujaNestingLoopFunction::GetObjectiveFunction() {
