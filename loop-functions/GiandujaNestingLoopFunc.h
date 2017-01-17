@@ -28,6 +28,7 @@ class GiandujaNestingLoopFunction: public AutoMoDeLoopFunctions {
     CVector2 m_cCoordSpot2;
     CVector2 m_CCoordRect1;
     CVector2 m_CCoordRect2;
+    CVector2 m_CCoordRect2Pos;
 
     UInt8 m_unState;
     UInt32 m_unCostI;
