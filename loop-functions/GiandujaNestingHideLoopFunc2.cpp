@@ -172,7 +172,7 @@ void GiandujaNestingHideLoopFunction::PostStep() {
 void GiandujaNestingHideLoopFunction::PostExperiment() {
     LOG<< "CostI :" << m_unCostI << " / CostO :" << m_unCostO << " / TBar:" << m_unTBar << std::endl;
     LOG<< m_unCostI + m_unCostO + m_unTBar << std::endl;
-    m_fObjectiveFunction = (Real) m_unCostI + m_unCostO;
+    m_fObjectiveFunction = (Real) m_unCostI*m_unCostI + m_unCostO*m_unCostO;
 
 }
 

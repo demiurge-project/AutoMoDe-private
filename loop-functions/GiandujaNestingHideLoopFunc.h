@@ -29,12 +29,13 @@ class GiandujaNestingHideLoopFunction: public AutoMoDeLoopFunctions {
     CVector2 m_cCoordSpot2;
     CVector2 m_CCoordRect1;
     CVector2 m_CCoordRect2;
-    CVector2 m_CCoordRect2Pos;
-    CVector2 m_CCoordRect1Pos;
+    CVector2 m_CCoordRect2Pos[4];
+    CVector2 m_CCoordRect1Pos[4];
     CVector2 m_cCoordRectSpot;
     Real m_cCoordRectSize;
     UInt32 m_unTBar;
     UInt32 m_unTime;
+    UInt8 m_unStart;
 
     UInt8 m_unState;
     UInt32 m_unCostI;
