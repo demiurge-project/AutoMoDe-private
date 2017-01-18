@@ -4,4 +4,5 @@ link_directories(${ARGOS_LIBRARY_DIRS})
 
 add_library(gianduja_aggregation_loopfunc SHARED GiandujaAggregationLoopFunc.h GiandujaAggregationLoopFunc.cpp)
 add_library(gianduja_nesting_loopfunc SHARED GiandujaNestingLoopFunc.h GiandujaNestingLoopFunc.cpp)
+add_library(gianduja_nesting_hide_loopfunc SHARED GiandujaNestingHideLoopFunc.h GiandujaNestingHideLoopFunc.cpp)
 add_subdirectory(example)
