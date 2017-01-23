@@ -6,18 +6,18 @@
 ## value on the command line).
 
 ## File that contains the description of the parameters.
-parameterFile = "./gianduja_grammar.txt"
+parameterFile = "./grammar_no_gian.txt"
 
 ## File that contains logical expressions of parameters value that
 ## valid configurations should not satisfy.
 forbiddenFile = "./forbidden_config.txt"
 
 ## Directory where the programs will be run.
-execDir = "./exec2"
+execDir = "./exec1"
 
 ## Directory where tuning instances are located, either absolute path or
 ## relative to current directory.
-trainInstancesDir = "./exNT1"
+trainInstancesDir = "./exNT2"
 
 #The maximum total budget for the runs of targetRunner
 maxExperiments = 100000

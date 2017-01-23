@@ -6,4 +6,5 @@ add_library(gianduja_aggregation_loopfunc SHARED GiandujaAggregationLoopFunc.h G
 add_library(gianduja_nesting_loopfunc SHARED GiandujaNestingLoopFunc.h GiandujaNestingLoopFunc.cpp)
 add_library(gianduja_nesting_hide_loopfunc SHARED GiandujaNestingHideLoopFunc.h GiandujaNestingHideLoopFunc.cpp)
 add_library(gianduja_nesting_hide_loopfunc2 SHARED GiandujaNestingHideLoopFunc.h GiandujaNestingHideLoopFunc2.cpp)
+add_library(gianduja_stop_loopfunc SHARED GiandujaStopLoopFunc.h GiandujaStopLoopFunc.cpp)
 add_subdirectory(example)
