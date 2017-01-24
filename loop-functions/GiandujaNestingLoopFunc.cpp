@@ -4,7 +4,7 @@
 /****************************************/
 
 GiandujaNestingLoopFunction::GiandujaNestingLoopFunction() {
-  m_fRadius = 0.07;
+  m_fRadius = 0.05;
   m_cCoordSpot1 = CVector2(0.6,0.8);
   m_cCoordSpot2 = CVector2(-0.5,0.5);
 
@@ -127,7 +127,7 @@ void GiandujaNestingLoopFunction::PostStep() {
         Real fDistanceSpot1 = (m_cCoordSpot1 - cEpuckPosition).Length();
 
         if (m_unState == 0) {
-            if (fDistanceSpot1 <= m_fRadius+0.02) {
+            if (fDistanceSpot1 <= m_fRadius+0.015) {
                 un_trigger = 1;
             }
             else if ( (cEpuckPosition.GetX()<=m_CCoordRect1.GetX()) && (cEpuckPosition.GetX()>=m_CCoordRect2.GetX()) && (cEpuckPosition.GetY()>=m_CCoordRect2.GetY()) && (cEpuckPosition.GetY()<=m_CCoordRect1.GetY()) ) { //inside nest
