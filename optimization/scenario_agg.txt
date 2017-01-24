@@ -10,17 +10,17 @@ parameterFile = "./gianduja_grammar.txt"
 
 ## File that contains logical expressions of parameters value that
 ## valid configurations should not satisfy.
-forbiddenFile = "./forbidden_config.txt"
+#forbiddenFile = "./forbidden_config.txt"
 
 ## Directory where the programs will be run.
-execDir = "./exec3"
+execDir = "./exec1"
 
 ## Directory where tuning instances are located, either absolute path or
 ## relative to current directory.
-trainInstancesDir = "./experiments-folder"
+trainInstancesDir = "./exAG"
 
 #The maximum total budget for the runs of targetRunner
-maxExperiments = 150000
+maxExperiments = 100000
 
 ## Indicates the number of decimal places to be considered for the
 ## real parameters.

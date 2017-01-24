@@ -10,14 +10,14 @@ parameterFile = "./grammar_no_gian.txt"
 
 ## File that contains logical expressions of parameters value that
 ## valid configurations should not satisfy.
-forbiddenFile = "./forbidden_config.txt"
+#forbiddenFile = "./forbidden_config.txt"
 
 ## Directory where the programs will be run.
-execDir = "./exec1"
+execDir = "./exec4"
 
 ## Directory where tuning instances are located, either absolute path or
 ## relative to current directory.
-trainInstancesDir = "./exNT2"
+trainInstancesDir = "./exNT1"
 
 #The maximum total budget for the runs of targetRunner
 maxExperiments = 100000
