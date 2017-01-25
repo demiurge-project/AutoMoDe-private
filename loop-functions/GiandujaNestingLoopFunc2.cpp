@@ -154,8 +154,8 @@ void GiandujaNestingLoopFunction::PostStep() {
 
 void GiandujaNestingLoopFunction::PostExperiment() {
     LOG<< "CostI :" << m_unCostI << " / CostO :" << m_unCostO << " / Tbar:" << m_unTbar << std::endl;
-    LOG<< m_unCostI + m_unCostO << std::endl;//+ m_unTbar
-    m_fObjectiveFunction = (Real) 2*m_unCostI + m_unCostO;// + m_unTbar;
+    LOG<< m_unCostI + m_unCostO + m_unTbar << std::endl;
+    m_fObjectiveFunction = (Real) 2*m_unCostI + m_unCostO + m_unTbar;
 
 }
 
