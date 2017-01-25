@@ -8,7 +8,7 @@ from mpi4py import MPI
 from mpi4py.MPI import ANY_SOURCE
 import statistics
 
-p = argparse.ArgumentParser(description='multiple tmux opener and synchroniser based on json file')
+p = argparse.ArgumentParser(description='runs a command multiple times in paralell using mpi :  mpirun -n 5 python looprunner.py -n 50 -c "COMMAND"')
 p.add_argument('-c', '--command', help='the command to run', required=True)
 p.add_argument('-n', '--nbruns', help='number of runs to do (max 100)', required=True)
 
