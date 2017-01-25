@@ -61,7 +61,12 @@ void GiandujaNestingHideLoopFunction::Init(TConfigurationNode& t_tree) {
     m_cCoordSpot1 = CVector2(-0.6+a*1.2,0.5+b*0.3);
 
     m_cCoordRectSpot = CVector2(-0.6+a*1.2,0.5+b*0.3);
-    m_unTBar = m_pcRng->Uniform(CRange<UInt32>(150, 1050));
+    m_unTBar = m_pcRng->Uniform(CRange<UInt32>(450, 750));
+    Real test = m_pcRng->Uniform(CRange<UInt32>(0,1));
+    if (test){
+        m_unTBar = 1300;
+    }
+
     m_unStart = m_pcRng->Uniform(CRange<UInt32>(0, 4));
 
 }
