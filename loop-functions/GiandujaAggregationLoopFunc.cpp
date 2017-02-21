@@ -29,6 +29,21 @@ void GiandujaAggregationLoopFunction::Destroy() {}
 /****************************************/
 /****************************************/
 
+void GiandujaAggregationLoopFunction::Reset() {
+    AutoMoDeLoopFunctions::Reset();
+    PlaceLight();
+}
+
+
+void GiandujaAggregationLoopFunction::Init() {
+    AutoMoDeLoopFunctions::Init(t_tree);
+    PlaceLight();
+}
+
+
+/****************************************/
+/****************************************/
+
 argos::CColor GiandujaAggregationLoopFunction::GetFloorColor(const argos::CVector2& c_position_on_plane) {
   CVector2 vCurrentPoint(c_position_on_plane.GetX(), c_position_on_plane.GetY());
   Real d = (m_cCoordSpot1 - vCurrentPoint).Length();
@@ -44,50 +59,11 @@ argos::CColor GiandujaAggregationLoopFunction::GetFloorColor(const argos::CVecto
   return CColor::GRAY50;
 }
 
-void GiandujaAggregationLoopFunction::PositionRobots() {
-  Real a;
-  Real b;
-  Real temp;
-
-  CEPuckEntity* pcEpuck;
-  UInt32 unTrials;
-  bool bPlaced = false;
-
-    for(UInt32 i = 1; i < m_unNumberRobots + 1; ++i) {
-        std::ostringstream id;
-        id << "epuck" << i;
-        pcEpuck = new CEPuckEntity(id.str().c_str(),
-                                   "automode",
-                                   CVector3(0,0,0),
-                                   CQuaternion().FromEulerAngles(CRadians::ZERO,CRadians::ZERO,CRadians::ZERO));
-        AddEntity(*pcEpuck);
-        // Choose position at random
-        unTrials = 0;
-        do {
-           ++unTrials;
-           a = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
-           b = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
-
-           Real fPosY = -1.0 + a * 0.8;
-           Real fPosX = -0.8 + b * 1.6;
-
-           bPlaced = MoveEntity((*pcEpuck).GetEmbodiedEntity(),
-                                CVector3(fPosX, fPosY, 0),
-                                CQuaternion().FromEulerAngles(m_pcRng->Uniform(CRange<CRadians>(CRadians::ZERO,CRadians::TWO_PI)),
-                                CRadians::ZERO,CRadians::ZERO),false);
-
-        } while(!bPlaced && unTrials < 100);
-
-        if(!bPlaced) {
-           THROW_ARGOSEXCEPTION("Can't place robot #" << i);
-        }
-    }
-    /********************/
+void GiandujaAggregationLoopFunction::PlaceLight() {
     // /* Place a light at a random spot to prevent robots to exploit (anti)phototaxis behaviours as RW */
     CLightEntity& cLight = dynamic_cast<CLightEntity&>(GetSpace().GetEntity("light0"));
     /* Consider the light only if it has non zero intensity */
     cLight.SetIntensity(m_pcRng->Uniform(CRange<Real>(0.05f, 0.8f)));
-
 
     Real ab;
     Real DistributionRadius = 1.3;
@@ -98,7 +74,19 @@ void GiandujaAggregationLoopFunction::PositionRobots() {
 
     cLight.MoveTo(CVector3(posX, posY, 0.4),CQuaternion().FromEulerAngles(m_pcRng->Uniform(CRange<CRadians>(CRadians::ZERO,CRadians::TWO_PI)),
     CRadians::ZERO,CRadians::ZERO));
+}
 
+CVector3 GiandujaAggregationLoopFunction::GetRandomPosition() {
+    Real a;
+    Real b;
+
+    a = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
+    b = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
+
+    Real fPosY = -1.0 + a * 0.8;
+    Real fPosX = -0.8 + b * 1.6;
+
+    return CVector3(fPosX, fPosY, 0);
 }
 
 /****************************************/

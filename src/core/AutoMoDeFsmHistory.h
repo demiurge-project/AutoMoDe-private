@@ -46,12 +46,12 @@ namespace argos {
 			/*
 			 *
 			 */
-			void AddTimeStep(UInt8 un_time_step, AutoMoDeBehaviour* pc_current_state, std::map<AutoMoDeCondition*, bool> map_transition_status);
+			void AddTimeStep(UInt32 un_time_step, AutoMoDeBehaviour* pc_current_state, std::map<AutoMoDeCondition*, bool> map_transition_status);
 
 			/*
 			 *
 			 */
-			void AddTimeStep(UInt8 un_time_step, AutoMoDeBehaviour* pc_current_state);
+			void AddTimeStep(UInt32 un_time_step, AutoMoDeBehaviour* pc_current_state);
 
 			/*
 			 * Open the file where the history will be saved.

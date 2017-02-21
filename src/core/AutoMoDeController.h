@@ -81,7 +81,7 @@ namespace argos{
 			/*
 			 * Time step variable.
 			 */
-			UInt8 m_unTimeStep;
+			UInt32 m_unTimeStep;
 
 			/*
 			 * Integer part of the robot identifier.

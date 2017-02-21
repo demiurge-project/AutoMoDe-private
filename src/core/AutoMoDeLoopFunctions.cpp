@@ -24,14 +24,15 @@ void AutoMoDeLoopFunctions::Init(argos::TConfigurationNode& t_tree) {
   } catch(std::exception e) {
     LOGERR << e.what() << std::endl;
   }
+
+  PositionRobots();
 }
 
 /****************************************/
 /****************************************/
 
 void AutoMoDeLoopFunctions::Reset() {
-  RemoveRobots();
-  PositionRobots();
+  MoveRobots();
 }
 
 /****************************************/
@@ -43,14 +44,9 @@ AutoMoDeLoopFunctions::~AutoMoDeLoopFunctions() {}
 /****************************************/
 
 void AutoMoDeLoopFunctions::PositionRobots() {
-  Real a;
-  Real b;
-  Real temp;
-
   CEPuckEntity* pcEpuck;
-  UInt32 unTrials;
   bool bPlaced = false;
-
+  UInt32 unTrials;
   for(UInt32 i = 1; i < m_unNumberRobots + 1; ++i) {
     std::ostringstream id;
     id << "epuck" << i;
@@ -63,25 +59,40 @@ void AutoMoDeLoopFunctions::PositionRobots() {
     unTrials = 0;
     do {
        ++unTrials;
-       a = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
-       b = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
-       // If b < a, swap them
-       if (b < a) {
-         temp = a;
-         a = b;
-         b = temp;
-       }
-       Real fPosX = b * m_fDistributionRadius * cos(2 * CRadians::PI.GetValue() * (a/b));
-       Real fPosY = b * m_fDistributionRadius * sin(2 * CRadians::PI.GetValue() * (a/b));
-       
+       CVector3 cEpuckPosition = GetRandomPosition();
        bPlaced = MoveEntity((*pcEpuck).GetEmbodiedEntity(),
-                            CVector3(fPosX, fPosY, 0),
+                            cEpuckPosition,
                             CQuaternion().FromEulerAngles(m_pcRng->Uniform(CRange<CRadians>(CRadians::ZERO,CRadians::TWO_PI)),
                             CRadians::ZERO,CRadians::ZERO),false);
-
     } while(!bPlaced && unTrials < 100);
     if(!bPlaced) {
-       THROW_ARGOSEXCEPTION("Can't place robot #" << i);
+       THROW_ARGOSEXCEPTION("Can't place robot");
+    }
+  }
+}
+
+/****************************************/
+/****************************************/
+
+void AutoMoDeLoopFunctions::MoveRobots() {
+  CEPuckEntity* pcEpuck;
+  bool bPlaced = false;
+  UInt32 unTrials;
+  CSpace::TMapPerType& tEpuckMap = GetSpace().GetEntitiesByType("epuck");
+  for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it) {
+    pcEpuck = any_cast<CEPuckEntity*>(it->second);
+    // Choose position at random
+    unTrials = 0;
+    do {
+       ++unTrials;
+       CVector3 cEpuckPosition = GetRandomPosition();
+       bPlaced = MoveEntity(pcEpuck->GetEmbodiedEntity(),
+                            cEpuckPosition,
+                            CQuaternion().FromEulerAngles(m_pcRng->Uniform(CRange<CRadians>(CRadians::ZERO,CRadians::TWO_PI)),
+                            CRadians::ZERO,CRadians::ZERO),false);
+    } while(!bPlaced && unTrials < 100);
+    if(!bPlaced) {
+       THROW_ARGOSEXCEPTION("Can't place robot");
     }
   }
 }

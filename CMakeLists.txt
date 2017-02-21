@@ -2,11 +2,11 @@
 # Set minimum required version
 #
 cmake_minimum_required(VERSION 2.8)
-#
+
 #
 # Set the path additional cmake files must be searched for
 #
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/src/cmake)
 
 #
 # Make sure we are under Unix
@@ -34,10 +34,17 @@ include(${CMAKE_SOURCE_DIR}/src/cmake/ARGoSBuildChecks.cmake)
 # Set up CPack for later use
 #
 include(${CMAKE_SOURCE_DIR}/src/cmake/ARGoSPackaging.cmake)
-#
-#
+
+
+include(${CMAKE_SOURCE_DIR}/src/cmake/FindPthreads.cmake)
+
+
 #
 # Compile stuff
 #
 add_subdirectory(src)
 add_subdirectory(loop-functions)
+
+if(ARGOS_BUILD_FOR_SIMULATOR)
+	add_subdirectory(loop-functions)
+endif(ARGOS_BUILD_FOR_SIMULATOR)

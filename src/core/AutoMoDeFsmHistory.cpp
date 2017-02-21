@@ -46,7 +46,7 @@ namespace argos {
 	/****************************************/
 	/****************************************/
 
-	void AutoMoDeFsmHistory::AddTimeStep(UInt8 un_time_step, AutoMoDeBehaviour* pc_current_state, std::map<AutoMoDeCondition*, bool> map_transition_status) {
+	void AutoMoDeFsmHistory::AddTimeStep(UInt32 un_time_step, AutoMoDeBehaviour* pc_current_state, std::map<AutoMoDeCondition*, bool> map_transition_status) {
 		std::stringstream ssInput;
 		ssInput << "--t " << un_time_step << " ";
 		ssInput << "--s" << pc_current_state->GetIndex() << " " << pc_current_state->GetIdentifier() << " ";
@@ -62,7 +62,7 @@ namespace argos {
 	/****************************************/
 	/****************************************/
 
-	void AutoMoDeFsmHistory::AddTimeStep(UInt8 un_time_step, AutoMoDeBehaviour* pc_current_state) {
+	void AutoMoDeFsmHistory::AddTimeStep(UInt32 un_time_step, AutoMoDeBehaviour* pc_current_state) {
 		std::stringstream ssInput;
 		ssInput << "--t " << un_time_step << " ";
 		ssInput << "--s" << pc_current_state->GetIndex() << " " << pc_current_state->GetIdentifier() << " ";

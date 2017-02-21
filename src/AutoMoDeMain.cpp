@@ -22,7 +22,6 @@
 
 using namespace argos;
 
-
 const std::string ExplainParameters() {
 	std::string strExplanation = "Missing finite state machine configuration. The possible parameters are: \n\n"
 		" -r | --readable-fsm \t Prints an URL containing a DOT representation of the finite state machine [OPTIONAL]. \n"
@@ -99,10 +98,6 @@ int main(int n_argc, char** ppch_argv) {
 
 				cSimulator.LoadExperiment();
 
-				AutoMoDeLoopFunctions& cLoopFunctions = dynamic_cast<AutoMoDeLoopFunctions&> (cSimulator.GetLoopFunctions());
-
-				cLoopFunctions.PositionRobots();
-
 				// Duplicate the finite state machine and pass it to all robots.
 				CSpace::TMapPerType cEntities = cSimulator.GetSpace().GetEntitiesByType("controller");
 				for (CSpace::TMapPerType::iterator it = cEntities.begin(); it != cEntities.end(); ++it) {
@@ -121,7 +116,7 @@ int main(int n_argc, char** ppch_argv) {
 
 				// Retrieval of the score of the swarm driven by the Finite State Machine
 
-				//AutoMoDeLoopFunctions& cLoopFunctions = dynamic_cast<AutoMoDeLoopFunctions&> (cSimulator.GetLoopFunctions());
+				AutoMoDeLoopFunctions& cLoopFunctions = dynamic_cast<AutoMoDeLoopFunctions&> (cSimulator.GetLoopFunctions());
 				Real fObjectiveFunction = cLoopFunctions.GetObjectiveFunction();
 				std::cout << "Score " << fObjectiveFunction << std::endl;
 

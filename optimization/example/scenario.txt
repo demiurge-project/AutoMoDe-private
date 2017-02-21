@@ -8,10 +8,6 @@
 ## File that contains the description of the parameters.
 parameterFile = "./gianduja_grammar.txt"
 
-## File that contains logical expressions of parameters value that
-## valid configurations should not satisfy.
-forbiddenFile = "./forbidden_config.txt"
-
 ## Directory where the programs will be run.
 execDir = "./execution-folder"
 

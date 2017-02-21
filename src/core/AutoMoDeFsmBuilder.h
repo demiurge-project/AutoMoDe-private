@@ -66,9 +66,16 @@ namespace argos {
 			void HandleTransition(std::vector<std::string>& vec_fsm_transition_config,
 									const UInt32& un_initial_state_index, const UInt32& un_condition_index);
 
+			/**
+			 * Creates a list containing the indexes of the behaviours reachable from a given state.
+			 * Added for compatibility with irace interdependent parameters. 
+			 */
+			const std::vector<UInt32> GetPossibleDestinationBehaviour(const UInt32& un_initial_state_index);
+
 			UInt32 m_unNumberStates;
 
 			AutoMoDeFiniteStateMachine* cFiniteStateMachine;
+
 	};
 }
 

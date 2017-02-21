@@ -168,11 +168,13 @@ namespace argos {
 
 		std::stringstream ss;
 		ss << "--n" << un_initial_state_index << "x" << un_condition_index;
+		std::vector<UInt32> vecPossibleDestinationIndex = GetPossibleDestinationBehaviour(un_initial_state_index);
 		std::vector<std::string>::iterator it;
 		it = std::find(vec_fsm_transition_config.begin(), vec_fsm_transition_config.end(), ss.str());
 
 		// TODO: Check here whether unToBehaviour is smaller than the total number of states.
-		UInt8 unToBehaviour = atoi((*(it+1)).c_str());
+		UInt32 unIndexBehaviour = atoi((*(it+1)).c_str());
+		UInt32 unToBehaviour = vecPossibleDestinationIndex.at(unIndexBehaviour);
 		if (unToBehaviour < m_unNumberStates) {
 			ss.str(std::string());
 			ss << "--c" << un_initial_state_index << "x" << un_condition_index;
@@ -228,6 +230,19 @@ namespace argos {
 			cNewCondition->Init();
 			cFiniteStateMachine->AddCondition(cNewCondition);
 		}
+	}
+
+	/****************************************/
+	/****************************************/
+
+	const std::vector<UInt32> AutoMoDeFsmBuilder::GetPossibleDestinationBehaviour(const UInt32& un_initial_state_index) {
+		std::vector<UInt32> vecPossibleDestinationIndex;
+		for (UInt32 i = 0; i < m_unNumberStates; i++) {
+			if (i != un_initial_state_index) {
+				vecPossibleDestinationIndex.push_back(i);
+			}
+		}
+		return vecPossibleDestinationIndex;
 	}
 
 }

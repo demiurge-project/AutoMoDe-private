@@ -8,3 +8,5 @@ add_library(gianduja_nesting_hide_loopfunc SHARED GiandujaNestingHideLoopFunc.h 
 add_library(gianduja_nesting_loopfunc2 SHARED GiandujaNestingLoopFunc.h GiandujaNestingLoopFunc2.cpp)
 add_library(gianduja_stop_loopfunc SHARED GiandujaStopLoopFunc.h GiandujaStopLoopFunc.cpp)
 add_subdirectory(example)
+add_subdirectory(chocolate)
+
