@@ -12,6 +12,9 @@ parameterFile = "./grammar_no_gian.txt"
 ## valid configurations should not satisfy.
 #forbiddenFile = "./forbidden_config.txt"
 
+#File that contains the options for parameter dependencies
+dependencyFile = "./depend_config.txt"
+
 ## Directory where the programs will be run.
 execDir = "./exec2"
 

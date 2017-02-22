@@ -29,7 +29,7 @@ function write_connection() {
   STATE=$1
   CONNECTION=$2
   create_range STATE
-  echo "N${STATE}x$CONNECTION  \"--n${STATE}x$CONNECTION \" c   ${RANGE} | as.numeric(NumConnections$STATE)>$CONNECTION " >> ${TXT_FILE}
+  echo "N${STATE}x$CONNECTION  \"--n${STATE}x$CONNECTION \" i   (0,3) | as.numeric(NumConnections$STATE)>$CONNECTION " >> ${TXT_FILE}
   echo "C${STATE}x$CONNECTION  \"--c${STATE}x$CONNECTION \" c   (0,1,2,3,4,5,6,7) | as.numeric(NumConnections$STATE)>$CONNECTION " >> ${TXT_FILE}
   echo "P${STATE}x$CONNECTION  \"--p${STATE}x$CONNECTION \" r   (0,1) | as.numeric(C${STATE}x$CONNECTION) %in% c(0,1,2,5) " >> ${TXT_FILE}
   echo "B${STATE}x$CONNECTION  \"--p${STATE}x$CONNECTION \" i   (1,10) | as.numeric(C${STATE}x$CONNECTION) %in% c(3,7) " >> ${TXT_FILE}
