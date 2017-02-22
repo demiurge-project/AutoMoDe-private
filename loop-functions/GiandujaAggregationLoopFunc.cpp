@@ -35,7 +35,7 @@ void GiandujaAggregationLoopFunction::Reset() {
 }
 
 
-void GiandujaAggregationLoopFunction::Init() {
+void GiandujaAggregationLoopFunction::Init(TConfigurationNode& t_tree) {
     AutoMoDeLoopFunctions::Init(t_tree);
     PlaceLight();
 }

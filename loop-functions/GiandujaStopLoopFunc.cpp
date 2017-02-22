@@ -94,7 +94,7 @@ CVector3 GiandujaStopLoopFunction::GetRandomPosition() {
     Real fPosX = m_CCoordRect2Pos.GetX() + a*fabs(m_CCoordRect2Pos.GetX() - m_CCoordRect1Pos.GetX());
     Real fPosY = m_CCoordRect2Pos.GetY() + b*fabs(m_CCoordRect2Pos.GetY() - m_CCoordRect1Pos.GetY());
 
-    CVector3(fPosX, fPosY, 0);
+    return CVector3(fPosX, fPosY, 0);
 }
 //   CSpace::TMapPerType& tEpuckMap = GetSpace().GetEntitiesByType("epuck");
 // /* Go through them */

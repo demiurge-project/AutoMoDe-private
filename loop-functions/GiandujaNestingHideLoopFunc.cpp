@@ -61,6 +61,7 @@ void GiandujaNestingHideLoopFunction::Reset() {
     m_unTime = 0;
     m_unStart = 0;
     SetTrigger();
+    CBoxEntity& cBox = dynamic_cast<CBoxEntity&>(GetSpace().GetEntity("box0"));
     MoveEntity((cBox).GetEmbodiedEntity(),CVector3(m_cCoordSpot1.GetX(), m_cCoordSpot1.GetY(), 0),CQuaternion().FromEulerAngles(CRadians::ZERO,CRadians::ZERO,CRadians::ZERO));
 }
 

@@ -45,6 +45,7 @@ class GiandujaNestingHideLoopFunction: public AutoMoDeLoopFunctions {
     UInt32 m_unCostI;
     UInt32 m_unCostO;
     Real m_fObjectiveFunction;
+    //CBoxEntity& cBox;
 };
 
 #endif
