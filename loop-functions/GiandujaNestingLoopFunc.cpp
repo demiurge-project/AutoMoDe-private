@@ -41,10 +41,24 @@ void GiandujaNestingLoopFunction::Destroy() {}
 /****************************************/
 /****************************************/
 
+void GiandujaNestingLoopFunction::Reset() {
+    AutoMoDeLoopFunctions::Reset();
+    m_unCostI = 0;
+    m_unCostO = 0;
+    m_unState = 0;
+    m_unTbar = 0;
+    m_fObjectiveFunction = 0;
+    Real a = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
+    Real b = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
+    m_cCoordSpot1 = CVector2(-0.7+a*1.4,0.6+b*0.4);
+}
+
+/****************************************/
+/****************************************/
 void GiandujaNestingLoopFunction::Init(TConfigurationNode& t_tree) {
     AutoMoDeLoopFunctions::Init(t_tree);
-    Real a =m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
-    Real b =m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
+    Real a = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
+    Real b = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
     m_cCoordSpot1 = CVector2(-0.7+a*1.4,0.6+b*0.4);
 
 }
@@ -73,43 +87,17 @@ argos::CColor GiandujaNestingLoopFunction::GetFloorColor(const argos::CVector2& 
 }
 
 
-void GiandujaNestingLoopFunction::PositionRobots() {
-  Real a;
-  Real b;
-  Real temp;
+CVector3 GiandujaNestingLoopFunction::GetRandomPosition() {
+    Real a;
+    Real b;
 
-  CEPuckEntity* pcEpuck;
-  UInt32 unTrials;
-  bool bPlaced = false;
+    a = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
+    b = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
 
-  for(UInt32 i = 1; i < m_unNumberRobots + 1; ++i) {
-    std::ostringstream id;
-    id << "epuck" << i;
-    pcEpuck = new CEPuckEntity(id.str().c_str(),
-                               "automode",
-                               CVector3(0,0,0),
-                               CQuaternion().FromEulerAngles(CRadians::ZERO,CRadians::ZERO,CRadians::ZERO));
-    AddEntity(*pcEpuck);
-    // Choose position at random
-    unTrials = 0;
-    do {
-       ++unTrials;
-       a = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
-       b = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
+    Real fPosX = m_CCoordRect2Pos.GetX() + a*fabs(m_CCoordRect2Pos.GetX() - m_CCoordRect1Pos.GetX());
+    Real fPosY = m_CCoordRect2Pos.GetY() + b*fabs(m_CCoordRect2Pos.GetY() - m_CCoordRect1Pos.GetY());
 
-       Real fPosX = m_CCoordRect2Pos.GetX() + a*fabs(m_CCoordRect2Pos.GetX() - m_CCoordRect1Pos.GetX());
-       Real fPosY = m_CCoordRect2Pos.GetY() + b*fabs(m_CCoordRect2Pos.GetY() - m_CCoordRect1Pos.GetY());
-
-       bPlaced = MoveEntity((*pcEpuck).GetEmbodiedEntity(),
-                            CVector3(fPosX, fPosY, 0),
-                            CQuaternion().FromEulerAngles(m_pcRng->Uniform(CRange<CRadians>(CRadians::ZERO,CRadians::TWO_PI)),
-                            CRadians::ZERO,CRadians::ZERO),false);
-
-    } while(!bPlaced && unTrials < 100);
-    if(!bPlaced) {
-       THROW_ARGOSEXCEPTION("Can't place robot #" << i);
-    }
-  }
+    return CVector3(fPosX, fPosY, 0);
 }
 
 /****************************************/

@@ -19,7 +19,9 @@ class GiandujaNestingLoopFunction: public AutoMoDeLoopFunctions {
     virtual void PostExperiment();
     virtual void PostStep();
     virtual void Init(TConfigurationNode& t_tree);
-    void PositionRobots();
+    virtual void Reset();
+
+    virtual CVector3 GetRandomPosition();
 
     Real GetObjectiveFunction();
   private:

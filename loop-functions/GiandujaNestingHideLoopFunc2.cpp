@@ -54,16 +54,38 @@ void GiandujaNestingHideLoopFunction::Destroy() {}
 /****************************************/
 /****************************************/
 
-void GiandujaNestingHideLoopFunction::Init(TConfigurationNode& t_tree) {
-    AutoMoDeLoopFunctions::Init(t_tree);
+void GiandujaNestingHideLoopFunction::Reset() {
+    AutoMoDeLoopFunctions::Reset();
+    m_unCostI = 0;
+    m_unCostO = 0;
+    m_unState = 0;
+    m_fObjectiveFunction = 0;
+    m_unTime = 0;
+    SetTrigger();
+    CBoxEntity& cBox = dynamic_cast<CBoxEntity&>(GetSpace().GetEntity("box0"));
+    MoveEntity((cBox).GetEmbodiedEntity(),CVector3(m_cCoordSpot1.GetX(), m_cCoordSpot1.GetY(), 0),CQuaternion().FromEulerAngles(CRadians::ZERO,CRadians::ZERO,CRadians::ZERO));
+}
+
+/****************************************/
+/****************************************/
+
+void GiandujaNestingHideLoopFunction::SetTrigger() {
+    m_unTBar = m_pcRng->Uniform(CRange<UInt32>(150, 1050));
+    m_unStart = m_pcRng->Uniform(CRange<UInt32>(0, 4));
     Real a = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
     Real b = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
     m_cCoordSpot1 = CVector2(-0.6+a*1.2,0.5+b*0.3);
-
     m_cCoordRectSpot = CVector2(-0.6+a*1.2,0.5+b*0.3);
-    m_unTBar = m_pcRng->Uniform(CRange<UInt32>(150, 1050));
-    m_unStart = m_pcRng->Uniform(CRange<UInt32>(0, 4));
+}
 
+/****************************************/
+/****************************************/
+
+void GiandujaNestingHideLoopFunction::Init(TConfigurationNode& t_tree) {
+    AutoMoDeLoopFunctions::Init(t_tree);
+
+    CBoxEntity& cBox = dynamic_cast<CBoxEntity&>(GetSpace().GetEntity("box0"));
+    MoveEntity((cBox).GetEmbodiedEntity(),CVector3(m_cCoordSpot1.GetX(), m_cCoordSpot1.GetY(), 0),CQuaternion().FromEulerAngles(CRadians::ZERO,CRadians::ZERO,CRadians::ZERO));
 }
 
 argos::CColor GiandujaNestingHideLoopFunction::GetFloorColor(const argos::CVector2& c_position_on_plane) {
@@ -85,46 +107,17 @@ argos::CColor GiandujaNestingHideLoopFunction::GetFloorColor(const argos::CVecto
 }
 
 
-void GiandujaNestingHideLoopFunction::PositionRobots() {
-  Real a;
-  Real b;
+CVector3 GiandujaNestingHideLoopFunction::GetRandomPosition() {
+    Real a;
+    Real b;
 
-  CEPuckEntity* pcEpuck;
-  UInt32 unTrials;
-  bool bPlaced = false;
+    a = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
+    b = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
 
-  CBoxEntity& cBox = dynamic_cast<CBoxEntity&>(GetSpace().GetEntity("box0"));
-  MoveEntity((cBox).GetEmbodiedEntity(),CVector3(m_cCoordSpot1.GetX(), m_cCoordSpot1.GetY(), 0),CQuaternion().FromEulerAngles(CRadians::ZERO,CRadians::ZERO,CRadians::ZERO));
+    Real fPosX = m_CCoordRect2Pos[m_unStart].GetX() + a*fabs(m_CCoordRect2Pos[m_unStart].GetX() - m_CCoordRect1Pos[m_unStart].GetX());
+    Real fPosY = m_CCoordRect2Pos[m_unStart].GetY() + b*fabs(m_CCoordRect2Pos[m_unStart].GetY() - m_CCoordRect1Pos[m_unStart].GetY());
 
-  for(UInt32 i = 1; i < m_unNumberRobots + 1; ++i) {
-    std::ostringstream id;
-    id << "epuck" << i;
-    pcEpuck = new CEPuckEntity(id.str().c_str(),
-                               "automode",
-                               CVector3(0,0,0),
-                               CQuaternion().FromEulerAngles(CRadians::ZERO,CRadians::ZERO,CRadians::ZERO));
-    AddEntity(*pcEpuck);
-    // Choose position at random
-    unTrials = 0;
-    do {
-       ++unTrials;
-       a = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
-       b = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
-
-       Real fPosX = m_CCoordRect2Pos[m_unStart].GetX() + a*fabs(m_CCoordRect2Pos[m_unStart].GetX() - m_CCoordRect1Pos[m_unStart].GetX());
-       Real fPosY = m_CCoordRect2Pos[m_unStart].GetY() + b*fabs(m_CCoordRect2Pos[m_unStart].GetY() - m_CCoordRect1Pos[m_unStart].GetY());
-
-       bPlaced = MoveEntity((*pcEpuck).GetEmbodiedEntity(),
-                            CVector3(fPosX, fPosY, 0),
-                            CQuaternion().FromEulerAngles(m_pcRng->Uniform(CRange<CRadians>(CRadians::ZERO,CRadians::TWO_PI)),
-                            CRadians::ZERO,CRadians::ZERO),false);
-
-    } while(!bPlaced && unTrials < 100);
-    if(!bPlaced) {
-       THROW_ARGOSEXCEPTION("Can't place robot #" << i);
-    }
-  }
-
+    return CVector3(fPosX, fPosY, 0);
 }
 
 /****************************************/
