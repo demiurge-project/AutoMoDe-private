@@ -16,14 +16,14 @@ parameterFile = "./gianduja_grammar2.txt"
 dependencyFile = "./depend_config.txt"
 
 ## Directory where the programs will be run.
-execDir = "./exec1"
+execDir = "./exec3"
 
 ## Directory where tuning instances are located, either absolute path or
 ## relative to current directory.
 trainInstancesDir = "./exST"
 
 #The maximum total budget for the runs of targetRunner
-maxExperiments = 50000
+maxExperiments = 100000
 
 ## Indicates the number of decimal places to be considered for the
 ## real parameters.

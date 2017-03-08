@@ -16,7 +16,7 @@ parameterFile = "./gianduja_grammar2.txt"
 dependencyFile = "./depend_config.txt"
 
 ## Directory where the programs will be run.
-execDir = "./exec1"
+execDir = "./exec2"
 
 ## Directory where tuning instances are located, either absolute path or
 ## relative to current directory.
