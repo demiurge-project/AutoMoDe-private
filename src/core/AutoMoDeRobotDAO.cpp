@@ -60,15 +60,30 @@ namespace argos {
 	/****************************************/
 	/****************************************/
 
-	CCI_EPuckGroundSensor::SReadings AutoMoDeRobotDAO::GetGroundInput() const{
-		return m_sGroundInput;
+	CCI_EPuckGroundSensor::SReadings AutoMoDeRobotDAO::GetGroundInput() {
+		std::deque<CCI_EPuckGroundSensor::SReadings>::iterator it;
+	 	float sum[3] = {0.0,0.0,0.0};
+		for (it = m_deqGroundInput.begin(); it != m_deqGroundInput.end(); it++) {
+			sum[0] += it->Left;
+			sum[1] += it->Center;
+			sum[2] += it->Right;
+		}
+		CCI_EPuckGroundSensor::SReadings readings;
+		readings.Left = sum[0]/5;
+		readings.Center = sum[1]/5;
+		readings.Right = sum[2]/5;
+		return readings;
 	}
 
 	/****************************************/
 	/****************************************/
 
 	void AutoMoDeRobotDAO::SetGroundInput(CCI_EPuckGroundSensor::SReadings s_ground_input) {
-		m_sGroundInput = s_ground_input;
+		m_deqGroundInput.push_back(s_ground_input);
+		if (m_deqGroundInput.size() > 5) {
+			m_deqGroundInput.pop_front();
+		}
+		//m_sGroundInput = s_ground_input;
 	}
 
 	/****************************************/

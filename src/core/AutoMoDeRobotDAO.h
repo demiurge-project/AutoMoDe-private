@@ -37,6 +37,7 @@
 #include <argos3/plugins/robots/e-puck/control_interface/ci_epuck_light_sensor.h>
 #include <argos3/plugins/robots/e-puck/control_interface/ci_epuck_ground_sensor.h>
 #include <argos3/plugins/robots/e-puck/control_interface/ci_epuck_omnidirectional_camera_sensor.h>
+#include <deque>
 
 #include "AutoMoDeRabBuffer.h"
 
@@ -76,7 +77,7 @@ namespace argos {
 			/*
 			 * Getter for the ground input.
 			 */
-			CCI_EPuckGroundSensor::SReadings GetGroundInput() const;
+			CCI_EPuckGroundSensor::SReadings GetGroundInput();
 
 			/*
 			 * Setter for the ground input.
@@ -177,7 +178,7 @@ namespace argos {
 			/*
 			 * The ground sensors input.
 			 */
-			CCI_EPuckGroundSensor::SReadings m_sGroundInput;
+			std::deque<CCI_EPuckGroundSensor::SReadings> m_deqGroundInput;
 
 			/*
 			 * The number of surrounding robots.

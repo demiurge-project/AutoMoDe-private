@@ -41,7 +41,7 @@
   /****************************************/
 
   void AutoMoDeConditionBlackFloor::Init() {
-    m_fGroundThreshold = 0.1;
+    m_fGroundThreshold = 0.05;
 	  std::map<std::string, Real>::iterator it = m_mapParameters.find("p");
     if (it != m_mapParameters.end()) {
       m_fProbability = it->second;
@@ -63,13 +63,13 @@
 
 	bool AutoMoDeConditionBlackFloor::Verify() {
 		CCI_EPuckGroundSensor::SReadings readings = m_pcRobotDAO->GetGroundInput();
-
-		if (readings.Left <= m_fGroundThreshold || readings.Center <= m_fGroundThreshold || readings.Right <= m_fGroundThreshold) {
-      return EvaluateBernoulliProbability(m_fProbability);
-    }
-    else {
-      return false;
-    }
+    	if ( (readings.Right <= m_fGroundThreshold && readings.Left <= m_fGroundThreshold) || (readings.Center <= m_fGroundThreshold && readings.Left <= m_fGroundThreshold)  || (readings.Right <= m_fGroundThreshold && readings.Center <= m_fGroundThreshold) ) {
+            LOG << "black floor" << " " << readings.Left << " " << readings.Center << " " << readings.Right << std::endl;
+            return EvaluateBernoulliProbability(m_fProbability);
+        }
+        else {
+          return false;
+        }
 	}
 
   /****************************************/
