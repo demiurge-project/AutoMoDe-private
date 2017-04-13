@@ -71,8 +71,8 @@ namespace argos {
 	CVector2 AutoMoDeBehaviour::ComputeWheelsVelocityFromVector(CVector2 c_vector_to_follow) {
 		Real fLeftVelocity = 0;
 		Real fRightVelocity = 0;
-		CRange<CRadians> cRightHemisphere(CRadians::ZERO, CRadians::PI);
-		CRange<CRadians> cLeftHemisphere(CRadians::PI, CRadians::TWO_PI);
+		CRange<CRadians> cLeftHemisphere(CRadians::ZERO, CRadians::PI);
+		CRange<CRadians> cRightHemisphere(CRadians::PI, CRadians::TWO_PI);
 		CRadians cNormalizedVectorToFollow = c_vector_to_follow.Angle().UnsignedNormalize();
 
 		// Compute relative wheel velocity
