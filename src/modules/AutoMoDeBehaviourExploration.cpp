@@ -87,9 +87,9 @@ namespace argos {
 					m_unTurnSteps = (m_pcRobotDAO->GetRandomNumberGenerator())->Uniform(m_cRandomStepsRange);
 					CRadians cAngle = SumProximityReadings(m_pcRobotDAO->GetProximityInput()).Angle().SignedNormalize();
 					if (cAngle.GetValue() < 0) {
-						m_eTurnDirection = RIGHT;
-					} else {
 						m_eTurnDirection = LEFT;
+					} else {
+						m_eTurnDirection = RIGHT;
 					}
 				}
 				break;
