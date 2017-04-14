@@ -4,7 +4,7 @@
 /****************************************/
 
 GiandujaStopLoopFunction::GiandujaStopLoopFunction() {
-  m_fRadius = 0.07;
+  m_fRadius = 0.10;
   m_cCoordSpot1 = CVector2(0.6,0.8);
   m_CCoordRect1Pos = CVector2(0.8,-0.5);
   //m_CCoordRect1 = CVector2(1.25,-0.5);
@@ -68,7 +68,7 @@ argos::CColor GiandujaStopLoopFunction::GetFloorColor(const argos::CVector2& c_p
   if (d <= m_fRadius) {
     return CColor::BLACK;
   }
-  if (d <= m_fRadius+0.015) {
+  if (d <= m_fRadius+0.02) {
     return CColor::GREEN;
   }
 
