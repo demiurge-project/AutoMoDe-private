@@ -27,18 +27,20 @@
 #include <argos3/plugins/robots/e-puck/control_interface/ci_epuck_ground_sensor.h>
 #include <argos3/plugins/robots/e-puck/control_interface/ci_epuck_omnidirectional_camera_sensor.h>
 
+#include "/home/aligot/Desktop/Arena/aligot-experiments/OEGenerator/TruncNormalDistr.h"
+
 namespace argos{
-	class AutoMoDeController: public CCI_Controller {
+	class AutoMoDeControllerPseudoReality: public CCI_Controller {
 		public:
 			/*
 			 * Class constructor.
 			 */
-			AutoMoDeController();
+			AutoMoDeControllerPseudoReality();
 
 			/*
 			 * Class desctructor.
 			 */
-			virtual ~AutoMoDeController();
+			virtual ~AutoMoDeControllerPseudoReality();
 
 			/*
 			 * Controller initializer.
@@ -66,6 +68,50 @@ namespace argos{
 			void SetFiniteStateMachine(AutoMoDeFiniteStateMachine* pc_fine_state_machine);
 
 		private:
+
+			/****** PSEUDO REALITY STUFF ******/
+
+			void LoadPseudoReality();
+			Real TransformationFunction(Real f_origin, UInt8 un_function, Real f_max, Real f_alpha);
+
+			std::string m_strPseudoRealityDescriptionFile;
+
+			bool m_bPseudoRealitySet;
+
+			// Pseudo reality description variables
+			Real m_fRangeDistributionPower;
+			Real m_fBearingTruncDistrMean;
+			Real m_fBearingTruncDistrSd;
+			Real m_fBearingTruncDistrLimit;
+			Real m_fLossProbaLowerBound;
+			Real m_fLossProbaUpperBound;
+			Real m_fWheelsDistributionPower;
+			Real m_fWheelsMaxAlpha;
+			Real m_fProxiDistributionPower;
+
+			// RaB range
+			Real m_fAlphaRabRange;
+			UInt8 m_unRabRangeTransfoFunction;
+
+			// RaB bearing
+			TruncNormalDistr m_cRabBearingTruncNormDist;
+
+			// RaB loss probability
+			Real m_fLossProbability;
+
+			// Wheels
+			UInt8 m_unLeftWheelTransfoFunction;
+			UInt8 m_unRightWheelTransfoFunction;
+			Real m_fAlphaWheels;
+
+			// Proxi
+			Real m_fAlphaProxi[8];
+			UInt8 m_unProxiTransfo[8];
+
+
+			/****** END ******/
+
+
 			/*
 			 * Pointer to the finite state machine object that represents the behaviour
 			 * of the robot.

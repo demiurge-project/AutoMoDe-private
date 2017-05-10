@@ -8,14 +8,14 @@
  * @license MIT License
  */
 
-#include "AutoMoDeController.h"
+#include "AutoMoDeControllerPseudoReality.h"
 
 namespace argos {
 
 	/****************************************/
 	/****************************************/
 
-	AutoMoDeController::AutoMoDeController() {
+	AutoMoDeControllerPseudoReality::AutoMoDeControllerPseudoReality() {
 		m_pcRobotState = new AutoMoDeRobotDAO();
 		m_unTimeStep = 0;
 		m_strFsmConfiguration = "";
@@ -23,12 +23,14 @@ namespace argos {
 		m_bPrintReadableFsm = false;
 		m_strHistoryFolder = "./";
 		m_bFiniteStateMachineGiven = false;
+		m_bPseudoRealitySet = false;
+		m_fLossProbability = 0.85;
 	}
 
 	/****************************************/
 	/****************************************/
 
-	AutoMoDeController::~AutoMoDeController() {
+	AutoMoDeControllerPseudoReality::~AutoMoDeControllerPseudoReality() {
 		delete m_pcRobotState;
 		delete m_pcFsmBuilder;
 	}
@@ -36,16 +38,19 @@ namespace argos {
 	/****************************************/
 	/****************************************/
 
-	void AutoMoDeController::Init(TConfigurationNode& t_node) {
+	void AutoMoDeControllerPseudoReality::Init(TConfigurationNode& t_node) {
 		// Parsing parameters
 		try {
 			GetNodeAttributeOrDefault(t_node, "fsm-config", m_strFsmConfiguration, m_strFsmConfiguration);
 			GetNodeAttributeOrDefault(t_node, "history", m_bMaintainHistory, m_bMaintainHistory);
 			GetNodeAttributeOrDefault(t_node, "hist-folder", m_strHistoryFolder, m_strHistoryFolder);
 			GetNodeAttributeOrDefault(t_node, "readable", m_bPrintReadableFsm, m_bPrintReadableFsm);
+			GetNodeAttributeOrDefault(t_node, "pseudo_reality_description", m_strPseudoRealityDescriptionFile, m_strPseudoRealityDescriptionFile);
 		} catch (CARGoSException& ex) {
 			THROW_ARGOSEXCEPTION_NESTED("Error parsing <params>", ex);
 		}
+
+		LoadPseudoReality();
 
 		m_unRobotID = atoi(GetId().substr(5, 6).c_str());
 		m_pcRobotState->SetRobotIdentifier(m_unRobotID);
@@ -107,7 +112,47 @@ namespace argos {
 	/****************************************/
 	/****************************************/
 
-	void AutoMoDeController::ControlStep() {
+	void AutoMoDeControllerPseudoReality::ControlStep() {
+		if (!m_bPseudoRealitySet) {
+			Real fRandomFactor = m_pcRobotState->GetRandomNumberGenerator()->Uniform(CRange<Real>(0, 1.0));
+
+			//Range and Bearing range
+	    m_unRabRangeTransfoFunction = m_pcRobotState->GetRandomNumberGenerator()->Bernoulli(0.5);
+	    if (m_fRangeDistributionPower != 0)
+	      m_fAlphaRabRange = pow(fRandomFactor, m_fRangeDistributionPower);
+	    else
+	      m_fAlphaRabRange = 0;
+	    LOG << " rab range " << m_fAlphaRabRange << std::endl;
+
+			//Range and Bearing bearing
+	    m_cRabBearingTruncNormDist = TruncNormalDistr(m_fBearingTruncDistrMean, m_fBearingTruncDistrSd, -m_fBearingTruncDistrLimit, m_fBearingTruncDistrLimit);
+
+			// Range and Bearing loss probability
+	    Real fLoosProbabilityIncrement = m_pcRobotState->GetRandomNumberGenerator()->Uniform(CRange<Real>(m_fLossProbaLowerBound, m_fLossProbaUpperBound));
+	    m_fLossProbability = m_fLossProbability + fLoosProbabilityIncrement;
+	    LOG << " loss proba " << m_fLossProbability << std::endl;
+
+			// Wheels transformation
+			m_unLeftWheelTransfoFunction = m_pcRobotState->GetRandomNumberGenerator()->Bernoulli(0.5);
+			m_unRightWheelTransfoFunction = m_pcRobotState->GetRandomNumberGenerator()->Bernoulli(0.5);
+
+			m_fAlphaWheels = pow(fRandomFactor, m_fWheelsDistributionPower);
+			m_fAlphaWheels = m_fAlphaWheels * m_fWheelsMaxAlpha;
+			LOG << " wheels " << m_fAlphaWheels << std::endl;
+
+			LOG << " prox ";
+			for(size_t i=0; i<8; i++) {
+				m_unProxiTransfo[i] = m_pcRobotState->GetRandomNumberGenerator()->Bernoulli(0.5);
+				if (m_fProxiDistributionPower != 0)
+					m_fAlphaProxi[i] = pow(m_pcRobotState->GetRandomNumberGenerator()->Uniform(CRange<Real>(0,1.0)), m_fProxiDistributionPower);
+				else
+					m_fAlphaProxi[i] = 0;
+				LOG << m_fAlphaProxi[i] << " ";
+			}
+			LOG << std::endl;
+
+			m_bPseudoRealitySet = true;
+		}
 		/*
 		 * 1. Update RobotDAO
 		 */
@@ -154,12 +199,12 @@ namespace argos {
 	/****************************************/
 	/****************************************/
 
-	void AutoMoDeController::Destroy() {}
+	void AutoMoDeControllerPseudoReality::Destroy() {}
 
 	/****************************************/
 	/****************************************/
 
-	void AutoMoDeController::Reset() {
+	void AutoMoDeControllerPseudoReality::Reset() {
 		m_pcFiniteStateMachine->Reset();
 		m_pcRobotState->Reset();
 	}
@@ -167,12 +212,68 @@ namespace argos {
 	/****************************************/
 	/****************************************/
 
-	void AutoMoDeController::SetFiniteStateMachine(AutoMoDeFiniteStateMachine* pc_finite_state_machine) {
+	void AutoMoDeControllerPseudoReality::SetFiniteStateMachine(AutoMoDeFiniteStateMachine* pc_finite_state_machine) {
 		m_pcFiniteStateMachine = pc_finite_state_machine;
 		m_pcFiniteStateMachine->SetRobotDAO(m_pcRobotState);
 		m_pcFiniteStateMachine->Init();
 		m_bFiniteStateMachineGiven = true;
 	}
 
-	REGISTER_CONTROLLER(AutoMoDeController, "automode_controller");
+	/****************************************/
+	/****************************************/
+
+	void AutoMoDeControllerPseudoReality::LoadPseudoReality() {
+	  std::ifstream iFile(m_strPseudoRealityDescriptionFile.c_str(),std::ios::in);
+	  std::string strParameter;
+		if (iFile.good()) {
+		  while (std::getline(iFile, strParameter)) {
+		    std::vector<std::string> vecTokens;
+		    std::istringstream iss(strParameter);
+		    std::string token;
+		    while(std::getline(iss, token, ' '))   // but we can specify a different one
+		      vecTokens.push_back(token);
+
+		    // Parsing parameters
+		    if (vecTokens.at(0).compare("--rangeDistributionPower") == 0) {
+		      m_fRangeDistributionPower = strtof(vecTokens.at(1).c_str(), 0);
+		    } else if (vecTokens.at(0).compare("--bearingTruncDistrMean") == 0) {
+		      m_fBearingTruncDistrMean = strtof(vecTokens.at(1).c_str(), 0);
+		    } else if (vecTokens.at(0).compare("--bearingTruncDistrSd") == 0) {
+		      m_fBearingTruncDistrSd = strtof(vecTokens.at(1).c_str(), 0);
+		    } else if (vecTokens.at(0).compare("--bearingTruncDistrLimit") == 0) {
+		      m_fBearingTruncDistrLimit = strtof(vecTokens.at(1).c_str(), 0);
+		    } else if (vecTokens.at(0).compare("--lossProbaLowerBound") == 0) {
+		      m_fLossProbaLowerBound = strtof(vecTokens.at(1).c_str(), 0);
+		    } else if (vecTokens.at(0).compare("--lossProbaUpperBound") == 0) {
+		      m_fLossProbaUpperBound = strtof(vecTokens.at(1).c_str(), 0);
+		    } else if (vecTokens.at(0).compare("--wheelsDistributionPower") == 0) {
+		      m_fWheelsDistributionPower = strtof(vecTokens.at(1).c_str(), 0);
+		    } else if (vecTokens.at(0).compare("--wheelsMaxAlpha") == 0) {
+		      m_fWheelsMaxAlpha = strtof(vecTokens.at(1).c_str(), 0);
+		    } else if (vecTokens.at(0).compare("--proxiDistributionPower") == 0) {
+		      m_fProxiDistributionPower = strtof(vecTokens.at(1).c_str(), 0);
+		    } else {
+		      THROW_ARGOSEXCEPTION("Cannot parse pseudo reality parameter '" << vecTokens.at(0) << "'");
+		    }
+			}
+		} else {
+			THROW_ARGOSEXCEPTION("Cannot open pseudo reality description file '" << m_strPseudoRealityDescriptionFile << "'");
+		}
+	}
+
+ /****************************************/
+ /****************************************/
+
+ Real AutoMoDeControllerPseudoReality::TransformationFunction(Real f_origin, UInt8 un_function, Real f_max, Real f_alpha) {
+	  Real fNew;
+	  if (un_function == 0 || f_alpha == 0.0f) {
+	    fNew =  ( ((1 - f_alpha) * (f_origin / f_max)) + ( f_alpha * (pow((f_origin/f_max),2)) ) ) * f_max;
+	  }
+	  else {
+	    fNew =  ( ( -(1 - f_alpha) + sqrt( pow(1 - f_alpha, 2) + (4 * f_alpha * (f_origin/f_max))  ) ) / (2 * f_alpha) ) * f_max;
+	  }
+	  return Max(0.0, fNew);
+	}
+
+	REGISTER_CONTROLLER(AutoMoDeControllerPseudoReality, "automode_controller_pseudo_reality");
 }
