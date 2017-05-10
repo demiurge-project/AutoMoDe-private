@@ -67,6 +67,10 @@ namespace argos{
 			 */
 			void SetFiniteStateMachine(AutoMoDeFiniteStateMachine* pc_fine_state_machine);
 
+			void SetPseudoReality(std::string str_pseudo_reality_file) {
+				m_strPseudoRealityDescriptionFile = str_pseudo_reality_file;
+			};
+
 		private:
 
 			/****** PSEUDO REALITY STUFF ******/
@@ -78,7 +82,7 @@ namespace argos{
 
 			bool m_bPseudoRealitySet;
 
-			// No control over this RNG. 
+			// No control over this RNG.
 			CRandom::CRNG* m_pcRngRandom;
 
 			// Pseudo reality description variables

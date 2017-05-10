@@ -66,3 +66,6 @@ target_link_libraries(automode_pseudo_reality argos3plugin_${ARGOS_BUILD_FOR}_ep
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 add_executable(automode_main AutoMoDeMain.cpp)
 target_link_libraries(automode_main automode argos3core_${ARGOS_BUILD_FOR} argos3plugin_${ARGOS_BUILD_FOR}_epuck)
+
+add_executable(automode_launch_pseudo_reality AutoMoDeMainPseudoReality.cpp)
+target_link_libraries(automode_launch_pseudo_reality automode_pseudo_reality argos3core_${ARGOS_BUILD_FOR} argos3plugin_${ARGOS_BUILD_FOR}_epuck)
