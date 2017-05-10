@@ -35,7 +35,7 @@
 		    <epuck_ground implementation="rot_z_only" noise_level="0.05" calibrated="true"/>
 		    <epuck_omnidirectional_camera implementation="rot_z_only" medium="leds" show_rays="false"/>
       </sensors>
-    <params readable="true" fsm-config="--nstates 2 --s0 4 --att0 5 --n0 1 --n0x0 0 --c0x0 0 --p0x0 1.0 --s1 1 --n1 2 --n1x0 0 --c1x0 5 --p1x0 0.25 --n1x1 0 --c1x1 1 --p1x1 1"/>
+    <params readable="true" fsm-config="--nstates 2 --s0 4 --att0 5 --n0 1 --n0x0 0 --c0x0 2 --p0x0 0,5 --s1 0 --rwm1 20"/>
     </automode_controller>
   </controllers>
 
@@ -51,7 +51,7 @@
   <!-- Please note that this light has an intensity equal to 0 -->
   <!-- and therefore does not affect the experiment. -->
   <!-- ARGoS requires at least one light when using the light sensor -->
-	<light id="light" position="0,-5,0.4" orientation="0,0,0" color="yellow" intensity="0.0" medium="leds"/>
+	<light id="light" position="0,-1.5,0.4" orientation="0,0,0" color="yellow" intensity="5.0" medium="leds"/>
 
   <!--Dodecagonal arena with side of length .66-->
   <box id="wall_1" size="0.01,.66,0.08" movable="false">
@@ -90,6 +90,25 @@
   <box id="wall_12" size="0.01,.66,0.08" movable="false">
     <body position="1.066,-.615,0" orientation="-30,0,0"/>
   </box>
+
+  <!-- ********** -->
+  <!-- * E-Puck * -->
+  <!-- ********** -->
+
+  <tams java_class_path="/home/aligot/Desktop/Arena/argos3-TAM/coordinator/bin/"
+        experiment_class="be/ac/ulb/iridia/tam/user/experiments/ARGoSExperiment"
+        rab_medium="rab"
+        led_medium="leds">
+    <tam id="TAM00" show_rays="true" medium="rab">
+      <body position="0,0,0" orientation="-90,0,0" />
+    </tam>
+    <tam id="TAM01" show_rays="true" medium="rab">
+      <body position="0.5,0,0" orientation="0,0,0" />
+    </tam>
+    <tam id="TAM02" show_rays="true" medium="rab">
+      <body position="0,0.5,0" orientation="90,0,0" />
+    </tam>
+  </tams>
 
   <!-- ********** -->
   <!-- * E-Puck * -->
