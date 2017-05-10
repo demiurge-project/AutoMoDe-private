@@ -78,6 +78,9 @@ namespace argos{
 
 			bool m_bPseudoRealitySet;
 
+			// No control over this RNG. 
+			CRandom::CRNG* m_pcRngRandom;
+
 			// Pseudo reality description variables
 			Real m_fRangeDistributionPower;
 			Real m_fBearingTruncDistrMean;

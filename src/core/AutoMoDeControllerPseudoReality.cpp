@@ -25,6 +25,11 @@ namespace argos {
 		m_bFiniteStateMachineGiven = false;
 		m_bPseudoRealitySet = false;
 		m_fLossProbability = 0.85;
+		/* Intializes random number generator */
+		time_t t;
+    srand((unsigned) time(&t));
+    argos::CRandom::CreateCategory("random", rand());
+    m_pcRngRandom = argos::CRandom::CreateRNG("random");
 	}
 
 	/****************************************/
@@ -113,6 +118,9 @@ namespace argos {
 	/****************************************/
 
 	void AutoMoDeControllerPseudoReality::ControlStep() {
+		/*
+		 * Setting up the pseudo reality.
+		 */
 		if (!m_bPseudoRealitySet) {
 			Real fRandomFactor = m_pcRobotState->GetRandomNumberGenerator()->Uniform(CRange<Real>(0, 1.0));
 
@@ -153,13 +161,29 @@ namespace argos {
 
 			m_bPseudoRealitySet = true;
 		}
+
+
 		/*
 		 * 1. Update RobotDAO
 		 */
 		if(m_pcRabSensor != NULL){
 			const CCI_EPuckRangeAndBearingSensor::TPackets& packets = m_pcRabSensor->GetPackets();
-			//m_pcRobotState->SetNumberNeighbors(packets.size());
-			m_pcRobotState->SetRangeAndBearingMessages(packets);
+			CCI_EPuckRangeAndBearingSensor::TPackets newPackets = m_pcRabSensor->GetPackets();
+			Real fRandNumber;
+			UInt32 i = 0;
+			while (i < newPackets.size()) {
+				if (packets[i]->Data[0] != m_unRobotID) {
+					fRandNumber = m_pcRngRandom->Uniform(CRange<Real>(0,1.0));
+					if (fRandNumber >= m_fLossProbability) {
+						newPackets[i]->Range = TransformationFunction(packets[i]->Range, m_unRabRangeTransfoFunction, 100, m_fAlphaRabRange);
+						newPackets[i]->Bearing = packets[i]->Bearing + CRadians((m_cRabBearingTruncNormDist()*3.1415)/180);
+						i++;
+					} else {
+						newPackets.erase(newPackets.begin() + i);
+					}
+				}
+			}
+			m_pcRobotState->SetRangeAndBearingMessages(newPackets);
 		}
 		if (m_pcGroundSensor != NULL) {
 			const CCI_EPuckGroundSensor::SReadings& readings = m_pcGroundSensor->GetReadings();
@@ -171,6 +195,10 @@ namespace argos {
 		}
 		if (m_pcProximitySensor != NULL) {
 			const CCI_EPuckProximitySensor::TReadings& readings = m_pcProximitySensor->GetReadings();
+			CCI_EPuckProximitySensor::TReadings newReadings = m_pcProximitySensor->GetReadings();
+			for (size_t i=0; i<8; i++) {
+				newReadings[i].Value = TransformationFunction(readings[i].Value, m_unProxiTransfo[i], 1, m_fAlphaProxi[i]);
+			}
 			m_pcRobotState->SetProximityInput(readings);
 		}
 
@@ -183,7 +211,16 @@ namespace argos {
 		 * 3. Update Actuators
 		 */
 		if (m_pcWheelsActuator != NULL) {
-			m_pcWheelsActuator->SetLinearVelocity(m_pcRobotState->GetLeftWheelVelocity(),m_pcRobotState->GetRightWheelVelocity());
+			SInt8 signLeft = 1, signRight = 1;
+			Real fLeftWheelSpeed = m_pcRobotState->GetLeftWheelVelocity();
+			Real fRightWheelSpeed = m_pcRobotState->GetRightWheelVelocity();
+      if (fLeftWheelSpeed < 0.0) {
+        signLeft = -1;
+      }
+      if (fRightWheelSpeed < 0.0) {
+        signRight = -1;
+      }
+			m_pcWheelsActuator->SetLinearVelocity(signLeft * TransformationFunction(abs(fLeftWheelSpeed), m_unLeftWheelTransfoFunction, 16, m_fAlphaWheels), signRight * TransformationFunction(abs(fRightWheelSpeed), m_unRightWheelTransfoFunction, 16, m_fAlphaWheels));
 		}
 
 		/*
