@@ -17,7 +17,7 @@
 
 #include "./core/AutoMoDeFiniteStateMachine.h"
 #include "./core/AutoMoDeFsmBuilder.h"
-#include "./core/AutoMoDeLoopFunctions.h"
+#include "./core/AutoMoDeLoopFunctionsPseudoReality.h"
 #include "./core/AutoMoDeControllerPseudoReality.h"
 
 using namespace argos;
@@ -71,7 +71,7 @@ int main(int n_argc, char** ppch_argv) {
 		// Configure the command line options
 		CARGoSCommandLineArgParser cACLAP;
 		cACLAP.AddFlag('r', "readable-fsm", "", bReadableFSM);
-		cACLAP.AddArgument<std::string>('pr', "pseudo-reality", "pseudo reality description file", strPseudoRealityDescription);
+		cACLAP.AddArgument<std::string>('p', "pseudo-reality", "pseudo reality description file", strPseudoRealityDescription);
 		cACLAP.AddArgument<UInt32>('s', "seed", "", unSeed);
 
 		// Parse command line without taking the configuration of the FSM into account
@@ -97,7 +97,7 @@ int main(int n_argc, char** ppch_argv) {
 
 				// Setting random seed. Only works with modified version of ARGoS3.
 				cSimulator.SetRandomSeed(unSeed);
-
+				std::cout << "USING SEED " << unSeed << std::endl;
 				cSimulator.LoadExperiment();
 
 				// Duplicate the finite state machine and pass it to all robots.
@@ -119,10 +119,9 @@ int main(int n_argc, char** ppch_argv) {
 
 				// Retrieval of the score of the swarm driven by the Finite State Machine
 
-				AutoMoDeLoopFunctions& cLoopFunctions = dynamic_cast<AutoMoDeLoopFunctions&> (cSimulator.GetLoopFunctions());
+				AutoMoDeLoopFunctionsPseudoReality& cLoopFunctions = dynamic_cast<AutoMoDeLoopFunctionsPseudoReality&> (cSimulator.GetLoopFunctions());
 				Real fObjectiveFunction = cLoopFunctions.GetObjectiveFunction();
 				std::cout << "Score " << fObjectiveFunction << std::endl;
-
 				break;
 			}
 
