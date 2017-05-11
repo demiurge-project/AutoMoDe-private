@@ -17,7 +17,7 @@
 
 #include "./core/AutoMoDeFiniteStateMachine.h"
 #include "./core/AutoMoDeFsmBuilder.h"
-#include "./core/AutoMoDeLoopFunctionsPseudoReality.h"
+#include "./core/AutoMoDeLoopFunctions.h"
 #include "./core/AutoMoDeControllerPseudoReality.h"
 
 using namespace argos;
@@ -119,7 +119,7 @@ int main(int n_argc, char** ppch_argv) {
 
 				// Retrieval of the score of the swarm driven by the Finite State Machine
 
-				AutoMoDeLoopFunctionsPseudoReality& cLoopFunctions = dynamic_cast<AutoMoDeLoopFunctionsPseudoReality&> (cSimulator.GetLoopFunctions());
+				AutoMoDeLoopFunctions& cLoopFunctions = dynamic_cast<AutoMoDeLoopFunctions&> (cSimulator.GetLoopFunctions());
 				Real fObjectiveFunction = cLoopFunctions.GetObjectiveFunction();
 				std::cout << "Score " << fObjectiveFunction << std::endl;
 				break;

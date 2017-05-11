@@ -37,7 +37,7 @@ set(AUTOMODE_HEADERS_PSEUDO_REALITY
 	core/AutoMoDeFsmBuilder.h
 	core/AutoMoDeFsmHistory.h
 	core/AutoMoDeRobotDAO.h
-	core/AutoMoDeLoopFunctionsPseudoReality.h
+	core/AutoMoDeLoopFunctions.h
 	# Behaviours
 	modules/AutoMoDeBehaviour.h
 	modules/AutoMoDeBehaviourAntiPhototaxis.h
@@ -88,7 +88,7 @@ set(AUTOMODE_SOURCES_PSEUDO_REALITY
 	core/AutoMoDeFsmBuilder.cpp
 	core/AutoMoDeRobotDAO.cpp
 	core/AutoMoDeFsmHistory.cpp
-	core/AutoMoDeLoopFunctionsPseudoReality.cpp
+	core/AutoMoDeLoopFunctions.cpp
 	# Behaviours
 	modules/AutoMoDeBehaviour.cpp
 	modules/AutoMoDeBehaviourAntiPhototaxis.cpp

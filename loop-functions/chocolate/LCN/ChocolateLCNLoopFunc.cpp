@@ -61,6 +61,9 @@ void ChocolateLCNLoopFunction::PostExperiment() {
 /****************************************/
 
 Real ChocolateLCNLoopFunction::GetObjectiveFunction() {
+  for (UInt8 i = 0; i < 1; i++) {
+    std::cout << m_pcRng->Uniform(CRange<UInt32>(0,100)) << std::endl;;
+  }
   return m_fObjectiveFunction;
 }
 

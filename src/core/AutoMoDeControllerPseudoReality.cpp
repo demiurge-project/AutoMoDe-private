@@ -27,7 +27,7 @@ namespace argos {
 		m_fLossProbability = 0.85;
 		/* Intializes random number generator */
 		time_t t;
-    srand((unsigned) time(&t));
+    //srand((unsigned) time(&t));
     //argos::CRandom::CreateCategory("random", rand());
     //m_pcRngRandom = argos::CRandom::CreateRNG("random");
 	}
@@ -121,69 +121,68 @@ namespace argos {
 		/*
 		 * Setting up the pseudo reality.
 		 */
-		// if (!m_bPseudoRealitySet) {
-		// 	Real fRandomFactor = m_pcRobotState->GetRandomNumberGenerator()->Uniform(CRange<Real>(0, 1.0));
-		//
-		// 	//Range and Bearing range
-	  //   m_unRabRangeTransfoFunction = m_pcRobotState->GetRandomNumberGenerator()->Bernoulli(0.5);
-	  //   if (m_fRangeDistributionPower != 0)
-	  //     m_fAlphaRabRange = pow(fRandomFactor, m_fRangeDistributionPower);
-	  //   else
-	  //     m_fAlphaRabRange = 0;
-	  //   LOG << " rab range " << m_fAlphaRabRange << std::endl;
-		//
-		// 	//Range and Bearing bearing
-	  //   m_cRabBearingTruncNormDist = TruncNormalDistr(m_fBearingTruncDistrMean, m_fBearingTruncDistrSd, -m_fBearingTruncDistrLimit, m_fBearingTruncDistrLimit);
-		//
-		// 	// Range and Bearing loss probability
-	  //   Real fLoosProbabilityIncrement = m_pcRobotState->GetRandomNumberGenerator()->Uniform(CRange<Real>(m_fLossProbaLowerBound, m_fLossProbaUpperBound));
-	  //   m_fLossProbability = m_fLossProbability + fLoosProbabilityIncrement;
-	  //   LOG << " loss proba " << m_fLossProbability << std::endl;
-		//
-		// 	// Wheels transformation
-		// 	m_unLeftWheelTransfoFunction = m_pcRobotState->GetRandomNumberGenerator()->Bernoulli(0.5);
-		// 	m_unRightWheelTransfoFunction = m_pcRobotState->GetRandomNumberGenerator()->Bernoulli(0.5);
-		//
-		// 	m_fAlphaWheels = pow(fRandomFactor, m_fWheelsDistributionPower);
-		// 	m_fAlphaWheels = m_fAlphaWheels * m_fWheelsMaxAlpha;
-		// 	LOG << " wheels " << m_fAlphaWheels << std::endl;
-		//
-		// 	LOG << " prox ";
-		// 	for(size_t i=0; i<8; i++) {
-		// 		m_unProxiTransfo[i] = m_pcRobotState->GetRandomNumberGenerator()->Bernoulli(0.5);
-		// 		if (m_fProxiDistributionPower != 0)
-		// 			m_fAlphaProxi[i] = pow(m_pcRobotState->GetRandomNumberGenerator()->Uniform(CRange<Real>(0,1.0)), m_fProxiDistributionPower);
-		// 		else
-		// 			m_fAlphaProxi[i] = 0;
-		// 		LOG << m_fAlphaProxi[i] << " ";
-		// 	}
-		// 	LOG << std::endl;
-		//
-		// 	m_bPseudoRealitySet = true;
-		// }
+		if (!m_bPseudoRealitySet) {
+			Real fRandomFactor = m_pcRobotState->GetRandomNumberGenerator()->Uniform(CRange<Real>(0, 1.0));
 
+			//Range and Bearing range
+	    m_unRabRangeTransfoFunction = m_pcRobotState->GetRandomNumberGenerator()->Bernoulli(0.5);
+	    if (m_fRangeDistributionPower != 0)
+	      m_fAlphaRabRange = pow(fRandomFactor, m_fRangeDistributionPower);
+	    else
+	      m_fAlphaRabRange = 0;
+	    LOG << " rab range " << m_fAlphaRabRange << std::endl;
+
+			//Range and Bearing bearing
+	    m_cRabBearingTruncNormDist = TruncNormalDistr(m_fBearingTruncDistrMean, m_fBearingTruncDistrSd, -m_fBearingTruncDistrLimit, m_fBearingTruncDistrLimit);
+
+			// Range and Bearing loss probability
+	    Real fLoosProbabilityIncrement = m_pcRobotState->GetRandomNumberGenerator()->Uniform(CRange<Real>(m_fLossProbaLowerBound, m_fLossProbaUpperBound));
+	    m_fLossProbability = m_fLossProbability + fLoosProbabilityIncrement;
+	    LOG << " loss proba " << m_fLossProbability << std::endl;
+
+			// Wheels transformation
+			m_unLeftWheelTransfoFunction = m_pcRobotState->GetRandomNumberGenerator()->Bernoulli(0.5);
+			m_unRightWheelTransfoFunction = m_pcRobotState->GetRandomNumberGenerator()->Bernoulli(0.5);
+
+			m_fAlphaWheels = pow(fRandomFactor, m_fWheelsDistributionPower);
+			m_fAlphaWheels = m_fAlphaWheels * m_fWheelsMaxAlpha;
+			LOG << " wheels " << m_fAlphaWheels << std::endl;
+
+			LOG << " prox ";
+			for(size_t i=0; i<8; i++) {
+				m_unProxiTransfo[i] = m_pcRobotState->GetRandomNumberGenerator()->Bernoulli(0.5);
+				if (m_fProxiDistributionPower != 0)
+					m_fAlphaProxi[i] = pow(m_pcRobotState->GetRandomNumberGenerator()->Uniform(CRange<Real>(0,1.0)), m_fProxiDistributionPower);
+				else
+					m_fAlphaProxi[i] = 0;
+				LOG << m_fAlphaProxi[i] << " ";
+			}
+			LOG << std::endl;
+
+			m_bPseudoRealitySet = true;
+		}
 
 		/*
 		 * 1. Update RobotDAO
 		 */
 		if(m_pcRabSensor != NULL){
 			const CCI_EPuckRangeAndBearingSensor::TPackets& packets = m_pcRabSensor->GetPackets();
-			// CCI_EPuckRangeAndBearingSensor::TPackets newPackets = m_pcRabSensor->GetPackets();
-			// Real fRandNumber;
-			// UInt32 i = 0;
-			// while (i < newPackets.size()) {
-			// 	if (packets[i]->Data[0] != m_unRobotID) {
-			// 		fRandNumber = m_pcRobotState->GetRandomNumberGenerator()->Uniform(CRange<Real>(0,1.0));
-			// 		if (fRandNumber >= m_fLossProbability) {
-			// 			newPackets[i]->Range = TransformationFunction(packets[i]->Range, m_unRabRangeTransfoFunction, 100, m_fAlphaRabRange);
-			// 			newPackets[i]->Bearing = packets[i]->Bearing + CRadians((m_cRabBearingTruncNormDist()*3.1415)/180);
-			// 			i++;
-			// 		} else {
-			// 			newPackets.erase(newPackets.begin() + i);
-			// 		}
-			// 	}
-			// }
-			m_pcRobotState->SetRangeAndBearingMessages(packets);
+			CCI_EPuckRangeAndBearingSensor::TPackets newPackets = m_pcRabSensor->GetPackets();
+			Real fRandNumber;
+			UInt32 i = 0;
+			while (i < newPackets.size()) {
+				if (packets[i]->Data[0] != m_unRobotID) {
+					fRandNumber = m_pcRobotState->GetRandomNumberGenerator()->Uniform(CRange<Real>(0,1.0));
+					if (fRandNumber >= m_fLossProbability) {
+						newPackets[i]->Range = TransformationFunction(packets[i]->Range, m_unRabRangeTransfoFunction, 100, m_fAlphaRabRange);
+						newPackets[i]->Bearing = packets[i]->Bearing + CRadians((m_cRabBearingTruncNormDist()*3.1415)/180);
+						i++;
+					} else {
+						newPackets.erase(newPackets.begin() + i);
+					}
+				}
+			}
+			m_pcRobotState->SetRangeAndBearingMessages(newPackets);
 		}
 		if (m_pcGroundSensor != NULL) {
 			const CCI_EPuckGroundSensor::SReadings& readings = m_pcGroundSensor->GetReadings();
@@ -195,11 +194,11 @@ namespace argos {
 		}
 		if (m_pcProximitySensor != NULL) {
 			const CCI_EPuckProximitySensor::TReadings& readings = m_pcProximitySensor->GetReadings();
-			// CCI_EPuckProximitySensor::TReadings newReadings = m_pcProximitySensor->GetReadings();
-			// for (size_t i=0; i<8; i++) {
-			// 	newReadings[i].Value = TransformationFunction(readings[i].Value, m_unProxiTransfo[i], 1, m_fAlphaProxi[i]);
-			// }
-			m_pcRobotState->SetProximityInput(readings);
+			CCI_EPuckProximitySensor::TReadings newReadings = m_pcProximitySensor->GetReadings();
+			for (size_t i=0; i<8; i++) {
+				newReadings[i].Value = TransformationFunction(readings[i].Value, m_unProxiTransfo[i], 1, m_fAlphaProxi[i]);
+			}
+			m_pcRobotState->SetProximityInput(newReadings);
 		}
 
 		/*
@@ -211,17 +210,17 @@ namespace argos {
 		 * 3. Update Actuators
 		 */
 		if (m_pcWheelsActuator != NULL) {
-			// SInt8 signLeft = 1, signRight = 1;
-			// Real fLeftWheelSpeed = m_pcRobotState->GetLeftWheelVelocity();
-			// Real fRightWheelSpeed = m_pcRobotState->GetRightWheelVelocity();
-      // if (fLeftWheelSpeed < 0.0) {
-      //   signLeft = -1;
-      // }
-      // if (fRightWheelSpeed < 0.0) {
-      //   signRight = -1;
-      // }
-			// m_pcWheelsActuator->SetLinearVelocity(signLeft * TransformationFunction(abs(fLeftWheelSpeed), m_unLeftWheelTransfoFunction, 16, m_fAlphaWheels), signRight * TransformationFunction(abs(fRightWheelSpeed), m_unRightWheelTransfoFunction, 16, m_fAlphaWheels));
-			m_pcWheelsActuator->SetLinearVelocity(m_pcRobotState->GetLeftWheelVelocity(),m_pcRobotState->GetRightWheelVelocity());
+			SInt8 signLeft = 1, signRight = 1;
+			Real fLeftWheelSpeed = m_pcRobotState->GetLeftWheelVelocity();
+			Real fRightWheelSpeed = m_pcRobotState->GetRightWheelVelocity();
+      if (fLeftWheelSpeed < 0.0) {
+        signLeft = -1;
+      }
+      if (fRightWheelSpeed < 0.0) {
+        signRight = -1;
+      }
+			m_pcWheelsActuator->SetLinearVelocity(signLeft * TransformationFunction(abs(fLeftWheelSpeed), m_unLeftWheelTransfoFunction, 16, m_fAlphaWheels), signRight * TransformationFunction(abs(fRightWheelSpeed), m_unRightWheelTransfoFunction, 16, m_fAlphaWheels));
+			//m_pcWheelsActuator->SetLinearVelocity(m_pcRobotState->GetLeftWheelVelocity(),m_pcRobotState->GetRightWheelVelocity());
 		}
 
 		/*
