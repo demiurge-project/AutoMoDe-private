@@ -23,7 +23,7 @@ execDir = "./exec1"
 trainInstancesDir = "./exDEC"
 
 #The maximum total budget for the runs of targetRunner
-maxExperiments = 100000
+maxExperiments = 200000
 
 ## Indicates the number of decimal places to be considered for the
 ## real parameters.
