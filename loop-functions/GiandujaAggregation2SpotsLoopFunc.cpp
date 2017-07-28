@@ -101,12 +101,9 @@ void GiandujaAggregationLoopFunction::PostStep() {
                          pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
 
         Real fDistanceSpot1 = (m_cCoordSpot1 - cEpuckPosition).Length();
-        if (fDistanceSpot1 >= m_fRadius) {
-        m_unCostSpot1 += 1;
-        }
         Real fDistanceSpot2 = (m_cCoordSpot2 - cEpuckPosition).Length();
-        else if (fDistanceSpot2 >= m_fRadius) {
-        m_unCostSpot1 += 1;
+        if (fDistanceSpot1 >= m_fRadius && fDistanceSpot2 >= m_fRadius) {
+            m_unCostSpot1 += 1;
         }
     }
     m_fObjectiveFunction = (Real) m_unCostSpot1;
@@ -126,15 +123,16 @@ void GiandujaAggregationLoopFunction::PostExperiment() {
                          pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
 
         Real fDistanceSpot1 = (m_cCoordSpot1 - cEpuckPosition).Length();
-        if (fDistanceSpot1 >= m_fRadius) {
-        unCostPostExp1 += 1;
-        }
         Real fDistanceSpot2 = (m_cCoordSpot2 - cEpuckPosition).Length();
+        if (fDistanceSpot1 >= m_fRadius) {
+            unCostPostExp1 += 1;
+        }
         else if (fDistanceSpot2 >= m_fRadius) {
-        unCostPostExp2 += 1;
+            unCostPostExp2 += 1;
         }
     }
-    m_fObjectiveFunction += (m_unNumberRobots - max(unCostPostExp1,unCostPostExp2))*2400; //(24000/10)
+    LOG << unCostPostExp1 << ":" << unCostPostExp2 << "::" << m_fObjectiveFunction << ":::" << (m_unNumberRobots - Max(unCostPostExp1,unCostPostExp2))*2400 << std::endl;
+    m_fObjectiveFunction += (m_unNumberRobots - Max(unCostPostExp1,unCostPostExp2))*2400; //(24000/10)
 }
 
 Real GiandujaAggregationLoopFunction::GetObjectiveFunction() {

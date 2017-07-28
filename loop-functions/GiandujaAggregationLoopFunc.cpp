@@ -31,13 +31,13 @@ void GiandujaAggregationLoopFunction::Destroy() {}
 
 void GiandujaAggregationLoopFunction::Reset() {
     AutoMoDeLoopFunctions::Reset();
-    PlaceLight();
+    //PlaceLight();
 }
 
 
 void GiandujaAggregationLoopFunction::Init(TConfigurationNode& t_tree) {
     AutoMoDeLoopFunctions::Init(t_tree);
-    PlaceLight();
+    //PlaceLight();
 }
 
 
