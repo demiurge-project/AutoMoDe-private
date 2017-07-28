@@ -11,8 +11,8 @@
   <!-- ****************** -->
   <!-- * Loop functions * -->
   <!-- ****************** -->
-  <loop_functions library="build/loop-functions/libgianduja_aggregation_loopfunc.so"
-   label="gianduja_aggregation_loop_functions">
+  <loop_functions library="build/loop-functions/libgianduja_aggregation_2spots_loopfunc.so"
+   label="gianduja_aggregation_2spots_loop_functions">
    <params dist_radius="1.2" number_robots="20"/>
   </loop_functions>
 
@@ -31,8 +31,8 @@
       <sensors>
 		    <epuck_proximity implementation="default" show_rays="false" noise_level="0.05" calibrated="true" low_level_config="/home/root/aligot/low_level_configuration/proximity_sensor.xml"/>
         <epuck_range_and_bearing implementation="medium" medium="rab" data_size="4" nois_std_deviation="1.5" loss_probability="0.8" calibrated="true" low_level_config="/home/root/aligot/low_level_configuration/range_and_bearing_sensor.xml"/>
-		    <epuck_light implementation="default" show_rays="true" noise_level="0.05" calibrated="true" low_level_config="/home/root/aligot/low_level_configuration/light_sensor.xml"/>
-		    <epuck_ground implementation="rot_z_only" noise_level="0.1" calibrated="true" low_level_config="/home/root/aligot/low_level_configuration/ground_sensor.xml"/>
+		    <epuck_light implementation="default" show_rays="true" noise_level="0.1" calibrated="true" low_level_config="/home/root/aligot/low_level_configuration/light_sensor.xml"/>
+		    <epuck_ground implementation="rot_z_only" noise_level="0.05" calibrated="true" low_level_config="/home/root/aligot/low_level_configuration/ground_sensor.xml"/>
 		    <epuck_omnidirectional_camera implementation="rot_z_only" medium="leds" show_rays="false"/>
       </sensors>
     <params readable='false' history='false' hist-folder='./fsm_history/' fsm-config="--nstates 1 --s0 1 --brd0 0"/>
