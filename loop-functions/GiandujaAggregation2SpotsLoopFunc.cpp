@@ -124,10 +124,10 @@ void GiandujaAggregationLoopFunction::PostExperiment() {
 
         Real fDistanceSpot1 = (m_cCoordSpot1 - cEpuckPosition).Length();
         Real fDistanceSpot2 = (m_cCoordSpot2 - cEpuckPosition).Length();
-        if (fDistanceSpot1 >= m_fRadius) {
+        if (fDistanceSpot1 <= m_fRadius) {
             unCostPostExp1 += 1;
         }
-        else if (fDistanceSpot2 >= m_fRadius) {
+        else if (fDistanceSpot2 <= m_fRadius) {
             unCostPostExp2 += 1;
         }
     }
