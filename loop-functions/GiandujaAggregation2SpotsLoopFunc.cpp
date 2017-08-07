@@ -136,7 +136,7 @@ void GiandujaAggregationLoopFunction::PostExperiment() {
 }
 
 Real GiandujaAggregationLoopFunction::GetObjectiveFunction() {
-  return m_fObjectiveFunction;
+  return (48000-m_fObjectiveFunction);
 }
 
 REGISTER_LOOP_FUNCTIONS(GiandujaAggregationLoopFunction, "gianduja_aggregation_2spots_loop_functions");

@@ -121,13 +121,13 @@ void GiandujaStopLoopFunction::PostStep() {
             if (fDistanceSpot1 <= m_fRadius+0.02) {
                 un_trigger = 1;
             }
-            else if ( m_tOldPosPoints[pcEpuck] == cEpuckPosition ) { //must move
+            else if ( fabs(m_tOldPosPoints[pcEpuck].GetX() - cEpuckPosition.GetX()) < 0.0005 && fabs(m_tOldPosPoints[pcEpuck].GetY() - cEpuckPosition.GetY()) < 0.0005) {
                 m_unCostI+=1;
             }
             m_unTbar +=1;
         }
         else if (m_unState == 1) {
-            if ( m_tOldPosPoints[pcEpuck] != cEpuckPosition ) { //must stop
+            if ( fabs(m_tOldPosPoints[pcEpuck].GetX() - cEpuckPosition.GetX()) > 0.0005 && fabs(m_tOldPosPoints[pcEpuck].GetY() - cEpuckPosition.GetY()) > 0.0005) {
                 m_unCostO+=1;
             }
         }
@@ -146,13 +146,13 @@ void GiandujaStopLoopFunction::PostStep() {
 
 void GiandujaStopLoopFunction::PostExperiment() {
     LOG<< "CostI :" << m_unCostI << " / CostO :" << m_unCostO << " / Tbar:" << m_unTbar << std::endl;
-    LOG<< m_unCostI + m_unCostO + m_unTbar << std::endl;
+    LOG<< 48000 - m_unCostI + m_unCostO + m_unTbar << std::endl;
     m_fObjectiveFunction = (Real) m_unCostI + m_unCostO + m_unTbar;
 
 }
 
 Real GiandujaStopLoopFunction::GetObjectiveFunction() {
-  return m_fObjectiveFunction;
+  return (48000-m_fObjectiveFunction);
 }
 
 REGISTER_LOOP_FUNCTIONS(GiandujaStopLoopFunction, "gianduja_stop_loop_functions");

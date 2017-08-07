@@ -112,10 +112,11 @@ void GiandujaAggregationLoopFunction::PostStep() {
 /****************************************/
 
 void GiandujaAggregationLoopFunction::PostExperiment() {
+    LOG<< "fit :" << 24000-m_fObjectiveFunction << std::endl;
 }
 
 Real GiandujaAggregationLoopFunction::GetObjectiveFunction() {
-  return m_fObjectiveFunction;
+  return (24000-m_fObjectiveFunction);
 }
 
 REGISTER_LOOP_FUNCTIONS(GiandujaAggregationLoopFunction, "gianduja_aggregation_loop_functions");

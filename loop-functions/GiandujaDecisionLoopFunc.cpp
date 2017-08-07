@@ -141,13 +141,13 @@ void GiandujaDecisionLoopFunction::PostStep() {
 
 void GiandujaDecisionLoopFunction::PostExperiment() {
     LOG<< "CostI :" << m_unCostI << " / CostO :" << m_unCostO << std::endl;
-    LOG<< m_unCostI << std::endl;
+    LOG<< (24000-m_unCostI) << std::endl;
     m_fObjectiveFunction = (Real) m_unCostI;
 
 }
 
 Real GiandujaDecisionLoopFunction::GetObjectiveFunction() {
-  return m_fObjectiveFunction;
+  return (24000-m_fObjectiveFunction);
 }
 
 REGISTER_LOOP_FUNCTIONS(GiandujaDecisionLoopFunction, "gianduja_decision_loop_functions");
