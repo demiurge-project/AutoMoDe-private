@@ -1,0 +1,52 @@
+RootNode		"--rootnode"	c	(0)
+NumChildsRoot	"--nchildsroot"	i	(1,4)
+C0				"--c0"			c	(0)				| as.numeric(NumChildsRoot) > 0
+NumConds0		"--nc0" 		i 	(1,2) 			| as.numeric(C0) == 0
+c0x0			"--c0x0" 		c	(0,1,2,3,4,5) 	| as.numeric(NumConds0) > 0 
+P0x0  			"--p0x0 " 		r   (0,1) 			| as.numeric(C0x0) %in% c(0,1,2,5) 
+B0x0  			"--p0x0 " 		i   (1,10) 			| as.numeric(C0x0)==3 
+W0x0  			"--w0x0 " 		r   (0,20) 			| as.numeric(C0x0)==3 
+BI0x0  			"--p0x0 " 		i   (1,10) 			| as.numeric(C0x0)==4 
+WI0x0  			"--w0x0 " 		r   (0,20) 			| as.numeric(C0x0)==4 
+c0x1			"--c0x1" 		c	(0,1,2,3,4,5) 	| as.numeric(NumConds0) > 1
+P0x1  			"--p0x1 " 		r   (0,1) 			| as.numeric(C0x0) %in% c(0,1,2,5) 
+B0x1  			"--p0x1 " 		i   (1,10) 			| as.numeric(C0x0)==3 
+W0x1  			"--w0x1 " 		r   (0,20) 			| as.numeric(C0x0)==3 
+BI0x1  			"--p0x1 " 		i   (1,10) 			| as.numeric(C0x0)==4 
+WI0x1  			"--w0x1 " 		r   (0,20) 			| as.numeric(C0x0)==4
+Action0			"--a0"			c 	(0,1,2,3,4,5) 	| as.numeric(C0) == 0
+RWM0   			"--rwm0 "  		i 	(1,100) 		| as.numeric(Action0)==0
+ATT0   			"--att0 "  		r 	(1,5) 			| as.numeric(Action0)==4
+REP0  			"--rep0 "  		r 	(1,5) 			| as.numeric(Action0)==5
+
+C1				"--c1"			c	(0)				| as.numeric(NumChildsRoot) > 1
+NumConds1		"--nc1" 		i 	(1,2) 			| as.numeric(C1) == 0
+c1x0			"--c1x0" 		c	(0,1,2,3,4,5) 	| as.numeric(NumConds1) > 0 
+P1x0  			"--p1x0 " 		r   (0,1) 			| as.numeric(C1x0) %in% c(0,1,2,5) 
+B1x0  			"--p1x0 " 		i   (1,10) 			| as.numeric(C1x0)==3 
+W1x0  			"--w1x0 " 		r   (0,20) 			| as.numeric(C1x0)==3 
+BI1x0  			"--p1x0 " 		i   (1,10) 			| as.numeric(C1x0)==4 
+WI1x0  			"--w1x0 " 		r   (0,20) 			| as.numeric(C1x0)==4 
+c1x1			"--c1x1" 		c	(0,1,2,3,4,5) 	| as.numeric(NumConds1) > 1
+P1x1  			"--p1x1 " 		r   (0,1) 			| as.numeric(C1x0) %in% c(0,1,2,5) 
+B1x1  			"--p1x1 " 		i   (1,10) 			| as.numeric(C1x0)==3 
+W1x1  			"--w1x1 " 		r   (0,20) 			| as.numeric(C1x0)==3 
+BI1x1  			"--p1x1 " 		i   (1,10) 			| as.numeric(C1x0)==4 
+WI1x1  			"--w1x1 " 		r   (0,20) 			| as.numeric(C1x0)==4
+Action1			"--a1"			c 	(0,1,2,3,4,5) 	| as.numeric(C1) == 0
+RWM1   			"--rwm1 "  		i 	(1,100) 		| as.numeric(Action1)==0
+ATT1   			"--att1 "  		r 	(1,5) 			| as.numeric(Action1)==4
+REP1  			"--rep1 "  		r 	(1,5) 			| as.numeric(Action1)==5
+
+etc.
+
+
+
+--rootnode 0 --nchildsroot 3 
+		--c0 0 --nc0 2 --c0x0 2 --p0x0 1.0 --c0x1 0 --p0x0 1.0 --a0 0 --rwm0 20 
+		--c1 0 --nc1 1 --c1x0 0 --p1x0 1.0 --a1 2 
+		--c2 0 --nc2 2 --c2x0 2 --p2x0 1.0 --c2x1 3 --p2x0 1.0 --a2 1 
+
+
+
+

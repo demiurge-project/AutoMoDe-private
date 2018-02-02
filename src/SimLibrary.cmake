@@ -9,6 +9,7 @@ set(AUTOMODE_HEADERS
 	core/AutoMoDeFiniteStateMachine.h
 	core/AutoMoDeFsmBuilder.h
 	core/AutoMoDeFsmHistory.h
+	core/AutoMoDeBehaviorTree.h
 	core/AutoMoDeRobotDAO.h
 	core/AutoMoDeLoopFunctions.h
 	# Behaviours
@@ -26,13 +27,17 @@ set(AUTOMODE_HEADERS
 	modules/AutoMoDeConditionGrayFloor.h
 	modules/AutoMoDeConditionNeighborsCount.h
 	modules/AutoMoDeConditionInvertedNeighborsCount.h
-	modules/AutoMoDeConditionFixedProbability.h)
+	modules/AutoMoDeConditionFixedProbability.h
+	#BehaviorTreeImplementation
+	core/bt/Node.h
+	core/bt/Selector.h)
 
 # Sources
 set(AUTOMODE_SOURCES
 	core/AutoMoDeController.cpp
 	core/AutoMoDeRabBuffer.cpp
 	core/AutoMoDeFiniteStateMachine.cpp
+	core/AutoMoDeBehaviorTree.cpp
 	core/AutoMoDeFsmBuilder.cpp
 	core/AutoMoDeRobotDAO.cpp
 	core/AutoMoDeFsmHistory.cpp
@@ -52,7 +57,10 @@ set(AUTOMODE_SOURCES
 	modules/AutoMoDeConditionGrayFloor.cpp
 	modules/AutoMoDeConditionNeighborsCount.cpp
 	modules/AutoMoDeConditionInvertedNeighborsCount.cpp
-	modules/AutoMoDeConditionFixedProbability.cpp)
+	modules/AutoMoDeConditionFixedProbability.cpp
+	#BehaviorTreeImplementation
+	core/bt/Node.cpp
+	core/bt/Selector.cpp)
 
 
 add_library(automode SHARED ${AUTOMODE_HEADERS} ${AUTOMODE_SOURCES})
@@ -62,3 +70,6 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 add_executable(automode_main AutoMoDeMain.cpp)
 target_link_libraries(automode_main automode argos3core_${ARGOS_BUILD_FOR} argos3plugin_${ARGOS_BUILD_FOR}_epuck)
 
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
+add_executable(automode_main_bt AutoMoDeMainBT.cpp)
+target_link_libraries(automode_main_bt automode argos3core_${ARGOS_BUILD_FOR} argos3plugin_${ARGOS_BUILD_FOR}_epuck)
