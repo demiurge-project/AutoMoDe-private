@@ -55,15 +55,15 @@ namespace argos {
   /****************************************/
   /****************************************/
 
-  void Selector::AddCondition(AutoMoDeCondition* pc_new_condition) {
-    m_vecConditions.push_back(pc_new_condition);
+  void Selector::AddCondition(AutoMoDeCondition* pc_condition) {
+    m_vecConditions.push_back(pc_condition);
   }
 
   /****************************************/
   /****************************************/
 
-  void Selector::SetBehaviour(AutoMoDeBehaviour* pc_new_behaviour) {
-    m_cAction = pc_new_behaviour;
+  void Selector::AddAction(AutoMoDeBehaviour* pc_action) {
+    m_vecActions.push_back(pc_action);
   }
 
 }

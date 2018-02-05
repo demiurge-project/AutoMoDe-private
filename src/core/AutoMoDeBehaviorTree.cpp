@@ -42,6 +42,13 @@ namespace argos {
 	/****************************************/
 	/****************************************/
 
+	void AutoMoDeBehaviorTree::SetRootNode(Node* pc_root_node) {
+		m_pcRootNode = pc_root_node;
+	}
+
+	/****************************************/
+	/****************************************/
+
 	const std::string AutoMoDeBehaviorTree::GetReadableFormat() {
 		std::stringstream ssUrl;
 		ssUrl << "http://chart.googleapis.com/chart?cht=gv:dot&chl=digraph finite_state_machine{rankir=LR;" ;

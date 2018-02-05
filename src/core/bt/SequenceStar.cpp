@@ -60,4 +60,17 @@ namespace argos {
     m_vecChilds.push_back(pc_new_child_node);
   }
 
+	/****************************************/
+	/****************************************/
+
+	void SequenceStar::AddAction(AutoMoDeBehaviour* pc_action) {
+		THROW_ARGOSEXCEPTION("As of now, a SequenceStar node should not have an Action as child");
+	}
+
+	/****************************************/
+	/****************************************/
+
+	void SequenceStar::AddCondition(AutoMoDeCondition* pc_condition) {
+		THROW_ARGOSEXCEPTION("As of now, a SequenceStar node should not have a Condition as child");
+	}
 }

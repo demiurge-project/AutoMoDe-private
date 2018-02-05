@@ -1,5 +1,5 @@
 /*
- * @file <src/core/AutoMoDeFsmBuilder.cpp>
+ * @file <src/core/AutoMoDeBehaviorTreeBuilder.cpp>
  *
  * @author Antoine Ligot - <aligot@ulb.ac.be>
  *
@@ -8,79 +8,168 @@
  * @license MIT License
  */
 
-#include "AutoMoDeFsmBuilder.h"
+#include "AutoMoDeBehaviorTreeBuilder.h"
 
 namespace argos {
 
 	/****************************************/
 	/****************************************/
 
-	AutoMoDeFsmBuilder::AutoMoDeFsmBuilder() {}
+	AutoMoDeBehaviorTreeBuilder::AutoMoDeBehaviorTreeBuilder() {}
 
 	/****************************************/
 	/****************************************/
 
-	AutoMoDeFsmBuilder::~AutoMoDeFsmBuilder() {
-		delete cFiniteStateMachine;
+	AutoMoDeBehaviorTreeBuilder::~AutoMoDeBehaviorTreeBuilder() {
+		delete cBehaviorTree;
 	}
 
 	/****************************************/
 	/****************************************/
 
-	AutoMoDeFiniteStateMachine* AutoMoDeFsmBuilder::BuildFiniteStateMachine(const std::string& str_fsm_config) {
-		std::istringstream iss(str_fsm_config);
+	AutoMoDeBehaviorTree* AutoMoDeBehaviorTreeBuilder::BuildBehaviorTree(const std::string& str_bt_config) {
+		std::istringstream iss(str_bt_config);
 		std::vector<std::string> tokens;
 		copy(std::istream_iterator<std::string>(iss),
 			std::istream_iterator<std::string>(),
 			std::back_inserter(tokens));
-		return BuildFiniteStateMachine(tokens);
+		return BuildBehaviorTree(tokens);
 	}
 
 	/****************************************/
 	/****************************************/
 
-	AutoMoDeFiniteStateMachine* AutoMoDeFsmBuilder::BuildFiniteStateMachine(std::vector<std::string>& vec_fsm_config) {
-		cFiniteStateMachine = new AutoMoDeFiniteStateMachine();
+	AutoMoDeBehaviorTree* AutoMoDeBehaviorTreeBuilder::BuildBehaviorTree(std::vector<std::string>& vec_bt_config) {
+		cBehaviorTree = new AutoMoDeBehaviorTree();
+		Node* cRootNode;
 
+		// Get root node type and create root node.
 		std::vector<std::string>::iterator it;
 		try {
-			it = std::find(vec_fsm_config.begin(), vec_fsm_config.end(), "--nstates");
-			m_unNumberStates = atoi((*(it+1)).c_str());
-			std::vector<std::string>::iterator first_state;
-			std::vector<std::string>::iterator second_state;
-			for (UInt32 i = 0; i < m_unNumberStates; i++) {
-				std::ostringstream oss;
-				oss << "--s" << i;
-				first_state = std::find(vec_fsm_config.begin(), vec_fsm_config.end(), oss.str());
-				if (i+1 < m_unNumberStates) {
-					std::ostringstream oss;
-					oss << "--s" << i+1;
-					second_state = std::find(vec_fsm_config.begin(), vec_fsm_config.end(), oss.str());
-				} else {
-					second_state = vec_fsm_config.end();
-				}
-				std::vector<std::string> vecStateConfig(first_state, second_state);
-				HandleState(cFiniteStateMachine, vecStateConfig);
+			it = std::find(vec_bt_config.begin(), vec_bt_config.end(), "--rootnode");
+			UInt8 unRootNodeType = atoi((*(it+1)).c_str());
+
+			// Create root node.
+			switch(unRootNodeType) {
+				case 0:
+					cRootNode = new SequenceStar();
+					break;
 			}
 		}
 		catch (std::exception e) {
-			THROW_ARGOSEXCEPTION("Could not create the Finite State Machine: Error while parsing.");
+			THROW_ARGOSEXCEPTION("[Error while parsing]: Could not instanciate Root Node");
 		}
 
-		return cFiniteStateMachine;
+		// Identifying root's childs
+		UInt8 unNumberChilds;
+		try {
+			it = std::find(vec_bt_config.begin(), vec_bt_config.end(), "--nchildsroot");
+			unNumberChilds = atoi((*(it+1)).c_str());
+			std::vector<std::string>::iterator first_child;
+			std::vector<std::string>::iterator second_child;
+			for (UInt32 i = 0; i < unNumberChilds; i++) {
+				std::ostringstream oss;
+				oss << "--c" << i;
+				first_child = std::find(vec_bt_config.begin(), vec_bt_config.end(), oss.str());
+				if (i+1 < unNumberChilds) {
+					std::ostringstream oss;
+					oss << "--c" << i+1;
+					second_child = std::find(vec_bt_config.begin(), vec_bt_config.end(), oss.str());
+				} else {
+					second_child = vec_bt_config.end();
+				}
+				std::vector<std::string> vecChildConfig(first_child, second_child);
+				// Debug
+				std::cout << "Child " << i << std::endl;
+				for (it=vecChildConfig.begin(); it!=vecChildConfig.end(); it++) {
+					std::cout << *(it) << std::endl;
+				}
+				HandleChild(cRootNode, vecChildConfig);
+			}
+		}
+		catch (std::exception e) {
+			THROW_ARGOSEXCEPTION("[Error while parsing]: Error while parsing Root's childs");
+		}
 
+		cBehaviorTree->SetRootNode(cRootNode);
+		return cBehaviorTree;
 	}
 
 	/****************************************/
 	/****************************************/
 
-	void AutoMoDeFsmBuilder::HandleState(AutoMoDeFiniteStateMachine* c_fsm, std::vector<std::string>& vec_fsm_state_config) {
+	void AutoMoDeBehaviorTreeBuilder::HandleChild(Node* pc_parent_node, std::vector<std::string>& vec_bt_child_config) {
+		Node* cChildNode;
+
+		std::vector<std::string>::iterator it;
+		UInt8 unBranchIndex =  atoi((*vec_bt_child_config.begin()).substr(3,4).c_str());
+		UInt8 unChildType = atoi((*(vec_bt_child_config.begin()+1)).c_str());
+
+		// Selector case
+		if (unChildType == 0) {
+			cChildNode = new Selector();
+
+			try {
+				// Conditions
+				std::ostringstream oss;
+				oss << "--nc" << unBranchIndex;
+				it = std::find(vec_bt_child_config.begin(), vec_bt_child_config.end(), oss.str());
+				UInt8 unNbrConditions = atoi((*(it+1)).c_str());
+				std::vector<std::string>::iterator first_condition;
+				std::vector<std::string>::iterator second_condition;
+				for (UInt8 unConditionIndex = 0; unConditionIndex < unNbrConditions; unConditionIndex++) {
+					std::ostringstream ssConditionVariable;
+					ssConditionVariable << "--c" << unBranchIndex << "x" << unConditionIndex ;
+					first_condition = std::find(vec_bt_child_config.begin(), vec_bt_child_config.end(), ssConditionVariable.str());
+					if (unConditionIndex+1 < unNbrConditions) {
+						std::ostringstream ssNextConditionVariable;
+						ssNextConditionVariable << "--c" << unBranchIndex << "x" << unConditionIndex+1;
+						second_condition = std::find(vec_bt_child_config.begin(), vec_bt_child_config.end(), ssNextConditionVariable.str());
+					} else {
+						std::ostringstream ssActionVariable;
+						ssActionVariable << "--a" << unBranchIndex;
+						second_condition = std::find(vec_bt_child_config.begin(), vec_bt_child_config.end(), ssActionVariable.str());
+					}
+					std::vector<std::string> vecConditionConfig(first_condition, second_condition);
+					// Debug
+					// std::cout << "\tCond " << i << std::endl;
+					// for (it=vecConditionConfig.begin(); it!=vecConditionConfig.end(); it++) {
+					//  	std::cout << "\t" << *(it) << std::endl;
+					//}
+					HandleCondition(cChildNode, vecConditionConfig, unBranchIndex, unConditionIndex);
+				}
+
+				// Action
+				std::ostringstream ssActionVariable;
+				ssActionVariable << "--a" << unBranchIndex;
+				std::vector<std::string>::iterator action_start;
+				std::vector<std::string>::iterator action_end;
+				action_start = std::find(vec_bt_child_config.begin(), vec_bt_child_config.end(), ssActionVariable.str());
+				action_end = vec_bt_child_config.end();
+				std::vector<std::string> vecActionConfig(action_start, action_end);
+				HandleAction(cChildNode, vecActionConfig);
+
+			} catch(std::exception e) {
+				LOGERR << "[Error while parsing]: Error in Selector node" << std::endl;
+				THROW_ARGOSEXCEPTION("");
+			}
+
+		} else { // Unknown case: throw exception
+ 			LOGERR << "[Error while parsing]: Node's type unidentified" << std::endl;
+			THROW_ARGOSEXCEPTION("");
+		}
+	}
+
+	/****************************************/
+	/****************************************/
+
+	void AutoMoDeBehaviorTreeBuilder::HandleAction(Node* pc_parent_node, std::vector<std::string>& vec_bt_action_config) {
 		AutoMoDeBehaviour* cNewBehaviour;
 		std::vector<std::string>::iterator it;
 		// Extraction of the index of the behaviour in the FSM
-		UInt8 unBehaviourIndex =  atoi((*vec_fsm_state_config.begin()).substr(3,4).c_str());
+		UInt8 unBehaviourIndex =  atoi((*vec_bt_action_config.begin()).substr(3,4).c_str());
 		// Extraction of the identifier of the behaviour
-		UInt8 unBehaviourIdentifier =  atoi((*(vec_fsm_state_config.begin()+1)).c_str());
+		UInt8 unBehaviourIdentifier =  atoi((*(vec_bt_action_config.begin()+1)).c_str());
 
 		// Creation of the Behaviour object
 		switch(unBehaviourIdentifier) {
@@ -105,7 +194,7 @@ namespace argos {
 		}
 		cNewBehaviour->SetIndex(unBehaviourIndex);
 		cNewBehaviour->SetIdentifier(unBehaviourIdentifier);
-
+		/*
 		// Checking for parameters
 		std::string vecPossibleParameters[] = {"rwm", "att", "rep"};
 		UInt8 unNumberPossibleParameters = sizeof(vecPossibleParameters) / sizeof(vecPossibleParameters[0]);
@@ -113,24 +202,24 @@ namespace argos {
 			std::string strCurrentParameter = vecPossibleParameters[i];
 			std::ostringstream oss;
 			oss << "--" <<strCurrentParameter << unBehaviourIndex;
-			it = std::find(vec_fsm_state_config.begin(), vec_fsm_state_config.end(), oss.str());
-			if (it != vec_fsm_state_config.end()) {
+			it = std::find(vec_bt_state_config.begin(), vec_bt_state_config.end(), oss.str());
+			if (it != vec_bt_state_config.end()) {
 				Real fCurrentParameterValue = strtod((*(it+1)).c_str(), NULL);
 				cNewBehaviour->AddParameter(strCurrentParameter, fCurrentParameterValue);
 			}
 		}
 		cNewBehaviour->Init();
 		// Add the constructed Behaviour to the FSM
-		c_fsm->AddBehaviour(cNewBehaviour);
+		pc_parent_node->AddBehaviour(cNewBehaviour);
 
-		/*
+		/
 		 * Extract the transitions starting from the state and
 		 * pass them to the transition handler, if they exist.
-		 */
+		 /
 		std::ostringstream oss;
 		oss << "--n" << unBehaviourIndex;
-		it = std::find(vec_fsm_state_config.begin(), vec_fsm_state_config.end(), oss.str());
-		if (it != vec_fsm_state_config.end()) {
+		it = std::find(vec_bt_state_config.begin(), vec_bt_state_config.end(), oss.str());
+		if (it != vec_bt_state_config.end()) {
 			UInt8 unNumberTransitions = atoi((*(it+1)).c_str());
 
 			std::vector<std::string>::iterator first_transition;
@@ -139,97 +228,70 @@ namespace argos {
 			for (UInt8 i = 0; i < unNumberTransitions; i++) {
 				std::ostringstream oss;
 				oss << "--n" << unBehaviourIndex << "x" << i;
-				first_transition = std::find(vec_fsm_state_config.begin(), vec_fsm_state_config.end(), oss.str());
+				first_transition = std::find(vec_bt_state_config.begin(), vec_bt_state_config.end(), oss.str());
 				if (i+1 < unNumberTransitions) {
 					std::ostringstream oss;
 					oss << "--n" << unBehaviourIndex << "x" << i+1;
-					second_transition = std::find(vec_fsm_state_config.begin(), vec_fsm_state_config.end(), oss.str());
+					second_transition = std::find(vec_bt_state_config.begin(), vec_bt_state_config.end(), oss.str());
 				} else {
-					second_transition = vec_fsm_state_config.end();
+					second_transition = vec_bt_state_config.end();
 				}
 				std::vector<std::string> vecTransitionConfig(first_transition, second_transition);
-				HandleTransition(vecTransitionConfig, unBehaviourIndex, i);
+				//HandleTransition(vecTransitionConfig, unBehaviourIndex, i);
 			}
-		}
+		}*/
 	}
 
 	/****************************************/
 	/****************************************/
 
-	void AutoMoDeFsmBuilder::HandleTransition(std::vector<std::string>& vec_fsm_transition_config, const UInt32& un_initial_state_index, const UInt32& un_condition_index) {
+void AutoMoDeBehaviorTreeBuilder::HandleCondition(Node* pc_parent_node, std::vector<std::string>& vec_bt_condition_config, const UInt32& un_branch_index, const UInt32& un_condition_index){
 		AutoMoDeCondition* cNewCondition;
 
-		std::stringstream ss;
-		ss << "--n" << un_initial_state_index << "x" << un_condition_index;
-		std::vector<UInt32> vecPossibleDestinationIndex = GetPossibleDestinationBehaviour(un_initial_state_index);
+		// Extract Condition identifier
+		UInt32 unConditionIdentifier = atoi((*(vec_bt_condition_config.begin()+1)).c_str());
+
+		switch(unConditionIdentifier) {
+			case 0:
+				cNewCondition = new AutoMoDeConditionBlackFloor();
+				break;
+			case 1:
+				cNewCondition = new AutoMoDeConditionGrayFloor();
+				break;
+			case 2:
+				cNewCondition = new AutoMoDeConditionWhiteFloor();
+				break;
+			case 3:
+				cNewCondition = new AutoMoDeConditionNeighborsCount();
+				break;
+			case 4:
+				cNewCondition = new AutoMoDeConditionInvertedNeighborsCount();
+				break;
+			case 5:
+				cNewCondition = new AutoMoDeConditionFixedProbability();
+				break;
+		}
+
+		cNewCondition->SetOriginAndExtremity(0, 0);  // No need of origin and extremity in cas of Behavior Trees. Set them to random value.
+		cNewCondition->SetIndex(0); // Same here, no need of index.
+		cNewCondition->SetIdentifier(unConditionIdentifier);
+
+
+		// Checking for parameters
 		std::vector<std::string>::iterator it;
-		it = std::find(vec_fsm_transition_config.begin(), vec_fsm_transition_config.end(), ss.str());
-
-		// TODO: Check here whether unToBehaviour is smaller than the total number of states.
-		UInt32 unIndexBehaviour = atoi((*(it+1)).c_str());
-		UInt32 unToBehaviour = vecPossibleDestinationIndex.at(unIndexBehaviour);
-		if (unToBehaviour < m_unNumberStates) {
-			ss.str(std::string());
-			ss << "--c" << un_initial_state_index << "x" << un_condition_index;
-			it = std::find(vec_fsm_transition_config.begin(), vec_fsm_transition_config.end(), ss.str());
-
-			UInt8 unConditionIdentifier = atoi((*(it+1)).c_str());
-
-			switch(unConditionIdentifier) {
-				case 0:
-					cNewCondition = new AutoMoDeConditionBlackFloor();
-					break;
-				case 1:
-					cNewCondition = new AutoMoDeConditionGrayFloor();
-					break;
-				case 2:
-					cNewCondition = new AutoMoDeConditionWhiteFloor();
-					break;
-				case 3:
-					cNewCondition = new AutoMoDeConditionNeighborsCount();
-					break;
-				case 4:
-					cNewCondition = new AutoMoDeConditionInvertedNeighborsCount();
-					break;
-				case 5:
-					cNewCondition = new AutoMoDeConditionFixedProbability();
-					break;
-			}
-
-			cNewCondition->SetOriginAndExtremity(un_initial_state_index, unToBehaviour);
-			cNewCondition->SetIndex(un_condition_index);
-			cNewCondition->SetIdentifier(unConditionIdentifier);
-
-
-			// Checking for parameters
-			std::string vecPossibleParameters[] = {"p", "w"};
-			UInt8 unNumberPossibleParameters = sizeof(vecPossibleParameters) / sizeof(vecPossibleParameters[0]);
-			for (UInt8 i = 0; i < unNumberPossibleParameters; i++) {
-				std::string strCurrentParameter = vecPossibleParameters[i];
-				ss.str(std::string());
-				ss << "--" << strCurrentParameter << un_initial_state_index << "x" << un_condition_index;
-				it = std::find(vec_fsm_transition_config.begin(), vec_fsm_transition_config.end(), ss.str());
-				if (it != vec_fsm_transition_config.end()) {
-					Real fCurrentParameterValue = strtod((*(it+1)).c_str(), NULL);
-					cNewCondition->AddParameter(strCurrentParameter, fCurrentParameterValue);
-				}
-			}
-			cNewCondition->Init();
-			cFiniteStateMachine->AddCondition(cNewCondition);
-		}
-	}
-
-	/****************************************/
-	/****************************************/
-
-	const std::vector<UInt32> AutoMoDeFsmBuilder::GetPossibleDestinationBehaviour(const UInt32& un_initial_state_index) {
-		std::vector<UInt32> vecPossibleDestinationIndex;
-		for (UInt32 i = 0; i < m_unNumberStates; i++) {
-			if (i != un_initial_state_index) {
-				vecPossibleDestinationIndex.push_back(i);
+		std::string vecPossibleParameters[] = {"p", "w"};
+		UInt8 unNumberPossibleParameters = sizeof(vecPossibleParameters) / sizeof(vecPossibleParameters[0]);
+		for (UInt8 i = 0; i < unNumberPossibleParameters; i++) {
+			std::string strCurrentParameter = vecPossibleParameters[i];
+			std::stringstream ssParamVariable;
+			ssParamVariable << "--" << strCurrentParameter << un_branch_index << "x" << un_condition_index;
+			it = std::find(vec_bt_condition_config.begin(), vec_bt_condition_config.end(), ssParamVariable.str());
+			if (it != vec_bt_condition_config.end()) {
+				Real fCurrentParameterValue = strtod((*(it+1)).c_str(), NULL);
+				cNewCondition->AddParameter(strCurrentParameter, fCurrentParameterValue);
 			}
 		}
-		return vecPossibleDestinationIndex;
+		cNewCondition->Init();
+		pc_parent_node->AddCondition(cNewCondition);
 	}
-
 }

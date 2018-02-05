@@ -16,7 +16,7 @@
 #include <argos3/core/simulator/argos_command_line_arg_parser.h>
 
 #include "./core/AutoMoDeBehaviorTree.h"
-#include "./core/AutoMoDeFsmBuilder.h"
+#include "./core/AutoMoDeBehaviorTreeBuilder.h"
 #include "./core/AutoMoDeLoopFunctions.h"
 #include "./core/AutoMoDeController.h"
 
@@ -84,9 +84,8 @@ int main(int n_argc, char** ppch_argv) {
 
 				// Creation of the finite state machine.
 
-				// AutoMoDeFsmBuilder cBuilder = AutoMoDeFsmBuilder();
-				// AutoMoDeFiniteStateMachine* pcFiniteStateMachine = cBuilder.BuildFiniteStateMachine(vecConfigFsm);
-				AutoMoDeBehaviorTree* pcBehaviorTree = new AutoMoDeBehaviorTree();
+				AutoMoDeBehaviorTreeBuilder cBuilder = AutoMoDeBehaviorTreeBuilder();
+				AutoMoDeBehaviorTree* pcBehaviorTree = cBuilder.BuildBehaviorTree(vecConfigBt);
 
 				// If the URL of the finite state machine is requested, display it.
 				if (bReadableBT) {

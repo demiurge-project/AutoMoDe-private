@@ -14,6 +14,22 @@
 #define AUTOMODE_BEHAVIOR_TREE_H
 
 #include "bt/Node.h"
+#include "bt/Selector.h"
+#include "bt/SequenceStar.h"
+#include "../modules/AutoMoDeBehaviour.h"
+#include "../modules/AutoMoDeBehaviourAttraction.h"
+#include "../modules/AutoMoDeBehaviourAntiPhototaxis.h"
+#include "../modules/AutoMoDeBehaviourExploration.h"
+#include "../modules/AutoMoDeBehaviourPhototaxis.h"
+#include "../modules/AutoMoDeBehaviourRepulsion.h"
+#include "../modules/AutoMoDeBehaviourStop.h"
+#include "../modules/AutoMoDeCondition.h"
+#include "../modules/AutoMoDeConditionBlackFloor.h"
+#include "../modules/AutoMoDeConditionGrayFloor.h"
+#include "../modules/AutoMoDeConditionWhiteFloor.h"
+#include "../modules/AutoMoDeConditionFixedProbability.h"
+#include "../modules/AutoMoDeConditionNeighborsCount.h"
+#include "../modules/AutoMoDeConditionInvertedNeighborsCount.h"
 
 #include <string>
 #include <ctime>
@@ -46,9 +62,11 @@ namespace argos {
 
 			const std::string GetReadableFormat();
 
+			void SetRootNode(Node* pc_root_node);
+
 		private:
 
-			Node* m_cRootNode;
+			Node* m_pcRootNode;
 
 	};
 }

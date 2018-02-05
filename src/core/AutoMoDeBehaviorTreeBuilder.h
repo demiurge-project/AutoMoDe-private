@@ -54,24 +54,19 @@ namespace argos {
 		private:
 			/**
 			 * Creates a AutoMoDeBehaviour from an action configuration and add it to the
-			 * Selector in construction.
+			 * parent node in construction.
 			 */
-			void HandleAction(Selector* pc_selector, std::vector<std::string>& vec_bt_state_config);
+			void HandleAction(Node* pc_parent_node, std::vector<std::string>& vec_bt_action_config);
 
 			/**
-			 * Creates a AutoMoDeCondition from a transition configuration and add it to the
-			 * AutoMoDeFiniStateMachine in construction.
+			 * Creates a AutoMoDeCondition from a condition configuration and add it to the
+			 * parent node in construction.
 			 */
-			void HandleTransition(std::vector<std::string>& vec_BehaviorTree_transition_config,
-									const UInt32& un_initial_state_index, const UInt32& un_condition_index);
+			void HandleCondition(Node* pc_parent_node, std::vector<std::string>& vec_bt_condition_config, const UInt32& un_branch_index, const UInt32& un_condition_index);
 
-			/**
-			 * Creates a list containing the indexes of the behaviours reachable from a given state.
-			 * Added for compatibility with irace interdependent parameters.
-			 */
-			const std::vector<UInt32> GetPossibleDestinationBehaviour(const UInt32& un_initial_state_index);
+			void HandleRootNode(AutoMoDeBehaviorTree* pc_behaviour_tree, std::vector<std::string>& vec_bt_root_node_config);
 
-			UInt32 m_unNumberStates;
+			void HandleChild(Node* pc_parent_node, std::vector<std::string>& vec_bt_child_config);
 
 			AutoMoDeBehaviorTree* cBehaviorTree;
 

@@ -26,20 +26,10 @@ namespace argos {
 
       virtual const std::string GetDOTDescription();
 
-      /*
-       * Add a condition to the Selector node.
-       */
-      void AddCondition(AutoMoDeCondition* pc_new_condition);
+			virtual void AddCondition(AutoMoDeCondition* pc_condition);
 
-      /*
-       * Set the behavior to the Selector Node.
-       */
-      void SetBehaviour(AutoMoDeBehaviour* pc_new_behaviour);
+			virtual void AddAction(AutoMoDeBehaviour* pc_action);
 
-    private:
-      std::vector<AutoMoDeCondition*> m_vecConditions;
-
-      AutoMoDeBehaviour* m_cAction;
 	};
 }
 

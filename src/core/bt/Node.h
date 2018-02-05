@@ -45,6 +45,8 @@ namespace argos {
        */
       std::vector<Node*> m_vecChilds;
 
+			std::vector<AutoMoDeCondition*> m_vecConditions;
+			std::vector<AutoMoDeBehaviour*> m_vecActions;
 
 			enum ReturnState {
 				SUCCESS,
@@ -69,6 +71,18 @@ namespace argos {
 			 * Returns a string containing the DOT description of the node.
 			 */
 			virtual const std::string GetDOTDescription() = 0;
+
+			/*
+			 * Adds condition to list of conditions.
+			 * If particular node should not have a condition leaf as child, throw an error!
+			 */
+			virtual void AddCondition(AutoMoDeCondition* pc_condition) = 0;
+
+			/*
+			 * Adds action to list of actions.
+			 * If particular node should not have a action leaf as child, throw an error!
+			 */
+			virtual void AddAction(AutoMoDeBehaviour* pc_action) = 0;
 	};
 }
 
