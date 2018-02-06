@@ -15,6 +15,9 @@
 #include <argos3/core/utility/logging/argos_log.h>
 #include <argos3/core/utility/configuration/argos_exception.h>
 
+#include <string>
+#include <sstream>
+#include <iostream>
 #include <map>
 
 #include "../../modules/AutoMoDeBehaviour.h"
@@ -54,6 +57,9 @@ namespace argos {
         RUNNING
 			};
 
+			UInt8 m_unBranchId;
+
+			std::string m_strDOTLabel;
 
 		public:
 		  virtual ~Node();
@@ -67,10 +73,12 @@ namespace argos {
 			 */
 			virtual ReturnState Tick() = 0;
 
+			virtual std::string GetLabel() = 0;
+
 			/*
 			 * Returns a string containing the DOT description of the node.
 			 */
-			virtual const std::string GetDOTDescription() = 0;
+			virtual void FillDOTDescription(std::ostringstream& ss_dot_string) = 0;
 
 			/*
 			 * Adds condition to list of conditions.
@@ -83,6 +91,15 @@ namespace argos {
 			 * If particular node should not have a action leaf as child, throw an error!
 			 */
 			virtual void AddAction(AutoMoDeBehaviour* pc_action) = 0;
+
+			/*
+			 * Adds node (Selector or SequenceStar) to list of childs.
+			 */
+			virtual void AddChildNode(Node* pc_new_child_node) = 0;
+
+			UInt8 GetBranchId();
+			void SetBranchId(UInt8 un_branch_id);
+			std::string GetDOTLabel();
 	};
 }
 

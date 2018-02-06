@@ -50,9 +50,9 @@ namespace argos {
 	/****************************************/
 
 	const std::string AutoMoDeBehaviorTree::GetReadableFormat() {
-		std::stringstream ssUrl;
-		ssUrl << "http://chart.googleapis.com/chart?cht=gv:dot&chl=digraph finite_state_machine{rankir=LR;" ;
-
+		std::ostringstream ssUrl;
+		ssUrl << "http://chart.googleapis.com/chart?cht=gv:dot&chl=digraph G{" ;
+		m_pcRootNode->FillDOTDescription(ssUrl);
 		ssUrl << "}" ;
 		std::string strUrl = ssUrl.str();
 		std::replace(strUrl.begin(), strUrl.end(), ' ', '+');

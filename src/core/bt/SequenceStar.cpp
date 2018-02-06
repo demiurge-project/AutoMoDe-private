@@ -17,6 +17,7 @@ namespace argos {
 
 	SequenceStar::SequenceStar() {
     m_strLabel = "SequenceStar";
+		m_strDOTLabel = "-->*";
     m_unIndexRunningChild = 0;
   }
 
@@ -39,11 +40,30 @@ namespace argos {
 		return new SequenceStar(this);
 	}
 
+	std::string SequenceStar::GetLabel() {
+		return m_strLabel;
+	}
+
   /****************************************/
   /****************************************/
 
-  const std::string SequenceStar::GetDOTDescription() {
-    return "SequenceStar";
+  void SequenceStar::FillDOTDescription(std::ostringstream& ss_dot_string) {
+		// Creation of graphical nodes
+		ss_dot_string << "node [shape = square];";
+		ss_dot_string << "Root [label=\"" << m_strDOTLabel << "\"];";
+		for (UInt8 i = 0; i < m_vecChilds.size(); i++) {
+			ss_dot_string << m_vecChilds.at(i)->GetLabel() << m_vecChilds.at(i)->GetBranchId() << " [label=\"" << m_vecChilds.at(i)->GetDOTLabel() << "\"];";
+		}
+
+		// Linking nodes
+    for (UInt8 i = 0; i < m_vecChilds.size(); i++) {
+			ss_dot_string << "Root -> " << m_vecChilds.at(i)->GetLabel() << m_vecChilds.at(i)->GetBranchId() << ";";
+		}
+
+		// Ask childs to fill DOT description
+		for (UInt8 i = 0; i < m_vecChilds.size(); i++) {
+			 m_vecChilds.at(i)->FillDOTDescription(ss_dot_string);
+		}
   }
 
 	/****************************************/

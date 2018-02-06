@@ -24,13 +24,15 @@ namespace argos {
 
 			virtual SequenceStar* Clone();
 
-      virtual const std::string GetDOTDescription();
+			virtual std::string GetLabel();
+
+      virtual void FillDOTDescription(std::ostringstream& ss_dot_string);
 
 			virtual void AddCondition(AutoMoDeCondition* pc_condition);
 
 			virtual void AddAction(AutoMoDeBehaviour* pc_action);
 
-      void AddChildNode(Node* pc_new_child_node);
+      virtual void AddChildNode(Node* pc_new_child_node);
 
     private:
       std::vector<Node*> m_vecChilds;

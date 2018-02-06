@@ -80,10 +80,10 @@ namespace argos {
 				}
 				std::vector<std::string> vecChildConfig(first_child, second_child);
 				// Debug
-				std::cout << "Child " << i << std::endl;
-				for (it=vecChildConfig.begin(); it!=vecChildConfig.end(); it++) {
-					std::cout << *(it) << std::endl;
-				}
+				// std::cout << "Child " << i << std::endl;
+				// for (it=vecChildConfig.begin(); it!=vecChildConfig.end(); it++) {
+				// 	std::cout << *(it) << std::endl;
+				// }
 				HandleChild(cRootNode, vecChildConfig);
 			}
 		}
@@ -92,6 +92,7 @@ namespace argos {
 		}
 
 		cBehaviorTree->SetRootNode(cRootNode);
+		std::cout << cRootNode->GetLabel() << std::endl;
 		return cBehaviorTree;
 	}
 
@@ -108,6 +109,7 @@ namespace argos {
 		// Selector case
 		if (unChildType == 0) {
 			cChildNode = new Selector();
+			cChildNode->SetBranchId(unBranchIndex);
 
 			try {
 				// Conditions
@@ -149,6 +151,7 @@ namespace argos {
 				std::vector<std::string> vecActionConfig(action_start, action_end);
 				HandleAction(cChildNode, vecActionConfig);
 
+				pc_parent_node->AddChildNode(cChildNode);
 			} catch(std::exception e) {
 				LOGERR << "[Error while parsing]: Error in Selector node" << std::endl;
 				THROW_ARGOSEXCEPTION("");
@@ -166,8 +169,8 @@ namespace argos {
 	void AutoMoDeBehaviorTreeBuilder::HandleAction(Node* pc_parent_node, std::vector<std::string>& vec_bt_action_config) {
 		AutoMoDeBehaviour* cNewBehaviour;
 		std::vector<std::string>::iterator it;
-		// Extraction of the index of the behaviour in the FSM
-		UInt8 unBehaviourIndex =  atoi((*vec_bt_action_config.begin()).substr(3,4).c_str());
+		// Extraction of the index of the action
+		UInt8 unActionIndex =  atoi((*vec_bt_action_config.begin()).substr(3,4).c_str());
 		// Extraction of the identifier of the behaviour
 		UInt8 unBehaviourIdentifier =  atoi((*(vec_bt_action_config.begin()+1)).c_str());
 
@@ -192,54 +195,25 @@ namespace argos {
 				cNewBehaviour = new AutoMoDeBehaviourRepulsion();
 				break;
 		}
-		cNewBehaviour->SetIndex(unBehaviourIndex);
+		cNewBehaviour->SetIndex(unActionIndex);
 		cNewBehaviour->SetIdentifier(unBehaviourIdentifier);
-		/*
+
 		// Checking for parameters
 		std::string vecPossibleParameters[] = {"rwm", "att", "rep"};
 		UInt8 unNumberPossibleParameters = sizeof(vecPossibleParameters) / sizeof(vecPossibleParameters[0]);
 		for (UInt8 i = 0; i < unNumberPossibleParameters; i++) {
 			std::string strCurrentParameter = vecPossibleParameters[i];
 			std::ostringstream oss;
-			oss << "--" <<strCurrentParameter << unBehaviourIndex;
-			it = std::find(vec_bt_state_config.begin(), vec_bt_state_config.end(), oss.str());
-			if (it != vec_bt_state_config.end()) {
+			oss << "--" << strCurrentParameter << unActionIndex;
+			it = std::find(vec_bt_action_config.begin(), vec_bt_action_config.end(), oss.str());
+			if (it != vec_bt_action_config.end()) {
 				Real fCurrentParameterValue = strtod((*(it+1)).c_str(), NULL);
 				cNewBehaviour->AddParameter(strCurrentParameter, fCurrentParameterValue);
 			}
 		}
 		cNewBehaviour->Init();
 		// Add the constructed Behaviour to the FSM
-		pc_parent_node->AddBehaviour(cNewBehaviour);
-
-		/
-		 * Extract the transitions starting from the state and
-		 * pass them to the transition handler, if they exist.
-		 /
-		std::ostringstream oss;
-		oss << "--n" << unBehaviourIndex;
-		it = std::find(vec_bt_state_config.begin(), vec_bt_state_config.end(), oss.str());
-		if (it != vec_bt_state_config.end()) {
-			UInt8 unNumberTransitions = atoi((*(it+1)).c_str());
-
-			std::vector<std::string>::iterator first_transition;
-			std::vector<std::string>::iterator second_transition;
-
-			for (UInt8 i = 0; i < unNumberTransitions; i++) {
-				std::ostringstream oss;
-				oss << "--n" << unBehaviourIndex << "x" << i;
-				first_transition = std::find(vec_bt_state_config.begin(), vec_bt_state_config.end(), oss.str());
-				if (i+1 < unNumberTransitions) {
-					std::ostringstream oss;
-					oss << "--n" << unBehaviourIndex << "x" << i+1;
-					second_transition = std::find(vec_bt_state_config.begin(), vec_bt_state_config.end(), oss.str());
-				} else {
-					second_transition = vec_bt_state_config.end();
-				}
-				std::vector<std::string> vecTransitionConfig(first_transition, second_transition);
-				//HandleTransition(vecTransitionConfig, unBehaviourIndex, i);
-			}
-		}*/
+		pc_parent_node->AddAction(cNewBehaviour);
 	}
 
 	/****************************************/
