@@ -57,16 +57,39 @@ namespace argos {
 			AutoMoDeBehaviorTree(const AutoMoDeBehaviorTree* pc_fsm);
 
 
+			/*
+			 * Initialize the Behavior Tree.
+			 */
+			void Init();
+
+			/*
+			 * Reset the Behavior Tree.
+			 */
+			void Reset();
+
 			void ControlStep();
 
+			const UInt32& GetTimeStep() const;
 
 			const std::string GetReadableFormat();
 
 			void SetRootNode(Node* pc_root_node);
 
+			void ShareRobotDAO();
+
+			void SetRobotDAO(AutoMoDeRobotDAO* m_pcRobotDAO);
+
 		private:
 
 			Node* m_pcRootNode;
+
+			/*
+			 * Pointer to the object representing the state of the robot.
+			 * @see AutoMoDeRobotDAO.
+			 */
+			AutoMoDeRobotDAO* m_pcRobotDAO;
+
+			UInt32 m_unTimeStep;
 
 	};
 }

@@ -18,7 +18,7 @@
 #include "./core/AutoMoDeBehaviorTree.h"
 #include "./core/AutoMoDeBehaviorTreeBuilder.h"
 #include "./core/AutoMoDeLoopFunctions.h"
-#include "./core/AutoMoDeController.h"
+#include "./core/AutoMoDeControllerBehaviorTree.h"
 
 using namespace argos;
 
@@ -43,7 +43,7 @@ int main(int n_argc, char** ppch_argv) {
 	bool bBtControllerFound = false;
 	UInt32 unSeed = 0;
 
-	std::vector<AutoMoDeBehaviorTree*> vecBehaviorTree;
+	std::vector<AutoMoDeBehaviorTree*> vecBehaviorTrees;
 
 	try {
 		// Cutting off the BT configuration from the command line
@@ -98,19 +98,19 @@ int main(int n_argc, char** ppch_argv) {
 
 				cSimulator.LoadExperiment();
 
-				// Duplicate the finite state machine and pass it to all robots.
-				// CSpace::TMapPerType cEntities = cSimulator.GetSpace().GetEntitiesByType("controller");
-				// for (CSpace::TMapPerType::iterator it = cEntities.begin(); it != cEntities.end(); ++it) {
-				// 	CControllableEntity* pcEntity = any_cast<CControllableEntity*>(it->second);
-				// 	AutoMoDeFiniteStateMachine* pcPersonalFsm = new AutoMoDeFiniteStateMachine(pcFiniteStateMachine);
-				// 	vecFsm.push_back(pcPersonalFsm);
-				// 	try {
-				// 		AutoMoDeController& cController = dynamic_cast<AutoMoDeController&> (pcEntity->GetController());
-				// 		cController.SetFiniteStateMachine(pcPersonalFsm);
-				// 	} catch (std::exception& ex) {
-				// 		LOGERR << "Error while casting: " << ex.what() << std::endl;
-				// 	}
-				// }
+				//Duplicate the behavior tree and pass it to all robots.
+				CSpace::TMapPerType cEntities = cSimulator.GetSpace().GetEntitiesByType("controller");
+				 for (CSpace::TMapPerType::iterator it = cEntities.begin(); it != cEntities.end(); ++it) {
+				 	CControllableEntity* pcEntity = any_cast<CControllableEntity*>(it->second);
+					AutoMoDeBehaviorTree* pcPersonalBt = cBuilder.BuildBehaviorTree(vecConfigBt);
+					vecBehaviorTrees.push_back(pcPersonalBt);
+					try {
+						AutoMoDeControllerBehaviorTree& cController = dynamic_cast<AutoMoDeControllerBehaviorTree&> (pcEntity->GetController());
+						cController.SetBehaviorTree(pcPersonalBt);
+					} catch (std::exception& ex) {
+						LOGERR << "Error while casting: " << ex.what() << std::endl;
+					}
+				}
 
 				cSimulator.Execute();
 

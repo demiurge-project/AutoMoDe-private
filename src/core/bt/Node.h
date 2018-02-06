@@ -51,17 +51,19 @@ namespace argos {
 			std::vector<AutoMoDeCondition*> m_vecConditions;
 			std::vector<AutoMoDeBehaviour*> m_vecActions;
 
-			enum ReturnState {
-				SUCCESS,
-				FAILURE,
-        RUNNING
-			};
-
 			UInt8 m_unBranchId;
 
 			std::string m_strDOTLabel;
 
 		public:
+
+			enum ReturnState {
+				SUCCESS,
+				FAILURE,
+				RUNNING
+			};
+
+
 		  virtual ~Node();
 
       /*
@@ -72,6 +74,8 @@ namespace argos {
       /*
 			 */
 			virtual ReturnState Tick() = 0;
+
+			virtual void Reset() = 0;
 
 			virtual std::string GetLabel() = 0;
 
@@ -97,9 +101,14 @@ namespace argos {
 			 */
 			virtual void AddChildNode(Node* pc_new_child_node) = 0;
 
+			virtual void ShareRobotDAO(AutoMoDeRobotDAO* pc_robot_dao) = 0;
+
 			UInt8 GetBranchId();
+
 			void SetBranchId(UInt8 un_branch_id);
+
 			std::string GetDOTLabel();
+
 	};
 }
 

@@ -63,7 +63,7 @@ set(BEHAVIOR_TREE_HEADERS
 	core/bt/SequenceStar.h
 	#AutoMoDe
 	core/AutoMoDeRobotDAO.h
-	core/AutoMoDeController.h
+	core/AutoMoDeControllerBehaviorTree.h
 	core/AutoMoDeRabBuffer.h
 	core/AutoMoDeLoopFunctions.h
 	# Behaviours
@@ -92,7 +92,7 @@ set(BEHAVIOR_TREE_SOURCES
 	core/bt/SequenceStar.cpp
 	#AutoMoDe
 	core/AutoMoDeRobotDAO.cpp
-	core/AutoMoDeController.cpp
+	core/AutoMoDeControllerBehaviorTree.cpp
 	core/AutoMoDeRabBuffer.cpp
 	core/AutoMoDeLoopFunctions.cpp
 	# Behaviours
@@ -126,4 +126,4 @@ target_link_libraries(automode_main automode argos3core_${ARGOS_BUILD_FOR} argos
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 add_executable(automode_main_bt AutoMoDeMainBT.cpp)
-target_link_libraries(automode_main_bt automode_bt automode argos3core_${ARGOS_BUILD_FOR} argos3plugin_${ARGOS_BUILD_FOR}_epuck)
+target_link_libraries(automode_main_bt automode_bt argos3core_${ARGOS_BUILD_FOR} argos3plugin_${ARGOS_BUILD_FOR}_epuck)

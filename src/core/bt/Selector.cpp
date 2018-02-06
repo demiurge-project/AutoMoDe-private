@@ -29,8 +29,26 @@ namespace argos {
   /****************************************/
 
 
-	Selector::Selector(Selector* pc_behaviour) {
+	Selector::Selector(Selector* pc_selector) {
 	}
+
+	/****************************************/
+	/****************************************/
+
+	Node::ReturnState Selector::Tick() {
+		for (UInt8 i = 0; i < m_vecConditions.size(); i++) {
+			if (m_vecConditions.at(i)->Verify()) {
+				return Node::ReturnState::SUCCESS;
+			}
+		}
+		m_vecActions.at(0)->ControlStep();
+		return Node::ReturnState::RUNNING;
+	}
+
+	/****************************************/
+	/****************************************/
+
+	void Selector::Reset() {}
 
 	/****************************************/
 	/****************************************/
@@ -64,13 +82,6 @@ namespace argos {
 	 return m_strLabel;
 	}
 
-	/****************************************/
-  /****************************************/
-
-  Node::ReturnState Selector::Tick() {
-    return SUCCESS;
-  }
-
   /****************************************/
   /****************************************/
 
@@ -90,6 +101,18 @@ namespace argos {
 
 	void Selector::AddChildNode(Node* pc_new_child_node) {
 		THROW_ARGOSEXCEPTION("As of now, a Selector node should not have a node different from an Action or a Condition as child")
+	}
+
+	/****************************************/
+	/****************************************/
+
+	void Selector::ShareRobotDAO(AutoMoDeRobotDAO* pc_robot_dao) {
+		for (UInt8 i = 0; i < m_vecConditions.size(); i++) {
+			m_vecConditions.at(i)->SetRobotDAO(pc_robot_dao);
+		}
+		for (UInt8 i = 0; i < m_vecActions.size(); i++) {
+			m_vecActions.at(i)->SetRobotDAO(pc_robot_dao);
+		}
 	}
 
 }

@@ -1,5 +1,5 @@
 /*
- * @file <src/core/AutoMoDeController.cpp>
+ * @file <src/core/AutoMoDeControllerBehaviorTree.cpp>
  *
  * @author Antoine Ligot - <aligot@ulb.ac.be>
  *
@@ -8,41 +8,41 @@
  * @license MIT License
  */
 
-#include "AutoMoDeController.h"
+#include "AutoMoDeControllerBehaviorTree.h"
 
 namespace argos {
 
 	/****************************************/
 	/****************************************/
 
-	AutoMoDeController::AutoMoDeController() {
+	AutoMoDeControllerBehaviorTree::AutoMoDeControllerBehaviorTree() {
 		m_pcRobotState = new AutoMoDeRobotDAO();
 		m_unTimeStep = 0;
-		m_strFsmConfiguration = "";
+		m_strBtConfiguration = "";
 		m_bMaintainHistory = false;
-		m_bPrintReadableFsm = false;
+		m_bPrintReadableBt = false;
 		m_strHistoryFolder = "./";
-		m_bFiniteStateMachineGiven = false;
+		m_bBehaviorTreeGiven = false;
 	}
 
 	/****************************************/
 	/****************************************/
 
-	AutoMoDeController::~AutoMoDeController() {
+	AutoMoDeControllerBehaviorTree::~AutoMoDeControllerBehaviorTree() {
 		delete m_pcRobotState;
-		delete m_pcFsmBuilder;
+		delete m_pcBehaviorTreeBuilder;
 	}
 
 	/****************************************/
 	/****************************************/
 
-	void AutoMoDeController::Init(TConfigurationNode& t_node) {
+	void AutoMoDeControllerBehaviorTree::Init(TConfigurationNode& t_node) {
 		// Parsing parameters
 		try {
-			GetNodeAttributeOrDefault(t_node, "fsm-config", m_strFsmConfiguration, m_strFsmConfiguration);
+			GetNodeAttributeOrDefault(t_node, "bt-config", m_strBtConfiguration, m_strBtConfiguration);
 			GetNodeAttributeOrDefault(t_node, "history", m_bMaintainHistory, m_bMaintainHistory);
 			GetNodeAttributeOrDefault(t_node, "hist-folder", m_strHistoryFolder, m_strHistoryFolder);
-			GetNodeAttributeOrDefault(t_node, "readable", m_bPrintReadableFsm, m_bPrintReadableFsm);
+			GetNodeAttributeOrDefault(t_node, "readable", m_bPrintReadableBt, m_bPrintReadableBt);
 		} catch (CARGoSException& ex) {
 			THROW_ARGOSEXCEPTION_NESTED("Error parsing <params>", ex);
 		}
@@ -51,24 +51,22 @@ namespace argos {
 		m_pcRobotState->SetRobotIdentifier(m_unRobotID);
 
 		/*
-		 * If a FSM configuration is given as parameter of the experiment file, create a FSM from it
+		 * If a BT configuration is given as parameter of the experiment file, create a FSM from it
 		 */
-		if (m_strFsmConfiguration.compare("") != 0 && !m_bFiniteStateMachineGiven) {
-			m_pcFsmBuilder = new AutoMoDeFsmBuilder();
-			SetFiniteStateMachine(m_pcFsmBuilder->BuildFiniteStateMachine(m_strFsmConfiguration));
+		if (m_strBtConfiguration.compare("") != 0 && !m_bBehaviorTreeGiven) {
+			m_pcBehaviorTreeBuilder = new AutoMoDeBehaviorTreeBuilder();
+			SetBehaviorTree(m_pcBehaviorTreeBuilder->BuildBehaviorTree(m_strBtConfiguration));
 			if (m_bMaintainHistory) {
-				m_pcFiniteStateMachine->SetHistoryFolder(m_strHistoryFolder);
-				m_pcFiniteStateMachine->MaintainHistory();
+				//m_pcBehaviorTree->SetHistoryFolder(m_strHistoryFolder);
+				//m_pcBehaviorTree->MaintainHistory();
 			}
-			if (m_bPrintReadableFsm) {
-				std::cout << "Finite State Machine description: " << std::endl;
-				std::cout << m_pcFiniteStateMachine->GetReadableFormat() << std::endl;
+			if (m_bPrintReadableBt) {
+				std::cout << "Behavior Tree description: " << std::endl;
+				std::cout << m_pcBehaviorTree->GetReadableFormat() << std::endl;
 			}
 		} else {
-			LOGERR << "Warning: No finite state machine configuration found in .argos" << std::endl;
+			LOGERR << "Warning: No behavior tree configuration found in .argos" << std::endl;
 		}
-
-
 
 		/*
 		 *  Initializing sensors and actuators
@@ -100,7 +98,7 @@ namespace argos {
 	/****************************************/
 	/****************************************/
 
-	void AutoMoDeController::ControlStep() {
+	void AutoMoDeControllerBehaviorTree::ControlStep() {
 		/*
 		 * 1. Update RobotDAO
 		 */
@@ -123,9 +121,9 @@ namespace argos {
 		}
 
 		/*
-		 * 2. Execute step of FSM
+		 * 2. Execute step of running Action of BT
 		 */
-		m_pcFiniteStateMachine->ControlStep();
+		m_pcBehaviorTree->ControlStep();
 
 		/*
 		 * 3. Update Actuators
@@ -147,13 +145,13 @@ namespace argos {
 	/****************************************/
 	/****************************************/
 
-	void AutoMoDeController::Destroy() {}
+	void AutoMoDeControllerBehaviorTree::Destroy() {}
 
 	/****************************************/
 	/****************************************/
 
-	void AutoMoDeController::Reset() {
-		m_pcFiniteStateMachine->Reset();
+	void AutoMoDeControllerBehaviorTree::Reset() {
+		m_pcBehaviorTree->Reset();
 		m_pcRobotState->Reset();
 		// Restart actuation.
 		InitializeActuation();
@@ -162,17 +160,17 @@ namespace argos {
 	/****************************************/
 	/****************************************/
 
-	void AutoMoDeController::SetFiniteStateMachine(AutoMoDeFiniteStateMachine* pc_finite_state_machine) {
-		m_pcFiniteStateMachine = pc_finite_state_machine;
-		m_pcFiniteStateMachine->SetRobotDAO(m_pcRobotState);
-		m_pcFiniteStateMachine->Init();
-		m_bFiniteStateMachineGiven = true;
+	void AutoMoDeControllerBehaviorTree::SetBehaviorTree(AutoMoDeBehaviorTree* pc_behaviour_tree) {
+		m_pcBehaviorTree = pc_behaviour_tree;
+		m_pcBehaviorTree->SetRobotDAO(m_pcRobotState);
+		m_pcBehaviorTree->Init();
+		m_bBehaviorTreeGiven = true;
 	}
 
 	/****************************************/
 	/****************************************/
 
-	void AutoMoDeController::InitializeActuation() {
+	void AutoMoDeControllerBehaviorTree::InitializeActuation() {
 		/*
 		 * Constantly send range-and-bearing messages containing the robot integer identifier.
 		 */
@@ -186,5 +184,5 @@ namespace argos {
 		}
 	}
 
-	REGISTER_CONTROLLER(AutoMoDeController, "automode_controller");
+	REGISTER_CONTROLLER(AutoMoDeControllerBehaviorTree, "automode_controller_bt");
 }

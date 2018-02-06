@@ -92,7 +92,6 @@ namespace argos {
 		}
 
 		cBehaviorTree->SetRootNode(cRootNode);
-		std::cout << cRootNode->GetLabel() << std::endl;
 		return cBehaviorTree;
 	}
 

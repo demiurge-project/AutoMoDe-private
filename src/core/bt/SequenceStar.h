@@ -22,6 +22,8 @@ namespace argos {
 
 			virtual ReturnState Tick();
 
+			virtual void Reset();
+
 			virtual SequenceStar* Clone();
 
 			virtual std::string GetLabel();
@@ -33,6 +35,8 @@ namespace argos {
 			virtual void AddAction(AutoMoDeBehaviour* pc_action);
 
       virtual void AddChildNode(Node* pc_new_child_node);
+
+			virtual void ShareRobotDAO(AutoMoDeRobotDAO* pc_robot_dao);
 
     private:
       std::vector<Node*> m_vecChilds;
