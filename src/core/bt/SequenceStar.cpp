@@ -24,7 +24,11 @@ namespace argos {
   /****************************************/
 	/****************************************/
 
-  SequenceStar::~SequenceStar() {}
+  SequenceStar::~SequenceStar() {
+		for (UInt8 i = 0; i < m_vecChilds.size(); i++) {
+			delete m_vecChilds.at(i);
+		}
+	}
 
   /****************************************/
   /****************************************/

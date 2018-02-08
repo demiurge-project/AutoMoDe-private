@@ -150,9 +150,9 @@ int main(int n_argc, char** ppch_argv) {
     return 1;
   }
 
-	// for (unsigned int i = 0; i < vecFsm.size(); ++i) {
-	// 	delete vecFsm.at(i);
-	// }
+	for (unsigned int i = 0; i < vecBehaviorTrees.size(); ++i) {
+		delete vecBehaviorTrees.at(i);
+	}
 
 
 	/* Everything's ok, exit */

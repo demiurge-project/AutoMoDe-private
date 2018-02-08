@@ -23,7 +23,7 @@ namespace argos {
 	/****************************************/
 
 	AutoMoDeBehaviorTree::~AutoMoDeBehaviorTree() {
-
+		delete m_pcRootNode;
 	}
 
 	/****************************************/

@@ -23,7 +23,14 @@ namespace argos {
   /****************************************/
 	/****************************************/
 
-  Selector::~Selector() {}
+  Selector::~Selector() {
+		for (UInt8 i = 0; i < m_vecConditions.size(); i++) {
+			delete m_vecConditions.at(i);
+		}
+		for (UInt8 i = 0; i < m_vecActions.size(); i++) {
+			delete m_vecActions.at(i);
+		}
+	}
 
   /****************************************/
   /****************************************/
@@ -77,6 +84,9 @@ namespace argos {
 			ss_dot_string << m_strLabel << m_unBranchId << " -> " << "act" << m_unBranchId << "x" << i <<  ";";
 		}
   }
+
+	/****************************************/
+	/****************************************/
 
 	std::string Selector::GetLabel() {
 	 return m_strLabel;
