@@ -55,19 +55,14 @@ namespace argos {
 		m_unTimeStep = m_unTimeStep + 1;
 
 		/* Tick the tree and execute RUNNING leaf */
-		Node::ReturnState treeState = m_pcRootNode->Tick();
+		m_eTreeStatus = m_pcRootNode->Tick();
 
 		/* If state returned by the tree is SUCCESS, then no action has been performed, and the robot should not move.
 		 * However, not all conditions have been tested if the pervious RUNNING branch is not the first (left) branch
-		 * Current solution is to tick the tree a second time to be sure that all conditions are tested. Hence, conditions
-		 * that were tested at the first tick might be tested twice, with a possible outcome as the conditions are probabilistics.
-		 * It might be an issue.
 		 */
-		if (treeState == Node::ReturnState::SUCCESS) {
-			treeState = m_pcRootNode->Tick();
-			if (treeState == Node::ReturnState::SUCCESS) {
-				m_pcRobotDAO->SetWheelsVelocity(0.0, 0.0);
-			}
+		if (m_eTreeStatus == Node::SUCCESS) {
+			//LOG << "STOP" << std::endl;
+			m_pcRobotDAO->SetWheelsVelocity(0.0, 0.0);
 		}
 	}
 

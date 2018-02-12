@@ -43,13 +43,13 @@ namespace argos {
 		Node::ReturnState eCurrentState;
 		for (UInt8 i = m_unIndexRunningChild; i < m_vecChilds.size(); i++) {
 			eCurrentState = m_vecChilds.at(i)->Tick();
-			if (eCurrentState == Node::ReturnState::RUNNING) {
+			if (eCurrentState == Node::RUNNING) {
 				m_unIndexRunningChild = i;
-				return Node::ReturnState::RUNNING;
+				return Node::RUNNING;
 			}
 		}
 		m_unIndexRunningChild = 0;
-		return Node::ReturnState::SUCCESS;
+		return Node::SUCCESS;
  	}
 
 	/****************************************/

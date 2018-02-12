@@ -133,10 +133,10 @@ namespace argos {
 					}
 					std::vector<std::string> vecConditionConfig(first_condition, second_condition);
 					// Debug
-					// std::cout << "\tCond " << i << std::endl;
+					// std::cout << "\tCond " << unConditionIndex << std::endl;
 					// for (it=vecConditionConfig.begin(); it!=vecConditionConfig.end(); it++) {
 					//  	std::cout << "\t" << *(it) << std::endl;
-					//}
+					// }
 					HandleCondition(cChildNode, vecConditionConfig, unBranchIndex, unConditionIndex);
 				}
 
@@ -148,6 +148,11 @@ namespace argos {
 				action_start = std::find(vec_bt_child_config.begin(), vec_bt_child_config.end(), ssActionVariable.str());
 				action_end = vec_bt_child_config.end();
 				std::vector<std::string> vecActionConfig(action_start, action_end);
+				// Debug
+				// std::cout << "\tAction " << std::endl;
+				// for (it=vecActionConfig.begin(); it!=vecActionConfig.end(); it++) {
+				// 	std::cout << "\t" << *(it) << std::endl;
+				// }
 				HandleAction(cChildNode, vecActionConfig);
 
 				pc_parent_node->AddChildNode(cChildNode);

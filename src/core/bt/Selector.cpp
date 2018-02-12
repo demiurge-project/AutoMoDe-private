@@ -45,11 +45,12 @@ namespace argos {
 	Node::ReturnState Selector::Tick() {
 		for (UInt8 i = 0; i < m_vecConditions.size(); i++) {
 			if (m_vecConditions.at(i)->Verify()) {
-				return Node::ReturnState::SUCCESS;
+				return Node::SUCCESS;
 			}
 		}
+		//LOG << "[" << m_unRobotID << "] Action " << m_vecActions.at(0)->GetLabel() << std::endl;
 		m_vecActions.at(0)->ControlStep();
-		return Node::ReturnState::RUNNING;
+		return Node::RUNNING;
 	}
 
 	/****************************************/
@@ -117,6 +118,7 @@ namespace argos {
 	/****************************************/
 
 	void Selector::ShareRobotDAO(AutoMoDeRobotDAO* pc_robot_dao) {
+		//m_unRobotID = pc_robot_dao->GetRobotIdentifier();
 		for (UInt8 i = 0; i < m_vecConditions.size(); i++) {
 			m_vecConditions.at(i)->SetRobotDAO(pc_robot_dao);
 		}

@@ -38,6 +38,8 @@ namespace argos {
 
 			virtual void ShareRobotDAO(AutoMoDeRobotDAO* pc_robot_dao);
 
+			UInt32 m_unRobotID;
+
 	};
 }
 

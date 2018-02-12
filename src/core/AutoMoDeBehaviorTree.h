@@ -91,6 +91,8 @@ namespace argos {
 
 			UInt32 m_unTimeStep;
 
+			Node::ReturnState m_eTreeStatus;
+
 	};
 }
 
