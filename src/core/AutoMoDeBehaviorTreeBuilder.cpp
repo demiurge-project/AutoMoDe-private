@@ -69,11 +69,11 @@ namespace argos {
 			std::vector<std::string>::iterator second_child;
 			for (UInt32 i = 0; i < unNumberChilds; i++) {
 				std::ostringstream oss;
-				oss << "--c" << i;
+				oss << "--n" << i;
 				first_child = std::find(vec_bt_config.begin(), vec_bt_config.end(), oss.str());
 				if (i+1 < unNumberChilds) {
 					std::ostringstream oss;
-					oss << "--c" << i+1;
+					oss << "--n" << i+1;
 					second_child = std::find(vec_bt_config.begin(), vec_bt_config.end(), oss.str());
 				} else {
 					second_child = vec_bt_config.end();
