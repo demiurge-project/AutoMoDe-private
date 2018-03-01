@@ -30,7 +30,8 @@ namespace argos {
 	/****************************************/
 
 	AutoMoDeBehaviorTree::AutoMoDeBehaviorTree(const AutoMoDeBehaviorTree* pc_behavior_tree) {
-
+		Node* pcRootNode = pc_behavior_tree->GetRootNode();
+		m_pcRootNode = pcRootNode->Clone();
 	}
 
 	/****************************************/
@@ -71,6 +72,13 @@ namespace argos {
 
 	void AutoMoDeBehaviorTree::SetRootNode(Node* pc_root_node) {
 		m_pcRootNode = pc_root_node;
+	}
+
+	/****************************************/
+	/****************************************/
+
+	Node* AutoMoDeBehaviorTree::GetRootNode() const{
+		return m_pcRootNode;
 	}
 
 	/****************************************/

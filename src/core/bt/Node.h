@@ -103,6 +103,12 @@ namespace argos {
 
 			virtual void ShareRobotDAO(AutoMoDeRobotDAO* pc_robot_dao) = 0;
 
+			std::vector<Node*> GetChildNodes();
+
+			std::vector<AutoMoDeBehaviour*> GetActions();
+
+			std::vector<AutoMoDeCondition*> GetConditions();
+
 			UInt8 GetBranchId();
 
 			void SetBranchId(UInt8 un_branch_id);

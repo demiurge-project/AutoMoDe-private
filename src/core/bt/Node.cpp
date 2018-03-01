@@ -38,4 +38,24 @@ namespace argos {
 		return m_strDOTLabel;
 	}
 
+	/****************************************/
+	/****************************************/
+
+	std::vector<Node*> Node::GetChildNodes() {
+		return m_vecChilds;
+	}
+
+	/****************************************/
+	/****************************************/
+
+	std::vector<AutoMoDeBehaviour*> Node::GetActions() {
+		return m_vecActions;
+	}
+
+	/****************************************/
+	/****************************************/
+
+	std::vector<AutoMoDeCondition*> Node::GetConditions() {
+		return m_vecConditions;
+	}
 }

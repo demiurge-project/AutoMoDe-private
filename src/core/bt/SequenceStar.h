@@ -38,9 +38,9 @@ namespace argos {
 
 			virtual void ShareRobotDAO(AutoMoDeRobotDAO* pc_robot_dao);
 
-    private:
-      std::vector<Node*> m_vecChilds;
+			UInt32 GetIndexRunningChild();
 
+    private:
       UInt8 m_unIndexRunningChild;
 	};
 }

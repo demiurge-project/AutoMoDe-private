@@ -34,6 +34,13 @@ namespace argos {
   /****************************************/
 
 	SequenceStar::SequenceStar(SequenceStar* pc_sequencestar) {
+		m_unIndexRunningChild = pc_sequencestar->GetIndexRunningChild();
+
+		std::vector<Node*> vecChildNodes = pc_sequencestar->GetChildNodes();
+		m_vecChilds.clear();
+		for (std::vector<Node*>::iterator it = vecChildNodes.begin(); it != vecChildNodes.end(); ++it) {
+			m_vecChilds.push_back((*it)->Clone());
+		}
 	}
 
 	/****************************************/
@@ -101,6 +108,13 @@ namespace argos {
   void SequenceStar::AddChildNode(Node* pc_new_child_node) {
     m_vecChilds.push_back(pc_new_child_node);
   }
+
+	/****************************************/
+	/****************************************/
+
+	UInt32 SequenceStar::GetIndexRunningChild() {
+		return m_unIndexRunningChild;
+	}
 
 	/****************************************/
 	/****************************************/

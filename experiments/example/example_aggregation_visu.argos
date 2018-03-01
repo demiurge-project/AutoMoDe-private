@@ -22,7 +22,7 @@
   <controllers>
 	<!-- TRANSMITTER -->
     <automode_controller id="automode"
-                        library="/home/aligot/Desktop/Arena/AutoMoDe-BT/build/src/libautomode.so">
+                        library="/home/aligot/Desktop/Arena/argos3-AutoMoDe/build_simulator/src/libautomode.so">
       <actuators>
         <epuck_wheels implementation="default" noise_std_dev="0.05"/>
         <epuck_rgb_leds implementation="default" medium="leds"/>

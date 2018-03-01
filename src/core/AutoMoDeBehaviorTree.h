@@ -52,10 +52,8 @@ namespace argos {
 
 			/*
 			 * Copy constructor.
-			 * Intensively used in the main to duplicate the BT to all robots.
 			 */
 			AutoMoDeBehaviorTree(const AutoMoDeBehaviorTree* pc_fsm);
-
 
 			/*
 			 * Initialize the Behavior Tree.
@@ -74,6 +72,8 @@ namespace argos {
 			const std::string GetReadableFormat();
 
 			void SetRootNode(Node* pc_root_node);
+
+			Node* GetRootNode() const;
 
 			void ShareRobotDAO();
 
