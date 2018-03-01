@@ -1,7 +1,7 @@
 /*
  * @file <src/core/AutoMoDeFsmBuilder.cpp>
  *
- * @author Antoine Ligot - <aligot@ulb.ac.be>
+ * @author Antoine Ligot and Muhammed Salman - <aligot@ulb.ac.be>
  *
  * @package ARGoS3-AutoMoDe
  *
