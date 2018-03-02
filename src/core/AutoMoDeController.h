@@ -26,6 +26,7 @@
 #include <argos3/plugins/robots/e-puck/control_interface/ci_epuck_light_sensor.h>
 #include <argos3/plugins/robots/e-puck/control_interface/ci_epuck_ground_sensor.h>
 #include <argos3/plugins/robots/e-puck/control_interface/ci_epuck_omnidirectional_camera_sensor.h>
+#include <argos3/plugins/robots/e-puck/control_interface/ci_epuck_range_and_bearing_sensor.h>
 
 namespace argos{
 	class AutoMoDeController: public CCI_Controller {
@@ -66,13 +67,6 @@ namespace argos{
 			void SetFiniteStateMachine(AutoMoDeFiniteStateMachine* pc_fine_state_machine);
 
 		private:
-			/*
-			 * Function that contains all actuations required at the start of an experiment or during the entire experiment.
-			 * Example of what you might add in the future: display LED colors, start omnidirectional camera, etc.
-			 * This function needs to be called by Reset() in order for the experiment to properly restart.
-			 */
-			void InitializeActuation();
-
 			/*
 			 * Pointer to the finite state machine object that represents the behaviour
 			 * of the robot.
