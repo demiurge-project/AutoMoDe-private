@@ -102,12 +102,18 @@ namespace argos {
 			case 5:
 				cNewBehaviour = new AutoMoDeBehaviourRepulsion();
 				break;
+            case 6:
+                cNewBehaviour = new AutoMoDeBehaviourAttractionColor();
+                break;
+            case 7:
+                cNewBehaviour = new AutoMoDeBehaviourRepulsionColor();
+                break;
 		}
 		cNewBehaviour->SetIndex(unBehaviourIndex);
 		cNewBehaviour->SetIdentifier(unBehaviourIdentifier);
 
 		// Checking for parameters
-		std::string vecPossibleParameters[] = {"rwm", "att", "rep"};
+        std::string vecPossibleParameters[] = {"rwm", "att", "rep", "cle", "clr"};
 		UInt8 unNumberPossibleParameters = sizeof(vecPossibleParameters) / sizeof(vecPossibleParameters[0]);
 		for (UInt8 i = 0; i < unNumberPossibleParameters; i++) {
 			std::string strCurrentParameter = vecPossibleParameters[i];
@@ -194,6 +200,9 @@ namespace argos {
 				case 5:
 					cNewCondition = new AutoMoDeConditionFixedProbability();
 					break;
+                case 6:
+                    cNewCondition = new AutoMoDeConditionColor();
+                    break;
 			}
 
 			cNewCondition->SetOriginAndExtremity(un_initial_state_index, unToBehaviour);
@@ -202,7 +211,7 @@ namespace argos {
 
 
 			// Checking for parameters
-			std::string vecPossibleParameters[] = {"p", "w"};
+            std::string vecPossibleParameters[] = {"p", "w", "l", "d", "e", "i"};
 			UInt8 unNumberPossibleParameters = sizeof(vecPossibleParameters) / sizeof(vecPossibleParameters[0]);
 			for (UInt8 i = 0; i < unNumberPossibleParameters; i++) {
 				std::string strCurrentParameter = vecPossibleParameters[i];

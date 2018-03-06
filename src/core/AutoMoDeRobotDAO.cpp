@@ -22,12 +22,41 @@ namespace argos {
 		m_fMaxVelocity = 10;
 		m_fLeftWheelVelocity = 0;
 		m_fRightWheelVelocity = 0;
+        m_cLEDsColor = CColor::BLACK;
 	}
 
 	/****************************************/
 	/****************************************/
 
 	AutoMoDeRobotDAO::~AutoMoDeRobotDAO() {}
+
+    /****************************************/
+    /****************************************/
+
+    CCI_EPuckOmnidirectionalCameraSensor::SReadings AutoMoDeRobotDAO::GetCameraInput() const {
+        return m_sCameraInput;
+    }
+
+    /****************************************/
+    /****************************************/
+
+    void AutoMoDeRobotDAO::SetCameraInput(CCI_EPuckOmnidirectionalCameraSensor::SReadings s_cam_input) {
+        m_sCameraInput = s_cam_input;
+    }
+
+    /****************************************/
+    /****************************************/
+
+    void AutoMoDeRobotDAO::SetLEDsColor(const CColor& c_color) {
+        m_cLEDsColor = c_color;
+    }
+
+    /****************************************/
+    /****************************************/
+
+    const CColor& AutoMoDeRobotDAO::GetLEDsColor() const {
+        return m_cLEDsColor;
+    }
 
 	/****************************************/
 	/****************************************/
@@ -153,6 +182,7 @@ namespace argos {
 		m_fLeftWheelVelocity = 0;
 		m_fRightWheelVelocity = 0;
 		m_pcRabMessageBuffer.Reset();
+        m_cLEDsColor = CColor::BLACK;
 	}
 
 	/****************************************/

@@ -1,0 +1,156 @@
+<?xml version="1.0" ?>
+<argos-configuration>
+  <!-- ************* -->
+  <!-- * Framework * -->
+  <!-- ************* -->
+  <framework>
+    <experiment length="1200"
+                ticks_per_second="10" random_seed="0"/>
+  </framework>
+
+  <!-- ****************** -->
+  <!-- * Loop functions * -->
+  <!-- ****************** -->
+  <loop_functions library="../../build/loop-functions/colors/libcolors_loopfunc.so"
+   label="colors_loop_function">
+       <params number_robots="20"
+               number_edges="6"
+               number_boxes_per_edge="6"
+               lenght_boxes="0.2"/>
+  </loop_functions>
+
+  <!-- *************** -->
+  <!-- * Controllers * -->
+  <!-- *************** -->
+  <controllers>
+	<!-- TRANSMITTER -->
+    <automode_controller id="automode"
+                        library="../../build/src/libautomode.so">
+      <actuators>
+        <epuck_wheels implementation="default" noise_std_dev="0.05"/>
+        <epuck_rgb_leds implementation="default" medium="leds"/>
+        <epuck_range_and_bearing implementation="medium" medium="rab" data_size="4" range="0.7"/>
+      </actuators>
+      <sensors>
+		    <epuck_proximity implementation="default" show_rays="false" noise_level="0.05" calibrated="true"/>
+        <epuck_range_and_bearing implementation="medium" medium="rab" data_size="4" nois_std_deviation="1.5" loss_probability="0.85" calibrated="true"/>
+		    <epuck_light implementation="default" show_rays="false" noise_level="0.05" calibrated="true"/>
+		    <epuck_ground implementation="rot_z_only" noise_level="0.05" calibrated="true"/>
+            <epuck_omnidirectional_camera implementation="rot_z_only" medium="leds" show_rays="true"/>
+      </sensors>
+    <params readable="true" fsm-config="--nstates 8
+
+                                        --s0 0 --rwm0 1 --cle0 0
+                                        --n0 3
+                                        --n0x0 0 --c0x0 6 --p0x0 1.0 --l0x0 3 --d0x0 50
+                                        --n0x1 2 --c0x1 6 --p0x1 1.0 --l0x1 2 --d0x1 50
+                                        --n0x2 6 --c0x2 6 --p0x2 1.0 --l0x2 1 --d0x2 50
+
+                                        --s1 6 --att1 5 --cle1 4  --clr1 3
+                                        --n1 3
+                                        --n1x0 1 --c1x0 2 --p1x0 0.25
+                                        --n1x1 6 --c1x1 6 --p1x1 1.0 --l1x1 1 --d1x1 50
+                                        --n1x2 6 --c1x2 6 --p1x2 1.0 --l1x2 5 --d1x2 50
+
+                                        --s2 7 --rep2 5 --cle2 6 --clr2 3
+                                        --n2 3
+                                        --n2x0 4 --c2x0 5 --p2x0 0.75
+                                        --n2x1 6 --c2x1 6 --p2x1 1.0 --l2x1 1 --d2x1 50
+                                        --n2x2 6 --c2x2 6 --p2x2 1.0 --l2x2 5 --d2x2 50
+
+                                        --s3 6 --att3 5 --cle3 6 --clr3 2
+                                        --n3 3
+                                        --n3x0 3 --c3x0 0 --p3x0 0.25
+                                        --n3x1 6 --c3x1 6 --p3x1 1.0 --l3x1 1 --d3x1 50
+                                        --n3x2 6 --c3x2 6 --p3x2 1.0 --l3x2 5 --d3x2 50
+
+                                        --s4 7 --rep4 5 --cle4 4 --clr4 2
+                                        --n4 3
+                                        --n4x0 5 --c4x0 5 --p4x0 0.75
+                                        --n4x1 6 --c4x1 6 --p4x1 1.0 --l4x1 1 --d4x1 50
+                                        --n4x2 6 --c4x2 6 --p4x2 1.0 --l4x2 5 --d4x2 50
+
+                                        --s5 0 --rwm5 1 --cle5 6
+                                        --n5 4
+                                        --n5x0 2 --c5x0 6 --p5x0 1.0 --l5x0 3 --d5x0 50
+                                        --n5x1 3 --c5x1 6 --p5x1 1.0 --l5x1 2 --d5x1 50
+                                        --n5x2 6 --c5x2 6 --p5x2 1.0 --l5x2 1 --d5x2 50
+                                        --n5x3 6 --c5x3 6 --p5x3 1.0 --l5x3 5 --d5x3 50
+
+                                        --s6 0 --rwm6 1 --cle6 4
+                                        --n6 4
+                                        --n6x0 1 --c6x0 6 --p6x0 1.0 --l6x0 3 --d6x0 50
+                                        --n6x1 4 --c6x1 6 --p6x1 1.0 --l6x1 2 --d6x1 50
+                                        --n6x2 6 --c6x2 6 --p6x2 1.0 --l6x2 1 --d6x2 50
+                                        --n6x3 6 --c6x3 6 --p6x3 1.0 --l6x3 5 --d6x3 50
+
+                                        --s7 1 --cle7 5
+                                        --n7 4
+                                        --n7x0 0 --c7x0 6 --p7x0 1.0 --l7x0 2 --d7x0 50
+                                        --n7x1 0 --c7x1 6 --p7x1 1.0 --l7x1 3 --d7x1 50
+                                        --n7x2 0 --c7x2 6 --p7x2 1.0 --l7x2 4 --d7x2 50
+                                        --n7x3 0 --c7x3 6 --p7x3 1.0 --l7x3 6 --d7x3 50"/>
+                                        <!-- From sa -> n0x0 sb = n0x0 sb+1, (a < b) -->
+                                        <!-- From sa -> n0x0 sb = n0x0 sb  , (a > b)-->
+    </automode_controller>
+    
+  </controllers>
+
+  <!-- ********* -->
+  <!-- * Arena * -->
+  <!-- ********* -->
+  <arena size="10, 10, 1" center="0,0,0">
+
+  <!-- Change the floor here -->
+  <floor id="floor" source="loop_functions" pixels_per_meter="300"/>
+
+  <!-- Change the light here -->
+  <!-- Please note that this light has an intensity equal to 0 -->
+  <!-- and therefore does not affect the experiment. -->
+  <!-- ARGoS requires at least one light when using the light sensor -->
+    <light id="light" position="0,-5,0.4" orientation="0,0,0" color="yellow" intensity="0.0" medium="leds"/>
+
+  <!-- ********** -->
+  <!-- * E-Puck * -->
+  <!-- ********** -->
+
+  <!-- The epucks are distributed by the AutoMoDeLoopFunctions. -->
+
+  <!-- ********** -->
+  <!-- * Walls * -->
+  <!-- ********** -->
+
+  <!-- The walls are distributed by the AutoMoDeLoopFunctions. -->
+  </arena>
+
+  <!-- ******************* -->
+  <!-- * Physics engines * -->
+  <!-- ******************* -->
+  <physics_engines>
+    <dynamics2d id="dyn2d" />
+  </physics_engines>
+
+  <!-- ********* -->
+  <!-- * Media * -->
+  <!-- ********* -->
+  <media>
+    <led id="leds" grid_size="1,1,1"/>
+    <range_and_bearing id="ircom"/>
+    <range_and_bearing id="rab"/>
+  </media>
+
+  <!-- ***************** -->
+  <!-- * Visualization * -->
+  <!-- ***************** -->
+  <visualization>
+    <qt-opengl>
+      <camera>
+        <placement idx="0"
+                   position="0,0,4.5"
+                   look_at="0,0,0"
+                   lens_focal_length="30" />
+      </camera>
+    </qt-opengl>
+  </visualization>
+
+</argos-configuration>

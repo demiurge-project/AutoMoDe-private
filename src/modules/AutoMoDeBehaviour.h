@@ -17,6 +17,8 @@
 
 #include <argos3/plugins/robots/e-puck/control_interface/ci_epuck_proximity_sensor.h>
 #include <argos3/plugins/robots/e-puck/control_interface/ci_epuck_range_and_bearing_sensor.h>
+#include <argos3/plugins/robots/e-puck/control_interface/ci_epuck_rgb_leds_actuator.h>
+#include <argos3/plugins/robots/e-puck/control_interface/ci_epuck_omnidirectional_camera_sensor.h>
 
 #include "../core/AutoMoDeRobotDAO.h"
 
@@ -169,6 +171,11 @@ namespace argos {
 			 * Setter for the shared pointer to the representation of the robot state.
 			 */
 			void SetRobotDAO(AutoMoDeRobotDAO* pc_robot_dao);
+
+            /*
+             * Data transform for color of the LEDs.
+             */
+            CColor GetColorParameter(const UInt32& un_value);
 	};
 }
 

@@ -60,7 +60,14 @@ namespace argos {
 		} else {
 			LOGERR << "[FATAL] Missing parameter for the following behaviour:" << m_strLabel << std::endl;
 			THROW_ARGOSEXCEPTION("Missing Parameter");
-		}
+        }
+        it = m_mapParameters.find("cle");
+        if (it != m_mapParameters.end()) {
+            m_cColorEmiterParameter = GetColorParameter(it->second);
+        } else {
+            LOGERR << "[FATAL] Missing parameter for the following behaviour:" << m_strLabel << std::endl;
+            THROW_ARGOSEXCEPTION("Missing Parameter");
+        }
 	}
 
 	/****************************************/
@@ -69,7 +76,7 @@ namespace argos {
 	void AutoMoDeBehaviourExploration::ControlStep() {
 		switch (m_eExplorationState) {
 			case RANDOM_WALK: {
-				m_pcRobotDAO->SetWheelsVelocity(m_fWheelSpeed, m_fWheelSpeed);
+                m_pcRobotDAO->SetWheelsVelocity(m_fWheelSpeed, m_fWheelSpeed);
 				if (IsObstacleInFront(m_pcRobotDAO->GetProximityInput())) {
 					m_eExplorationState = OBSTACLE_AVOIDANCE;
 					m_unTurnSteps = (m_pcRobotDAO->GetRandomNumberGenerator())->Uniform(m_cRandomStepsRange);
@@ -100,6 +107,7 @@ namespace argos {
 				break;
 			}
 		}
+        m_pcRobotDAO->SetLEDsColor(m_cColorEmiterParameter);
 		m_bLocked = false;
 	}
 

@@ -123,7 +123,7 @@ namespace argos {
 		/*
 		 * 5. Dealing with variables
 		 */
-		m_unTimeStep += 1;
+        m_unTimeStep += 1;
 	}
 
 	/****************************************/
@@ -329,8 +329,8 @@ namespace argos {
 		m_pcRobotDAO = pc_robot_DAO;
 	}
 
-	/****************************************/
-	/****************************************/
+    /****************************************/
+    /****************************************/
 
 	void AutoMoDeFiniteStateMachine::ShareRobotDAO() {
 		std::vector<AutoMoDeCondition*>::iterator itC;

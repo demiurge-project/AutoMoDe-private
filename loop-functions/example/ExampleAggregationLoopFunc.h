@@ -15,6 +15,7 @@
 #include <argos3/core/simulator/space/space.h>
 #include <argos3/plugins/robots/e-puck/simulator/epuck_entity.h>
 
+
 using namespace argos;
 
 class ExampleAggregationLoopFunction: public AutoMoDeLoopFunctions {
@@ -28,6 +29,7 @@ class ExampleAggregationLoopFunction: public AutoMoDeLoopFunctions {
 
     virtual argos::CColor GetFloorColor(const argos::CVector2& c_position_on_plane);
     virtual void PostExperiment();
+    virtual void PostStep();
 
     Real GetObjectiveFunction();
 

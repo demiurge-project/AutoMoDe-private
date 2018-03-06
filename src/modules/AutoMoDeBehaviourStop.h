@@ -16,7 +16,7 @@
 
 namespace argos {
 	class AutoMoDeBehaviourStop: public AutoMoDeBehaviour {
-		public:
+        public:
 			AutoMoDeBehaviourStop();
 			AutoMoDeBehaviourStop(AutoMoDeBehaviourStop* pc_behaviour);
 			virtual ~AutoMoDeBehaviourStop();
@@ -28,6 +28,9 @@ namespace argos {
 
 
 			virtual AutoMoDeBehaviourStop* Clone();
+
+        private:
+            CColor m_cColorEmiterParameter;
 	};
 }
 

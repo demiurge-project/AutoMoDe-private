@@ -139,6 +139,11 @@ namespace argos {
 			 * Returns a random value from a Bernoulli distribution.
 			 */
 			bool EvaluateBernoulliProbability(const Real& f_probability) const;
+
+            /*
+             * Data transform for color of the LEDs.
+             */
+            CColor GetColorParameter(const UInt32 &un_value);
 	};
 }
 

@@ -17,10 +17,13 @@ set(AUTOMODE_HEADERS
 	modules/AutoMoDeBehaviourPhototaxis.h
 	modules/AutoMoDeBehaviourAttraction.h
 	modules/AutoMoDeBehaviourRepulsion.h
+    modules/AutoMoDeBehaviourAttractionColor.h
+    modules/AutoMoDeBehaviourRepulsionColor.h
 	modules/AutoMoDeBehaviourStop.h
 	modules/AutoMoDeBehaviourExploration.h
 	# Conditions
 	modules/AutoMoDeCondition.h
+    modules/AutoMoDeConditionColor.h
 	modules/AutoMoDeConditionBlackFloor.h
 	modules/AutoMoDeConditionWhiteFloor.h
 	modules/AutoMoDeConditionGrayFloor.h
@@ -43,10 +46,13 @@ set(AUTOMODE_SOURCES
 	modules/AutoMoDeBehaviourPhototaxis.cpp
 	modules/AutoMoDeBehaviourAttraction.cpp
 	modules/AutoMoDeBehaviourRepulsion.cpp
+    modules/AutoMoDeBehaviourAttractionColor.cpp
+    modules/AutoMoDeBehaviourRepulsionColor.cpp
 	modules/AutoMoDeBehaviourStop.cpp
 	modules/AutoMoDeBehaviourExploration.cpp
 	# Conditions
 	modules/AutoMoDeCondition.cpp
+    modules/AutoMoDeConditionColor.cpp
 	modules/AutoMoDeConditionBlackFloor.cpp
 	modules/AutoMoDeConditionWhiteFloor.cpp
 	modules/AutoMoDeConditionGrayFloor.cpp
@@ -54,11 +60,13 @@ set(AUTOMODE_SOURCES
 	modules/AutoMoDeConditionInvertedNeighborsCount.cpp
 	modules/AutoMoDeConditionFixedProbability.cpp)
 
-
 add_library(automode SHARED ${AUTOMODE_HEADERS} ${AUTOMODE_SOURCES})
-target_link_libraries(automode argos3plugin_${ARGOS_BUILD_FOR}_epuck)
+target_link_libraries(automode argos3plugin_${ARGOS_BUILD_FOR}_epuck argos3plugin_${ARGOS_BUILD_FOR}_arena)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 add_executable(automode_main AutoMoDeMain.cpp)
-target_link_libraries(automode_main automode argos3core_${ARGOS_BUILD_FOR} argos3plugin_${ARGOS_BUILD_FOR}_epuck)
+target_link_libraries(automode_main automode argos3core_${ARGOS_BUILD_FOR} argos3plugin_${ARGOS_BUILD_FOR}_epuck argos3plugin_${ARGOS_BUILD_FOR}_arena)
+
+
+
 

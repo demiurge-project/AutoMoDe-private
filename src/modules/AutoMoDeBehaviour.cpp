@@ -137,6 +137,40 @@ namespace argos {
 
 	void AutoMoDeBehaviour::SetRobotDAO(AutoMoDeRobotDAO* pc_robot_dao) {
 		m_pcRobotDAO = pc_robot_dao;
-	}
+    }
+
+    /****************************************/
+    /****************************************/
+    // Return the color parameter
+    CColor AutoMoDeBehaviour::GetColorParameter(const UInt32& un_value) {
+      //int i_value = round(f_value);
+      CColor cColorParameter;
+      switch(un_value){
+      case 0:
+          cColorParameter = CColor::BLACK;
+          break;
+      case 1:
+          cColorParameter = CColor::RED;
+          break;
+      case 2:
+          cColorParameter = CColor::GREEN;
+          break;
+      case 3:
+          cColorParameter = CColor::BLUE;
+          break;
+      case 4:
+          cColorParameter = CColor::YELLOW;
+          break;
+      case 5:
+          cColorParameter = CColor::MAGENTA;
+          break;
+      case 6:
+          cColorParameter = CColor::CYAN;
+          break;
+      default:
+          cColorParameter = CColor::BLACK;
+      }
+      return cColorParameter;
+    }
 
 }

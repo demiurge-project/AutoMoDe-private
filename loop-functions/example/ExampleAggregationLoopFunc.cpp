@@ -61,6 +61,19 @@ argos::CColor ExampleAggregationLoopFunction::GetFloorColor(const argos::CVector
 /****************************************/
 /****************************************/
 
+void ExampleAggregationLoopFunction::PostStep() {
+    CBoxEntity* pcBox;
+    CSpace::TMapPerType& tBoxMap = GetSpace().GetEntitiesByType("box");
+    for (CSpace::TMapPerType::iterator it = tBoxMap.begin(); it != tBoxMap.end(); ++it) {
+      pcBox = any_cast<CBoxEntity*>(it->second);
+      CLEDEquippedEntity& pcLED = pcBox->GetLEDEquippedEntity();
+      pcLED.SetAllLEDsColors(CColor::RED);
+    }
+}
+
+/****************************************/
+/****************************************/
+
 void ExampleAggregationLoopFunction::PostExperiment() {
   CSpace::TMapPerType& tEpuckMap = GetSpace().GetEntitiesByType("epuck");
   CVector2 cEpuckPosition(0,0);

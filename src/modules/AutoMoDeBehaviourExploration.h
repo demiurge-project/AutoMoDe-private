@@ -46,6 +46,7 @@ namespace argos {
 			Real m_fWheelSpeed;
 			Real m_fProximityThreshold;
 			CRange<UInt32> m_cRandomStepsRange;
+            CColor m_cColorEmiterParameter;
 
 			bool IsObstacleInFront(CCI_EPuckProximitySensor::TReadings s_prox_input);
 	};

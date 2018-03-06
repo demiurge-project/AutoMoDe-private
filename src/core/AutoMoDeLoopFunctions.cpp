@@ -20,11 +20,15 @@ void AutoMoDeLoopFunctions::Init(argos::TConfigurationNode& t_tree) {
   try {
     cParametersNode = GetNode(t_tree, "params");
     GetNodeAttributeOrDefault(cParametersNode, "number_robots", m_unNumberRobots, (UInt32) 1);
-    GetNodeAttributeOrDefault(cParametersNode, "dist_radius", m_fDistributionRadius, (Real) 0);
+    GetNodeAttributeOrDefault(cParametersNode, "number_edges", m_unNumberEdges, (UInt32) 3);
+    GetNodeAttributeOrDefault(cParametersNode, "number_boxes_per_edge", m_unNumberBoxes, (UInt32) 1);
+    GetNodeAttributeOrDefault(cParametersNode, "lenght_boxes", m_fLenghtBoxes, (Real) 0.20);
   } catch(std::exception e) {
     LOGERR << e.what() << std::endl;
   }
 
+  m_fDistributionRadius = GetArenaRadious();
+  PositionArena();
   PositionRobots();
 }
 
@@ -107,3 +111,55 @@ void AutoMoDeLoopFunctions::RemoveRobots() {
     RemoveEntity(id.str().c_str());
   }
 }
+
+/****************************************/
+/****************************************/
+
+void AutoMoDeLoopFunctions::PositionArena() {
+  CArenaEntity* pcArena;
+    pcArena = new CArenaEntity("arena",
+                               CVector3(0,0,0),
+                               CQuaternion().FromEulerAngles(CRadians::ZERO,CRadians::ZERO,CRadians::ZERO), // TODO
+                               CVector3(0.01,m_fLenghtBoxes,0.08),
+                               "leds",
+                               m_unNumberBoxes,
+                               m_unNumberEdges,
+                               0.017f,
+                               1.0f);   
+    AddEntity(*pcArena);
+    m_pcArena = pcArena;
+}
+
+/****************************************/
+/****************************************/
+
+Real AutoMoDeLoopFunctions::GetArenaRadious() {
+
+    Real fRadious;
+    fRadious =  (m_fLenghtBoxes*m_unNumberBoxes) / (2 * Tan(CRadians::PI / m_unNumberEdges));
+    fRadious = fRadious - 0.10; // Avoids to place robots close the walls.
+
+    return fRadious;
+}
+
+/****************************************/
+/****************************************/
+
+bool AutoMoDeLoopFunctions::IsEven(UInt32 unNumber) {
+    bool even;
+    if((unNumber%2)==0)
+       even = true;
+    else
+       even = false;
+
+    return even;
+}
+
+/****************************************/
+/****************************************/
+
+
+
+
+
+

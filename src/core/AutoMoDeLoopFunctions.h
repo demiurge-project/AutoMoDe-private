@@ -14,6 +14,8 @@
 #include <argos3/core/simulator/space/space.h>
 #include <argos3/core/simulator/loop_functions.h>
 #include <argos3/plugins/robots/e-puck/simulator/epuck_entity.h>
+#include <argos3/plugins/simulator/entities/box_entity.h>
+#include <argos3/plugins/robots/arena/simulator/arena_entity.h>
 
 using namespace argos;
 
@@ -51,6 +53,33 @@ class AutoMoDeLoopFunctions: public CLoopFunctions {
     void PositionRobots();
 
     /*
+     * Method used to remove the walls from the arena.
+     */
+    void RemoveBoxes();
+
+    /*
+     * Method used to reallocate the walls.
+     * The position is given by the method GetBoxesPositions().
+     */
+    void MoveBoxes();
+
+    /*
+     * Method used to create and distribute the walls.
+     * The position is given by the method GetBoxesPositions().
+     */
+    void PositionBoxes();
+
+    /*
+     * Method used to create and distribute the Arena.
+     */
+    void PositionArena();
+
+    /*
+     * Method used to deternmine wheter a number is even.
+     */
+    bool IsEven(UInt32 unNumber);
+
+    /*
      * The number of robots to be placed for the experiment.
      */
     UInt32 m_unNumberRobots;
@@ -60,7 +89,32 @@ class AutoMoDeLoopFunctions: public CLoopFunctions {
      */
     Real m_fDistributionRadius;
 
+    /*
+     * The number of edges in the arena used in the experiment.
+     */
+    UInt32 m_unNumberEdges;
+
+    /*
+     * The number of boxes in each edge of the arena used in the experiment.
+     */
+    UInt32 m_unNumberBoxes;
+
+    /*
+     * The lenght of the boxes used in the experiment.
+     */
+    Real m_fLenghtBoxes;
+
+    /*
+     * The arena used in the experiment.
+     */    
+    CArenaEntity* m_pcArena;
+
+    /*
+     * The position of the boxes in the arena used in the experiment.
+     */
     CRandom::CRNG* m_pcRng;
+
+
 
   public:
 
@@ -73,6 +127,11 @@ class AutoMoDeLoopFunctions: public CLoopFunctions {
      * Return a random position.
      */
     virtual CVector3 GetRandomPosition() = 0;
+
+    /*
+     * Return the radious of the arena.
+     */
+    Real GetArenaRadious();
 
 };
 

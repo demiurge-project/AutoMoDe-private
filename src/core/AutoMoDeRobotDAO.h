@@ -53,10 +53,30 @@ namespace argos {
        */
 			virtual ~AutoMoDeRobotDAO();
 
+            /*
+             * Getter for the camera input.
+             */
+            CCI_EPuckOmnidirectionalCameraSensor::SReadings GetCameraInput() const;
+
+            /*
+             * Setter for the camera input.
+             */
+            void SetCameraInput(CCI_EPuckOmnidirectionalCameraSensor::SReadings s_cam_input);
+
+            /*
+             * Setter for the RGB LEDs color.
+             */
+            void SetLEDsColor(const CColor& c_color);
+
+            /*
+             * Getter for the RGB LEDs color.
+             */
+            const CColor& GetLEDsColor() const;
+
 			/*
 			 * Getter for the proximity input.
 			 */
-			CCI_EPuckProximitySensor::TReadings GetProximityInput() const;
+            CCI_EPuckProximitySensor::TReadings GetProximityInput() const;
 
 			/*
 			 * Setter for the proximity input.
@@ -96,7 +116,7 @@ namespace argos {
 			/*
 			 * Getter for the range-and-bearing input.
 			 */
-			std::vector<CCI_EPuckRangeAndBearingSensor::SReceivedPacket*> GetRangeAndBearingMessages() ;
+            std::vector<CCI_EPuckRangeAndBearingSensor::SReceivedPacket*> GetRangeAndBearingMessages() ;
 
 			/*
 			 * Setter for the range-and-bearing input.
@@ -149,6 +169,16 @@ namespace argos {
 			CRandom::CRNG* GetRandomNumberGenerator() const;
 
 		private:
+            /*
+             * The camera sensor input.
+             */
+            CCI_EPuckOmnidirectionalCameraSensor::SReadings m_sCameraInput;
+
+            /*
+             * The color of RGB LEDs  (output variable).
+             */
+            CColor m_cLEDsColor;
+
 			/*
 			 * The proximity sensors input.
 			 */

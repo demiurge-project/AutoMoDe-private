@@ -1,0 +1,4 @@
+add_library(colors_loopfunc SHARED ColorsLoopFunc.h ColorsLoopFunc.cpp)
+target_link_libraries(colors_loopfunc argos3plugin_${ARGOS_BUILD_FOR}_epuck)
+add_library(colors_test_loopfunc SHARED ColorsTestLoopFunc.h ColorsTestLoopFunc.cpp)
+target_link_libraries(colors_test_loopfunc argos3plugin_${ARGOS_BUILD_FOR}_epuck)
