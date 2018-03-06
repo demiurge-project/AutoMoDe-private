@@ -86,8 +86,6 @@
         CCI_EPuckOmnidirectionalCameraSensor::TBlobList::iterator it;
         SInt32 sBlobCounter = 0;
 
-        LOG << "ROBOT:" << m_pcRobotDAO->GetRobotIdentifier() << "---------" << std::endl;
-
         for (it = sReadings.BlobList.begin(); it != sReadings.BlobList.end(); it++) {
 
             if ((*it)->Color == m_cColorParameter) {
@@ -99,10 +97,6 @@
 
         if (sBlobCounter > 0){
             Real fProbability = (1/(1 + exp(m_fParameterEta * ((int)m_unParameterXi - sBlobCounter))));
-            LOG << "Eta: " << m_fParameterEta << std::endl;
-            LOG << "Xi: " << m_unParameterXi << std::endl;
-            LOG << "Blobs: " << sBlobCounter << std::endl;
-            LOG << "Probability: " << fProbability << std::endl;
             return EvaluateBernoulliProbability(fProbability);
         }
 

@@ -93,16 +93,11 @@ namespace argos {
 		}
 
 		/*
-		 * Constantly send range-and-bearing messages containing the robot integer identifier.
+         * Starts actuation.
 		 */
-		if (m_pcRabActuator != NULL) {
-			UInt8 data[4];
-			data[0] = m_unRobotID;
-			data[1] = 0;
-			data[2] = 0;
-			data[3] = 0;
-			m_pcRabActuator->SetData(data);
-		}
+
+        InitializeActuation();
+
 	}
 
 	/****************************************/
@@ -171,6 +166,8 @@ namespace argos {
 	void AutoMoDeController::Reset() {
 		m_pcFiniteStateMachine->Reset();
 		m_pcRobotState->Reset();
+        // Restart actuation.
+        InitializeActuation();
 	}
 
 	/****************************************/
@@ -182,6 +179,26 @@ namespace argos {
 		m_pcFiniteStateMachine->Init();
 		m_bFiniteStateMachineGiven = true;
 	}
+
+    /****************************************/
+    /****************************************/
+
+    void AutoMoDeController::InitializeActuation() {
+    /*
+     * Constantly send range-and-bearing messages containing the robot integer identifier.
+     */
+        if (m_pcRabActuator != NULL) {
+            UInt8 data[4];
+            data[0] = m_unRobotID;
+            data[1] = 0;
+            data[2] = 0;
+            data[3] = 0;
+            m_pcRabActuator->SetData(data);
+        }
+    }
+
+    /****************************************/
+    /****************************************/
 
 	REGISTER_CONTROLLER(AutoMoDeController, "automode_controller");
 }

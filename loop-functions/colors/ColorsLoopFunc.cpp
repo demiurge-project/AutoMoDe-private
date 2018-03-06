@@ -91,7 +91,7 @@ void ColorsLoopFunction::PostStep() {
           m_punFoodData[unId] = 0;
       }
     }
-    LOG << m_fObjectiveFunction << std::endl;
+    LOG << "Score: " << m_fObjectiveFunction << std::endl;
 }
 
 /****************************************/
