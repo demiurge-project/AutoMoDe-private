@@ -26,12 +26,12 @@
       <actuators>
         <epuck_wheels implementation="default" noise_std_dev="0.05"/>
         <epuck_rgb_leds implementation="default" medium="leds"/>
-        <epuck_range_and_bearing_salman1_act implementation="medium" medium="rab" data_size="4" range="0.8"/>
+        <epuck_range_and_bearing_salman_act2 implementation="medium" medium="rab" data_size="4"/>
       </actuators>
       <sensors>
 		    <epuck_proximity implementation="default" show_rays="false" noise_level="0.05" calibrated="true"/>
 
-        <epuck_range_and_bearing_salman1_sen implementation="medium" show_rays="true" medium="rab" data_size="4" channel_interference="true" noise_std_dev="1.5" loss_probability="0.3" calibrated="true"/>
+        <epuck_range_and_bearing_salman_sen2 implementation="medium" show_rays="true" medium="rab" data_size="4" channel_interference="true" noise_std_dev="1.5" loss_probability="0.3" calibrated="true"/>
 
         <epuck_light implementation="default" show_rays="false" noise_level="0.05" calibrated="true"/>
 		    <epuck_ground implementation="rot_z_only" noise_level="0.05" calibrated="true"/>

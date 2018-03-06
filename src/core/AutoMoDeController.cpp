@@ -77,7 +77,7 @@ namespace argos {
 			m_pcProximitySensor = GetSensor<CCI_EPuckProximitySensor>("epuck_proximity");
 			m_pcLightSensor = GetSensor<CCI_EPuckLightSensor>("epuck_light");
 			m_pcGroundSensor = GetSensor<CCI_EPuckGroundSensor>("epuck_ground");
-			 m_pcRabSensor = GetSensor<CCI_EPuckRangeAndBearingSensor>("epuck_range_and_bearing_salman1_sen");
+			 m_pcRabSensor = GetSensor<CCI_EPuckRangeAndBearingSensor>("epuck_range_and_bearing_salman_sen2");
 			 m_pcCameraSensor = GetSensor<CCI_EPuckOmnidirectionalCameraSensor>("epuck_omnidirectional_camera");
 		} catch (CARGoSException ex) {
 			LOGERR<<"Error while initializing a Sensor!\n";
@@ -85,7 +85,7 @@ namespace argos {
 
 		try{
 			m_pcWheelsActuator = GetActuator<CCI_EPuckWheelsActuator>("epuck_wheels");
-			m_pcRabActuator = GetActuator<CCI_EPuckRangeAndBearingActuator>("epuck_range_and_bearing_salman1_act");
+			m_pcRabActuator = GetActuator<CCI_EPuckRangeAndBearingActuator>("epuck_range_and_bearing_salman_act2");
 			m_pcLEDsActuator = GetActuator<CCI_EPuckRGBLEDsActuator>("epuck_rgb_leds");
 		} catch (CARGoSException ex) {
 			LOGERR<<"Error while initializing an Actuator!\n";

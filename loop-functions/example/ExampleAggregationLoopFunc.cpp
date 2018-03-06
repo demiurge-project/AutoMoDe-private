@@ -56,6 +56,7 @@ argos::CColor ExampleAggregationLoopFunction::GetFloorColor(const argos::CVector
   }
 
   return CColor::GRAY50;
+
 }
 
 /****************************************/
