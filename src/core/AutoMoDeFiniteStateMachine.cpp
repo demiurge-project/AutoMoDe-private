@@ -342,4 +342,18 @@ namespace argos {
 			(*itB)->SetRobotDAO(m_pcRobotDAO);
 		}
 	}
+
+	/****************************************/
+	/****************************************/
+
+	UInt32 AutoMoDeFiniteStateMachine::GetIndexRabSensor() {
+		return m_unIndexRabSensor;
+	}
+
+	/****************************************/
+	/****************************************/
+
+	void AutoMoDeFiniteStateMachine::SetIndexRabSensor(UInt32 un_index_rab_sensor) {
+		m_unIndexRabSensor = un_index_rab_sensor;
+	}
 }

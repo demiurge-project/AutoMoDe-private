@@ -130,6 +130,10 @@ namespace argos {
 			 */
 			void SetHistoryFolder(const std::string& s_hist_folder);
 
+
+			UInt32 GetIndexRabSensor();
+			void SetIndexRabSensor(UInt32 un_index_rab_sensor);
+
 		private:
 			/*
 			 * List of possible behaviours of the FSM.
@@ -241,6 +245,11 @@ namespace argos {
 			 * Returns the flag indicating wether the FSM is changing state.
 			 */
 			const bool GetEnteringNewStateFlag() const;
+
+			/*
+			 * Index of range-and-bearing sensor to be used by the robot.
+			 */
+			UInt32 m_unIndexRabSensor;
 	};
 }
 

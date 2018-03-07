@@ -156,6 +156,13 @@ namespace argos{
 			CCI_EPuckOmnidirectionalCameraSensor* m_pcCameraSensor;
 
 			bool m_bFiniteStateMachineGiven;
+
+
+			/*
+			 * Pointer to the extra range-and-bearing sensors.
+			 */
+			CCI_EPuckRangeAndBearingSensor* m_pcSalmanRabSensor1;
+			CCI_EPuckRangeAndBearingSensor* m_pcSalmanRabSensor2;
 	};
 }
 

@@ -68,9 +68,14 @@ namespace argos {
 
 			/**
 			 * Creates a list containing the indexes of the behaviours reachable from a given state.
-			 * Added for compatibility with irace interdependent parameters. 
+			 * Added for compatibility with irace interdependent parameters.
 			 */
 			const std::vector<UInt32> GetPossibleDestinationBehaviour(const UInt32& un_initial_state_index);
+
+			/**
+			 * Extract indexes of sensors and actuators to be used by the robot.
+			 */
+			void HandleHardwareModules(AutoMoDeFiniteStateMachine* c_fsm, std::vector<std::string>& vec_fsm_config);
 
 			UInt32 m_unNumberStates;
 

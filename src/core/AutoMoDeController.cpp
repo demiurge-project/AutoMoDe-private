@@ -74,10 +74,11 @@ namespace argos {
 		 *  Initializing sensors and actuators
 		 */
 		try{
-			m_pcProximitySensor = GetSensor<CCI_EPuckProximitySensor>("epuck_proximity");
-			m_pcLightSensor = GetSensor<CCI_EPuckLightSensor>("epuck_light");
-			m_pcGroundSensor = GetSensor<CCI_EPuckGroundSensor>("epuck_ground");
-			 m_pcRabSensor = GetSensor<CCI_EPuckRangeAndBearingSensor>("epuck_range_and_bearing_salman_sen2");
+			 m_pcProximitySensor = GetSensor<CCI_EPuckProximitySensor>("epuck_proximity");
+			 m_pcLightSensor = GetSensor<CCI_EPuckLightSensor>("epuck_light");
+			 m_pcGroundSensor = GetSensor<CCI_EPuckGroundSensor>("epuck_ground");
+			 m_pcSalmanRabSensor1	= GetSensor<CCI_EPuckRangeAndBearingSensor>("epuck_range_and_bearing_salman_sen1");
+			 m_pcSalmanRabSensor2 = GetSensor<CCI_EPuckRangeAndBearingSensor>("epuck_range_and_bearing_salman_sen2");
 			 m_pcCameraSensor = GetSensor<CCI_EPuckOmnidirectionalCameraSensor>("epuck_omnidirectional_camera");
 		} catch (CARGoSException ex) {
 			LOGERR<<"Error while initializing a Sensor!\n";
@@ -108,6 +109,16 @@ namespace argos {
 	/****************************************/
 
 	void AutoMoDeController::ControlStep() {
+		/*
+		 * 0. Use the sensors described in the FSM
+		 */
+		 if (m_unTimeStep == 0) {
+			 UInt32 unIndexRabSensor = m_pcFiniteStateMachine->GetIndexRabSensor();
+			 LOG << "Using RAB sensor index: " << unIndexRabSensor << std::endl;
+			 m_pcRabSensor = m_pcSalmanRabSensor2;
+			 //m_pcSalmanRabSensor1->;
+		 }
+
 		/*
 		 * 1. Update RobotDAO
 		 */
