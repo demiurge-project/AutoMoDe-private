@@ -356,4 +356,18 @@ namespace argos {
 	void AutoMoDeFiniteStateMachine::SetIndexRabSensor(UInt32 un_index_rab_sensor) {
 		m_unIndexRabSensor = un_index_rab_sensor;
 	}
+
+	/****************************************/
+	/****************************************/
+
+	UInt32 AutoMoDeFiniteStateMachine::GetNumberRobots() {
+		return m_unNumberRobots;
+	}
+
+	/****************************************/
+	/****************************************/
+
+	void AutoMoDeFiniteStateMachine::SetNumberRobots(UInt32 un_number_robots) {
+		m_unNumberRobots = un_number_robots;
+	}
 }

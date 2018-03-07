@@ -45,12 +45,6 @@ class AutoMoDeLoopFunctions: public CLoopFunctions {
     void MoveRobots();
 
     /*
-     * Method used to create and distribute the robots.
-     * The position is given by the method GetRandomPosition().
-     */
-    void PositionRobots();
-
-    /*
      * The number of robots to be placed for the experiment.
      */
     UInt32 m_unNumberRobots;
@@ -63,6 +57,11 @@ class AutoMoDeLoopFunctions: public CLoopFunctions {
     CRandom::CRNG* m_pcRng;
 
   public:
+    /*
+     * Method used to create and distribute the robots.
+     * The position is given by the method GetRandomPosition().
+     */
+    void PositionRobots();
 
     /*
      * This method should return the fitness of the controller.
@@ -73,6 +72,9 @@ class AutoMoDeLoopFunctions: public CLoopFunctions {
      * Return a random position.
      */
     virtual CVector3 GetRandomPosition() = 0;
+
+
+    void SetNumberRobots(UInt32 un_number_robots);
 
 };
 

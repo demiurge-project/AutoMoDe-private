@@ -81,7 +81,9 @@ namespace argos {
 	void AutoMoDeFsmBuilder::HandleHardwareModules(AutoMoDeFiniteStateMachine* c_fsm, std::vector<std::string>& vec_fsm_config ) {
 		std::vector<std::string>::iterator it;
 		try {
-			it = std::find(vec_fsm_config.begin(), vec_fsm_config.end(), "--rab");
+			it = std::find(vec_fsm_config.begin(), vec_fsm_config.end(), "--robots");
+			c_fsm->SetNumberRobots(atoi((*(it+1)).c_str()));
+			it = std::find(vec_fsm_config.begin(), vec_fsm_config.end(), "--rabs");
 			c_fsm->SetIndexRabSensor(atoi((*(it+1)).c_str()));
 		} catch (std::exception e) {
 			LOGERR << e.what() << std::endl;

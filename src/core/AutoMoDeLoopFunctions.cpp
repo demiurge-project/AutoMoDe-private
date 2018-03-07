@@ -19,13 +19,13 @@ void AutoMoDeLoopFunctions::Init(argos::TConfigurationNode& t_tree) {
   TConfigurationNode cParametersNode;
   try {
     cParametersNode = GetNode(t_tree, "params");
-    GetNodeAttributeOrDefault(cParametersNode, "number_robots", m_unNumberRobots, (UInt32) 1);
+    //GetNodeAttributeOrDefault(cParametersNode, "number_robots", m_unNumberRobots, (UInt32) 1);
     GetNodeAttributeOrDefault(cParametersNode, "dist_radius", m_fDistributionRadius, (Real) 0);
   } catch(std::exception e) {
     LOGERR << e.what() << std::endl;
   }
 
-  PositionRobots();
+  //PositionRobots();
 }
 
 /****************************************/
@@ -106,4 +106,11 @@ void AutoMoDeLoopFunctions::RemoveRobots() {
     id << "epuck" << i;
     RemoveEntity(id.str().c_str());
   }
+}
+
+/****************************************/
+/****************************************/
+
+void AutoMoDeLoopFunctions::SetNumberRobots(UInt32 un_number_robots) {
+  m_unNumberRobots = un_number_robots;
 }

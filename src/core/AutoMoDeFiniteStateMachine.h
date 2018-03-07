@@ -134,6 +134,10 @@ namespace argos {
 			UInt32 GetIndexRabSensor();
 			void SetIndexRabSensor(UInt32 un_index_rab_sensor);
 
+			UInt32 GetNumberRobots();
+			void SetNumberRobots(UInt32 un_number_robots);
+
+
 		private:
 			/*
 			 * List of possible behaviours of the FSM.
@@ -250,6 +254,11 @@ namespace argos {
 			 * Index of range-and-bearing sensor to be used by the robot.
 			 */
 			UInt32 m_unIndexRabSensor;
+
+			/*
+			 * The number of robots composing the swarm.
+			 */
+			UInt32 m_unNumberRobots;
 	};
 }
 
