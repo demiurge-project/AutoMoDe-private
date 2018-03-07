@@ -20,6 +20,7 @@ void AutoMoDeLoopFunctions::Init(argos::TConfigurationNode& t_tree) {
   try {
     cParametersNode = GetNode(t_tree, "params");
     GetNodeAttributeOrDefault(cParametersNode, "number_robots", m_unNumberRobots, (UInt32) 1);
+    GetNodeAttributeOrDefault(cParametersNode, "build_arena", m_bBuildArena, (bool) false);
     GetNodeAttributeOrDefault(cParametersNode, "number_edges", m_unNumberEdges, (UInt32) 3);
     GetNodeAttributeOrDefault(cParametersNode, "number_boxes_per_edge", m_unNumberBoxes, (UInt32) 1);
     GetNodeAttributeOrDefault(cParametersNode, "lenght_boxes", m_fLenghtBoxes, (Real) 0.20);
@@ -27,8 +28,11 @@ void AutoMoDeLoopFunctions::Init(argos::TConfigurationNode& t_tree) {
     LOGERR << e.what() << std::endl;
   }
 
-  m_fDistributionRadius = GetArenaRadious();
-  PositionArena();
+  if (m_bBuildArena == true)
+  {
+      m_fDistributionRadius = GetArenaRadious();
+      PositionArena();
+  }
   PositionRobots();
 }
 

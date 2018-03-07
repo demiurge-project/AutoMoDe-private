@@ -90,6 +90,11 @@ class AutoMoDeLoopFunctions: public CLoopFunctions {
     Real m_fDistributionRadius;
 
     /*
+     * Build the arena with the arena_entity plugin.
+     */
+    bool m_bBuildArena;
+
+    /*
      * The number of edges in the arena used in the experiment.
      */
     UInt32 m_unNumberEdges;

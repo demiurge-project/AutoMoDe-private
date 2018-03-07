@@ -1,5 +1,5 @@
 /**
-  * @file <loop-functions/example/ColorsLoopFunc.h>
+  * @file <loop-functions/example/ColorsStopLoopFunc.h>
   *
   * @author Antoine Ligot - <aligot@ulb.ac.be>
   *
