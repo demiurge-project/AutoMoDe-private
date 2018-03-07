@@ -14,6 +14,7 @@
   <loop_functions library="../../build/loop-functions/colors/libcolors_loopfunc.so"
    label="colors_loop_function">
        <params number_robots="20"
+               build_arena="true"
                number_edges="6"
                number_boxes_per_edge="6"
                lenght_boxes="0.2"/>

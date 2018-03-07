@@ -51,7 +51,6 @@ namespace argos {
 	void AutoMoDeBehaviourExploration::Init() {
 		m_unTurnSteps = 0;
 		m_eExplorationState = RANDOM_WALK;
-		m_fWheelSpeed = 10;
 		m_fProximityThreshold = 0.1;
 		m_bLocked = false;
 		std::map<std::string, Real>::iterator it = m_mapParameters.find("rwm");
@@ -76,7 +75,7 @@ namespace argos {
 	void AutoMoDeBehaviourExploration::ControlStep() {
 		switch (m_eExplorationState) {
 			case RANDOM_WALK: {
-                m_pcRobotDAO->SetWheelsVelocity(m_fWheelSpeed, m_fWheelSpeed);
+				m_pcRobotDAO->SetWheelsVelocity(m_pcRobotDAO->GetMaxVelocity(), m_pcRobotDAO->GetMaxVelocity());
 				if (IsObstacleInFront(m_pcRobotDAO->GetProximityInput())) {
 					m_eExplorationState = OBSTACLE_AVOIDANCE;
 					m_unTurnSteps = (m_pcRobotDAO->GetRandomNumberGenerator())->Uniform(m_cRandomStepsRange);
@@ -93,11 +92,11 @@ namespace argos {
 				m_unTurnSteps -= 1;
 				switch (m_eTurnDirection) {
 					case LEFT: {
-						m_pcRobotDAO->SetWheelsVelocity(-m_fWheelSpeed, m_fWheelSpeed);
+						m_pcRobotDAO->SetWheelsVelocity(-m_pcRobotDAO->GetMaxVelocity(), m_pcRobotDAO->GetMaxVelocity());
 						break;
 					}
 					case RIGHT: {
-						m_pcRobotDAO->SetWheelsVelocity(m_fWheelSpeed, -m_fWheelSpeed);
+						m_pcRobotDAO->SetWheelsVelocity(m_pcRobotDAO->GetMaxVelocity(), -m_pcRobotDAO->GetMaxVelocity());
 						break;
 					}
 				}
