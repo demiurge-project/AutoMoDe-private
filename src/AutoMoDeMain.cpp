@@ -98,11 +98,8 @@ int main(int n_argc, char** ppch_argv) {
 
 				cSimulator.LoadExperiment();
 
-				UInt32 numberRobots = pcFiniteStateMachine->GetNumberRobots();
-				std::cout << numberRobots << std::endl;
-
 				AutoMoDeLoopFunctions& cLoopFunctions = dynamic_cast<AutoMoDeLoopFunctions&> (cSimulator.GetLoopFunctions());
-				cLoopFunctions.SetNumberRobots(numberRobots);
+				cLoopFunctions.SetNumberRobots(pcFiniteStateMachine->GetNumberRobots());
 				cLoopFunctions.PositionRobots();
 
 				// Duplicate the finite state machine and pass it to all robots.
@@ -114,6 +111,7 @@ int main(int n_argc, char** ppch_argv) {
 					try {
 						AutoMoDeController& cController = dynamic_cast<AutoMoDeController&> (pcEntity->GetController());
 						cController.SetFiniteStateMachine(pcPersonalFsm);
+						cController.InitializeHardwareModules();
 					} catch (std::exception& ex) {
 						LOGERR << "Error while casting: " << ex.what() << std::endl;
 					}

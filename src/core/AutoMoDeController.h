@@ -66,6 +66,11 @@ namespace argos{
 			 */
 			void SetFiniteStateMachine(AutoMoDeFiniteStateMachine* pc_fine_state_machine);
 
+			/*
+			 * Initialize modules selected by the otpimization process.
+			 */
+			void InitializeHardwareModules();
+
 		private:
 			/*
 			 * Pointer to the finite state machine object that represents the behaviour
@@ -157,13 +162,7 @@ namespace argos{
 
 			bool m_bFiniteStateMachineGiven;
 
-
-			/*
-			 * Pointer to the extra range-and-bearing sensors.
-			 */
-			CCI_EPuckRangeAndBearingSensor* m_pcSalmanRabSensor1;
-			CCI_EPuckRangeAndBearingSensor* m_pcSalmanRabSensor2;
-	};
+		};
 }
 
 #endif

@@ -131,10 +131,10 @@ namespace argos {
 			void SetHistoryFolder(const std::string& s_hist_folder);
 
 
-			UInt32 GetIndexRabSensor();
+			const UInt32& GetIndexRabSensor() const;
 			void SetIndexRabSensor(UInt32 un_index_rab_sensor);
 
-			UInt32 GetNumberRobots();
+			const UInt32& GetNumberRobots() const;
 			void SetNumberRobots(UInt32 un_number_robots);
 
 
