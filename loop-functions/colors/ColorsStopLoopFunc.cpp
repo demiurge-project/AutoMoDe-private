@@ -55,9 +55,6 @@ argos::CColor ColorsStopLoopFunction::GetFloorColor(const argos::CVector2& c_pos
     if (d <= m_fRadius) {
         return CColor::BLACK;
     }
-    if (d <= m_fRadius+0.02) {
-        return CColor::GREEN;
-    }
 
     // if ( (vCurrentPoint.GetX()<=m_CCoordRect1Pos.GetX()) && (vCurrentPoint.GetX()>=m_CCoordRect2Pos.GetX()) && (vCurrentPoint.GetY()>=m_CCoordRect2Pos.GetY()) && (vCurrentPoint.GetY()<=m_CCoordRect1Pos.GetY()) ) {
     //   return CColor::GREEN;
