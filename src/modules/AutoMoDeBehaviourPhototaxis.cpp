@@ -73,7 +73,15 @@ namespace argos {
 	/****************************************/
 	/****************************************/
 
-	void AutoMoDeBehaviourPhototaxis::Init() {}
+    void AutoMoDeBehaviourPhototaxis::Init() {
+        std::map<std::string, Real>::iterator it = m_mapParameters.find("cle");
+        if (it != m_mapParameters.end()) {
+            m_cColorEmiterParameter = GetColorParameter(it->second);
+        } else {
+            LOGERR << "[FATAL] Missing parameter for the following behaviour:" << m_strLabel << std::endl;
+            THROW_ARGOSEXCEPTION("Missing Parameter");
+        }
+    }
 
 	/****************************************/
 	/****************************************/

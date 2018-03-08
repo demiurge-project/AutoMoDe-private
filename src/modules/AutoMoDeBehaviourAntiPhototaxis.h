@@ -26,6 +26,9 @@ namespace argos {
 			virtual void Init();
 
 			virtual AutoMoDeBehaviourAntiPhototaxis* Clone();
+
+        private:
+            CColor m_cColorEmiterParameter;
 	};
 }
 
