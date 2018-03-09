@@ -37,7 +37,7 @@ function write_connection() {
   echo "W${STATE}x$CONNECTION  \"--w${STATE}x$CONNECTION \" r   (0,20) | as.numeric(C${STATE}x$CONNECTION)==3 " >> ${TXT_FILE}
   echo "BI${STATE}x$CONNECTION  \"--p${STATE}x$CONNECTION \" i   (1,10) | as.numeric(C${STATE}x$CONNECTION)==4 " >> ${TXT_FILE}
   echo "WI${STATE}x$CONNECTION  \"--w${STATE}x$CONNECTION \" r   (0,20) | as.numeric(C${STATE}x$CONNECTION)==4 " >> ${TXT_FILE}
-  echo "I${STATE}x$CONNECTION  \"--i${STATE}x$CONNECTION \" c   (1, 9, 15) | as.numeric(C${STATE}x$CONNECTION)==6 " >> ${TXT_FILE}
+  echo "I${STATE}x$CONNECTION  \"--i${STATE}x$CONNECTION \" o   (1, 9, 15) | as.numeric(C${STATE}x$CONNECTION)==6 " >> ${TXT_FILE}
   echo "E${STATE}x$CONNECTION  \"--e${STATE}x$CONNECTION \" c   (5) | as.numeric(C${STATE}x$CONNECTION)==6 " >> ${TXT_FILE}
   echo "L${STATE}x$CONNECTION  \"--l${STATE}x$CONNECTION \" c   (1,2,3,4,5,6) | as.numeric(C${STATE}x$CONNECTION)==6 " >> ${TXT_FILE}
   echo "D${STATE}x$CONNECTION  \"--d${STATE}x$CONNECTION \" c   (30) | as.numeric(C${STATE}x$CONNECTION)==6 " >> ${TXT_FILE}
