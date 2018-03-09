@@ -123,8 +123,6 @@
   <!-- ***************** -->
   <visualization>
     <qt-opengl>
-      <user_functions library="/home/aligot/Desktop/Arena/aligot-experiments/build_simulator/loop-functions/libepuck_planning_user_functions.so"
-         label="epuck_planning_qtopengl_user_functions" />
       <camera>
         <placement idx="0"
                    position="0,0,4.5"

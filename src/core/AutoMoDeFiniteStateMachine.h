@@ -134,6 +134,9 @@ namespace argos {
 			const UInt32& GetIndexRabSensor() const;
 			void SetIndexRabSensor(UInt32 un_index_rab_sensor);
 
+			const UInt32& GetIndexRabActuator() const;
+			void SetIndexRabActuator(UInt32 un_index_rab_Actuator);
+
 			const UInt32& GetNumberRobots() const;
 			void SetNumberRobots(UInt32 un_number_robots);
 
@@ -254,6 +257,11 @@ namespace argos {
 			 * Index of range-and-bearing sensor to be used by the robot.
 			 */
 			UInt32 m_unIndexRabSensor;
+
+			/*
+			 * Index of range-and-bearing Actuator to be used by the robot.
+			 */
+			UInt32 m_unIndexRabActuator;
 
 			/*
 			 * The number of robots composing the swarm.
