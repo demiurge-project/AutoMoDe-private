@@ -8,3 +8,5 @@ target_link_libraries(log_robot_position_loopfunc argos3plugin_${ARGOS_BUILD_FOR
 
 add_subdirectory(example)
 add_subdirectory(chocolate)
+add_subdirectory(vanilla)
+add_subdirectory(visual-add-ons)

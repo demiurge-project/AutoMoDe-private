@@ -11,8 +11,8 @@
   <!-- ****************** -->
   <!-- * Loop functions * -->
   <!-- ****************** -->
-  <loop_functions library="/home/aligot/Desktop/Arena/AutoMoDe-BT/build/loop-functions/example/libexample_aggregation_loopfunc.so"
-   label="example_aggregation_loop_functions">
+  <loop_functions library="../../build/loop-functions/vanilla/libvanilla_aggregation_loopfunc.so"
+   label="aggregation_two_spots_loop_functions">
    <params dist_radius="1.2" number_robots="20"/>
   </loop_functions>
 
@@ -22,7 +22,7 @@
   <controllers>
 	<!-- TRANSMITTER -->
     <automode_controller_bt id="automode"
-                        library="/home/aligot/Desktop/Arena/AutoMoDe-BT/build/src/libautomode_bt.so">
+                        library="../../build/src/libautomode_bt.so">
       <actuators>
         <epuck_wheels implementation="default" noise_std_dev="0.05"/>
         <epuck_rgb_leds implementation="default" medium="leds"/>
@@ -119,6 +119,8 @@
   <!-- ***************** -->
   <visualization>
     <qt-opengl>
+      <user_functions library="../../build/loop-functions/visual-add-ons/libepuck_planning_user_functions.so"
+         label="epuck_planning_qtopengl_user_functions" />
       <camera>
         <placement idx="0"
                    position="0,0,4.5"
