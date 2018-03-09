@@ -51,6 +51,7 @@ namespace argos {
 
 		// Variables related to hardware optimization
 		m_unIndexRabSensor = pc_fsm->GetIndexRabSensor();
+		m_unIndexRabActuator = pc_fsm->GetIndexRabActuator();
 		m_unNumberRobots = pc_fsm->GetNumberRobots();
 
 		std::vector<AutoMoDeBehaviour*> vecBehaviours = pc_fsm->GetBehaviours();
@@ -353,12 +354,24 @@ namespace argos {
 	const UInt32& AutoMoDeFiniteStateMachine::GetIndexRabSensor() const {
 		return m_unIndexRabSensor;
 	}
+	/****************************************/
+	/****************************************/
+
+	const UInt32& AutoMoDeFiniteStateMachine::GetIndexRabActuator() const {
+		return m_unIndexRabActuator;
+	}
 
 	/****************************************/
 	/****************************************/
 
 	void AutoMoDeFiniteStateMachine::SetIndexRabSensor(UInt32 un_index_rab_sensor) {
 		m_unIndexRabSensor = un_index_rab_sensor;
+	}
+	/****************************************/
+	/****************************************/
+
+	void AutoMoDeFiniteStateMachine::SetIndexRabActuator(UInt32 un_index_rab_Actuator) {
+		m_unIndexRabActuator = un_index_rab_Actuator;
 	}
 
 	/****************************************/

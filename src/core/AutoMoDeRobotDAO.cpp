@@ -18,8 +18,8 @@ namespace argos {
 	AutoMoDeRobotDAO::AutoMoDeRobotDAO() {
 		m_pcRng = CRandom::CreateRNG("argos");
 		m_pcRabMessageBuffer = AutoMoDeRabBuffer();
-		m_pcRabMessageBuffer.SetTimeLife(3);
-		m_fMaxVelocity = 13;
+		m_pcRabMessageBuffer.SetTimeLife(10);
+		m_fMaxVelocity = 12;
 		m_fLeftWheelVelocity = 0;
 		m_fRightWheelVelocity = 0;
 	}

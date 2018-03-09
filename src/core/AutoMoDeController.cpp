@@ -68,8 +68,6 @@ namespace argos {
 			LOGERR << "Warning: No finite state machine configuration found in .argos" << std::endl;
 		}
 
-
-
 		/*
 		 *  Initializing default sensors and actuators
 		 */
@@ -84,7 +82,6 @@ namespace argos {
 
 		try{
 			m_pcWheelsActuator = GetActuator<CCI_EPuckWheelsActuator>("epuck_wheels");
-			m_pcRabActuator = GetActuator<CCI_EPuckRangeAndBearingActuator>("epuck_range_and_bearing_salman_act2");
 			m_pcLEDsActuator = GetActuator<CCI_EPuckRGBLEDsActuator>("epuck_rgb_leds");
 		} catch (CARGoSException ex) {
 			LOGERR<<"Error while initializing an Actuator!\n";
@@ -101,7 +98,10 @@ namespace argos {
 			data[3] = 0;
 			m_pcRabActuator->SetData(data);
 		}
+
 	}
+
+
 
 	/****************************************/
 	/****************************************/
@@ -188,8 +188,42 @@ namespace argos {
 				LOG << "HERE -> 2" << std::endl;
 				m_pcRabSensor	= GetSensor<CCI_EPuckRangeAndBearingSensor>("epuck_range_and_bearing_salman_sen2");
 				break;
+			case 2:
+				LOG << "HERE -> 3" << std::endl;
+				m_pcRabSensor	= GetSensor<CCI_EPuckRangeAndBearingSensor>("epuck_range_and_bearing_salman_sen3");
+				break;
+			case 3:
+				LOG << "HERE -> 4" << std::endl;
+				m_pcRabSensor	= GetSensor<CCI_EPuckRangeAndBearingSensor>("epuck_range_and_bearing_salman_sen4");
+				break;
+			case 4:
+				LOG << "HERE -> 5" << std::endl;
+				m_pcRabSensor	= GetSensor<CCI_EPuckRangeAndBearingSensor>("epuck_range_and_bearing_salman_sen5");
+				break;
+			case 5:
+				LOG << "HERE -> 6" << std::endl;
+				m_pcRabSensor	= GetSensor<CCI_EPuckRangeAndBearingSensor>("epuck_range_and_bearing_salman_sen6");
+				break;
+
 		}
+
+		UInt32 unIndexRabActuator = m_pcFiniteStateMachine->GetIndexRabActuator();
+		LOG << "Index parsed = " << unIndexRabActuator << std::endl;
+		switch(unIndexRabActuator) {
+			case 0:
+				LOG << "HERE -> Act1" << std::endl;
+				m_pcRabActuator = GetActuator<CCI_EPuckRangeAndBearingActuator>("epuck_range_and_bearing_salman_act1");
+				break;
+			case 1:
+				LOG << "HERE -> Act2" << std::endl;
+				m_pcRabActuator = GetActuator<CCI_EPuckRangeAndBearingActuator>("epuck_range_and_bearing_salman_act2");
+				break;
+		}
+
 	}
+
+
+
 
 	REGISTER_CONTROLLER(AutoMoDeController, "automode_controller");
 }
