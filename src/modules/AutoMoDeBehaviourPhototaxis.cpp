@@ -65,7 +65,7 @@ namespace argos {
 		if (sResultVector.Length() < 0.1) {
 			sResultVector = CVector2(1, CRadians::ZERO);
 		}
-		m_pcRobotDAO->SetWheelsVelocity(ComputeWheelsVelocityFromVector(sResultVector));
+        m_pcRobotDAO->SetWheelsVelocity(MILowLevelController(sResultVector));
 
 		m_bLocked = false;
 	}
