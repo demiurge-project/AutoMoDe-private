@@ -80,6 +80,7 @@ int main(int n_argc, char** ppch_argv) {
 		switch(cACLAP.GetAction()) {
     	case CARGoSCommandLineArgParser::ACTION_RUN_EXPERIMENT: {
 				CDynamicLoading::LoadAllLibraries();
+				std::cout << cACLAP.GetExperimentConfigFile() << std::endl;
 				cSimulator.SetExperimentFileName(cACLAP.GetExperimentConfigFile());
 
 				// Creation of the finite state machine.
