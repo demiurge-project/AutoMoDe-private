@@ -87,20 +87,7 @@ namespace argos {
 			LOGERR<<"Error while initializing an Actuator!\n";
 		}
 
-		/*
-		 * Constantly send range-and-bearing messages containing the robot integer identifier.
-		 */
-		if (m_pcRabActuator != NULL) {
-			UInt8 data[4];
-			data[0] = m_unRobotID;
-			data[1] = 0;
-			data[2] = 0;
-			data[3] = 0;
-			m_pcRabActuator->SetData(data);
-		}
-
 	}
-
 
 
 	/****************************************/
@@ -161,6 +148,7 @@ namespace argos {
 	void AutoMoDeController::Reset() {
 		m_pcFiniteStateMachine->Reset();
 		m_pcRobotState->Reset();
+		InitializeActuation();
 	}
 
 	/****************************************/
@@ -176,53 +164,64 @@ namespace argos {
 	/****************************************/
 	/****************************************/
 
+	void AutoMoDeController::InitializeActuation() {
+		if (m_pcRabActuator != NULL) {
+			UInt8 data[4];
+			data[0] = m_unRobotID;
+			data[1] = 0;
+			data[2] = 0;
+			data[3] = 0;
+			m_pcRabActuator->SetData(data);
+		}
+	}
+
+	/****************************************/
+	/****************************************/
+
 	void AutoMoDeController::InitializeHardwareModules() {
 		UInt32 unIndexRabSensor = m_pcFiniteStateMachine->GetIndexRabSensor();
-		LOG << "Index parsed = " << unIndexRabSensor << std::endl;
 		switch(unIndexRabSensor) {
 			case 0:
-				LOG << "HERE -> 1" << std::endl;
+				LOG << "RabSensor -> 1" << std::endl;
 				m_pcRabSensor	= GetSensor<CCI_EPuckRangeAndBearingSensor>("epuck_range_and_bearing_salman_sen1");
 				break;
 			case 1:
-				LOG << "HERE -> 2" << std::endl;
+				LOG << "RabSensor -> 2" << std::endl;
 				m_pcRabSensor	= GetSensor<CCI_EPuckRangeAndBearingSensor>("epuck_range_and_bearing_salman_sen2");
 				break;
 			case 2:
-				LOG << "HERE -> 3" << std::endl;
+				LOG << "RabSensor -> 3" << std::endl;
 				m_pcRabSensor	= GetSensor<CCI_EPuckRangeAndBearingSensor>("epuck_range_and_bearing_salman_sen3");
 				break;
 			case 3:
-				LOG << "HERE -> 4" << std::endl;
+				LOG << "RabSensor -> 4" << std::endl;
 				m_pcRabSensor	= GetSensor<CCI_EPuckRangeAndBearingSensor>("epuck_range_and_bearing_salman_sen4");
 				break;
 			case 4:
-				LOG << "HERE -> 5" << std::endl;
+				LOG << "RabSensor -> 5" << std::endl;
 				m_pcRabSensor	= GetSensor<CCI_EPuckRangeAndBearingSensor>("epuck_range_and_bearing_salman_sen5");
 				break;
 			case 5:
-				LOG << "HERE -> 6" << std::endl;
+				LOG << "RabSensor -> 6" << std::endl;
 				m_pcRabSensor	= GetSensor<CCI_EPuckRangeAndBearingSensor>("epuck_range_and_bearing_salman_sen6");
 				break;
 
 		}
 
 		UInt32 unIndexRabActuator = m_pcFiniteStateMachine->GetIndexRabActuator();
-		LOG << "Index parsed = " << unIndexRabActuator << std::endl;
 		switch(unIndexRabActuator) {
 			case 0:
-				LOG << "HERE -> Act1" << std::endl;
+				LOG << "RabAct -> 1" << std::endl;
 				m_pcRabActuator = GetActuator<CCI_EPuckRangeAndBearingActuator>("epuck_range_and_bearing_salman_act1");
 				break;
 			case 1:
-				LOG << "HERE -> Act2" << std::endl;
+				LOG << "RabAct -> 2" << std::endl;
 				m_pcRabActuator = GetActuator<CCI_EPuckRangeAndBearingActuator>("epuck_range_and_bearing_salman_act2");
 				break;
 		}
 
+		InitializeActuation();
 	}
-
-
 
 
 	REGISTER_CONTROLLER(AutoMoDeController, "automode_controller");

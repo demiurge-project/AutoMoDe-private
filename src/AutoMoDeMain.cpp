@@ -106,12 +106,14 @@ int main(int n_argc, char** ppch_argv) {
 				CSpace::TMapPerType cEntities = cSimulator.GetSpace().GetEntitiesByType("controller");
 				for (CSpace::TMapPerType::iterator it = cEntities.begin(); it != cEntities.end(); ++it) {
 					CControllableEntity* pcEntity = any_cast<CControllableEntity*>(it->second);
+					//CComposableEntity* pcTestCompo = any_cast<CComposableEntity*>(it->second);
 					AutoMoDeFiniteStateMachine* pcPersonalFsm = new AutoMoDeFiniteStateMachine(pcFiniteStateMachine);
 					vecFsm.push_back(pcPersonalFsm);
 					try {
 						AutoMoDeController& cController = dynamic_cast<AutoMoDeController&> (pcEntity->GetController());
 						cController.SetFiniteStateMachine(pcPersonalFsm);
 						cController.InitializeHardwareModules();
+						//(&pcTestCompo->GetComponent<CEpuckRABEquippedEntity>("rab[rab_0]"))->SetRange(20);
 					} catch (std::exception& ex) {
 						LOGERR << "Error while casting: " << ex.what() << std::endl;
 					}
