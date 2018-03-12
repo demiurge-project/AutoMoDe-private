@@ -26,6 +26,9 @@
 #include <argos3/plugins/robots/e-puck/control_interface/ci_epuck_light_sensor.h>
 #include <argos3/plugins/robots/e-puck/control_interface/ci_epuck_ground_sensor.h>
 #include <argos3/plugins/robots/e-puck/control_interface/ci_epuck_omnidirectional_camera_sensor.h>
+#include <argos3/plugins/robots/e-puck/control_interface/ci_epuck_virtual_camrab_actuator.h>
+#include <argos3/plugins/robots/e-puck/control_interface/ci_epuck_virtual_camrab_sensor.h>
+
 
 namespace argos{
 	class AutoMoDeController: public CCI_Controller {
@@ -160,6 +163,18 @@ namespace argos{
 			 * Pointer to the robot omnidirectional camera sensor.
 			 */
 			CCI_EPuckOmnidirectionalCameraSensor* m_pcCameraSensor;
+
+            /*
+             * Pointer to the robot CamRab sensor.
+             */
+            CCI_EPuckVirtualCamrabSensor* m_pcCamRabSensor;
+
+            /*
+             * Pointer to the robot CamRab actuator.
+             */
+            CCI_EPuckVirtualCamrabActuator* m_pcCamRabActuator;
+
+
 
 			bool m_bFiniteStateMachineGiven;
 	};

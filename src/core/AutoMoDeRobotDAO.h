@@ -37,8 +37,10 @@
 #include <argos3/plugins/robots/e-puck/control_interface/ci_epuck_light_sensor.h>
 #include <argos3/plugins/robots/e-puck/control_interface/ci_epuck_ground_sensor.h>
 #include <argos3/plugins/robots/e-puck/control_interface/ci_epuck_omnidirectional_camera_sensor.h>
+#include <argos3/plugins/robots/e-puck/control_interface/ci_epuck_virtual_camrab_actuator.h>
+#include <argos3/plugins/robots/e-puck/control_interface/ci_epuck_virtual_camrab_sensor.h>
 
-#include "AutoMoDeRabBuffer.h"
+#include "AutoMoDeCamRabBuffer.h"
 
 namespace argos {
 	class AutoMoDeRobotDAO {
@@ -94,14 +96,14 @@ namespace argos {
 			void SetNumberNeighbors(const UInt8& un_number_neighbors);
 
 			/*
-			 * Getter for the range-and-bearing input.
+             * Getter for the CamRab input.
 			 */
-			std::vector<CCI_EPuckRangeAndBearingSensor::SReceivedPacket*> GetRangeAndBearingMessages() ;
+            std::vector<CCI_EPuckVirtualCamrabSensor::SReading*> GetCamRabMessages();
 
 			/*
-			 * Setter for the range-and-bearing input.
+             * Setter for the CamRab input.
 			 */
-			void SetRangeAndBearingMessages(CCI_EPuckRangeAndBearingSensor::TPackets s_packets);
+            void SetCamRabMessages(CCI_EPuckVirtualCamrabSensor::TReadings s_packets);
 
 			/*
 			 * Setter for the wheels velocity.
@@ -142,6 +144,16 @@ namespace argos {
 			 * Getter for the maximal wheels velocity.
 			 */
 			const Real& GetMaxVelocity() const;
+
+            /*
+             * Getter for the maximal rotacional velocity.
+             */
+            const Real& GetMaxOmega() const;
+
+            /*
+             * Getter for the length between wheels.
+             */
+            const Real& GetLengthEpuckAxis() const;
 
 			/*
 			 * Getter for the random number generetor.
@@ -184,6 +196,16 @@ namespace argos {
 			 */
 			Real m_fMaxVelocity;
 
+            /*
+             * The maximal rotacional velocity.
+             */
+            Real m_fMaxOmega;
+
+            /*
+             * The Distance between wheels
+             */
+            Real m_fLengthEpuckAxis;
+
 			/*
 			 * The robot identifier.
 			 */
@@ -195,9 +217,9 @@ namespace argos {
 			CRandom::CRNG* m_pcRng;
 
 			/*
-			 * Pointer to the range-and-bearing messages buffer.
+             * Pointer to the CamRab messages buffer.
 			 */
-			AutoMoDeRabBuffer m_pcRabMessageBuffer;
+            AutoMoDeCamRabBuffer m_pcCamRabMessageBuffer;
 	};
 }
 

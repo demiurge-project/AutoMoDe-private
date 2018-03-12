@@ -68,39 +68,123 @@ namespace argos {
 	/****************************************/
 	/****************************************/
 
-	CVector2 AutoMoDeBehaviour::ComputeWheelsVelocityFromVector(CVector2 c_vector_to_follow) {
-		Real fLeftVelocity = 0;
-		Real fRightVelocity = 0;
-		CRange<CRadians> cLeftHemisphere(CRadians::ZERO, CRadians::PI);
-		CRange<CRadians> cRightHemisphere(CRadians::PI, CRadians::TWO_PI);
-		CRadians cNormalizedVectorToFollow = c_vector_to_follow.Angle().UnsignedNormalize();
+    CVector2 AutoMoDeBehaviour::MILowLevelController(CVector2 c_vector_to_follow) {
 
-		// Compute relative wheel velocity
-		if (c_vector_to_follow.GetX() != 0 || c_vector_to_follow.GetY() != 0) {
-			if (cLeftHemisphere.WithinMinBoundExcludedMaxBoundExcluded(cNormalizedVectorToFollow)) {
-				fRightVelocity = 1;
-				fLeftVelocity = Max<Real>(-0.5f, Cos(cNormalizedVectorToFollow));
-			} else {
-				fRightVelocity = Max<Real>(-0.5f, Cos(cNormalizedVectorToFollow));
-				fLeftVelocity = 1;
-			}
-		}
+        Real EpuckVmax = m_pcRobotDAO->GetMaxVelocity();
 
-		// Transform relative velocity according to max velocity allowed
-		Real fVelocityFactor = m_pcRobotDAO->GetMaxVelocity() / Max<Real>(std::abs(fRightVelocity), std::abs(fLeftVelocity));
-		CVector2 cWheelsVelocity = CVector2(fVelocityFactor * fLeftVelocity, fVelocityFactor * fRightVelocity);
+        /* Get the heading angle */
+        CRadians fVectorAngle = c_vector_to_follow.Angle().SignedNormalize();
 
-		return cWheelsVelocity;
-	}
+        /* Get the normalization of the heading vector */
+        CVector2 fVectorNorm;
+        if (c_vector_to_follow.Length() != 0)
+            fVectorNorm = c_vector_to_follow/c_vector_to_follow.Length();
+        else fVectorNorm = CVector2();
+
+        /* vector matching the orientation of the focal robot */
+        CVector2 vFocalRobot;
+        vFocalRobot.Set(1.0f,0.0f);
+        /* Get the heading angle */
+        CRadians AngleFocalRobot = vFocalRobot.Angle().SignedNormalize();
+
+        Real fVelLinear, fOmega;
+        Real K1 = 1.0f;
+        Real K2 = 1.0f;
+
+
+        /* Avoid that robots go backwards*/
+        if (vFocalRobot.DotProduct(fVectorNorm) >= 0) {
+            fVelLinear = K1*(vFocalRobot.DotProduct(c_vector_to_follow))*EpuckVmax;
+        }
+        else fVelLinear = 0;
+
+        /* Proportional controller */
+        fOmega = K2*(fVectorAngle.GetValue() - AngleFocalRobot.GetValue());
+
+
+        /* Limit wheels velocities if are higher (lower) than the max
+         * (min) velocity, trying to ensure angular velocity against
+         * the linear velocity.
+         */
+        CVector2 vLimitWheelsVelocity;
+        vLimitWheelsVelocity = LimitMotorsUniToDiff(fVelLinear,fOmega);
+
+        return vLimitWheelsVelocity;
+    }
 
 	/****************************************/
 	/****************************************/
+
+    CVector2 AutoMoDeBehaviour::LimitMotorsUniToDiff(Real fVel, Real fOmega) {
+
+        Real EpuckVmax = m_pcRobotDAO->GetMaxVelocity();
+        Real EpuckWmax = m_pcRobotDAO->GetMaxOmega();
+
+        /* Limit the linear velocity (fVel) and the angular
+         * velocity (fOmega) to their max values appying a saturation
+         */
+        fOmega = Max<Real>(Min(fOmega,EpuckWmax), -EpuckWmax);
+        fVel = Max<Real>(Min(fVel,EpuckVmax), -EpuckVmax);
+
+        /* Compute desired wheels velocities (vl_d, vr_d) needed
+         * to ensure fOmega
+         */
+        CVector2 vVelWheelsDesired = UniToDiff(fVel,fOmega);
+
+        /* Find the max and min wheels velocities (vel_r/vel_l)
+         */
+        Real fMaxVelocity_rl = Max<Real>(vVelWheelsDesired.GetX(),vVelWheelsDesired.GetY());
+        Real fMinVelocity_rl = Min<Real>(vVelWheelsDesired.GetX(),vVelWheelsDesired.GetY());
+
+        /* If the wheels velocities are higher (lower) than the max (min)
+         * linear velocity, then decrease (increase) the wheels velocities
+         */
+        Real fDiffSup = fMaxVelocity_rl - EpuckVmax;
+        Real fDiffInf = fMinVelocity_rl + EpuckVmax;
+
+        CVector2 fVelWheelsLim;
+
+        if (fMaxVelocity_rl > EpuckVmax) {
+            fVelWheelsLim.Set(vVelWheelsDesired.GetX()-fDiffSup, vVelWheelsDesired.GetY()-fDiffSup);
+        }
+        else if (fMinVelocity_rl < -EpuckVmax) {
+            fVelWheelsLim.Set(vVelWheelsDesired.GetX()-fDiffInf,vVelWheelsDesired.GetY()-fDiffInf);
+        }
+        else {
+            fVelWheelsLim.Set(vVelWheelsDesired.GetX(),vVelWheelsDesired.GetY());
+        }
+
+        return fVelWheelsLim;
+    }
+
+    /****************************************/
+    /****************************************/
+
+    CVector2 AutoMoDeBehaviour::UniToDiff(Real fVel, Real fOmega) {
+
+        /* This function transform from the linear and angular velocity
+         * (fVel,fOmega) to wheels velocities using the unicycle model
+         */
+
+        Real fDistanceWheels = m_pcRobotDAO->GetLengthEpuckAxis();
+        CVector2 fVelWheels;
+
+        fVelWheels.Set((2.0f*fVel-fOmega*fDistanceWheels)*0.5f,(2.0f*fVel+fOmega*fDistanceWheels)*0.5f);
+
+        return fVelWheels;
+    }
+
+    /****************************************/
+    /****************************************/
 
 	CVector2 AutoMoDeBehaviour::SumProximityReadings(CCI_EPuckProximitySensor::TReadings s_prox) {
 		CVector2 cSum(0, 0);
-		for (UInt8 i = 0; i < s_prox.size(); i++) {
-			cSum += CVector2(s_prox[i].Value, s_prox[i].Angle);
-		}
+        for (UInt8 i = 0; i < s_prox.size(); i++) {
+            if (s_prox[i].Value > 0.25f) {
+                // threshold 25%: Obstacle avoidance bhv, sum it!
+                cSum += CVector2(s_prox[i].Value, s_prox[i].Angle);
+            }
+        }
 		return cSum;
 	}
 

@@ -49,26 +49,35 @@ namespace argos {
 	/****************************************/
 
 	void AutoMoDeBehaviourRepulsion::ControlStep() {
-		CCI_EPuckRangeAndBearingSensor::TPackets sLastPackets = m_pcRobotDAO->GetRangeAndBearingMessages();
-		CCI_EPuckRangeAndBearingSensor::TPackets::iterator it;
-		CVector2 sRabVectorSum(0,CRadians::ZERO);
-		CVector2 sProxVectorSum(0,CRadians::ZERO);
-		CVector2 sResultVector(0,CRadians::ZERO);
+        CCI_EPuckVirtualCamrabSensor::TReadings sLastPackets = m_pcRobotDAO->GetCamRabMessages();
 
-		for (it = sLastPackets.begin(); it != sLastPackets.end(); it++) {
-			if ((*it)->Data[0] != (UInt8) m_pcRobotDAO->GetRobotIdentifier()) {
-				sRabVectorSum += CVector2(m_unRepulsionParameter / ((*it)->Range + 1),(*it)->Bearing.SignedNormalize());
-			}
-		}
-		sProxVectorSum = SumProximityReadings(m_pcRobotDAO->GetProximityInput());
-		sResultVector = -sRabVectorSum - 5*sProxVectorSum;
-		if (sResultVector.Length() < 0.1) {
-			sResultVector = CVector2(1, CRadians::ZERO);
-		}
+        CVector2 sCamRabVectorSum(0,CRadians::ZERO);
+        CVector2 sProxVectorSum(0,CRadians::ZERO);
+        CVector2 sResultVector(0,CRadians::ZERO);
 
-		m_pcRobotDAO->SetWheelsVelocity(ComputeWheelsVelocityFromVector(sResultVector));
+        if (!sLastPackets.empty()) {
+            for(size_t i = 0; i < sLastPackets.size(); ++i) {
+                if ((sLastPackets[i]->Data[1] != (UInt8) m_pcRobotDAO->GetRobotIdentifier())) {
 
-		m_bLocked = false;
+                    CRadians anguloR;
+
+                    anguloR.FromValueInDegrees(sLastPackets[i]->Angle);
+
+                    sCamRabVectorSum += CVector2(m_unRepulsionParameter / (sLastPackets[i]->Distance + 1),anguloR.SignedNormalize());
+                }
+            }
+        }
+
+        sProxVectorSum = SumProximityReadings(m_pcRobotDAO->GetProximityInput());
+        sResultVector = -sCamRabVectorSum - 5*sProxVectorSum;
+
+        if (sResultVector.Length() < 0.1) {
+            sResultVector = CVector2(1, CRadians::ZERO);
+        }
+
+        m_pcRobotDAO->SetWheelsVelocity(MILowLevelController(sResultVector));
+
+        m_bLocked = false;
 	}
 
 	/****************************************/

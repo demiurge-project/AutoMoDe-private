@@ -17,11 +17,13 @@ namespace argos {
 
 	AutoMoDeRobotDAO::AutoMoDeRobotDAO() {
 		m_pcRng = CRandom::CreateRNG("argos");
-		m_pcRabMessageBuffer = AutoMoDeRabBuffer();
-		m_pcRabMessageBuffer.SetTimeLife(10);
-		m_fMaxVelocity = 12;
-		m_fLeftWheelVelocity = 0;
-		m_fRightWheelVelocity = 0;
+        m_pcCamRabMessageBuffer = AutoMoDeCamRabBuffer();
+        m_pcCamRabMessageBuffer.SetTimeLife(3);
+        m_fMaxVelocity = 10;                // [cm/s]
+        m_fMaxOmega = 0.3f*m_fMaxVelocity;  // 4.5 [r/s] max
+        m_fLengthEpuckAxis = 5.3f;          // [cm]
+        m_fLeftWheelVelocity = 0;           // [cm/s]
+        m_fRightWheelVelocity = 0;          // [cm/s]
 	}
 
 	/****************************************/
@@ -88,33 +90,41 @@ namespace argos {
 	/****************************************/
 	/****************************************/
 
-	std::vector<CCI_EPuckRangeAndBearingSensor::SReceivedPacket*> AutoMoDeRobotDAO::GetRangeAndBearingMessages() {
-		return m_pcRabMessageBuffer.GetMessages();
-	}
+    std::vector<CCI_EPuckVirtualCamrabSensor::SReading*> AutoMoDeRobotDAO::GetCamRabMessages() {
+        return m_pcCamRabMessageBuffer.GetMessages();
+    }
 
 	/****************************************/
 	/****************************************/
 
-	void AutoMoDeRobotDAO::SetRangeAndBearingMessages(CCI_EPuckRangeAndBearingSensor::TPackets s_packets) {
-		std::map<UInt32, CCI_EPuckRangeAndBearingSensor::SReceivedPacket*> mapRemainingMessages;
-		std::map<UInt32, CCI_EPuckRangeAndBearingSensor::SReceivedPacket*>::iterator mapIt;
-		CCI_EPuckRangeAndBearingSensor::TPackets::iterator it;
-		m_unNumberNeighbors = 0;
-		for (it = s_packets.begin(); it < s_packets.end(); ++it) {
-			if ((*it)->Data[0] != m_unRobotIdentifier) {
-				if (mapRemainingMessages.find((*it)->Data[0]) != mapRemainingMessages.end()) {  // If ID not in map, add message.
-					mapRemainingMessages[(*it)->Data[0]] = (*it);
-				} else if ((*it)->Bearing != CRadians::ZERO){  // If ID there, overwrite only if the message is valid (correct range and bearing information)
-					mapRemainingMessages[(*it)->Data[0]] = (*it);
-				}
-			}
-		}
-		for (mapIt = mapRemainingMessages.begin(); mapIt != mapRemainingMessages.end(); ++mapIt) {
-			m_pcRabMessageBuffer.AddMessage((*mapIt).second);
-			m_unNumberNeighbors += 1;
-		}
-		m_pcRabMessageBuffer.Update();
-	}
+    void AutoMoDeRobotDAO::SetCamRabMessages(CCI_EPuckVirtualCamrabSensor::TReadings s_packets) {
+        std::map<UInt32, CCI_EPuckVirtualCamrabSensor::SReading*> mapRemainingMessages;
+        std::map<UInt32, CCI_EPuckVirtualCamrabSensor::SReading*>::iterator mapIt;
+        CCI_EPuckVirtualCamrabSensor::TReadings::iterator it;
+        m_unNumberNeighbors = 0;
+
+        for (it = s_packets.begin(); it < s_packets.end(); ++it) {
+            if ((*it)->Data[1] != m_unRobotIdentifier) {
+
+                if ((*it)->Distance != 0.0f){
+                    mapRemainingMessages[(*it)->Data[1]] = (*it);
+                }
+                else {
+                    /* if (*it)->Distance = 0, this measure could be between 30-70cm from de R&B measure */
+                    (*it)->Distance = 50;
+                    mapRemainingMessages[(*it)->Data[1]] = (*it);
+                }
+
+            }
+        }
+        for (mapIt = mapRemainingMessages.begin(); mapIt != mapRemainingMessages.end(); ++mapIt) {
+            m_pcCamRabMessageBuffer.AddMessage((*mapIt).second);
+            m_unNumberNeighbors += 1;
+        }
+
+        m_pcCamRabMessageBuffer.Update();
+
+    }
 
 	/****************************************/
 	/****************************************/
@@ -152,7 +162,7 @@ namespace argos {
 	void AutoMoDeRobotDAO::Reset() {
 		m_fLeftWheelVelocity = 0;
 		m_fRightWheelVelocity = 0;
-		m_pcRabMessageBuffer.Reset();
+        m_pcCamRabMessageBuffer.Reset();
 	}
 
 	/****************************************/
@@ -182,4 +192,20 @@ namespace argos {
 	const Real& AutoMoDeRobotDAO::GetMaxVelocity() const{
 		return m_fMaxVelocity;
 	}
+
+    /****************************************/
+    /****************************************/
+
+    const Real& AutoMoDeRobotDAO::GetMaxOmega() const{
+        return m_fMaxOmega;
+    }
+
+    /****************************************/
+    /****************************************/
+
+    const Real& AutoMoDeRobotDAO::GetLengthEpuckAxis() const{
+        return m_fLengthEpuckAxis;
+    }
+
+
 }

@@ -1,41 +1,41 @@
 /*
- * @file <src/core/AutoMoDeRabBuffer.cpp>
+ * @file <src/core/AutoMoDeCamRabBuffer.cpp>
  *
- * @author Antoine Ligot - <aligot@ulb.ac.be>
+ * @author Fernando Mendiburu - <fmendibu@ulb.ac.be>
  *
- * @package ARGoS3-AutoMoDe
+ * @package AutoMoDe-Mate
  *
  * @license MIT License
  */
 
 
-#include "AutoMoDeRabBuffer.h"
+#include "AutoMoDeCamRabBuffer.h"
 
 namespace argos {
 
   /****************************************/
   /****************************************/
 
-  AutoMoDeRabBuffer::AutoMoDeRabBuffer() {
+  AutoMoDeCamRabBuffer::AutoMoDeCamRabBuffer() {
     m_unCurrentTime = 0;
   }
 
   /****************************************/
   /****************************************/
 
-  AutoMoDeRabBuffer::~AutoMoDeRabBuffer() {}
+  AutoMoDeCamRabBuffer::~AutoMoDeCamRabBuffer() {}
 
   /****************************************/
   /****************************************/
 
-  void AutoMoDeRabBuffer::SetTimeLife(const UInt32& un_max_time_to_live) {
+  void AutoMoDeCamRabBuffer::SetTimeLife(const UInt32& un_max_time_to_live) {
     m_unMaxTimeToLive = un_max_time_to_live;
   }
 
   /****************************************/
   /****************************************/
 
-  void AutoMoDeRabBuffer::Update() {
+  void AutoMoDeCamRabBuffer::Update() {
     if (m_unCurrentTime >= m_unMaxTimeToLive) {
       UInt32 i = 0;
       while (i < m_vecBufferElements.size()) {
@@ -52,26 +52,26 @@ namespace argos {
   /****************************************/
 	/****************************************/
 
-  void AutoMoDeRabBuffer::AddMessage(CCI_EPuckRangeAndBearingSensor::SReceivedPacket* c_packet) {
-    m_vecBufferElements.push_back(std::make_pair(*c_packet, m_unCurrentTime));
+  void AutoMoDeCamRabBuffer::AddMessage(CCI_EPuckVirtualCamrabSensor::SReading* c_readings) {
+    m_vecBufferElements.push_back(std::make_pair(*c_readings, m_unCurrentTime));
   }
 
   /****************************************/
   /****************************************/
 
-  std::vector<CCI_EPuckRangeAndBearingSensor::SReceivedPacket*> AutoMoDeRabBuffer::GetMessages(){
-    std::vector<CCI_EPuckRangeAndBearingSensor::SReceivedPacket*> vecRabMessages;
-    std::vector<std::pair<CCI_EPuckRangeAndBearingSensor::SReceivedPacket, UInt32> >::iterator it;
+  std::vector<CCI_EPuckVirtualCamrabSensor::SReading*> AutoMoDeCamRabBuffer::GetMessages(){
+    std::vector<CCI_EPuckVirtualCamrabSensor::SReading*> vecCamRabMessages;
+    std::vector<std::pair<CCI_EPuckVirtualCamrabSensor::SReading, UInt32> >::iterator it;
     for (it = m_vecBufferElements.begin(); it != m_vecBufferElements.end(); it++) {
-      vecRabMessages.push_back(&(*it).first);
+      vecCamRabMessages.push_back(&(*it).first);
     }
-    return vecRabMessages;
+    return vecCamRabMessages;
   }
 
   /****************************************/
   /****************************************/
 
-  void AutoMoDeRabBuffer::Reset() {
+  void AutoMoDeCamRabBuffer::Reset() {
     m_vecBufferElements.clear();
     m_unCurrentTime = 0;
   }
