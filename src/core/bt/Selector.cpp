@@ -60,7 +60,7 @@ namespace argos {
 				return Node::SUCCESS;
 			}
 		}
-		LOG << "[" << m_unRobotID << "]\t"<< m_vecActions.at(0)->GetLabel() << std::endl;
+		//LOG << "[" << m_unRobotID << "]\t"<< m_vecActions.at(0)->GetLabel() << std::endl;
 		m_vecActions.at(0)->ControlStep();
 		return Node::RUNNING;
 	}
