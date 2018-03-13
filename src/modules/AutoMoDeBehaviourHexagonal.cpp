@@ -52,6 +52,9 @@ namespace argos {
 
     void AutoMoDeBehaviourHexagonal::ControlStep() {
 
+        /* Increase the counter in this bhv*/
+        m_sHexagonalParams.CounterHex++;
+
         CVector2 vProx(0,CRadians::ZERO);
         CVector2 vResult(0,CRadians::ZERO);
 
@@ -74,29 +77,39 @@ namespace argos {
 	/****************************************/
 	/****************************************/
 
+    void AutoMoDeBehaviourHexagonal::InitializeVariables() {
+        m_sHexagonalParams.CounterHex = 0;
+        m_sHexagonalParams.Exponent = 2;
+        m_sHexagonalParams.InitialGain = 50;
+        m_sHexagonalParams.FinalGain = 2;
+        m_sHexagonalParams.ActualGain = m_sHexagonalParams.InitialGain;
+    }
+
+    /****************************************/
+    /****************************************/
+
     void AutoMoDeBehaviourHexagonal::Init() {
 
-        m_sHexagonalParams.Exponent = 2;
+        InitializeVariables();
 
         std::map<std::string, Real>::iterator itDist = m_mapParameters.find("dij");
-        std::map<std::string, Real>::iterator itGain = m_mapParameters.find("ga");
-        if ((itDist != m_mapParameters.end()) && (itGain != m_mapParameters.end())) {
-            m_sHexagonalParams.TargetDistance = itDist->second;
-            m_sHexagonalParams.Gain = itGain->second;
-
+        if (itDist != m_mapParameters.end()) {
+            m_sHexagonalParams.TargetDistance = itDist->second;        
         } else {
             LOGERR << "[FATAL] Missing parameter for the following behaviour:" << m_strLabel << std::endl;
             THROW_ARGOSEXCEPTION("Missing Parameter");
         }
 
 
-	}
+    }
 
-	/****************************************/
-	/****************************************/
+    /****************************************/
+    /****************************************/
 
     void AutoMoDeBehaviourHexagonal::Reset() {
 		m_bOperational = false;
+
+        InitializeVariables();
 
 		ResumeStep();
 	}
@@ -113,6 +126,8 @@ namespace argos {
 
     CVector2 AutoMoDeBehaviourHexagonal::Hexagonal(CCI_EPuckVirtualCamrabSensor::TReadings sReadings) {
 
+        /* Adaptative Gain*/
+        AdaptativeGain(m_sHexagonalParams.InitialGain, m_sHexagonalParams.FinalGain, (UInt32) 0, (UInt32) 30);
 
         CVector2 sCamRabVectorSum(0,CRadians::ZERO);
 
@@ -124,8 +139,9 @@ namespace argos {
 
                 if ((sReadings[i]->Data[1] != (UInt8) m_pcRobotDAO->GetRobotIdentifier())) {
 
+
                     /* Lennard-Jones interaction force */
-                    fLJ = LJMagnitude(sReadings[i]->Distance, m_sHexagonalParams.TargetDistance, m_sHexagonalParams.Gain);
+                    fLJ = LJMagnitude(sReadings[i]->Distance, m_sHexagonalParams.TargetDistance, m_sHexagonalParams.ActualGain);
 
                     CRadians AngleRad;
                     AngleRad.FromValueInDegrees(sReadings[i]->Angle);
@@ -170,6 +186,19 @@ namespace argos {
 
         return fMagnitude;
 
+    }
+
+    /****************************************/
+    /****************************************/
+
+    void AutoMoDeBehaviourHexagonal::AdaptativeGain(Real fInitialGain, Real fFinalGain, UInt32 fInitialTimeinSecs, UInt32 fFinalTimeinSecs) {
+
+        /* Measure each secs and if the gain is the final gain*/
+        if((!((UInt32) m_sHexagonalParams.CounterHex % (UInt32) 10)) && (m_sHexagonalParams.ActualGain > fFinalGain)) {
+           m_sHexagonalParams.ActualGain = (Real) (0.1*m_sHexagonalParams.CounterHex*(fFinalGain-fInitialGain)/(fFinalTimeinSecs-fInitialTimeinSecs)+fInitialGain);
+
+        }
+        //LOG << "gain" << m_sHexagonalParams.ActualGain << std::endl;
     }
 
     /****************************************/

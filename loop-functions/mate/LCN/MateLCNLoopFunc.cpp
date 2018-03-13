@@ -19,8 +19,7 @@ MateLCNLoopFunction::MateLCNLoopFunction() {
   m_unNumberPoints = 100000;
   m_cArenaCenter = CVector2(0,0);
   m_fObjectiveFunction = 0;
-  PerformanceVector.begin();
-
+  m_unLengthExperiment = 250;       // in seconds
 }
 
 /****************************************/
@@ -42,6 +41,9 @@ void MateLCNLoopFunction::Destroy() {}
 /****************************************/
 
 void MateLCNLoopFunction::Reset() {
+  /* Reset variables */
+  PerformanceVector.erase(PerformanceVector.begin(),PerformanceVector.end());
+  m_fObjectiveFunction = 0;
   AutoMoDeLoopFunctions::Reset();
 }
 
@@ -56,24 +58,69 @@ argos::CColor MateLCNLoopFunction::GetFloorColor(const argos::CVector2& c_positi
 /****************************************/
 
 void MateLCNLoopFunction::PostExperiment() {
-  m_fObjectiveFunction = ComputeObjectiveFunction();
-  PerformanceVector.push_back(m_fObjectiveFunction);
-  LOG << "Metrica: " << m_fObjectiveFunction << std::endl;
-  LOG << "Mean: " << ComputeMeanVector() << std::endl;
+
+  /* Create a vector with the measures of performances */
+  m_fObjectiveFunction = ComputeMeanVector(PerformanceVector);
+
+  //LOG << "Mean: " << GetObjectiveFunction() << std::endl;
 }
 
 /****************************************/
 /****************************************/
 
 void MateLCNLoopFunction::PostStep() {
-    if(!(GetSpace().GetSimulationClock() % 50)) {
-      m_fObjectiveFunction = ComputeObjectiveFunction();
 
-      PerformanceVector.push_back(m_fObjectiveFunction);
 
-      LOG << "Metrica: " << m_fObjectiveFunction << std::endl;
-      LOG << "Mean: " << ComputeMeanVector() << std::endl;
-      LOG << "Clock: " << GetSpace().GetSimulationClock() << std::endl;
+
+//    std::vector<Real>::iterator it;
+
+
+
+//    for (it = PerformanceVector.begin(); it != PerformanceVector.end(); it++) {
+
+//        argos::LOG << "vector: " << (*it) << std::endl;
+
+
+//    }
+
+
+
+
+
+    /* Measure the last minute of simulation for each 10 seconds*/
+    //if((!(GetSpace().GetSimulationClock() % 100)) && (GetSpace().GetSimulationClock() >= 1900) ) {
+
+    //LOG << "fExpLength: " << ToString(fExpLength) << std::endl;
+
+
+    if(IsTimeToMeasure(1) && IsNearTheEndofTheExperiment(m_unLengthExperiment,30)) {
+      /* Compute the coverage ratio of the biggest group */
+
+      Real fCoverageRatioBiggestGroup = ComputeObjectiveFunction();
+
+      /* Create a vector with the measures of performances */
+      PerformanceVector.push_back(fCoverageRatioBiggestGroup);
+
+      //LOG << "Metrica: " << fCoverageRatioBiggestGroup << std::endl;
+    }
+}
+
+/****************************************/
+/****************************************/
+
+bool MateLCNLoopFunction::IsTimeToMeasure(UInt32 fTimeInSeconds) {
+    return !(GetSpace().GetSimulationClock() % (10*fTimeInSeconds));
+}
+
+/****************************************/
+/****************************************/
+
+bool MateLCNLoopFunction::IsNearTheEndofTheExperiment(UInt32 unLengthExperimentInSeconds, UInt32 unTimeToEndInSeconds) {
+    if ((SInt32)(unLengthExperimentInSeconds-unTimeToEndInSeconds) >= 0) {
+        return (GetSpace().GetSimulationClock() > ((Real) (unLengthExperimentInSeconds-unTimeToEndInSeconds)*10));
+    }
+    else {
+        return false;
     }
 }
 
@@ -101,13 +148,13 @@ void MateLCNLoopFunction::AddNeighs(std::vector<CNetAgent> &agents, std::vector<
 /****************************************/
 /****************************************/
 
-Real MateLCNLoopFunction::ComputeMeanVector() {
+Real MateLCNLoopFunction::ComputeMeanVector(std::vector<Real> vValues) {
 
     Real fMean = 0;
 
-    if (!PerformanceVector.empty()) {
-        Real fSum = std::accumulate(PerformanceVector.begin(), PerformanceVector.end(), 0.0);
-        fMean = fSum / PerformanceVector.size();
+    if (!vValues.empty()) {
+        Real fSum = std::accumulate(vValues.begin(), vValues.end(), 0.0);
+        fMean = fSum / vValues.size();
     }
 
     return fMean;
@@ -217,12 +264,6 @@ Real MateLCNLoopFunction::ComputeCoverageRatio(std::vector<CNetAgent> &agents, U
 
     return performance;
 }
-
-/****************************************/
-/****************************************/
-
-
-
 
 /****************************************/
 /****************************************/

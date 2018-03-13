@@ -4,8 +4,8 @@
   <!-- * Framework * -->
   <!-- ************* -->
   <framework>
-    <experiment length="1"
-                ticks_per_second="10" random_seed="0"/>
+    <experiment length="5"
+                ticks_per_second="250" random_seed="0"/>
   </framework>
 
   <!-- ****************** -->
@@ -13,7 +13,7 @@
   <!-- ****************** -->
   <loop_functions library="../../build/loop-functions/mate/LCN/libmate_lcn_loopfunc.so"
    label="mate_lcn_loop_functions">
-   <params dist_radius="1.2" number_robots="20"/>
+   <params dist_radius="0.4" number_robots="20"/>
   </loop_functions>
 
   <!-- *************** -->

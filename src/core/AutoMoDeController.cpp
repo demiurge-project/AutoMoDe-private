@@ -98,7 +98,7 @@ namespace argos {
 		/*
 		 * Starts actuation.
 		 */
-		 InitializeActuation();
+         InitializeActuation();
 	}
 
 	/****************************************/

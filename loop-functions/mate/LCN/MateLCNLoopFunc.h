@@ -54,6 +54,10 @@ class MateLCNLoopFunction : public AutoMoDeLoopFunctions {
 
       Real ComputeObjectiveFunction();
 
+      bool IsTimeToMeasure(UInt32 fTimeInSeconds);
+
+      bool IsNearTheEndofTheExperiment(UInt32 unLengthExperimentInSeconds, UInt32 unTimeToEndInSeconds);
+
       void AddNeighs(std::vector<CNetAgent> &agents, std::vector<CNetAgent>::iterator ag);
 
       std::vector<MateLCNLoopFunction::CNetAgent> PickAgents();
@@ -62,7 +66,7 @@ class MateLCNLoopFunction : public AutoMoDeLoopFunctions {
 
       Real ComputeCoverageRatio(std::vector<CNetAgent> &agents, UInt32 GroupID);
 
-      Real ComputeMeanVector();
+      Real ComputeMeanVector(std::vector<Real> vValues);
 
       std::vector<Real> PerformanceVector;
 
@@ -77,6 +81,8 @@ class MateLCNLoopFunction : public AutoMoDeLoopFunctions {
       UInt32 m_unNumberPoints;
 
       CVector2 m_cArenaCenter;
+
+      UInt32 m_unLengthExperiment;
 };
 
 #endif

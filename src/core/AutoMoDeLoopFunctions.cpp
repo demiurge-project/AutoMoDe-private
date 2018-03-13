@@ -25,6 +25,21 @@ void AutoMoDeLoopFunctions::Init(argos::TConfigurationNode& t_tree) {
     LOGERR << e.what() << std::endl;
   }
 
+
+
+//  TConfigurationNode tExperiment;
+//  try {
+//    tExperiment = GetNode(t_tree, "experiments");
+//    GetNodeAttributeOrDefault<Real>(tExperiment, "length", fExpLength, 0.0f);
+//  } catch(std::exception e) {
+//    LOGERR << e.what() << std::endl;
+//  }
+
+
+
+
+
+
   PositionRobots();
 }
 

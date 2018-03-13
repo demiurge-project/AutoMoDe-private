@@ -40,9 +40,15 @@ namespace argos {
 
             struct SHexagonalParams {
               Real TargetDistance;  //cm
-              Real Gain;
+              Real ActualGain;
+              Real InitialGain;
+              Real FinalGain;
               Real Exponent;
+              Real CounterHex;
             };
+
+            /* Init Variables. */
+            void InitializeVariables();
 
             /* The Hexagonal interaction parameters. */
             SHexagonalParams m_sHexagonalParams;
@@ -52,6 +58,9 @@ namespace argos {
 
             /* The Lenard-Jones function. */
             Real LJMagnitude(Real fDistance, Real fTargetDistance, Real fGain);
+
+            /* The adaptative gain function. */
+            void AdaptativeGain(Real fInitialGain, Real fFinalGain, UInt32 fInitialTimeinSecs, UInt32 fFinalTimeinSecs);
 
             void PrintSensor(CCI_EPuckVirtualCamrabSensor::TReadings sReadings);
 
