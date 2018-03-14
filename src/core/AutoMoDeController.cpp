@@ -83,9 +83,12 @@ namespace argos {
 		try{
 			m_pcWheelsActuator = GetActuator<CCI_EPuckWheelsActuator>("epuck_wheels");
 			m_pcLEDsActuator = GetActuator<CCI_EPuckRGBLEDsActuator>("epuck_rgb_leds");
+			m_pcRabActuator = GetActuator<CCI_EPuckRangeAndBearingActuator>("epuck_range_and_bearing");
 		} catch (CARGoSException ex) {
 			LOGERR<<"Error while initializing an Actuator!\n";
 		}
+
+		InitializeActuation();
 
 	}
 
@@ -207,20 +210,6 @@ namespace argos {
 				break;
 
 		}
-
-		UInt32 unIndexRabActuator = m_pcFiniteStateMachine->GetIndexRabActuator();
-		switch(unIndexRabActuator) {
-			case 0:
-				LOG << "RabAct -> 1" << std::endl;
-				m_pcRabActuator = GetActuator<CCI_EPuckRangeAndBearingActuator>("epuck_range_and_bearing_salman_act1");
-				break;
-			case 1:
-				LOG << "RabAct -> 2" << std::endl;
-				m_pcRabActuator = GetActuator<CCI_EPuckRangeAndBearingActuator>("epuck_range_and_bearing_salman_act2");
-				break;
-		}
-
-		InitializeActuation();
 	}
 
 

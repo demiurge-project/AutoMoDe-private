@@ -11,8 +11,8 @@
   <!-- ****************** -->
   <!-- * Loop functions * -->
   <!-- ****************** -->
-  <loop_functions library="../../build/loop-functions/example/libexample_aggregation_loopfunc.so"
-   label="example_aggregation_loop_functions">
+  <loop_functions library="../../build/loop-functions/example/libaggregation_two_spots_far_loopfunc.so"
+   label="aggregation_two_spots_far_loop_func">
    <params dist_radius="1.2" number_robots="1"/>
   </loop_functions>
 
@@ -26,8 +26,8 @@
       <actuators>
         <epuck_wheels implementation="default" noise_std_dev="0.05"/>
         <epuck_rgb_leds implementation="default" medium="leds"/>
-        <epuck_range_and_bearing_salman_act1 implementation="medium" medium="rab" data_size="4"/>
-        <epuck_range_and_bearing_salman_act2 implementation="medium" medium="rab" data_size="4"/>
+        <!-- <epuck_range_and_bearing_salman_act1 implementation="medium" medium="rab" data_size="4"/> -->
+        <epuck_range_and_bearing implementation="medium" medium="rab" data_size="4"/>
       </actuators>
       <sensors>
 		    <epuck_proximity implementation="default" show_rays="false" noise_level="0.05" calibrated="true"/>
@@ -44,7 +44,7 @@
 		    <epuck_omnidirectional_camera implementation="rot_z_only" medium="leds" show_rays="false"/>
       </sensors>
       <!-- <params fsm-config="--rab 0 --nstates 2 --s0 4 --att0 5 --n0 1 --n0x0 0 --c0x0 0 --p0x0 1.0 --s1 1 --n1 2 --n1x0 0 --c1x0 5 --p1x0 0.25 --n1x1 0 --c1x1 1 --p1x1 1"/> -->
-      <params fsm-config="--robots 13 --rabs 0 --raba 0 --nstates 1 --s0 4 --att0 5 --n0 0"/>
+      <params fsm-config="--robots 13 --rabsi 0 --rabar 10 --nstates 1 --s0 4 --att0 5 --n0 0"/>
     </automode_controller>
   </controllers>
 

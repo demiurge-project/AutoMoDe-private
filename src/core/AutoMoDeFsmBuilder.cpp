@@ -72,8 +72,7 @@ namespace argos {
 		}
 
 		return cFiniteStateMachine;
-
-	}
+}
 
 	/****************************************/
 	/****************************************/
@@ -83,10 +82,10 @@ namespace argos {
 		try {
 			it = std::find(vec_fsm_config.begin(), vec_fsm_config.end(), "--robots");
 			c_fsm->SetNumberRobots(atoi((*(it+1)).c_str()));
-			it = std::find(vec_fsm_config.begin(), vec_fsm_config.end(), "--rabs");
+			it = std::find(vec_fsm_config.begin(), vec_fsm_config.end(), "--rabsi");
 			c_fsm->SetIndexRabSensor(atoi((*(it+1)).c_str()));
-			it = std::find(vec_fsm_config.begin(), vec_fsm_config.end(), "--raba");
-			c_fsm->SetIndexRabActuator(atoi((*(it+1)).c_str()));
+			it = std::find(vec_fsm_config.begin(), vec_fsm_config.end(), "--rabar");
+			c_fsm->SetRabActuatorRange(strtod((*(it+1)).c_str(), NULL));
 		} catch (std::exception e) {
 			LOGERR << e.what() << std::endl;
 			THROW_ARGOSEXCEPTION("Error while parsing Hardware Modules configuration");

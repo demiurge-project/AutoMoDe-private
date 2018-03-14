@@ -14,6 +14,7 @@
 #include <argos3/core/simulator/entity/controllable_entity.h>
 #include <argos3/core/utility/plugins/dynamic_loading.h>
 #include <argos3/core/simulator/argos_command_line_arg_parser.h>
+#include <argos3/plugins/robots/e-puck/simulator/epuck_entity.h>
 
 #include "./core/AutoMoDeFiniteStateMachine.h"
 #include "./core/AutoMoDeFsmBuilder.h"
@@ -80,7 +81,6 @@ int main(int n_argc, char** ppch_argv) {
 		switch(cACLAP.GetAction()) {
     	case CARGoSCommandLineArgParser::ACTION_RUN_EXPERIMENT: {
 				CDynamicLoading::LoadAllLibraries();
-				std::cout << cACLAP.GetExperimentConfigFile() << std::endl;
 				cSimulator.SetExperimentFileName(cACLAP.GetExperimentConfigFile());
 
 				// Creation of the finite state machine.
@@ -96,7 +96,6 @@ int main(int n_argc, char** ppch_argv) {
 
 				// Setting random seed. Only works with modified version of ARGoS3.
 				cSimulator.SetRandomSeed(unSeed);
-
 				cSimulator.LoadExperiment();
 
 				AutoMoDeLoopFunctions& cLoopFunctions = dynamic_cast<AutoMoDeLoopFunctions&> (cSimulator.GetLoopFunctions());
@@ -107,17 +106,23 @@ int main(int n_argc, char** ppch_argv) {
 				CSpace::TMapPerType cEntities = cSimulator.GetSpace().GetEntitiesByType("controller");
 				for (CSpace::TMapPerType::iterator it = cEntities.begin(); it != cEntities.end(); ++it) {
 					CControllableEntity* pcEntity = any_cast<CControllableEntity*>(it->second);
-					//CComposableEntity* pcTestCompo = any_cast<CComposableEntity*>(it->second);
 					AutoMoDeFiniteStateMachine* pcPersonalFsm = new AutoMoDeFiniteStateMachine(pcFiniteStateMachine);
 					vecFsm.push_back(pcPersonalFsm);
 					try {
 						AutoMoDeController& cController = dynamic_cast<AutoMoDeController&> (pcEntity->GetController());
 						cController.SetFiniteStateMachine(pcPersonalFsm);
 						cController.InitializeHardwareModules();
-						//(&pcTestCompo->GetComponent<CEpuckRABEquippedEntity>("rab[rab_0]"))->SetRange(20);
 					} catch (std::exception& ex) {
 						LOGERR << "Error while casting: " << ex.what() << std::endl;
 					}
+				}
+
+				// Setting modules parameters.
+				CSpace::TMapPerType cEpuckEntities = cSimulator.GetSpace().GetEntitiesByType("epuck");
+				for (CSpace::TMapPerType::iterator it = cEpuckEntities.begin(); it != cEpuckEntities.end(); ++it) {
+					CEPuckEntity* pcEpuckEntity = any_cast<CEPuckEntity*>(it->second);
+					LOG << pcFiniteStateMachine->GetRabActuatorRange() << std::endl;
+					(pcEpuckEntity->GetRABEquippedEntity()).SetRange(pcFiniteStateMachine->GetRabActuatorRange());
 				}
 
 				cSimulator.Execute();
