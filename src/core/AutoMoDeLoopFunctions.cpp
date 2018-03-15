@@ -44,8 +44,6 @@ AutoMoDeLoopFunctions::~AutoMoDeLoopFunctions() {}
 /****************************************/
 
 void AutoMoDeLoopFunctions::PositionRobots() {
-  std::cout << "Position robots " << std::endl;
-  LOG << "Position robots " << std::endl;
   CEPuckEntity* pcEpuck;
   bool bPlaced = false;
   UInt32 unTrials;

@@ -4,7 +4,7 @@
   <!-- * Framework * -->
   <!-- ************* -->
   <framework>
-    <experiment length="30"
+    <experiment length="250"
                 ticks_per_second="10" random_seed="13"/>
   </framework>
 
@@ -12,7 +12,7 @@
   <!-- * Loop functions * -->
   <!-- ****************** -->
   <loop_functions library="../../build/loop-functions/example/libaggregation_two_spots_far_loopfunc.so"
-   label="aggregation_two_spots_far_loop_func">
+   label="aggregation_two_spots_far_lf">
    <params dist_radius="1.2" number_robots="1"/>
   </loop_functions>
 
@@ -33,10 +33,10 @@
 		    <epuck_proximity implementation="default" show_rays="false" noise_level="0.05" calibrated="true"/>
 
         <epuck_range_and_bearing_salman_sen1 implementation="medium" show_rays="true" medium="rab" data_size="4" channel_interference="true" noise_std_dev="1.5" loss_probability="0.3" calibrated="true"/> -->
-        <!-- <epuck_range_and_bearing_salman_sen2 implementation="medium" show_rays="true" medium="rab" data_size="4" channel_interference="true" noise_std_dev="1.5" loss_probability="0.3" calibrated="true"/> -->
-        <!-- <epuck_range_and_bearing_salman_sen3 implementation="medium" show_rays="true" medium="rab" data_size="4" channel_interference="true" noise_std_dev="1.5" loss_probability="0.3" calibrated="true"/> -->
-        <!-- <epuck_range_and_bearing_salman_sen4 implementation="medium" show_rays="true" medium="rab" data_size="4" channel_interference="true" noise_std_dev="1.5" loss_probability="0.3" calibrated="true"/> -->
-        <!-- <epuck_range_and_bearing_salman_sen5 implementation="medium" show_rays="true" medium="rab" data_size="4" channel_interference="true" noise_std_dev="1.5" loss_probability="0.3" calibrated="true"/> -->
+        <epuck_range_and_bearing_salman_sen2 implementation="medium" show_rays="true" medium="rab" data_size="4" channel_interference="true" noise_std_dev="1.5" loss_probability="0.3" calibrated="true"/>
+        <epuck_range_and_bearing_salman_sen3 implementation="medium" show_rays="true" medium="rab" data_size="4" channel_interference="true" noise_std_dev="1.5" loss_probability="0.3" calibrated="true"/>
+        <epuck_range_and_bearing_salman_sen4 implementation="medium" show_rays="true" medium="rab" data_size="4" channel_interference="true" noise_std_dev="1.5" loss_probability="0.3" calibrated="true"/>
+        <epuck_range_and_bearing_salman_sen5 implementation="medium" show_rays="true" medium="rab" data_size="4" channel_interference="true" noise_std_dev="1.5" loss_probability="0.3" calibrated="true"/>
         <epuck_range_and_bearing_salman_sen6 implementation="medium" show_rays="true" medium="rab" data_size="4" channel_interference="true" noise_std_dev="1.5" loss_probability="0.3" calibrated="true"/>
 
         <epuck_light implementation="default" show_rays="false" noise_level="0.05" calibrated="true"/>
@@ -127,14 +127,6 @@
   <!-- * Visualization * -->
   <!-- ***************** -->
   <visualization>
-    <qt-opengl>
-      <camera>
-        <placement idx="0"
-                   position="0,0,4.5"
-                   look_at="0,0,0"
-                   lens_focal_length="30" />
-      </camera>
-    </qt-opengl>
   </visualization>
 
 </argos-configuration>

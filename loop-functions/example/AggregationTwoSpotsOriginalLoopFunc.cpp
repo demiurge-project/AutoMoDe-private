@@ -1,22 +1,20 @@
 /**
-  * @file <loop-functions/example/AggregationTwoSpotsFarFunc.cpp>
+  * @file <loop-functions/AggregationTwoSpotsLoopFunc.cpp>
   *
   * @author Antoine Ligot - <aligot@ulb.ac.be>
-  *
-  * @package ARGoS3-AutoMoDe
   *
   * @license MIT License
   */
 
-#include "AggregationTwoSpotsFarLoopFunc.h"
+#include "AggregationTwoSpotsOriginalLoopFunc.h"
 
 /****************************************/
 /****************************************/
 
-AggregationTwoSpotsFarFunction::AggregationTwoSpotsFarFunction() {
+AggregationTwoSpotsOriginalLoopFunction::AggregationTwoSpotsOriginalLoopFunction() {
   m_fRadius = 0.3;
-  m_cCoordSpot1 = CVector2(0.85,0);
-  m_cCoordSpot2 = CVector2(-0.85,0);
+  m_cCoordSpot1 = CVector2(0.5,0);
+  m_cCoordSpot2 = CVector2(-0.5,0);
   m_unScoreSpot1 = 0;
   m_unScoreSpot2 = 0;
   m_fObjectiveFunction = 0;
@@ -25,32 +23,22 @@ AggregationTwoSpotsFarFunction::AggregationTwoSpotsFarFunction() {
 /****************************************/
 /****************************************/
 
-AggregationTwoSpotsFarFunction::AggregationTwoSpotsFarFunction(const AggregationTwoSpotsFarFunction& orig) {}
+AggregationTwoSpotsOriginalLoopFunction::AggregationTwoSpotsOriginalLoopFunction(const AggregationTwoSpotsOriginalLoopFunction& orig) {}
 
 /****************************************/
 /****************************************/
 
-AggregationTwoSpotsFarFunction::~AggregationTwoSpotsFarFunction() {}
+AggregationTwoSpotsOriginalLoopFunction::~AggregationTwoSpotsOriginalLoopFunction() {}
 
 /****************************************/
 /****************************************/
 
-void AggregationTwoSpotsFarFunction::Destroy() {}
+void AggregationTwoSpotsOriginalLoopFunction::Destroy() {}
 
 /****************************************/
 /****************************************/
 
-void AggregationTwoSpotsFarFunction::Reset() {
-  m_fObjectiveFunction = 0;
-  m_unScoreSpot1 = 0;
-  m_unScoreSpot2 = 0;
-  AutoMoDeLoopFunctions::Reset();
-}
-
-/****************************************/
-/****************************************/
-
-argos::CColor AggregationTwoSpotsFarFunction::GetFloorColor(const argos::CVector2& c_position_on_plane) {
+argos::CColor AggregationTwoSpotsOriginalLoopFunction::GetFloorColor(const argos::CVector2& c_position_on_plane) {
   CVector2 vCurrentPoint(c_position_on_plane.GetX(), c_position_on_plane.GetY());
   Real d = (m_cCoordSpot1 - vCurrentPoint).Length();
   if (d <= m_fRadius) {
@@ -63,13 +51,23 @@ argos::CColor AggregationTwoSpotsFarFunction::GetFloorColor(const argos::CVector
   }
 
   return CColor::GRAY50;
+}
 
+
+/****************************************/
+/****************************************/
+
+void AggregationTwoSpotsOriginalLoopFunction::Reset() {
+  m_fObjectiveFunction = 0;
+  m_unScoreSpot1 = 0;
+  m_unScoreSpot2 = 0;
+  AutoMoDeLoopFunctions::Reset();
 }
 
 /****************************************/
 /****************************************/
 
-void AggregationTwoSpotsFarFunction::PostExperiment() {
+void AggregationTwoSpotsOriginalLoopFunction::PostExperiment() {
   CSpace::TMapPerType& tEpuckMap = GetSpace().GetEntitiesByType("epuck");
   CVector2 cEpuckPosition(0,0);
   for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it) {
@@ -90,24 +88,20 @@ void AggregationTwoSpotsFarFunction::PostExperiment() {
   LOG << "Score = " << m_fObjectiveFunction << std::endl;
 }
 
-
 /****************************************/
 /****************************************/
 
-Real AggregationTwoSpotsFarFunction::GetObjectiveFunction() {
+Real AggregationTwoSpotsOriginalLoopFunction::GetObjectiveFunction() {
   return m_fObjectiveFunction;
 }
 
 /****************************************/
 /****************************************/
 
-CVector3 AggregationTwoSpotsFarFunction::GetRandomPosition() {
-  Real a;
-  Real b;
+CVector3 AggregationTwoSpotsOriginalLoopFunction::GetRandomPosition() {
   Real temp;
-
-  a = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
-  b = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
+  Real a = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
+  Real  b = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
   // If b < a, swap them
   if (b < a) {
     temp = a;
@@ -116,7 +110,8 @@ CVector3 AggregationTwoSpotsFarFunction::GetRandomPosition() {
   }
   Real fPosX = b * m_fDistributionRadius * cos(2 * CRadians::PI.GetValue() * (a/b));
   Real fPosY = b * m_fDistributionRadius * sin(2 * CRadians::PI.GetValue() * (a/b));
+
   return CVector3(fPosX, fPosY, 0);
 }
 
-REGISTER_LOOP_FUNCTIONS(AggregationTwoSpotsFarFunction, "aggregation_two_spots_far_lf");
+REGISTER_LOOP_FUNCTIONS(AggregationTwoSpotsOriginalLoopFunction, "aggregation_two_spots_original_lf");

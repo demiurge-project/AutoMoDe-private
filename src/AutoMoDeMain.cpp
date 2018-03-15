@@ -121,7 +121,6 @@ int main(int n_argc, char** ppch_argv) {
 				CSpace::TMapPerType cEpuckEntities = cSimulator.GetSpace().GetEntitiesByType("epuck");
 				for (CSpace::TMapPerType::iterator it = cEpuckEntities.begin(); it != cEpuckEntities.end(); ++it) {
 					CEPuckEntity* pcEpuckEntity = any_cast<CEPuckEntity*>(it->second);
-					LOG << pcFiniteStateMachine->GetRabActuatorRange() << std::endl;
 					(pcEpuckEntity->GetRABEquippedEntity()).SetRange(pcFiniteStateMachine->GetRabActuatorRange());
 				}
 

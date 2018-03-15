@@ -185,30 +185,23 @@ namespace argos {
 		UInt32 unIndexRabSensor = m_pcFiniteStateMachine->GetIndexRabSensor();
 		switch(unIndexRabSensor) {
 			case 0:
-				LOG << "RabSensor -> 1" << std::endl;
 				m_pcRabSensor	= GetSensor<CCI_EPuckRangeAndBearingSensor>("epuck_range_and_bearing_salman_sen1");
 				break;
 			case 1:
-				LOG << "RabSensor -> 2" << std::endl;
 				m_pcRabSensor	= GetSensor<CCI_EPuckRangeAndBearingSensor>("epuck_range_and_bearing_salman_sen2");
 				break;
 			case 2:
-				LOG << "RabSensor -> 3" << std::endl;
 				m_pcRabSensor	= GetSensor<CCI_EPuckRangeAndBearingSensor>("epuck_range_and_bearing_salman_sen3");
 				break;
 			case 3:
-				LOG << "RabSensor -> 4" << std::endl;
 				m_pcRabSensor	= GetSensor<CCI_EPuckRangeAndBearingSensor>("epuck_range_and_bearing_salman_sen4");
 				break;
 			case 4:
-				LOG << "RabSensor -> 5" << std::endl;
 				m_pcRabSensor	= GetSensor<CCI_EPuckRangeAndBearingSensor>("epuck_range_and_bearing_salman_sen5");
 				break;
 			case 5:
-				LOG << "RabSensor -> 6" << std::endl;
 				m_pcRabSensor	= GetSensor<CCI_EPuckRangeAndBearingSensor>("epuck_range_and_bearing_salman_sen6");
 				break;
-
 		}
 	}
 
