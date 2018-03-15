@@ -4,4 +4,4 @@ link_directories(${ARGOS_LIBRARY_DIRS})
 
 add_subdirectory(example)
 add_subdirectory(chocolate)
-
+add_subdirectory(visual-add-ons)

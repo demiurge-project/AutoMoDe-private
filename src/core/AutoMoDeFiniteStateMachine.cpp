@@ -76,6 +76,7 @@ namespace argos {
 	/****************************************/
 
 	void AutoMoDeFiniteStateMachine::ControlStep(){
+		// LOG << "[" << m_pcRobotDAO->GetRobotIdentifier() << "]" << "Nbr neighbors = " << m_pcRobotDAO->GetNumberNeighbors() << std::endl;
 		/*
 		 * 1. Dealing with behaviours
 		 */
