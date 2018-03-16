@@ -1,0 +1,20 @@
+ --rootnode 0 --nchildsroot 3 --n0 0 --nc0 1 --c0x0 4 --p0x0 7 --w0x0 2.78 --a0 5 --rep0 3.52 --n1 0 --nc1 1 --c1x0 1 --p1x0 0.61 --a1 2 --n2 0 --nc2 1 --c2x0 5 --p2x0 0.12 --a2 4 --att2 1.17
+ --rootnode 0 --nchildsroot 3 --n0 0 --nc0 1 --c0x0 1 --p0x0 0.92 --a0 5 --rep0 2.15 --n1 0 --nc1 1 --c1x0 3 --p1x0 3 --w1x0 17.24 --a1 4 --att1 3.44 --n2 0 --nc2 1 --c2x0 5 --p2x0 0.38 --a2 3
+ --rootnode 0 --nchildsroot 3 --n0 0 --nc0 1 --c0x0 5 --p0x0 0.95 --a0 0 --rwm0 22 --n1 0 --nc1 1 --c1x0 0 --p1x0 0.17 --a1 4 --att1 2.9 --n2 0 --nc2 1 --c2x0 1 --p2x0 0.63 --a2 2
+ --rootnode 0 --nchildsroot 2 --n0 0 --nc0 1 --c0x0 0 --p0x0 0.32 --a0 4 --att0 3.34 --n1 0 --nc1 1 --c1x0 1 --p1x0 0.63 --a1 3
+ --rootnode 0 --nchildsroot 3 --n0 0 --nc0 1 --c0x0 5 --p0x0 0.89 --a0 1 --n1 0 --nc1 1 --c1x0 1 --p1x0 0.69 --a1 2 --n2 0 --nc2 1 --c2x0 0 --p2x0 0.73 --a2 4 --att2 1.71
+ --rootnode 0 --nchildsroot 2 --n0 0 --nc0 1 --c0x0 1 --p0x0 0.38 --a0 3 --n1 0 --nc1 1 --c1x0 5 --p1x0 0.22 --a1 4 --att1 3.39
+ --rootnode 0 --nchildsroot 3 --n0 0 --nc0 1 --c0x0 0 --p0x0 0.29 --a0 4 --att0 4.87 --n1 0 --nc1 1 --c1x0 1 --p1x0 0.76 --a1 3 --n2 0 --nc2 1 --c2x0 1 --p2x0 0.98 --a2 4 --att2 2.51
+ --rootnode 0 --nchildsroot 3 --n0 0 --nc0 1 --c0x0 0 --p0x0 0.14 --a0 4 --att0 2.94 --n1 0 --nc1 1 --c1x0 4 --p1x0 8 --w1x0 19.22 --a1 3 --n2 0 --nc2 1 --c2x0 1 --p2x0 0.97 --a2 2
+ --rootnode 0 --nchildsroot 3 --n0 0 --nc0 1 --c0x0 5 --p0x0 0.34 --a0 4 --att0 3.69 --n1 0 --nc1 1 --c1x0 4 --p1x0 6 --w1x0 4.83 --a1 2 --n2 0 --nc2 1 --c2x0 1 --p2x0 0.76 --a2 3
+ --rootnode 0 --nchildsroot 4 --n0 0 --nc0 1 --c0x0 4 --p0x0 2 --w0x0 18.2 --a0 5 --rep0 2.51 --n1 0 --nc1 1 --c1x0 1 --p1x0 0.86 --a1 3 --n2 0 --nc2 1 --c2x0 0 --p2x0 0.65 --a2 4 --att2 4.53 --n3 0 --nc3 1 --c3x0 5 --p3x0 0.86 --a3 2
+ --rootnode 0 --nchildsroot 4 --n0 0 --nc0 1 --c0x0 5 --p0x0 0.71 --a0 3 --n1 0 --nc1 1 --c1x0 5 --p1x0 0.11 --a1 4 --att1 2.73 --n2 0 --nc2 1 --c2x0 1 --p2x0 0.62 --a2 2 --n3 0 --nc3 1 --c3x0 0 --p3x0 0.18 --a3 4 --att3 4.01
+ --rootnode 0 --nchildsroot 2 --n0 0 --nc0 1 --c0x0 3 --p0x0 1 --w0x0 13.36 --a0 4 --att0 3.18 --n1 0 --nc1 1 --c1x0 1 --p1x0 0.59 --a1 3
+ --rootnode 0 --nchildsroot 4 --n0 0 --nc0 1 --c0x0 4 --p0x0 8 --w0x0 13.15 --a0 0 --rwm0 72 --n1 0 --nc1 1 --c1x0 0 --p1x0 0.49 --a1 4 --att1 4.95 --n2 0 --nc2 1 --c2x0 5 --p2x0 0.65 --a2 3 --n3 0 --nc3 1 --c3x0 4 --p3x0 8 --w3x0 13.33 --a3 5 --rep3 4.32
+ --rootnode 0 --nchildsroot 4 --n0 0 --nc0 1 --c0x0 5 --p0x0 0.81 --a0 4 --att0 2.19 --n1 0 --nc1 1 --c1x0 0 --p1x0 0.62 --a1 4 --att1 4.1 --n2 0 --nc2 1 --c2x0 0 --p2x0 0.23 --a2 4 --att2 2.41 --n3 0 --nc3 1 --c3x0 1 --p3x0 0.53 --a3 2
+ --rootnode 0 --nchildsroot 2 --n0 0 --nc0 1 --c0x0 0 --p0x0 0.03 --a0 4 --att0 1.51 --n1 0 --nc1 1 --c1x0 1 --p1x0 0.88 --a1 3
+ --rootnode 0 --nchildsroot 4 --n0 0 --nc0 1 --c0x0 4 --p0x0 4 --w0x0 6.22 --a0 3 --n1 0 --nc1 1 --c1x0 4 --p1x0 8 --w1x0 11.11 --a1 2 --n2 0 --nc2 1 --c2x0 3 --p2x0 3 --w2x0 16.6 --a2 4 --att2 3.28 --n3 0 --nc3 1 --c3x0 1 --p3x0 0.64 --a3 5 --rep3 2.38
+ --rootnode 0 --nchildsroot 4 --n0 0 --nc0 1 --c0x0 1 --p0x0 0.62 --a0 2 --n1 0 --nc1 1 --c1x0 4 --p1x0 5 --w1x0 8.05 --a1 5 --rep1 1.43 --n2 0 --nc2 1 --c2x0 1 --p2x0 0.67 --a2 3 --n3 0 --nc3 1 --c3x0 3 --p3x0 2 --w3x0 8.41 --a3 4 --att3 4.56
+ --rootnode 0 --nchildsroot 2 --n0 0 --nc0 1 --c0x0 1 --p0x0 0.85 --a0 3 --n1 0 --nc1 1 --c1x0 0 --p1x0 0.55 --a1 4 --att1 4.27
+ --rootnode 0 --nchildsroot 3 --n0 0 --nc0 1 --c0x0 1 --p0x0 0.49 --a0 4 --att0 1.17 --n1 0 --nc1 1 --c1x0 0 --p1x0 0.79 --a1 4 --att1 4.83 --n2 0 --nc2 1 --c2x0 4 --p2x0 8 --w2x0 12.48 --a2 0 --rwm2 25
+ --rootnode 0 --nchildsroot 3 --n0 0 --nc0 1 --c0x0 5 --p0x0 0.68 --a0 0 --rwm0 58 --n1 0 --nc1 1 --c1x0 5 --p1x0 0.21 --a1 4 --att1 1.9 --n2 0 --nc2 1 --c2x0 1 --p2x0 0.94 --a2 3
