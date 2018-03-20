@@ -13,7 +13,7 @@
   <!-- ****************** -->
   <loop_functions library="../../build/loop-functions/colors/libcolors_test_loopfunc.so"
    label="colors_test_loop_function">
-       <params number_robots="1"
+       <params number_robots="2"
                build_arena="true"
                number_edges="6"
                number_boxes_per_edge="6"
@@ -43,9 +43,11 @@
 
                     --s0 1 --cle0 4
                     --n0 1
-                    --n0x0 0 --c0x0 6 --l0x0 4 --d0x0 25 --e0x0 5 --i0x0 10
+                    --n0x0 0 --c0x0 6 --l0x0 4 --d0x0 100 --e0x0 5 --i0x0 10
 
-                    --s1 1 --cle1 1"/>
+                    --s1 1 --cle1 1
+		    --n1 1
+                    --n1x0 0 --c1x0 5 --p1x0 1.0"/>
 
                     <!-- From sa -> n0x0 sb = n0x0 sb+1, (a < b) -->
                     <!-- From sa -> n0x0 sb = n0x0 sb  , (a > b)-->

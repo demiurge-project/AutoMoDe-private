@@ -30,4 +30,4 @@
 
 # Others
 *build*
-*user*
+CMakeLists.txt.user*
