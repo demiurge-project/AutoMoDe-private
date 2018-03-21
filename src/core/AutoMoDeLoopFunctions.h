@@ -119,6 +119,11 @@ class AutoMoDeLoopFunctions: public CLoopFunctions {
      */
     CRandom::CRNG* m_pcRng;
 
+    /*
+     * Selector of the piecewise function configuration
+     */
+    UInt32 m_unPwConfig;
+
 
 
   public:

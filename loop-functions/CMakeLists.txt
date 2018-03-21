@@ -6,4 +6,5 @@ add_subdirectory(example)
 add_subdirectory(chocolate)
 add_subdirectory(foraging)
 add_subdirectory(colors)
+add_subdirectory(piecewise)
 
