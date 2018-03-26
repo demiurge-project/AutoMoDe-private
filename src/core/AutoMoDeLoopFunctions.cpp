@@ -25,6 +25,8 @@ void AutoMoDeLoopFunctions::Init(argos::TConfigurationNode& t_tree) {
     GetNodeAttributeOrDefault(cParametersNode, "number_boxes_per_edge", m_unNumberBoxes, (UInt32) 1);
     GetNodeAttributeOrDefault(cParametersNode, "lenght_boxes", m_fLenghtBoxes, (Real) 0.20);
     GetNodeAttributeOrDefault(cParametersNode, "piecewise_config", m_unPwConfig, (UInt32) 0);
+    GetNodeAttributeOrDefault(cParametersNode, "piecewise_exp", m_unPwExp, (UInt32) 0);
+    GetNodeAttributeOrDefault(cParametersNode, "piecewise_time", m_unPwTime, (UInt32) 1200);
   } catch(std::exception e) {
     LOGERR << e.what() << std::endl;
   }

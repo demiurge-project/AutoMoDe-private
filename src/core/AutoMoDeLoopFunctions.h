@@ -124,6 +124,16 @@ class AutoMoDeLoopFunctions: public CLoopFunctions {
      */
     UInt32 m_unPwConfig;
 
+    /*
+     * Selector of the piecewise experiment
+     */
+    UInt32 m_unPwExp;
+
+    /*
+     * Transition time in piecewise experiments
+     */
+    UInt32 m_unPwTime;
+
 
 
   public:

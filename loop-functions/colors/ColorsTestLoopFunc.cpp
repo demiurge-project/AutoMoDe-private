@@ -42,10 +42,8 @@ void ColorsTestLoopFunction::Destroy() {
 argos::CColor ColorsTestLoopFunction::GetFloorColor(const argos::CVector2& c_position_on_plane) {
   CVector2 vCurrentPoint(c_position_on_plane.GetX(), c_position_on_plane.GetY());
 
-  if (vCurrentPoint.GetY() > 0.76)
+  if (vCurrentPoint.GetY() > 0.60)
       return CColor::BLACK;
-  else if (vCurrentPoint.GetY() < -0.76)
-      return CColor::WHITE;
   else
       return CColor::GRAY50;
 }
@@ -66,7 +64,7 @@ void ColorsTestLoopFunction::Reset() {
 /****************************************/
 
 void ColorsTestLoopFunction::PostStep() {
-    //ArenaControl();
+    ArenaControl();
 
 }
 
@@ -84,71 +82,8 @@ void ColorsTestLoopFunction::ArenaControl() {
     UInt32 unClock = GetSpace().GetSimulationClock();
     switch (unClock){
 
-    case 200:
-        for (UInt32 i=1;i<=4;i++)
-        {
-            m_pcArena->SetBoxColor(i,1,CColor::GREEN);
-            m_pcArena->SetBoxColor(i,4,CColor::BLUE);
-        }
-        for (UInt32 i=3;i<=6;i++)
-        {
-            m_pcArena->SetBoxColor(i,2,CColor::GREEN);
-            m_pcArena->SetBoxColor(i,5,CColor::BLUE);
-        }
-        break;
-
-    case 1000:
-        m_pcArena->SetArenaColor(CColor::RED);
-        break;
-
     case 1200:
-        m_pcArena->SetArenaColor(CColor::GRAY60);
-        for (UInt32 i=1;i<=4;i++)
-        {
-            m_pcArena->SetBoxColor(i,1,CColor::GREEN);
-            m_pcArena->SetBoxColor(i,4,CColor::BLUE);
-        }
-        for (UInt32 i=3;i<=6;i++)
-        {
-            m_pcArena->SetBoxColor(i,2,CColor::GREEN);
-            m_pcArena->SetBoxColor(i,5,CColor::BLUE);
-        }
-        break;
-
-    case 2000:
-        m_pcArena->SetArenaColor(CColor::RED);
-        break;
-
-    case 2200:
-        m_pcArena->SetArenaColor(CColor::GRAY60);
-        for (UInt32 i=1;i<=4;i++)
-        {
-            m_pcArena->SetBoxColor(i,1,CColor::GREEN);
-            m_pcArena->SetBoxColor(i,4,CColor::BLUE);
-        }
-        for (UInt32 i=3;i<=6;i++)
-        {
-            m_pcArena->SetBoxColor(i,2,CColor::GREEN);
-            m_pcArena->SetBoxColor(i,5,CColor::BLUE);
-        }
-        break;
-
-    case 3000:
-        m_pcArena->SetArenaColor(CColor::RED);
-        break;
-
-    case 3200:
-        m_pcArena->SetArenaColor(CColor::GRAY60);
-        for (UInt32 i=1;i<=4;i++)
-        {
-            m_pcArena->SetBoxColor(i,1,CColor::GREEN);
-            m_pcArena->SetBoxColor(i,4,CColor::BLUE);
-        }
-        for (UInt32 i=3;i<=6;i++)
-        {
-            m_pcArena->SetBoxColor(i,2,CColor::GREEN);
-            m_pcArena->SetBoxColor(i,5,CColor::BLUE);
-        }
+        m_pcArena->SetArenaColor(CColor::CYAN);
         break;
 
     default:
