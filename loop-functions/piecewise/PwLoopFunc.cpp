@@ -12,8 +12,10 @@
 /****************************************/
 
 PwLoopFunction::PwLoopFunction() {
-  m_fObjectiveFunction = 0;
-
+    m_cCoordSpotB = CVector2(0.0,0.6);
+    m_cCoordSpotW = CVector2(0.0,-0.6);
+    m_fRadiusSpot = 0.30;
+    m_fObjectiveFunction = 0;
 }
 
 /****************************************/
@@ -37,17 +39,33 @@ void PwLoopFunction::Destroy() {
 /****************************************/
 
 argos::CColor PwLoopFunction::GetFloorColor(const argos::CVector2& c_position_on_plane) {
-  return CColor::GRAY50;
+
+    Real db = (m_cCoordSpotB - c_position_on_plane).Length();
+
+    if (db <= m_fRadiusSpot)
+        return CColor::BLACK;
+    else{
+        Real dw = (m_cCoordSpotW - c_position_on_plane).Length();
+        if (dw <= m_fRadiusSpot)
+            return CColor::WHITE;
+    }
+
+    return CColor::GRAY50;
 }
 
+/****************************************/
+/****************************************/
+
+void PwLoopFunction::Init(TConfigurationNode& t_tree) {
+    AutoMoDeLoopFunctions::Init(t_tree);
+    GetRobotPositions(true);
+}
 
 /****************************************/
 /****************************************/
 
 void PwLoopFunction::Reset() {
   m_fObjectiveFunction = 0;
-  m_tPositions.clear();
-  m_tMemPositions.clear();
   AutoMoDeLoopFunctions::Reset();
 }
 
@@ -58,8 +76,9 @@ void PwLoopFunction::PostStep() {
     UInt32 unClock = GetSpace().GetSimulationClock();
 
     ArenaControl(unClock);
-    GetRobotPositions();
+    GetRobotPositions(false);
     m_fObjectiveFunction += GetMissionScore(unClock);
+    m_tMemPositions = m_tPositions;
 
     LOG << "Score: " << m_fObjectiveFunction << std::endl; // TODO Remove for Opt
 }
@@ -104,59 +123,57 @@ void PwLoopFunction::ArenaControl(UInt32 unClock) {
 /****************************************/
 /****************************************/
 
-Real PwLoopFunction::GetMissionScore(UInt32 unClock){
+UInt32 PwLoopFunction::GetMissionScore(UInt32 unClock){
 
-    UInt32 unScore;
+    UInt32 unScore = 0;
 
     if (m_unPwExp == 0 && m_unPwConfig == 0){
-        unScore = PwFunctionMove(unClock,1,m_unPwTime,false);
-        unScore = PwFunctionStop(unClock,m_unPwTime,(2*m_unPwTime));
+        unScore += PwFunctionMove(unClock,0,m_unPwTime,false);
+        unScore += PwFunctionStop(unClock,m_unPwTime,(2*m_unPwTime));
         return unScore;
     }
 
     if (m_unPwExp == 0 && m_unPwConfig == 1){
-        unScore = PwFunctionStop(unClock,1,m_unPwTime);
-        unScore = PwFunctionMove(unClock,m_unPwTime,(2*m_unPwTime),false);
+        unScore += PwFunctionStop(unClock,0,m_unPwTime);
+        unScore += PwFunctionMove(unClock,m_unPwTime,(2*m_unPwTime),false);
         return unScore;
     }
 
     if (m_unPwExp == 1 && m_unPwConfig == 0){
-        unScore = PwFunctionAgg(unClock,1,m_unPwTime,false);
-        unScore = PwFunctionAgg(unClock,m_unPwTime,(2*m_unPwTime),true);
+        unScore += PwFunctionAgg(unClock,0,m_unPwTime,false);
+        unScore += PwFunctionAgg(unClock,m_unPwTime,(2*m_unPwTime),true);
         return unScore;
     }
 
     if (m_unPwExp == 1 && m_unPwConfig == 1){
-        unScore = PwFunctionAgg(unClock,1,m_unPwTime,true);
-        unScore = PwFunctionAgg(unClock,m_unPwTime,(2*m_unPwTime),false);
+        unScore += PwFunctionAgg(unClock,0,m_unPwTime,true);
+        unScore += PwFunctionAgg(unClock,m_unPwTime,(2*m_unPwTime),false);
         return unScore;
     }
 
     if (m_unPwExp == 2 && m_unPwConfig == 0){
-        unScore = PwFunctionMove(unClock,1,m_unPwTime,true);
-        unScore = PwFunctionAgg(unClock,m_unPwTime,(2*m_unPwTime),false);
+        unScore += PwFunctionMove(unClock,0,m_unPwTime,true);
+        unScore += PwFunctionAgg(unClock,m_unPwTime,(2*m_unPwTime),false);
         return unScore;
     }
 
     if (m_unPwExp == 2 && m_unPwConfig == 1){
-        unScore = PwFunctionAgg(unClock,1,m_unPwTime,false);
-        unScore = PwFunctionMove(unClock,m_unPwTime,(2*m_unPwTime),true);
+        unScore += PwFunctionAgg(unClock,0,m_unPwTime,false);
+        unScore += PwFunctionMove(unClock,m_unPwTime,(2*m_unPwTime),true);
         return unScore;
     }
 
     if (m_unPwExp == 3 && m_unPwConfig == 0){
-        unScore = PwFunctionAgg(unClock,1,m_unPwTime,false);
-        unScore = PwFunctionFlee(unClock,m_unPwTime,(2*m_unPwTime));
+        unScore += PwFunctionAgg(unClock,0,m_unPwTime,false);
+        unScore += PwFunctionFlee(unClock,m_unPwTime,(2*m_unPwTime));
         return unScore;
     }
 
     if (m_unPwExp == 3 && m_unPwConfig == 1){
-        unScore = PwFunctionFlee(unClock,1,m_unPwTime);
-        unScore = PwFunctionAgg(unClock,m_unPwTime,(2*m_unPwTime),false);
+        unScore += PwFunctionFlee(unClock,0,m_unPwTime);
+        unScore += PwFunctionAgg(unClock,m_unPwTime,(2*m_unPwTime),false);
         return unScore;
     }
-
-
 
     return 0;
 }
@@ -164,7 +181,7 @@ Real PwLoopFunction::GetMissionScore(UInt32 unClock){
 /****************************************/
 /****************************************/
 
-void PwLoopFunction::GetRobotPositions() {
+void PwLoopFunction::GetRobotPositions(bool bSavePositions) {
     CSpace::TMapPerType& tEpuckMap = GetSpace().GetEntitiesByType("epuck");
     CVector2 cEpuckPosition(0,0);
     for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it) {
@@ -172,25 +189,28 @@ void PwLoopFunction::GetRobotPositions() {
         cEpuckPosition.Set(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
                            pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
 
-        m_tPositions[pcEpuck] = cEpuckPosition;
+        if (bSavePositions)
+            m_tMemPositions[pcEpuck] = cEpuckPosition;
+        else
+            m_tPositions[pcEpuck] = cEpuckPosition;
     }
 }
 
 /****************************************/
 /****************************************/
 
-Real PwLoopFunction::PwFunctionStop(UInt32 unClock, UInt32 unInitTime, UInt32 unEndTime) {
+UInt32 PwLoopFunction::PwFunctionStop(UInt32 unClock, UInt32 unInitTime, UInt32 unEndTime) {
 
-    if (unClock >= unInitTime && unClock <= unEndTime){
-        UInt32 unScore;
-        for (TPosMap::iterator it = m_tPositions.begin(); it != m_tPositions.end(); ++it) {
-
-
+    if (unClock > unInitTime && unClock <= unEndTime){
+        UInt32 unScore = 0;
+        TPosMap::iterator it, jt;
+        for (it = m_tPositions.begin(), jt = m_tMemPositions.begin(); it != m_tPositions.end(); ++it, ++jt) {
+            Real d = (it->second - jt->second).Length();
+            if (d > 0.0005)
+                unScore+=1;
         }
-        return 0;
+        return unScore;
     }
-    else
-        return 0;
 
     return 0;
 }
@@ -198,21 +218,69 @@ Real PwLoopFunction::PwFunctionStop(UInt32 unClock, UInt32 unInitTime, UInt32 un
 /****************************************/
 /****************************************/
 
-Real PwLoopFunction::PwFunctionMove(UInt32 unClock, UInt32 unInitTime, UInt32 unEndTime, bool bCheckColor) {
+UInt32 PwLoopFunction::PwFunctionMove(UInt32 unClock, UInt32 unInitTime, UInt32 unEndTime, bool bCheckColor) {
+
+    if (unClock > unInitTime && unClock < unEndTime){
+        UInt32 unScore = 0;
+        TPosMap::iterator it, jt;
+        for (it = m_tPositions.begin(), jt = m_tMemPositions.begin(); it != m_tPositions.end(); ++it, ++jt) {
+            Real d = (it->second - jt->second).Length();
+            if (d > 0.0005){
+                if (bCheckColor){
+                    if(GetFloorColor(it->second) != CColor::GRAY50)
+                        unScore+=1;
+                }
+            }
+            else
+                unScore+=1;
+        }
+        return unScore;
+    }
+
     return 0;
 }
 
 /****************************************/
 /****************************************/
 
-Real PwLoopFunction::PwFunctionAgg(UInt32 unClock, UInt32 unInitTime, UInt32 unEndTime, bool bCheckColor) {
+UInt32 PwLoopFunction::PwFunctionAgg(UInt32 unClock, UInt32 unInitTime, UInt32 unEndTime, bool bWhiteColor) {
+
+    if (unClock > unInitTime && unClock <= unEndTime){
+        UInt32 unScore = 0;
+        TPosMap::iterator it;
+        for (it = m_tPositions.begin(); it != m_tPositions.end(); ++it) {
+
+            if (bWhiteColor){
+                if(GetFloorColor(it->second) != CColor::WHITE)
+                    unScore+=1;
+            }
+            else {
+                if(GetFloorColor(it->second) != CColor::BLACK)
+                    unScore+=1;
+            }
+        }
+        return unScore;
+    }
+
     return 0;
 }
 
 /****************************************/
 /****************************************/
 
-Real PwLoopFunction::PwFunctionFlee(UInt32 unClock, UInt32 unInitTime, UInt32 unEndTime) {
+UInt32 PwLoopFunction::PwFunctionFlee(UInt32 unClock, UInt32 unInitTime, UInt32 unEndTime) {
+
+    if (unClock > unInitTime && unClock <= unEndTime){
+        UInt32 unScore = 0;
+        TPosMap::iterator it;
+        for (it = m_tPositions.begin(); it != m_tPositions.end(); ++it) {
+            Real d = (it->second - m_cCoordSpotB).Length();
+            if (d < 1.20)
+                unScore+=1;
+        }
+        return unScore;
+    }
+
     return 0;
 }
 
