@@ -57,7 +57,7 @@ namespace argos {
 
         for (it = sReadings.BlobList.begin(); it != sReadings.BlobList.end(); it++) {
             if ((*it)->Color == m_cColorReceiverParameter) {
-                sColVectorSum += CVector2(m_unAttractionParameter / (((*it)->Distance)/50),
+                sColVectorSum += CVector2(m_unAttractionParameter / (((*it)->Distance)+1),
                                           (*it)->Angle); // Longest distance in the arena
             }
             // TODO Check sColVectorSum function

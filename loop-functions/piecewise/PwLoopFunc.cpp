@@ -65,8 +65,8 @@ void PwLoopFunction::Init(TConfigurationNode& t_tree) {
 /****************************************/
 
 void PwLoopFunction::Reset() {
-  m_fObjectiveFunction = 0;
-  AutoMoDeLoopFunctions::Reset();
+    AutoMoDeLoopFunctions::Reset();
+    m_fObjectiveFunction = 0;
 }
 
 /****************************************/
@@ -79,8 +79,6 @@ void PwLoopFunction::PostStep() {
     GetRobotPositions(false);
     m_fObjectiveFunction += GetMissionScore(unClock);
     m_tMemPositions = m_tPositions;
-
-    LOG << "Score: " << m_fObjectiveFunction << std::endl; // TODO Remove for Opt
 }
 
 /****************************************/
@@ -88,7 +86,7 @@ void PwLoopFunction::PostStep() {
 
 void PwLoopFunction::PostExperiment() {
 
-  LOG << "End Score: " << m_fObjectiveFunction << std::endl;
+  LOG << m_fObjectiveFunction << std::endl;
 }
 
 /****************************************/
@@ -108,10 +106,10 @@ void PwLoopFunction::ArenaControl(UInt32 unClock) {
         m_pcArena->SetArenaColor(CColor::GREEN);
 
     if (unClock == m_unPwTime && m_unPwConfig == 0)
-        m_pcArena->SetArenaColor(CColor::BLUE);
+        m_pcArena->SetArenaColor(CColor::RED);
 
     if (unClock == 1 && m_unPwConfig == 1)
-        m_pcArena->SetArenaColor(CColor::BLUE);
+        m_pcArena->SetArenaColor(CColor::RED);
 
     if (unClock == m_unPwTime && m_unPwConfig == 1)
         m_pcArena->SetArenaColor(CColor::GREEN);
@@ -175,6 +173,36 @@ UInt32 PwLoopFunction::GetMissionScore(UInt32 unClock){
         return unScore;
     }
 
+    if (m_unPwExp == 4){
+        unScore += PwFunctionMove(unClock,0,m_unPwTime,false);
+        return unScore;
+    }
+
+    if (m_unPwExp == 5){
+        unScore += PwFunctionStop(unClock,0,m_unPwTime);
+        return unScore;
+    }
+
+    if (m_unPwExp == 6){
+        unScore += PwFunctionAgg(unClock,0,m_unPwTime,false);
+        return unScore;
+    }
+
+    if (m_unPwExp == 7){
+        unScore += PwFunctionAgg(unClock,0,m_unPwTime,true);
+        return unScore;
+    }
+
+    if (m_unPwExp == 8){
+        unScore += PwFunctionMove(unClock,0,m_unPwTime,true);
+        return unScore;
+    }
+
+    if (m_unPwExp == 9){
+        unScore += PwFunctionFlee(unClock,0,m_unPwTime);
+        return unScore;
+    }
+
     return 0;
 }
 
@@ -227,7 +255,7 @@ UInt32 PwLoopFunction::PwFunctionMove(UInt32 unClock, UInt32 unInitTime, UInt32 
             Real d = (it->second - jt->second).Length();
             if (d > 0.0005){
                 if (bCheckColor){
-                    if(GetFloorColor(it->second) != CColor::GRAY50)
+                    if(GetFloorColor(it->second) == CColor::BLACK)
                         unScore+=1;
                 }
             }

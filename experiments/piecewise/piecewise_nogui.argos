@@ -15,8 +15,8 @@
    label="pw_loop_function">
        <params number_robots="1"
                build_arena="true"
-               number_edges="6"
-               number_boxes_per_edge="5"
+               number_edges="3"
+               number_boxes_per_edge="2"
                lenght_boxes="0.2"
                piecewise_exp="0"
                piecewise_config="0"
@@ -40,26 +40,17 @@
         <epuck_range_and_bearing implementation="medium" medium="rab" data_size="4" nois_std_deviation="1.5" loss_probability="0.85" calibrated="true"/>
 		    <epuck_light implementation="default" show_rays="false" noise_level="0.05" calibrated="true"/>
 		    <epuck_ground implementation="rot_z_only" noise_level="0.05" calibrated="true"/>
-            <epuck_omnidirectional_camera implementation="rot_z_only" medium="leds" show_rays="true"/>
-      </sensors>
-    <?params readable="true" fsm-config="--nstates 2
+            <epuck_omnidirectional_camera implementation="rot_z_only" medium="leds" show_rays="false"/>
+      </sensors>                                     
 
-                                        --s0 1 --cle0 6
-                                        --n0 1
-                                        --n0x0 0 --c0x0 6 --l0x0 2 --d0x0 50 --e0x0 5 --i0x0 1
-
-                                        --s1 0 --rwm1 1 --cle1 4
-                                        --n1 0
-                                        "/?>
-
-                                        <!-- From sa -> n0x0 sb = n0x0 sb+1, (a < b) -->
-                                        <!-- From sa -> n0x0 sb = n0x0 sb  , (a > b)-->
-
-    <params readable="true" fsm-config="--nstates 1
+    <params readable="false" fsm-config="--nstates 1
 
                                         --s0 1 --cle0 4
                                         --n0 0
                                         "/>
+
+                                        <!-- From sa -> n0x0 sb = n0x0 sb+1, (a < b) -->
+                                        <!-- From sa -> n0x0 sb = n0x0 sb  , (a > b)-->
     </automode_controller>
     
   </controllers>
@@ -111,14 +102,7 @@
   <!-- * Visualization * -->
   <!-- ***************** -->
   <visualization>
-    <qt-opengl>
-      <camera>
-        <placement idx="0"
-                   position="0,0,4.5"
-                   look_at="0,0,0"
-                   lens_focal_length="30" />
-      </camera>
-    </qt-opengl>
+
   </visualization>
 
 </argos-configuration>

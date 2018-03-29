@@ -37,6 +37,7 @@ void AutoMoDeLoopFunctions::Init(argos::TConfigurationNode& t_tree) {
       PositionArena();
   }
   PositionRobots();
+
 }
 
 /****************************************/
@@ -49,7 +50,9 @@ void AutoMoDeLoopFunctions::Reset() {
 /****************************************/
 /****************************************/
 
-AutoMoDeLoopFunctions::~AutoMoDeLoopFunctions() {}
+AutoMoDeLoopFunctions::~AutoMoDeLoopFunctions() {
+    RemoveArena();
+}
 
 /****************************************/
 /****************************************/
@@ -135,6 +138,15 @@ void AutoMoDeLoopFunctions::PositionArena() {
                                1.0f);   
     AddEntity(*pcArena);
     m_pcArena = pcArena;
+}
+
+/****************************************/
+/****************************************/
+
+void AutoMoDeLoopFunctions::RemoveArena() {
+    std::ostringstream id;
+    id << "arena";
+    RemoveEntity(id.str().c_str());
 }
 
 /****************************************/

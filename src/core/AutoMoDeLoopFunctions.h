@@ -53,26 +53,14 @@ class AutoMoDeLoopFunctions: public CLoopFunctions {
     void PositionRobots();
 
     /*
-     * Method used to remove the walls from the arena.
-     */
-    void RemoveBoxes();
-
-    /*
-     * Method used to reallocate the walls.
-     * The position is given by the method GetBoxesPositions().
-     */
-    void MoveBoxes();
-
-    /*
-     * Method used to create and distribute the walls.
-     * The position is given by the method GetBoxesPositions().
-     */
-    void PositionBoxes();
-
-    /*
      * Method used to create and distribute the Arena.
      */
     void PositionArena();
+
+    /*
+     * Method used to remove the arena from the arena.
+     */
+    void RemoveArena();
 
     /*
      * Method used to deternmine wheter a number is even.
