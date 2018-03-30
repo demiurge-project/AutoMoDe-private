@@ -130,7 +130,7 @@ void AutoMoDeLoopFunctions::PositionArena() {
     pcArena = new CArenaEntity("arena",
                                CVector3(0,0,0),
                                CQuaternion().FromEulerAngles(CRadians::ZERO,CRadians::ZERO,CRadians::ZERO), // TODO
-                               CVector3(0.01,m_fLenghtBoxes,0.08),
+                               CVector3(0.01,m_fLenghtBoxes,0.1),
                                "leds",
                                m_unNumberBoxes,
                                m_unNumberEdges,
