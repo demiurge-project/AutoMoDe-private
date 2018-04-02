@@ -18,8 +18,8 @@
                number_edges="12"
                number_boxes_per_edge="3"
                lenght_boxes="0.2"
-               piecewise_exp="0"
-               piecewise_config="0"
+               piecewise_exp="2"
+               piecewise_config="1"
                piecewise_time="1200"/>
   </loop_functions>
 
@@ -42,14 +42,21 @@
 		    <epuck_ground implementation="rot_z_only" noise_level="0.05" calibrated="true"/>
             <epuck_omnidirectional_camera implementation="rot_z_only" medium="leds" show_rays="false"/>
       </sensors>
-    <params readable="true" fsm-config="--nstates 2
+    <params readable="true" fsm-config="--nstates 3
 
-                                        --s0 1 --cle0 6
-                                        --n0 1
-                                        --n0x0 0 --c0x0 6 --l0x0 2 --d0x0 50 --e0x0 5 --i0x0 1
+					--s0 0 --rwm0 5 --cle0 0
+                                        --n0 3
+                                        --n0x0 0 --c0x0 0 --p0x0 0.08
+					--n0x1 1 --c0x1 6 --l0x1 2 --d0x1 50 --e0x1 5 --i0x1 1
+                                        --n0x2 1 --c0x2 6 --l0x2 5 --d0x2 50 --e0x2 5 --i0x2 1
 
-                                        --s1 0 --rwm1 1 --cle1 4
-                                        --n1 0
+                                        --s1 1 --cle1 4
+                                        --n1 2
+					--n1x0 1 --c1x0 6 --l1x0 2 --d1x0 50 --e1x0 5 --i1x0 1
+                                        --n1x1 1 --c1x1 6 --l1x1 5 --d1x1 50 --e1x1 5 --i1x1 1
+
+                                        --s2 7 --rep2 5 --cle2 5 --clr2 2
+                                        --n2 0
                                         "/>
 
                                         <!-- From sa -> n0x0 sb = n0x0 sb+1, (a < b) -->

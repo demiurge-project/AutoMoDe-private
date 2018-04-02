@@ -19,7 +19,7 @@
                number_boxes_per_edge="3"
                lenght_boxes="0.2"
                piecewise_exp="0"
-               piecewise_config="0"
+               piecewise_config="1"
                piecewise_time="1200"/>
   </loop_functions>
 
@@ -44,9 +44,10 @@
       </sensors>
     <params readable="true" fsm-config="--nstates 2
 
-                                        --s0 1 --cle0 6
-                                        --n0 1
+                                        --s0 1 --cle0 0
+                                        --n0 2
                                         --n0x0 0 --c0x0 6 --l0x0 2 --d0x0 50 --e0x0 5 --i0x0 1
+                                        --n0x1 0 --c0x1 6 --l0x1 4 --d0x1 50 --e0x1 5 --i0x1 1
 
                                         --s1 0 --rwm1 1 --cle1 4
                                         --n1 0

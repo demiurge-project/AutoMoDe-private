@@ -12,8 +12,8 @@
 /****************************************/
 
 PwLoopFunction::PwLoopFunction() {
-    m_cCoordSpotB = CVector2(0.0,0.6);
-    m_cCoordSpotW = CVector2(0.0,-0.6);
+    m_cCoordSpotB = CVector2(0.0,0.81);
+    m_cCoordSpotW = CVector2(0.0,-0.81);
     m_fRadiusSpot = 0.30;
     m_fObjectiveFunction = 0;
 }
@@ -303,7 +303,7 @@ UInt32 PwLoopFunction::PwFunctionFlee(UInt32 unClock, UInt32 unInitTime, UInt32 
         TPosMap::iterator it;
         for (it = m_tPositions.begin(); it != m_tPositions.end(); ++it) {
             Real d = (it->second - m_cCoordSpotB).Length();
-            if (d < 1.20)
+            if (d < 1.62)
                 unScore+=1;
         }
         return unScore;
