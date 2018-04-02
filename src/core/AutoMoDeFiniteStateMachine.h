@@ -130,16 +130,6 @@ namespace argos {
 			 */
 			void SetHistoryFolder(const std::string& s_hist_folder);
 
-
-			const UInt32& GetIndexRabSensor() const;
-			void SetIndexRabSensor(UInt32 un_index_rab_sensor);
-
-			const UInt32& GetNumberRobots() const;
-			void SetNumberRobots(UInt32 un_number_robots);
-
-			const Real& GetRabActuatorRange() const;
-			void SetRabActuatorRange(Real un_rab_actuator_range);
-
 		private:
 			/*
 			 * List of possible behaviours of the FSM.
@@ -251,21 +241,6 @@ namespace argos {
 			 * Returns the flag indicating wether the FSM is changing state.
 			 */
 			const bool GetEnteringNewStateFlag() const;
-
-			/*
-			 * Index of range-and-bearing sensor to be used by the robot.
-			 */
-			UInt32 m_unIndexRabSensor;
-
-			/*
-			 * The number of robots composing the swarm.
-			 */
-			UInt32 m_unNumberRobots;
-
-			/*
-			 * Range for the range-and-bearing actuator. Expressed in meters.
-			 */
-			Real m_unRabActuatorRange;
 	};
 }
 

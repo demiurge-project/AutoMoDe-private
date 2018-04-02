@@ -17,6 +17,7 @@
 #include "./AutoMoDeFiniteStateMachine.h"
 #include "./AutoMoDeFsmBuilder.h"
 #include "./AutoMoDeRobotDAO.h"
+#include "./AutoMoDeSwarmConfiguration.h"
 
 #include <argos3/plugins/robots/e-puck/control_interface/ci_epuck_wheels_actuator.h>
 #include <argos3/plugins/robots/e-puck/control_interface/ci_epuck_range_and_bearing_sensor.h>
@@ -72,6 +73,8 @@ namespace argos{
 			 * This function needs to be called by Reset() in order for the experiment to properly restart.
 			 */
 			void InitializeActuation();
+
+			void SetSwarmConfiguration(AutoMoDeSwarmConfiguration* pc_swarm_configuration);
 
 			/*
 			 * Initialize modules selected by the otpimization process.
@@ -168,6 +171,8 @@ namespace argos{
 			CCI_EPuckOmnidirectionalCameraSensor* m_pcCameraSensor;
 
 			bool m_bFiniteStateMachineGiven;
+
+			AutoMoDeSwarmConfiguration* m_pcSwarmConfiguration;
 
 		};
 }

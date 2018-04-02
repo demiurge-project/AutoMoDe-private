@@ -49,11 +49,6 @@ namespace argos {
 		m_bMaintainHistory = pc_fsm->GetMaintainHistoryFlag();
 		m_unTimeStep = pc_fsm->GetTimeStep();
 
-		// Variables related to hardware optimization
-		m_unIndexRabSensor = pc_fsm->GetIndexRabSensor();
-		m_unRabActuatorRange = pc_fsm->GetRabActuatorRange();
-		m_unNumberRobots = pc_fsm->GetNumberRobots();
-
 		std::vector<AutoMoDeBehaviour*> vecBehaviours = pc_fsm->GetBehaviours();
 		m_vecBehaviours.clear();
 		for (std::vector<AutoMoDeBehaviour*>::iterator it = vecBehaviours.begin(); it != vecBehaviours.end(); ++it) {
@@ -346,47 +341,5 @@ namespace argos {
 		for (itB = m_vecBehaviours.begin(); itB != m_vecBehaviours.end(); ++itB) {
 			(*itB)->SetRobotDAO(m_pcRobotDAO);
 		}
-	}
-
-	/****************************************/
-	/****************************************/
-
-	const UInt32& AutoMoDeFiniteStateMachine::GetIndexRabSensor() const {
-		return m_unIndexRabSensor;
-	}
-
-	/****************************************/
-	/****************************************/
-
-	void AutoMoDeFiniteStateMachine::SetIndexRabSensor(UInt32 un_index_rab_sensor) {
-		m_unIndexRabSensor = un_index_rab_sensor;
-	}
-
-	/****************************************/
-	/****************************************/
-
-	const Real& AutoMoDeFiniteStateMachine::GetRabActuatorRange() const {
-		return m_unRabActuatorRange;
-	}
-
-	/****************************************/
-	/****************************************/
-
-	void AutoMoDeFiniteStateMachine::SetRabActuatorRange(Real un_rab_actuator_range) {
-		m_unRabActuatorRange = un_rab_actuator_range;
-	}
-
-	/****************************************/
-	/****************************************/
-
-	const UInt32& AutoMoDeFiniteStateMachine::GetNumberRobots() const {
-		return m_unNumberRobots;
-	}
-
-	/****************************************/
-	/****************************************/
-
-	void AutoMoDeFiniteStateMachine::SetNumberRobots(UInt32 un_number_robots) {
-		m_unNumberRobots = un_number_robots;
 	}
 }

@@ -20,6 +20,7 @@
 #include "./core/AutoMoDeFsmBuilder.h"
 #include "./core/AutoMoDeLoopFunctions.h"
 #include "./core/AutoMoDeController.h"
+#include "./core/AutoMoDeSwarmConfiguration.h"
 
 using namespace argos;
 
@@ -67,6 +68,9 @@ int main(int n_argc, char** ppch_argv) {
 			THROW_ARGOSEXCEPTION(ExplainParameters());
 		}
 
+		AutoMoDeSwarmConfiguration* pcSwarmConfiguration = new AutoMoDeSwarmConfiguration();
+		pcSwarmConfiguration->ParseSwarmConfiguration(vecConfigFsm);
+
 		// Configure the command line options
 		CARGoSCommandLineArgParser cACLAP;
 		cACLAP.AddFlag('r', "readable-fsm", "", bReadableFSM);
@@ -84,7 +88,6 @@ int main(int n_argc, char** ppch_argv) {
 				cSimulator.SetExperimentFileName(cACLAP.GetExperimentConfigFile());
 
 				// Creation of the finite state machine.
-
 				AutoMoDeFsmBuilder cBuilder = AutoMoDeFsmBuilder();
 				AutoMoDeFiniteStateMachine* pcFiniteStateMachine = cBuilder.BuildFiniteStateMachine(vecConfigFsm);
 
@@ -99,7 +102,7 @@ int main(int n_argc, char** ppch_argv) {
 				cSimulator.LoadExperiment();
 
 				AutoMoDeLoopFunctions& cLoopFunctions = dynamic_cast<AutoMoDeLoopFunctions&> (cSimulator.GetLoopFunctions());
-				cLoopFunctions.SetNumberRobots(pcFiniteStateMachine->GetNumberRobots());
+				cLoopFunctions.SetNumberRobots(pcSwarmConfiguration->GetNumberOfRobots());
 				cLoopFunctions.PositionRobots();
 
 				// Duplicate the finite state machine and pass it to all robots.
@@ -111,6 +114,7 @@ int main(int n_argc, char** ppch_argv) {
 					try {
 						AutoMoDeController& cController = dynamic_cast<AutoMoDeController&> (pcEntity->GetController());
 						cController.SetFiniteStateMachine(pcPersonalFsm);
+						cController.SetSwarmConfiguration(pcSwarmConfiguration);
 						cController.InitializeHardwareModules();
 					} catch (std::exception& ex) {
 						LOGERR << "Error while casting: " << ex.what() << std::endl;
@@ -121,7 +125,7 @@ int main(int n_argc, char** ppch_argv) {
 				CSpace::TMapPerType cEpuckEntities = cSimulator.GetSpace().GetEntitiesByType("epuck");
 				for (CSpace::TMapPerType::iterator it = cEpuckEntities.begin(); it != cEpuckEntities.end(); ++it) {
 					CEPuckEntity* pcEpuckEntity = any_cast<CEPuckEntity*>(it->second);
-					(pcEpuckEntity->GetRABEquippedEntity()).SetRange(pcFiniteStateMachine->GetRabActuatorRange());
+					(pcEpuckEntity->GetRABEquippedEntity()).SetRange(pcSwarmConfiguration->GetRabActuatorRange());
 				}
 
 				cSimulator.Execute();
@@ -150,6 +154,11 @@ int main(int n_argc, char** ppch_argv) {
 
 		cSimulator.Destroy();
 
+		for (unsigned int i = 0; i < vecFsm.size(); ++i) {
+			delete vecFsm.at(i);
+		}
+		delete pcSwarmConfiguration;
+
 	} catch(std::exception& ex) {
     // A fatal error occurred: dispose of data, print error and exit
     LOGERR << ex.what() << std::endl;
@@ -159,11 +168,6 @@ int main(int n_argc, char** ppch_argv) {
 #endif
     return 1;
   }
-
-	for (unsigned int i = 0; i < vecFsm.size(); ++i) {
-		delete vecFsm.at(i);
-	}
-
 
 	/* Everything's ok, exit */
   return 0;

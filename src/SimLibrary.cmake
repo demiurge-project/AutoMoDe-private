@@ -11,6 +11,7 @@ set(AUTOMODE_HEADERS
 	core/AutoMoDeFsmHistory.h
 	core/AutoMoDeRobotDAO.h
 	core/AutoMoDeLoopFunctions.h
+	core/AutoMoDeSwarmConfiguration.h
 	# Behaviours
 	modules/AutoMoDeBehaviour.h
 	modules/AutoMoDeBehaviourAntiPhototaxis.h
@@ -37,6 +38,7 @@ set(AUTOMODE_SOURCES
 	core/AutoMoDeRobotDAO.cpp
 	core/AutoMoDeFsmHistory.cpp
 	core/AutoMoDeLoopFunctions.cpp
+	core/AutoMoDeSwarmConfiguration.cpp
 	# Behaviours
 	modules/AutoMoDeBehaviour.cpp
 	modules/AutoMoDeBehaviourAntiPhototaxis.cpp
@@ -61,4 +63,3 @@ target_link_libraries(automode argos3plugin_${ARGOS_BUILD_FOR}_epuck)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 add_executable(automode_main AutoMoDeMain.cpp)
 target_link_libraries(automode_main automode argos3core_${ARGOS_BUILD_FOR} argos3plugin_${ARGOS_BUILD_FOR}_epuck)
-

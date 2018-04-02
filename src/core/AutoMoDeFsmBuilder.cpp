@@ -42,9 +42,6 @@ namespace argos {
 	AutoMoDeFiniteStateMachine* AutoMoDeFsmBuilder::BuildFiniteStateMachine(std::vector<std::string>& vec_fsm_config) {
 		cFiniteStateMachine = new AutoMoDeFiniteStateMachine();
 
-		/* First extract the sensors and actuators to be used. */
-		HandleHardwareModules(cFiniteStateMachine, vec_fsm_config);
-
 		std::vector<std::string>::iterator it;
 		try {
 			it = std::find(vec_fsm_config.begin(), vec_fsm_config.end(), "--nstates");
@@ -73,24 +70,6 @@ namespace argos {
 
 		return cFiniteStateMachine;
 }
-
-	/****************************************/
-	/****************************************/
-
-	void AutoMoDeFsmBuilder::HandleHardwareModules(AutoMoDeFiniteStateMachine* c_fsm, std::vector<std::string>& vec_fsm_config ) {
-		std::vector<std::string>::iterator it;
-		try {
-			it = std::find(vec_fsm_config.begin(), vec_fsm_config.end(), "--robots");
-			c_fsm->SetNumberRobots(atoi((*(it+1)).c_str()));
-			it = std::find(vec_fsm_config.begin(), vec_fsm_config.end(), "--rabsi");
-			c_fsm->SetIndexRabSensor(atoi((*(it+1)).c_str()));
-			it = std::find(vec_fsm_config.begin(), vec_fsm_config.end(), "--rabar");
-			c_fsm->SetRabActuatorRange(strtod((*(it+1)).c_str(), NULL));
-		} catch (std::exception e) {
-			LOGERR << e.what() << std::endl;
-			THROW_ARGOSEXCEPTION("Error while parsing Hardware Modules configuration");
-		}
-	}
 
 	/****************************************/
 	/****************************************/

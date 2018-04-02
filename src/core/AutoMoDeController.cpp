@@ -181,8 +181,15 @@ namespace argos {
 	/****************************************/
 	/****************************************/
 
+	void AutoMoDeController::SetSwarmConfiguration(AutoMoDeSwarmConfiguration* pc_swarm_configuration) {
+		m_pcSwarmConfiguration = pc_swarm_configuration;
+	}
+
+	/****************************************/
+	/****************************************/
+
 	void AutoMoDeController::InitializeHardwareModules() {
-		UInt32 unIndexRabSensor = m_pcFiniteStateMachine->GetIndexRabSensor();
+		UInt32 unIndexRabSensor = m_pcSwarmConfiguration->GetRabSensorIndex();
 		switch(unIndexRabSensor) {
 			case 0:
 				m_pcRabSensor	= GetSensor<CCI_EPuckRangeAndBearingSensor>("epuck_range_and_bearing_salman_sen1");
