@@ -114,3 +114,10 @@ void AutoMoDeLoopFunctions::RemoveRobots() {
 void AutoMoDeLoopFunctions::SetNumberRobots(UInt32 un_number_robots) {
   m_unNumberRobots = un_number_robots;
 }
+
+/****************************************/
+/****************************************/
+
+void AutoMoDeLoopFunctions::SetBatteryLife(UInt32 un_battery_life){
+  m_unBatteryLife = un_battery_life;
+}

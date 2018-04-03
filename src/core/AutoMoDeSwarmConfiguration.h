@@ -63,6 +63,8 @@ namespace argos {
 
       Real m_fRabActuatorRange;
 
+			UInt32 m_unSwarmBatteryLife;
+
   };
 }
 

@@ -49,6 +49,11 @@ class AutoMoDeLoopFunctions: public CLoopFunctions {
      */
     UInt32 m_unNumberRobots;
 
+        /*
+         * The Battery Life
+         */
+    UInt32 m_unBatteryLife;
+
     /*
      * The radius of the circle in which the robots will be distributed.
      */
@@ -76,6 +81,10 @@ class AutoMoDeLoopFunctions: public CLoopFunctions {
 
     void SetNumberRobots(UInt32 un_number_robots);
 
+    /*
+     * Return a random position.
+     */
+     void SetBatteryLife(UInt32 un_battery_life);
 };
 
 #endif

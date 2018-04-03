@@ -16,6 +16,7 @@
 
 #include "../../src/core/AutoMoDeLoopFunctions.h"
 
+
 using namespace argos;
 
 class AggregationTwoSpotsOriginalLoopFunction: public AutoMoDeLoopFunctions {
@@ -34,6 +35,7 @@ class AggregationTwoSpotsOriginalLoopFunction: public AutoMoDeLoopFunctions {
 
     CVector3 GetRandomPosition();
 
+
   private:
     Real m_fRadius;
     CVector2 m_cCoordSpot1;
@@ -42,6 +44,7 @@ class AggregationTwoSpotsOriginalLoopFunction: public AutoMoDeLoopFunctions {
     UInt32 m_unScoreSpot1;
     UInt32 m_unScoreSpot2;
     Real m_fObjectiveFunction;
+
 };
 
 #endif

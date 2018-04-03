@@ -17,6 +17,7 @@ namespace argos {
 
 	AutoMoDeSwarmConfiguration::AutoMoDeSwarmConfiguration() {
 		m_unNumberOfRobots = 0;
+		m_unSwarmBatteryLife = 57;
 	}
 
 	/****************************************/
@@ -49,11 +50,11 @@ namespace argos {
       m_unRabSensorIndex = atoi((*(it+1)).c_str());
       it = std::find(vec_fsm_config.begin(), vec_fsm_config.end(), "--rabar");
       m_fRabActuatorRange = strtod((*(it+1)).c_str(), NULL);
-    } catch (std::exception e) {
+		} catch (std::exception e) {
       LOGERR << e.what() << std::endl;
       THROW_ARGOSEXCEPTION("Error while parsing Hardware Modules configuration");
     }
-  }
+	}
 
   /****************************************/
   /****************************************/
@@ -73,7 +74,17 @@ namespace argos {
   /****************************************/
 
   const UInt32& AutoMoDeSwarmConfiguration::GetNumberOfRobots() const {
-    return m_unNumberOfRobots;
-  }
+		return m_unNumberOfRobots;
+	}
+
+	/****************************************/
+	/****************************************/
+
+  const UInt32& AutoMoDeSwarmConfiguration::GetSwarmBatteryLife() const {
+	  return m_unSwarmBatteryLife;
+	}
+
+
+
 
 }

@@ -44,7 +44,6 @@ argos::CColor AggregationTwoSpotsOriginalLoopFunction::GetFloorColor(const argos
   if (d <= m_fRadius) {
     return CColor::BLACK;
   }
-
   d = (m_cCoordSpot2 - vCurrentPoint).Length();
   if (d <= m_fRadius) {
     return CColor::BLACK;
@@ -83,8 +82,8 @@ void AggregationTwoSpotsOriginalLoopFunction::PostExperiment() {
       m_unScoreSpot2 += 1;
     }
   }
-
   m_fObjectiveFunction = Max(m_unScoreSpot1, m_unScoreSpot2)/(Real) m_unNumberRobots;
+  LOG << "Battery Life Check" << m_unBatteryLife << std::endl;
   LOG << "Score = " << m_fObjectiveFunction << std::endl;
 }
 
