@@ -12,8 +12,8 @@
 /****************************************/
 
 PwLoopFunction::PwLoopFunction() {
-    m_cCoordSpotB = CVector2(0.0,0.81);
-    m_cCoordSpotW = CVector2(0.0,-0.81);
+    m_cCoordSpotB = CVector2(0.0,0.62);
+    m_cCoordSpotW = CVector2(0.0,-0.62);
     m_fRadiusSpot = 0.30;
     m_fObjectiveFunction = 0;
 }
@@ -121,9 +121,9 @@ void PwLoopFunction::ArenaControl(UInt32 unClock) {
 /****************************************/
 /****************************************/
 
-UInt32 PwLoopFunction::GetMissionScore(UInt32 unClock){
+Real PwLoopFunction::GetMissionScore(UInt32 unClock){
 
-    UInt32 unScore = 0;
+    Real unScore = 0;
 
     if (m_unPwExp == 0 && m_unPwConfig == 0){
         unScore += PwFunctionMove(unClock,0,m_unPwTime,false);
@@ -227,10 +227,10 @@ void PwLoopFunction::GetRobotPositions(bool bSavePositions) {
 /****************************************/
 /****************************************/
 
-UInt32 PwLoopFunction::PwFunctionStop(UInt32 unClock, UInt32 unInitTime, UInt32 unEndTime) {
+Real PwLoopFunction::PwFunctionStop(UInt32 unClock, UInt32 unInitTime, UInt32 unEndTime) {
 
     if (unClock > unInitTime && unClock <= unEndTime){
-        UInt32 unScore = 0;
+        Real unScore = 0;
         TPosMap::iterator it, jt;
         for (it = m_tPositions.begin(), jt = m_tMemPositions.begin(); it != m_tPositions.end(); ++it, ++jt) {
             Real d = (it->second - jt->second).Length();
@@ -246,16 +246,16 @@ UInt32 PwLoopFunction::PwFunctionStop(UInt32 unClock, UInt32 unInitTime, UInt32 
 /****************************************/
 /****************************************/
 
-UInt32 PwLoopFunction::PwFunctionMove(UInt32 unClock, UInt32 unInitTime, UInt32 unEndTime, bool bCheckColor) {
+Real PwLoopFunction::PwFunctionMove(UInt32 unClock, UInt32 unInitTime, UInt32 unEndTime, bool bCheckColor) {
 
     if (unClock > unInitTime && unClock < unEndTime){
-        UInt32 unScore = 0;
+        Real unScore = 0;
         TPosMap::iterator it, jt;
         for (it = m_tPositions.begin(), jt = m_tMemPositions.begin(); it != m_tPositions.end(); ++it, ++jt) {
             Real d = (it->second - jt->second).Length();
             if (d > 0.0005){
                 if (bCheckColor){
-                    if(GetFloorColor(it->second) == CColor::BLACK)
+                    if(GetFloorColor(it->second) != CColor::GRAY50)
                         unScore+=1;
                 }
             }
@@ -271,10 +271,10 @@ UInt32 PwLoopFunction::PwFunctionMove(UInt32 unClock, UInt32 unInitTime, UInt32 
 /****************************************/
 /****************************************/
 
-UInt32 PwLoopFunction::PwFunctionAgg(UInt32 unClock, UInt32 unInitTime, UInt32 unEndTime, bool bWhiteColor) {
+Real PwLoopFunction::PwFunctionAgg(UInt32 unClock, UInt32 unInitTime, UInt32 unEndTime, bool bWhiteColor) {
 
     if (unClock > unInitTime && unClock <= unEndTime){
-        UInt32 unScore = 0;
+        Real unScore = 0;
         TPosMap::iterator it;
         for (it = m_tPositions.begin(); it != m_tPositions.end(); ++it) {
 
@@ -296,15 +296,16 @@ UInt32 PwLoopFunction::PwFunctionAgg(UInt32 unClock, UInt32 unInitTime, UInt32 u
 /****************************************/
 /****************************************/
 
-UInt32 PwLoopFunction::PwFunctionFlee(UInt32 unClock, UInt32 unInitTime, UInt32 unEndTime) {
+Real PwLoopFunction::PwFunctionFlee(UInt32 unClock, UInt32 unInitTime, UInt32 unEndTime) {
 
     if (unClock > unInitTime && unClock <= unEndTime){
-        UInt32 unScore = 0;
+        Real unScore = 0;
         TPosMap::iterator it;
         for (it = m_tPositions.begin(); it != m_tPositions.end(); ++it) {
-            Real d = (it->second - m_cCoordSpotB).Length();
-            if (d < 1.62)
-                unScore+=1;
+            unScore = 1-(((it->second - m_cCoordSpotB).Length())/1.72);
+            //Real d = (it->second - m_cCoordSpotB).Length();
+            //if (d < 1.62)
+            //    unScore+=1;
         }
         return unScore;
     }

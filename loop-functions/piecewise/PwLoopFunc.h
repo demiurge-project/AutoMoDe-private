@@ -40,15 +40,15 @@ class PwLoopFunction: public AutoMoDeLoopFunctions {
 
     void GetRobotPositions(bool bSavePositions);
 
-    UInt32 GetMissionScore(UInt32 unClock);
+    Real GetMissionScore(UInt32 unClock);
 
-    UInt32 PwFunctionStop(UInt32 unClock, UInt32 unInitTime, UInt32 unEndTime);
+    Real PwFunctionStop(UInt32 unClock, UInt32 unInitTime, UInt32 unEndTime);
 
-    UInt32 PwFunctionMove(UInt32 unClock, UInt32 unInitTime, UInt32 unEndTime, bool bCheckColor);
+    Real PwFunctionMove(UInt32 unClock, UInt32 unInitTime, UInt32 unEndTime, bool bCheckColor);
 
-    UInt32 PwFunctionAgg(UInt32 unClock, UInt32 unInitTime, UInt32 unEndTime, bool bWhiteColor);
+    Real PwFunctionAgg(UInt32 unClock, UInt32 unInitTime, UInt32 unEndTime, bool bWhiteColor);
 
-    UInt32 PwFunctionFlee(UInt32 unClock, UInt32 unInitTime, UInt32 unEndTime);
+    Real PwFunctionFlee(UInt32 unClock, UInt32 unInitTime, UInt32 unEndTime);
 
   private:
     CVector2 m_cCoordSpotB;
