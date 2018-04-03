@@ -33,19 +33,7 @@ namespace argos {
     std::vector<std::string> tokens;
     copy(std::istream_iterator<std::string>(iss), std::istream_iterator<std::string>(), std::back_inserter(tokens));
 
-    // Collecting relevant values
-    std::vector<std::string>::iterator it;
-		try {
-			it = std::find(tokens.begin(), tokens.end(), "--robots");
-			m_unNumberOfRobots = atoi((*(it+1)).c_str());
-			it = std::find(tokens.begin(), tokens.end(), "--rabsi");
-			m_unRabSensorIndex = atoi((*(it+1)).c_str());
-			it = std::find(tokens.begin(), tokens.end(), "--rabar");
-			m_fRabActuatorRange = strtod((*(it+1)).c_str(), NULL);
-		} catch (std::exception e) {
-			LOGERR << e.what() << std::endl;
-			THROW_ARGOSEXCEPTION("Error while parsing Hardware Modules configuration");
-		}
+		ParseSwarmConfiguration(tokens);
   }
 
   /****************************************/
