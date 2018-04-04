@@ -17,7 +17,7 @@ namespace argos {
 
 	AutoMoDeSwarmConfiguration::AutoMoDeSwarmConfiguration() {
 		m_unNumberOfRobots = 0;
-		m_unSwarmBatteryLife = 57;
+		m_unSwarmBatteryLife = 0;
 	}
 
 	/****************************************/
@@ -54,6 +54,24 @@ namespace argos {
       LOGERR << e.what() << std::endl;
       THROW_ARGOSEXCEPTION("Error while parsing Hardware Modules configuration");
     }
+
+		/* RAB Sensor Battery Time (in seconds) */
+		m_mapRABSenBatteryTime.insert(std::make_pair(0, 2));
+		m_mapRABSenBatteryTime.insert(std::make_pair(1, 4));
+		m_mapRABSenBatteryTime.insert(std::make_pair(2, 6));
+		m_mapRABSenBatteryTime.insert(std::make_pair(3, 8));
+		m_mapRABSenBatteryTime.insert(std::make_pair(4, 10));
+		m_mapRABSenBatteryTime.insert(std::make_pair(5, 12));
+
+		/* RAB Actuator Range Battery Time (in seconds) */
+		m_mapRABARangeBatteryTime.insert(std::make_pair(0.6, 3));
+		m_mapRABARangeBatteryTime.insert(std::make_pair(0.7, 5));
+		m_mapRABARangeBatteryTime.insert(std::make_pair(0.8, 8));
+		m_mapRABARangeBatteryTime.insert(std::make_pair(0.9, 12));
+		m_mapRABARangeBatteryTime.insert(std::make_pair(1.0, 15));
+
+		m_unSwarmBatteryLife = (m_mapRABSenBatteryTime.find(m_unRabSensorIndex)->second) + (m_mapRABARangeBatteryTime.find(m_fRabActuatorRange)->second);
+
 	}
 
   /****************************************/
@@ -79,7 +97,6 @@ namespace argos {
 
 	/****************************************/
 	/****************************************/
-
   const UInt32& AutoMoDeSwarmConfiguration::GetSwarmBatteryLife() const {
 	  return m_unSwarmBatteryLife;
 	}

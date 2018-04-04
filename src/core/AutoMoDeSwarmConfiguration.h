@@ -23,6 +23,7 @@
 #include <iterator>
 #include <stdlib.h>
 #include <algorithm>
+#include <map>
 
 #include <argos3/core/utility/math/rng.h>
 #include <argos3/core/utility/math/vector2.h>
@@ -64,6 +65,10 @@ namespace argos {
       Real m_fRabActuatorRange;
 
 			UInt32 m_unSwarmBatteryLife;
+
+			std::map<UInt32, UInt32> m_mapRABSenBatteryTime;
+
+			std::map<Real, UInt32> m_mapRABARangeBatteryTime;
 
   };
 }
