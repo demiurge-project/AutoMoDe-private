@@ -84,6 +84,7 @@ void AggregationTwoSpotsOriginalLoopFunction::PostExperiment() {
   }
   m_fObjectiveFunction = Max(m_unScoreSpot1, m_unScoreSpot2)/(Real) m_unNumberRobots;
   LOG << "Battery Life Check" << m_unBatteryLife << std::endl;
+  LOG << "Max Experiment time Check" << m_unMaxExpTime << std::endl;
   LOG << "Score = " << m_fObjectiveFunction << std::endl;
 }
 

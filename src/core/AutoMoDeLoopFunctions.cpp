@@ -121,3 +121,10 @@ void AutoMoDeLoopFunctions::SetNumberRobots(UInt32 un_number_robots) {
 void AutoMoDeLoopFunctions::SetBatteryLife(UInt32 un_battery_life){
   m_unBatteryLife = un_battery_life;
 }
+
+/****************************************/
+/****************************************/
+
+void AutoMoDeLoopFunctions::SetMaxExpTime(UInt32 un_max_exp_time){
+  m_unMaxExpTime = un_max_exp_time;
+}
