@@ -71,7 +71,8 @@ namespace argos {
 		m_mapRABARangeBatteryTime.insert(std::make_pair(1.0, 15));
 
 		m_unSwarmBatteryLife = (m_mapRABSenBatteryTime.find(m_unRabSensorIndex)->second) + (m_mapRABARangeBatteryTime.find(m_fRabActuatorRange)->second);
-
+		// Converting into time Steps
+		m_unSwarmBatteryLife = m_unSwarmBatteryLife * 10;
 	}
 
   /****************************************/

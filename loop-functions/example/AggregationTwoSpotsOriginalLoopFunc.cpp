@@ -18,6 +18,7 @@ AggregationTwoSpotsOriginalLoopFunction::AggregationTwoSpotsOriginalLoopFunction
   m_unScoreSpot1 = 0;
   m_unScoreSpot2 = 0;
   m_fObjectiveFunction = 0;
+  m_unExpSteps = 0; // newly added
 }
 
 /****************************************/
@@ -66,7 +67,20 @@ void AggregationTwoSpotsOriginalLoopFunction::Reset() {
 /****************************************/
 /****************************************/
 
+void AggregationTwoSpotsOriginalLoopFunction::PostStep(){
+  m_unExpSteps += 1;
+  if (m_unExpSteps == (m_unMaxExpTime - m_unBatteryLife)){
+    LOG << "Termination Time =" << m_unExpSteps << std::endl;
+  }
+  //LOG << "Exp Time Step check" << m_unExpSteps << std::endl;
+  //LOG << "Battery Life Check" << m_unBatteryLife << std::endl;
+  //LOG << "Max Experiment time Check" << m_unMaxExpTime << std::endl;
+}
+
+/****************************************/
+/****************************************/
 void AggregationTwoSpotsOriginalLoopFunction::PostExperiment() {
+
   CSpace::TMapPerType& tEpuckMap = GetSpace().GetEntitiesByType("epuck");
   CVector2 cEpuckPosition(0,0);
   for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it) {
@@ -83,8 +97,7 @@ void AggregationTwoSpotsOriginalLoopFunction::PostExperiment() {
     }
   }
   m_fObjectiveFunction = Max(m_unScoreSpot1, m_unScoreSpot2)/(Real) m_unNumberRobots;
-  LOG << "Battery Life Check" << m_unBatteryLife << std::endl;
-  LOG << "Max Experiment time Check" << m_unMaxExpTime << std::endl;
+
   LOG << "Score = " << m_fObjectiveFunction << std::endl;
 }
 

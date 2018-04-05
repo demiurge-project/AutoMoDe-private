@@ -18,6 +18,7 @@ ForagingTwoSpotsLoopFunction::ForagingTwoSpotsLoopFunction() {
   m_cCoordSpot2 = CVector2(-0.75,0);
   m_fObjectiveFunction = 0;
   m_bInitializationStep = true;
+  m_unExpSteps = 0;
 }
 
 /****************************************/
@@ -75,6 +76,9 @@ void ForagingTwoSpotsLoopFunction::Reset() {
 /****************************************/
 
 void ForagingTwoSpotsLoopFunction::PostStep() {
+  m_unExpSteps += 1;
+  LOG << "Exp Time Step check" << m_unExpSteps << std::endl;
+
   if (m_bInitializationStep) {
     m_punFoodData = new UInt32[m_unNumberRobots+1];
     for (UInt32 i = 0; i <= m_unNumberRobots; i++) {

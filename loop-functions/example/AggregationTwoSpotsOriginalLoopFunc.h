@@ -30,11 +30,13 @@ class AggregationTwoSpotsOriginalLoopFunction: public AutoMoDeLoopFunctions {
     virtual argos::CColor GetFloorColor(const argos::CVector2& c_position_on_plane);
     virtual void PostExperiment();
     virtual void Reset();
+    void ExpStep();
 
     Real GetObjectiveFunction();
 
     CVector3 GetRandomPosition();
 
+    virtual void PostStep();
 
   private:
     Real m_fRadius;
@@ -45,6 +47,7 @@ class AggregationTwoSpotsOriginalLoopFunction: public AutoMoDeLoopFunctions {
     UInt32 m_unScoreSpot2;
     Real m_fObjectiveFunction;
 
+    UInt32 m_unExpSteps; //exptest Steps
 };
 
 #endif
