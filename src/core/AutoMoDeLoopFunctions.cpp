@@ -128,3 +128,10 @@ void AutoMoDeLoopFunctions::SetBatteryLife(UInt32 un_battery_life){
 void AutoMoDeLoopFunctions::SetMaxExpTime(UInt32 un_max_exp_time){
   m_unMaxExpTime = un_max_exp_time;
 }
+
+/****************************************/
+/****************************************/
+
+bool AutoMoDeLoopFunctions::IsExperimentFinished(){
+  return false;
+}

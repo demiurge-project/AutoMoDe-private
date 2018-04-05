@@ -38,6 +38,8 @@ class AggregationTwoSpotsOriginalLoopFunction: public AutoMoDeLoopFunctions {
 
     virtual void PostStep();
 
+    virtual bool IsExperimentFinished();
+
   private:
     Real m_fRadius;
     CVector2 m_cCoordSpot1;
@@ -48,6 +50,9 @@ class AggregationTwoSpotsOriginalLoopFunction: public AutoMoDeLoopFunctions {
     Real m_fObjectiveFunction;
 
     UInt32 m_unExpSteps; //exptest Steps
+
+    bool m_bExpFinished;
+
 };
 
 #endif

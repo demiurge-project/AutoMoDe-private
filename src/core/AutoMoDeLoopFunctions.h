@@ -96,6 +96,11 @@ class AutoMoDeLoopFunctions: public CLoopFunctions {
     */
     void SetMaxExpTime(UInt32 un_max_exp_time);
 
+    /*
+    * Terminates the experiment
+    */
+    virtual bool IsExperimentFinished();
+
 };
 
 #endif

@@ -19,6 +19,7 @@ AggregationTwoSpotsOriginalLoopFunction::AggregationTwoSpotsOriginalLoopFunction
   m_unScoreSpot2 = 0;
   m_fObjectiveFunction = 0;
   m_unExpSteps = 0; // newly added
+  m_bExpFinished = false;
 }
 
 /****************************************/
@@ -70,13 +71,20 @@ void AggregationTwoSpotsOriginalLoopFunction::Reset() {
 void AggregationTwoSpotsOriginalLoopFunction::PostStep(){
   m_unExpSteps += 1;
   if (m_unExpSteps == (m_unMaxExpTime - m_unBatteryLife)){
+    LOG << "Max Experiment time Check" << m_unMaxExpTime << std::endl;
     LOG << "Termination Time =" << m_unExpSteps << std::endl;
+    m_bExpFinished = true;
   }
   //LOG << "Exp Time Step check" << m_unExpSteps << std::endl;
   //LOG << "Battery Life Check" << m_unBatteryLife << std::endl;
   //LOG << "Max Experiment time Check" << m_unMaxExpTime << std::endl;
 }
+/****************************************/
+/****************************************/
 
+bool AggregationTwoSpotsOriginalLoopFunction::IsExperimentFinished(){
+  return m_bExpFinished;
+}
 /****************************************/
 /****************************************/
 void AggregationTwoSpotsOriginalLoopFunction::PostExperiment() {
