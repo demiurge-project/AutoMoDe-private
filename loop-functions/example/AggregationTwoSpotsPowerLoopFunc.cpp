@@ -6,39 +6,41 @@
   * @license MIT License
   */
 
-#include "AggregationTwoSpotsOriginalLoopFunc.h"
+#include "AggregationTwoSpotsPowerLoopFunc.h"
 
 /****************************************/
 /****************************************/
 
-AggregationTwoSpotsOriginalLoopFunction::AggregationTwoSpotsOriginalLoopFunction() {
+AggregationTwoSpotsPowerLoopFunction::AggregationTwoSpotsPowerLoopFunction() {
   m_fRadius = 0.3;
   m_cCoordSpot1 = CVector2(0.5,0);
   m_cCoordSpot2 = CVector2(-0.5,0);
   m_unScoreSpot1 = 0;
   m_unScoreSpot2 = 0;
   m_fObjectiveFunction = 0;
+  m_unExpSteps = 0; // Experiment Steps
+  m_bExpFinished = false;
 }
 
 /****************************************/
 /****************************************/
 
-AggregationTwoSpotsOriginalLoopFunction::AggregationTwoSpotsOriginalLoopFunction(const AggregationTwoSpotsOriginalLoopFunction& orig) {}
+AggregationTwoSpotsPowerLoopFunction::AggregationTwoSpotsPowerLoopFunction(const AggregationTwoSpotsPowerLoopFunction& orig) {}
 
 /****************************************/
 /****************************************/
 
-AggregationTwoSpotsOriginalLoopFunction::~AggregationTwoSpotsOriginalLoopFunction() {}
+AggregationTwoSpotsPowerLoopFunction::~AggregationTwoSpotsPowerLoopFunction() {}
 
 /****************************************/
 /****************************************/
 
-void AggregationTwoSpotsOriginalLoopFunction::Destroy() {}
+void AggregationTwoSpotsPowerLoopFunction::Destroy() {}
 
 /****************************************/
 /****************************************/
 
-argos::CColor AggregationTwoSpotsOriginalLoopFunction::GetFloorColor(const argos::CVector2& c_position_on_plane) {
+argos::CColor AggregationTwoSpotsPowerLoopFunction::GetFloorColor(const argos::CVector2& c_position_on_plane) {
   CVector2 vCurrentPoint(c_position_on_plane.GetX(), c_position_on_plane.GetY());
   Real d = (m_cCoordSpot1 - vCurrentPoint).Length();
   if (d <= m_fRadius) {
@@ -56,7 +58,7 @@ argos::CColor AggregationTwoSpotsOriginalLoopFunction::GetFloorColor(const argos
 /****************************************/
 /****************************************/
 
-void AggregationTwoSpotsOriginalLoopFunction::Reset() {
+void AggregationTwoSpotsPowerLoopFunction::Reset() {
   m_fObjectiveFunction = 0;
   m_unScoreSpot1 = 0;
   m_unScoreSpot2 = 0;
@@ -65,7 +67,23 @@ void AggregationTwoSpotsOriginalLoopFunction::Reset() {
 
 /****************************************/
 /****************************************/
-void AggregationTwoSpotsOriginalLoopFunction::PostExperiment() {
+
+void AggregationTwoSpotsPowerLoopFunction::PostStep(){
+  m_unExpSteps += 1;
+  if (m_unExpSteps == (m_unMaxExpTime - m_unBatteryLife)){
+    //LOG << "Max Experiment time Check" << m_unMaxExpTime << std::endl;
+    m_bExpFinished = true;
+  }
+}
+/****************************************/
+/****************************************/
+
+bool AggregationTwoSpotsPowerLoopFunction::IsExperimentFinished(){
+  return m_bExpFinished;
+}
+/****************************************/
+/****************************************/
+void AggregationTwoSpotsPowerLoopFunction::PostExperiment() {
 
   CSpace::TMapPerType& tEpuckMap = GetSpace().GetEntitiesByType("epuck");
   CVector2 cEpuckPosition(0,0);
@@ -90,14 +108,14 @@ void AggregationTwoSpotsOriginalLoopFunction::PostExperiment() {
 /****************************************/
 /****************************************/
 
-Real AggregationTwoSpotsOriginalLoopFunction::GetObjectiveFunction() {
+Real AggregationTwoSpotsPowerLoopFunction::GetObjectiveFunction() {
   return m_fObjectiveFunction;
 }
 
 /****************************************/
 /****************************************/
 
-CVector3 AggregationTwoSpotsOriginalLoopFunction::GetRandomPosition() {
+CVector3 AggregationTwoSpotsPowerLoopFunction::GetRandomPosition() {
   Real temp;
   Real a = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
   Real  b = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
@@ -113,4 +131,4 @@ CVector3 AggregationTwoSpotsOriginalLoopFunction::GetRandomPosition() {
   return CVector3(fPosX, fPosY, 0);
 }
 
-REGISTER_LOOP_FUNCTIONS(AggregationTwoSpotsOriginalLoopFunction, "aggregation_two_spots_original_lf");
+REGISTER_LOOP_FUNCTIONS(AggregationTwoSpotsPowerLoopFunction, "aggregation_two_spots_power_lf");

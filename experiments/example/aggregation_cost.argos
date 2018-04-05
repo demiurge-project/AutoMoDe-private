@@ -1,0 +1,136 @@
+<?xml version="1.0" ?>
+<argos-configuration>
+  <!-- ************* -->
+  <!-- * Framework * -->
+  <!-- ************* -->
+  <framework>
+    <experiment length="25"
+                ticks_per_second="10" random_seed="13"/>
+  </framework>
+
+  <!-- ****************** -->
+  <!-- * Loop functions * -->
+  <!-- ****************** -->
+  <loop_functions library="../../build/loop-functions/example/libaggregation_two_spots_original_loopfunc.so"
+   label="aggregation_two_spots_original_lf">
+   <params dist_radius="1.2" number_robots="1"/>
+  </loop_functions>
+
+  <!-- *************** -->
+  <!-- * Controllers * -->
+  <!-- *************** -->
+  <controllers>
+	<!-- TRANSMITTER -->
+    <automode_controller id="automode"
+                        library="../../build/src/libautomode.so">
+      <actuators>
+        <epuck_wheels implementation="default" noise_std_dev="0.05"/>
+        <epuck_rgb_leds implementation="default" medium="leds"/>
+        <epuck_range_and_bearing implementation="medium" medium="rab" data_size="4"/>
+      </actuators>
+      <sensors>
+		    <epuck_proximity implementation="default" show_rays="false" noise_level="0.05" calibrated="true"/>
+
+        <epuck_range_and_bearing_salman_sen1 implementation="medium" show_rays="true" medium="rab1" data_size="4" channel_interference="true" noise_std_dev="1.5" loss_probability="0.3" calibrated="true"/> -->
+        <epuck_range_and_bearing_salman_sen2 implementation="medium" show_rays="true" medium="rab2" data_size="4" channel_interference="true" noise_std_dev="1.5" loss_probability="0.3" calibrated="true"/>
+        <epuck_range_and_bearing_salman_sen3 implementation="medium" show_rays="true" medium="rab3" data_size="4" channel_interference="true" noise_std_dev="1.5" loss_probability="0.3" calibrated="true"/>
+        <epuck_range_and_bearing_salman_sen4 implementation="medium" show_rays="true" medium="rab4" data_size="4" channel_interference="true" noise_std_dev="1.5" loss_probability="0.3" calibrated="true"/>
+        <epuck_range_and_bearing_salman_sen5 implementation="medium" show_rays="true" medium="rab5" data_size="4" channel_interference="true" noise_std_dev="1.5" loss_probability="0.3" calibrated="true"/>
+        <epuck_range_and_bearing_salman_sen6 implementation="medium" show_rays="true" medium="rab6" data_size="4" channel_interference="true" noise_std_dev="1.5" loss_probability="0.3" calibrated="true"/>
+
+        <epuck_light implementation="default" show_rays="false" noise_level="0.05" calibrated="true"/>
+		    <epuck_ground implementation="rot_z_only" noise_level="0.05" calibrated="true"/>
+		    <epuck_omnidirectional_camera implementation="rot_z_only" medium="leds" show_rays="false"/>
+      </sensors>
+      <params fsm-config="--robots 13 --rabsi 0 --rabar 10 --nstates 1 --s0 4 --att0 5 --n0 0"/>
+    </automode_controller>
+  </controllers>
+
+  <!-- ********* -->
+  <!-- * Arena * -->
+  <!-- ********* -->
+  <arena size="10, 10, 1" center="0,0,0">
+
+  <!-- Change the floor here -->
+  <floor id="floor" source="loop_functions" pixels_per_meter="300"/>
+
+  <!-- Change the light here -->
+  <!-- Please note that this light has an intensity equal to 0 -->
+  <!-- and therefore does not affect the experiment. -->
+  <!-- ARGoS requires at least one light when using the light sensor -->
+	<light id="light" position="0,-5,0.4" orientation="0,0,0" color="yellow" intensity="0.0" medium="leds"/>
+
+  <!--Dodecagonal arena with side of length .66-->
+  <box id="wall_1" size="0.01,.66,0.08" movable="false">
+    <body position="-1.231,0,0" orientation="0,0,0"/>
+  </box>
+  <box id="wall_2" size="0.01,.66,0.08" movable="false">
+    <body position="1.231,0,0" orientation="0,0,0"/>
+  </box>
+  <box id="wall_3" size="0.01,.66,0.08" movable="false">
+    <body position="0,1.231,0" orientation="90,0,0"/>
+  </box>
+  <box id="wall_4" size="0.01,.66,0.08" movable="false">
+    <body position="0,-1.231,0" orientation="90,0,0"/>
+  </box>
+  <box id="wall_5" size="0.01,.66,0.08" movable="false">
+    <body position="-.615,-1.066,0" orientation="60,0,0"/>
+  </box>
+  <box id="wall_6" size="0.01,.66,0.08" movable="false">
+    <body position="-1.066,-.615,0" orientation="30,0,0"/>
+  </box>
+  <box id="wall_7" size="0.01,.66,0.08" movable="false">
+    <body position=".615,1.066,0" orientation="60,0,0"/>
+  </box>
+  <box id="wall_8" size="0.01,.66,0.08" movable="false">
+    <body position="1.066,.615,0" orientation="30,0,0"/>
+  </box>
+  <box id="wall_9" size="0.01,.66,0.08" movable="false">
+    <body position="-.615,1.066,0" orientation="-60,0,0"/>
+  </box>
+  <box id="wall_10" size="0.01,.66,0.08" movable="false">
+    <body position="-1.066,.615,0" orientation="-30,0,0"/>
+  </box>
+  <box id="wall_11" size="0.01,.66,0.08" movable="false">
+    <body position=".615,-1.066,0" orientation="-60,0,0"/>
+  </box>
+  <box id="wall_12" size="0.01,.66,0.08" movable="false">
+    <body position="1.066,-.615,0" orientation="-30,0,0"/>
+  </box>
+
+  <!-- ********** -->
+  <!-- * E-Puck * -->
+  <!-- ********** -->
+
+  <!-- The epucks are distributed by the AutoMoDeLoopFunctions. -->
+  </arena>
+
+  <!-- ******************* -->
+  <!-- * Physics engines * -->
+  <!-- ******************* -->
+  <physics_engines>
+    <dynamics2d id="dyn2d" />
+  </physics_engines>
+
+  <!-- ********* -->
+  <!-- * Media * -->
+  <!-- ********* -->
+  <media>
+    <led id="leds" grid_size="1,1,1"/>
+    <range_and_bearing id="ircom"/>
+    <range_and_bearing id="rab"/>
+    <range_and_bearing id="rab1"/>
+    <range_and_bearing id="rab2"/>
+    <range_and_bearing id="rab3"/>
+    <range_and_bearing id="rab4"/>
+    <range_and_bearing id="rab5"/>
+    <range_and_bearing id="rab6"/>
+  </media>
+
+  <!-- ***************** -->
+  <!-- * Visualization * -->
+  <!-- ***************** -->
+  <visualization>
+  </visualization>
+
+</argos-configuration>

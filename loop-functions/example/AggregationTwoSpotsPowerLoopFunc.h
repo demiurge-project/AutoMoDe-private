@@ -1,5 +1,5 @@
 /**
-  * @file <loop-functions/example/AggregationLoopFunc.h>
+  * @file <loop-functions/example/AggregationPowerLoopFunc.h>
   *
   * @author Antoine Ligot - <aligot@ulb.ac.be>
   *
@@ -19,21 +19,26 @@
 
 using namespace argos;
 
-class AggregationTwoSpotsOriginalLoopFunction: public AutoMoDeLoopFunctions {
+class AggregationTwoSpotsPowerLoopFunction: public AutoMoDeLoopFunctions {
   public:
-    AggregationTwoSpotsOriginalLoopFunction();
-    AggregationTwoSpotsOriginalLoopFunction(const AggregationTwoSpotsOriginalLoopFunction& orig);
-    virtual ~AggregationTwoSpotsOriginalLoopFunction();
+    AggregationTwoSpotsPowerLoopFunction();
+    AggregationTwoSpotsPowerLoopFunction(const AggregationTwoSpotsPowerLoopFunction& orig);
+    virtual ~AggregationTwoSpotsPowerLoopFunction();
 
     virtual void Destroy();
 
     virtual argos::CColor GetFloorColor(const argos::CVector2& c_position_on_plane);
     virtual void PostExperiment();
     virtual void Reset();
+    void ExpStep();
 
     Real GetObjectiveFunction();
 
     CVector3 GetRandomPosition();
+
+    virtual void PostStep();
+
+    virtual bool IsExperimentFinished();
 
   private:
     Real m_fRadius;
@@ -43,6 +48,10 @@ class AggregationTwoSpotsOriginalLoopFunction: public AutoMoDeLoopFunctions {
     UInt32 m_unScoreSpot1;
     UInt32 m_unScoreSpot2;
     Real m_fObjectiveFunction;
+
+    UInt32 m_unExpSteps; //Experiment Steps
+
+    bool m_bExpFinished;
 
 };
 
