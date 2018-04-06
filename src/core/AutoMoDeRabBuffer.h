@@ -12,8 +12,8 @@
  *        message is discarded.
  */
 
-#ifndef AUTOMODE_RAB_BUFFER_H
-#define AUTOMODE_RAB_BUFFER_H
+#ifndef AUTOMODE_BT_RAB_BUFFER_H
+#define AUTOMODE_BT_RAB_BUFFER_H
 
 #include <vector>
 #include <algorithm>

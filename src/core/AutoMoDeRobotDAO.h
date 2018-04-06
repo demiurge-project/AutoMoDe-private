@@ -22,9 +22,10 @@
  */
 
 
-#ifndef AUTOMODE_ROBOT_DAO_H
-#define AUTOMODE_ROBOT_DAO_H
+#ifndef AUTOMODE_BT_ROBOT_DAO_H
+#define AUTOMODE_BT_ROBOT_DAO_H
 
+#include <deque>
 #include <vector>
 #include <argos3/core/utility/math/rng.h>
 #include <argos3/core/utility/math/vector2.h>
@@ -76,7 +77,7 @@ namespace argos {
 			/*
 			 * Getter for the ground input.
 			 */
-			CCI_EPuckGroundSensor::SReadings GetGroundInput() const;
+			CCI_EPuckGroundSensor::SReadings GetGroundInput();
 
 			/*
 			 * Setter for the ground input.
@@ -198,6 +199,8 @@ namespace argos {
 			 * Pointer to the range-and-bearing messages buffer.
 			 */
 			AutoMoDeRabBuffer m_pcRabMessageBuffer;
+
+			std::deque<CCI_EPuckGroundSensor::SReadings> m_deqGroundInput;
 	};
 }
 

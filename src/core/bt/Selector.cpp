@@ -55,12 +55,12 @@ namespace argos {
 
 	Node::ReturnState Selector::Tick() {
 		for (UInt8 i = 0; i < m_vecConditions.size(); i++) {
-			//LOG << m_vecConditions.at(i)->GetLabel() << std::endl;
 			if (m_vecConditions.at(i)->Verify()) {
+				LOG << "[" << m_unRobotID << "]\t" << "Condition true: " << m_vecConditions.at(i)->GetLabel() << std::endl;
 				return Node::SUCCESS;
 			}
 		}
-		//LOG << "[" << m_unRobotID << "]\t"<< m_vecActions.at(0)->GetLabel() << std::endl;
+		LOG << "[" << m_unRobotID << "]\t"<< m_vecActions.at(0)->GetLabel() << std::endl;
 		m_vecActions.at(0)->ControlStep();
 		return Node::RUNNING;
 	}

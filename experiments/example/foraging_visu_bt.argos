@@ -12,7 +12,7 @@
   <!-- * Loop functions * -->
   <!-- ****************** -->
   <loop_functions library="../../build/loop-functions/vanilla/libvanilla_foraging_loopfunc.so"
-   label="foraging_two_spots_lf">
+   label="foraging_loop_functions">
    <params dist_radius="1.2" number_robots="20"/>
   </loop_functions>
 
