@@ -6,42 +6,43 @@
   * @license MIT License
   */
 
-#include "ForagingTwoSpotsLoopFunc.h"
+#include "ForagingTwoSpotsPowerLoopFunc.h"
 
 /****************************************/
 /****************************************/
 
-ForagingTwoSpotsLoopFunction::ForagingTwoSpotsLoopFunction() {
+ForagingTwoSpotsPowerLoopFunction::ForagingTwoSpotsPowerLoopFunction() {
   m_fRadius = 0.15;
   m_fNestLimit = 0.6;
   m_cCoordSpot1 = CVector2(0.75,0);
   m_cCoordSpot2 = CVector2(-0.75,0);
   m_fObjectiveFunction = 0;
   m_bInitializationStep = true;
+  m_unExpSteps = 0;
 }
 
 /****************************************/
 /****************************************/
 
-ForagingTwoSpotsLoopFunction::ForagingTwoSpotsLoopFunction(const ForagingTwoSpotsLoopFunction& orig) {
+ForagingTwoSpotsPowerLoopFunction::ForagingTwoSpotsPowerLoopFunction(const ForagingTwoSpotsPowerLoopFunction& orig) {
 }
 
 /****************************************/
 /****************************************/
 
-ForagingTwoSpotsLoopFunction::~ForagingTwoSpotsLoopFunction() {}
+ForagingTwoSpotsPowerLoopFunction::~ForagingTwoSpotsPowerLoopFunction() {}
 
 /****************************************/
 /****************************************/
 
-void ForagingTwoSpotsLoopFunction::Destroy() {
+void ForagingTwoSpotsPowerLoopFunction::Destroy() {
   delete[] m_punFoodData;
 }
 
 /****************************************/
 /****************************************/
 
-argos::CColor ForagingTwoSpotsLoopFunction::GetFloorColor(const argos::CVector2& c_position_on_plane) {
+argos::CColor ForagingTwoSpotsPowerLoopFunction::GetFloorColor(const argos::CVector2& c_position_on_plane) {
   CVector2 vCurrentPoint(c_position_on_plane.GetX(), c_position_on_plane.GetY());
   Real d = (m_cCoordSpot1 - vCurrentPoint).Length();
   if (d <= m_fRadius) {
@@ -63,18 +64,28 @@ argos::CColor ForagingTwoSpotsLoopFunction::GetFloorColor(const argos::CVector2&
 /****************************************/
 /****************************************/
 
-void ForagingTwoSpotsLoopFunction::Reset() {
+void ForagingTwoSpotsPowerLoopFunction::Reset() {
   m_fObjectiveFunction = 0;
   for (UInt32 i = 0; i <= m_unNumberRobots; i++) {
     m_punFoodData[i] = 0;
   }
   AutoMoDeLoopFunctions::Reset();
 }
+/****************************************/
+/****************************************/
+
+bool ForagingTwoSpotsPowerLoopFunction::IsExperimentFinished(){
+  return m_bExpFinished;
+}
 
 /****************************************/
 /****************************************/
 
-void ForagingTwoSpotsLoopFunction::PostStep() {
+void ForagingTwoSpotsPowerLoopFunction::PostStep() {
+  m_unExpSteps += 1;
+  if (m_unExpSteps == (m_unMaxExpTime - m_unBatteryLife)){
+    m_bExpFinished = true;
+  }
 
   if (m_bInitializationStep) {
     m_punFoodData = new UInt32[m_unNumberRobots+1];
@@ -109,14 +120,14 @@ void ForagingTwoSpotsLoopFunction::PostStep() {
 /****************************************/
 /****************************************/
 
-Real ForagingTwoSpotsLoopFunction::GetObjectiveFunction() {
+Real ForagingTwoSpotsPowerLoopFunction::GetObjectiveFunction() {
   return m_fObjectiveFunction;
 }
 
 /****************************************/
 /****************************************/
 
-CVector3 ForagingTwoSpotsLoopFunction::GetRandomPosition() {
+CVector3 ForagingTwoSpotsPowerLoopFunction::GetRandomPosition() {
   Real temp;
   Real a = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
   Real  b = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
@@ -132,4 +143,4 @@ CVector3 ForagingTwoSpotsLoopFunction::GetRandomPosition() {
   return CVector3(fPosX, fPosY, 0);
 }
 
-REGISTER_LOOP_FUNCTIONS(ForagingTwoSpotsLoopFunction, "foraging_two_spots_lf");
+REGISTER_LOOP_FUNCTIONS(ForagingTwoSpotsPowerLoopFunction, "foraging_two_spots_power_lf");

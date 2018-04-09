@@ -11,8 +11,8 @@
   <!-- ****************** -->
   <!-- * Loop functions * -->
   <!-- ****************** -->
-  <loop_functions library="../../build/loop-functions/example/libforaging_loopfunc.so"
-   label="foraging_two_spots_lf">
+  <loop_functions library="../../build/loop-functions/example/libforaging_power_loopfunc.so"
+   label="foraging_two_spots_power_lf">
    <params dist_radius="1.2" number_robots="1"/>
   </loop_functions>
 

@@ -1,5 +1,5 @@
 /**
-  * @file <loop-functions/example/ForagingLoopFunc.h>
+  * @file <loop-functions/example/ForagingPowerLoopFunc.h>
   *
   * @author Antoine Ligot - <aligot@ulb.ac.be>
   *
@@ -18,11 +18,11 @@
 
 using namespace argos;
 
-class ForagingTwoSpotsLoopFunction: public AutoMoDeLoopFunctions {
+class ForagingTwoSpotsPowerLoopFunction: public AutoMoDeLoopFunctions {
   public:
-    ForagingTwoSpotsLoopFunction();
-    ForagingTwoSpotsLoopFunction(const ForagingTwoSpotsLoopFunction& orig);
-    virtual ~ForagingTwoSpotsLoopFunction();
+    ForagingTwoSpotsPowerLoopFunction();
+    ForagingTwoSpotsPowerLoopFunction(const ForagingTwoSpotsPowerLoopFunction& orig);
+    virtual ~ForagingTwoSpotsPowerLoopFunction();
 
     virtual void Destroy();
 
@@ -33,6 +33,8 @@ class ForagingTwoSpotsLoopFunction: public AutoMoDeLoopFunctions {
     Real GetObjectiveFunction();
 
     CVector3 GetRandomPosition();
+
+    virtual bool IsExperimentFinished();
 
   private:
     Real m_fRadius;
@@ -45,6 +47,10 @@ class ForagingTwoSpotsLoopFunction: public AutoMoDeLoopFunctions {
     Real m_fObjectiveFunction;
 
     UInt32 * m_punFoodData;
+
+    UInt32 m_unExpSteps; //exptest Steps
+
+    bool m_bExpFinished;
 
 };
 

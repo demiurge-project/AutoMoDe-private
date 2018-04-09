@@ -12,3 +12,6 @@ target_link_libraries(aggregation_two_spots_power_loopfunc argos3plugin_${ARGOS_
 
 add_library(foraging_loopfunc SHARED ForagingTwoSpotsLoopFunc.h ForagingTwoSpotsLoopFunc.cpp)
 target_link_libraries(foraging_loopfunc argos3plugin_${ARGOS_BUILD_FOR}_epuck)
+
+add_library(foraging_power_loopfunc SHARED ForagingTwoSpotsPowerLoopFunc.h ForagingTwoSpotsPowerLoopFunc.cpp)
+target_link_libraries(foraging_power_loopfunc argos3plugin_${ARGOS_BUILD_FOR}_epuck)
