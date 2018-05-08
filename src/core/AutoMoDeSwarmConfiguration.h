@@ -54,21 +54,23 @@ namespace argos {
 
       const UInt32& GetSwarmPrice() const;
 
-      const UInt32& GetSwarmBatteryLife() const;
+      const Real& GetRabBatteryConsumption() const;
 
     private:
 
       UInt32 m_unNumberOfRobots;
 
+			bool m_bRabEquipped;
+
       UInt8 m_unRabSensorIndex;
 
       Real m_fRabActuatorRange;
 
-			UInt32 m_unSwarmBatteryLife;
+			Real m_unRabBatteryConsumption;
 
-			std::map<UInt32, UInt32> m_mapRABSenBatteryTime;
+			std::map<UInt32, UInt32> m_mapRABSensorBatteryConsumption;
 
-			std::map<Real, UInt32> m_mapRABARangeBatteryTime;
+			std::map<Real, UInt32> m_mapRABRangeBatteryConsumption;
 
   };
 }

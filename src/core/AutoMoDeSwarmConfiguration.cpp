@@ -17,7 +17,7 @@ namespace argos {
 
 	AutoMoDeSwarmConfiguration::AutoMoDeSwarmConfiguration() {
 		m_unNumberOfRobots = 0;
-		m_unSwarmBatteryLife = 0;
+		m_unRabBatteryConsumption = 0.0;
 	}
 
 	/****************************************/
@@ -48,31 +48,41 @@ namespace argos {
       m_unNumberOfRobots = atoi((*(it+1)).c_str());
       it = std::find(vec_fsm_config.begin(), vec_fsm_config.end(), "--rabsi");
       m_unRabSensorIndex = atoi((*(it+1)).c_str());
-      it = std::find(vec_fsm_config.begin(), vec_fsm_config.end(), "--rabar");
-      m_fRabActuatorRange = strtod((*(it+1)).c_str(), NULL);
+			if (m_unRabSensorIndex != 0) {
+				m_bRabEquipped = true;
+				it = std::find(vec_fsm_config.begin(), vec_fsm_config.end(), "--rabar");
+	      if (it != vec_fsm_config.end()) {
+	      	m_fRabActuatorRange = strtod((*(it+1)).c_str(), NULL);
+				}
+			} else {
+				m_bRabEquipped = false;
+			}
 		} catch (std::exception e) {
       LOGERR << e.what() << std::endl;
       THROW_ARGOSEXCEPTION("Error while parsing Hardware Modules configuration");
     }
 
 		/* RAB Sensor Battery Time (in seconds) */
-		m_mapRABSenBatteryTime.insert(std::make_pair(0, 2));
-		m_mapRABSenBatteryTime.insert(std::make_pair(1, 4));
-		m_mapRABSenBatteryTime.insert(std::make_pair(2, 6));
-		m_mapRABSenBatteryTime.insert(std::make_pair(3, 8));
-		m_mapRABSenBatteryTime.insert(std::make_pair(4, 10));
-		m_mapRABSenBatteryTime.insert(std::make_pair(5, 12));
+		m_mapRABSensorBatteryConsumption.insert(std::make_pair(0, 0));
+		m_mapRABSensorBatteryConsumption.insert(std::make_pair(1, 20));
+		m_mapRABSensorBatteryConsumption.insert(std::make_pair(2, 30));
+		m_mapRABSensorBatteryConsumption.insert(std::make_pair(3, 40));
+		m_mapRABSensorBatteryConsumption.insert(std::make_pair(4, 50));
+		m_mapRABSensorBatteryConsumption.insert(std::make_pair(5, 60));
+		m_mapRABSensorBatteryConsumption.insert(std::make_pair(6, 70));
 
 		/* RAB Actuator Range Battery Time (in seconds) */
-		m_mapRABARangeBatteryTime.insert(std::make_pair(0.6, 4));
-		m_mapRABARangeBatteryTime.insert(std::make_pair(0.7, 8));
-		m_mapRABARangeBatteryTime.insert(std::make_pair(0.8, 12));
-		m_mapRABARangeBatteryTime.insert(std::make_pair(0.9, 16));
-		m_mapRABARangeBatteryTime.insert(std::make_pair(1.0, 20));
+		m_mapRABRangeBatteryConsumption.insert(std::make_pair(0.6, 10));
+		m_mapRABRangeBatteryConsumption.insert(std::make_pair(0.7, 12));
+		m_mapRABRangeBatteryConsumption.insert(std::make_pair(0.8, 14));
+		m_mapRABRangeBatteryConsumption.insert(std::make_pair(0.9, 16));
+		m_mapRABRangeBatteryConsumption.insert(std::make_pair(1.0, 20));
 
-		m_unSwarmBatteryLife = (m_mapRABSenBatteryTime.find(m_unRabSensorIndex)->second) + (m_mapRABARangeBatteryTime.find(m_fRabActuatorRange)->second);
-		// Converting into time Steps
-		m_unSwarmBatteryLife = m_unSwarmBatteryLife * 10;
+		if (m_bRabEquipped) {
+			m_unRabBatteryConsumption = (m_mapRABSensorBatteryConsumption.find(m_unRabSensorIndex)->second) + (m_mapRABRangeBatteryConsumption.find(m_fRabActuatorRange)->second);
+			} else {
+			m_unRabBatteryConsumption = 0.0;
+		}
 	}
 
   /****************************************/
@@ -98,11 +108,7 @@ namespace argos {
 
 	/****************************************/
 	/****************************************/
-  const UInt32& AutoMoDeSwarmConfiguration::GetSwarmBatteryLife() const {
-	  return m_unSwarmBatteryLife;
+  const Real& AutoMoDeSwarmConfiguration::GetRabBatteryConsumption() const {
+	  return m_unRabBatteryConsumption;
 	}
-
-
-
-
 }

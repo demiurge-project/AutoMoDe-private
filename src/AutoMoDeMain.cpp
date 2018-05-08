@@ -104,9 +104,6 @@ int main(int n_argc, char** ppch_argv) {
 				AutoMoDeLoopFunctions& cLoopFunctions = dynamic_cast<AutoMoDeLoopFunctions&> (cSimulator.GetLoopFunctions());
 				cLoopFunctions.SetNumberRobots(pcSwarmConfiguration->GetNumberOfRobots());
 				cLoopFunctions.PositionRobots();
-				/******* Battery Life ********/
-				cLoopFunctions.SetBatteryLife(pcSwarmConfiguration->GetSwarmBatteryLife());
-				cLoopFunctions.SetMaxExpTime(cSimulator.GetMaxSimulationClock());
 
 				// Duplicate the finite state machine and pass it to all robots.
 				CSpace::TMapPerType cEntities = cSimulator.GetSpace().GetEntitiesByType("controller");

@@ -38,17 +38,20 @@ namespace argos {
 
 	void AutoMoDeController::Init(TConfigurationNode& t_node) {
 		// Parsing parameters
+		Real fBatteryCap;
 		try {
 			GetNodeAttributeOrDefault(t_node, "fsm-config", m_strFsmConfiguration, m_strFsmConfiguration);
 			GetNodeAttributeOrDefault(t_node, "history", m_bMaintainHistory, m_bMaintainHistory);
 			GetNodeAttributeOrDefault(t_node, "hist-folder", m_strHistoryFolder, m_strHistoryFolder);
 			GetNodeAttributeOrDefault(t_node, "readable", m_bPrintReadableFsm, m_bPrintReadableFsm);
+			GetNodeAttributeOrDefault(t_node, "battery-cap", fBatteryCap, 0.0);
 		} catch (CARGoSException& ex) {
 			THROW_ARGOSEXCEPTION_NESTED("Error parsing <params>", ex);
 		}
 
 		m_unRobotID = atoi(GetId().substr(5, 6).c_str());
 		m_pcRobotState->SetRobotIdentifier(m_unRobotID);
+		m_pcRobotState->SetBatteryCapacity(fBatteryCap);
 
 		/*
 		 * If a FSM configuration is given as parameter of the experiment file, create a FSM from it
@@ -97,49 +100,58 @@ namespace argos {
 	/****************************************/
 
 	void AutoMoDeController::ControlStep() {
-		/*
-		 * 1. Update RobotDAO
-		 */
-		if(m_pcRabSensor != NULL){
-			const CCI_EPuckRangeAndBearingSensor::TPackets& packets = m_pcRabSensor->GetPackets();
-			//m_pcRobotState->SetNumberNeighbors(packets.size());
-			m_pcRobotState->SetRangeAndBearingMessages(packets);
-		}
-		if (m_pcGroundSensor != NULL) {
-			const CCI_EPuckGroundSensor::SReadings& readings = m_pcGroundSensor->GetReadings();
-			m_pcRobotState->SetGroundInput(readings);
-		}
-		if (m_pcLightSensor != NULL) {
-			const CCI_EPuckLightSensor::TReadings& readings = m_pcLightSensor->GetReadings();
-			m_pcRobotState->SetLightInput(readings);
-		}
-		if (m_pcProximitySensor != NULL) {
-			const CCI_EPuckProximitySensor::TReadings& readings = m_pcProximitySensor->GetReadings();
-			m_pcRobotState->SetProximityInput(readings);
+		LOG << m_unTimeStep << " " <<  m_pcRobotState->GetBatteryCapacity() << std::endl;
+	  if (m_pcRobotState->GetBatteryCapacity() > 0) {
+			/*
+			 * 1. Update RobotDAO
+			 */
+			if(m_pcRabSensor != NULL){
+				const CCI_EPuckRangeAndBearingSensor::TPackets& packets = m_pcRabSensor->GetPackets();
+				//m_pcRobotState->SetNumberNeighbors(packets.size());
+				m_pcRobotState->SetRangeAndBearingMessages(packets);
+			}
+			if (m_pcGroundSensor != NULL) {
+				const CCI_EPuckGroundSensor::SReadings& readings = m_pcGroundSensor->GetReadings();
+				m_pcRobotState->SetGroundInput(readings);
+			}
+			if (m_pcLightSensor != NULL) {
+				const CCI_EPuckLightSensor::TReadings& readings = m_pcLightSensor->GetReadings();
+				m_pcRobotState->SetLightInput(readings);
+			}
+			if (m_pcProximitySensor != NULL) {
+				const CCI_EPuckProximitySensor::TReadings& readings = m_pcProximitySensor->GetReadings();
+				m_pcRobotState->SetProximityInput(readings);
+			}
+
+			/*
+			 * 2. Execute step of FSM
+			 */
+			m_pcFiniteStateMachine->ControlStep();
+
+			/*
+			 * 3. Update Actuators
+			 */
+			if (m_pcWheelsActuator != NULL) {
+				m_pcWheelsActuator->SetLinearVelocity(m_pcRobotState->GetLeftWheelVelocity(),m_pcRobotState->GetRightWheelVelocity());
+			}
+
+			/*
+			 * 4. Update variables and sensors
+			 */
+			if (m_pcRabSensor != NULL) {
+				m_pcRabSensor->ClearPackets();
+			}
+	  } else {   // If no more battery => Stop and disable transmission of messages
+			if (m_pcWheelsActuator != NULL) {
+				m_pcWheelsActuator->SetLinearVelocity(0.0, 0.0);
+			}
+			if (m_pcRabActuator != NULL) {
+				m_pcRabActuator->Disable();
+			}
 		}
 
-		/*
-		 * 2. Execute step of FSM
-		 */
-		m_pcFiniteStateMachine->ControlStep();
-
-		/*
-		 * 3. Update Actuators
-		 */
-		if (m_pcWheelsActuator != NULL) {
-			m_pcWheelsActuator->SetLinearVelocity(m_pcRobotState->GetLeftWheelVelocity(),m_pcRobotState->GetRightWheelVelocity());
-		}
-
-		/*
-		 * 4. Update variables and sensors
-		 */
-		if (m_pcRabSensor != NULL) {
-			m_pcRabSensor->ClearPackets();
-		}
 		m_unTimeStep++;
-
 	}
-
 	/****************************************/
 	/****************************************/
 
@@ -182,6 +194,7 @@ namespace argos {
 	/****************************************/
 
 	void AutoMoDeController::SetSwarmConfiguration(AutoMoDeSwarmConfiguration* pc_swarm_configuration) {
+		m_pcRobotState->SetRabConsumption(pc_swarm_configuration->GetRabBatteryConsumption());
 		m_pcSwarmConfiguration = pc_swarm_configuration;
 	}
 
@@ -190,23 +203,27 @@ namespace argos {
 
 	void AutoMoDeController::InitializeHardwareModules() {
 		UInt32 unIndexRabSensor = m_pcSwarmConfiguration->GetRabSensorIndex();
+		LOG << unIndexRabSensor << std::endl;
 		switch(unIndexRabSensor) {
 			case 0:
-				m_pcRabSensor	= GetSensor<CCI_EPuckRangeAndBearingSensor>("epuck_range_and_bearing_salman_sen1");
+				m_pcRabSensor = NULL;
 				break;
 			case 1:
-				m_pcRabSensor	= GetSensor<CCI_EPuckRangeAndBearingSensor>("epuck_range_and_bearing_salman_sen2");
+				m_pcRabSensor	= GetSensor<CCI_EPuckRangeAndBearingSensor>("epuck_range_and_bearing_salman_sen1");
 				break;
 			case 2:
-				m_pcRabSensor	= GetSensor<CCI_EPuckRangeAndBearingSensor>("epuck_range_and_bearing_salman_sen3");
+				m_pcRabSensor	= GetSensor<CCI_EPuckRangeAndBearingSensor>("epuck_range_and_bearing_salman_sen2");
 				break;
 			case 3:
-				m_pcRabSensor	= GetSensor<CCI_EPuckRangeAndBearingSensor>("epuck_range_and_bearing_salman_sen4");
+				m_pcRabSensor	= GetSensor<CCI_EPuckRangeAndBearingSensor>("epuck_range_and_bearing_salman_sen3");
 				break;
 			case 4:
-				m_pcRabSensor	= GetSensor<CCI_EPuckRangeAndBearingSensor>("epuck_range_and_bearing_salman_sen5");
+				m_pcRabSensor	= GetSensor<CCI_EPuckRangeAndBearingSensor>("epuck_range_and_bearing_salman_sen4");
 				break;
 			case 5:
+				m_pcRabSensor	= GetSensor<CCI_EPuckRangeAndBearingSensor>("epuck_range_and_bearing_salman_sen5");
+				break;
+			case 6:
 				m_pcRabSensor	= GetSensor<CCI_EPuckRangeAndBearingSensor>("epuck_range_and_bearing_salman_sen6");
 				break;
 		}

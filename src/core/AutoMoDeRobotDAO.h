@@ -148,7 +148,16 @@ namespace argos {
 			 */
 			CRandom::CRNG* GetRandomNumberGenerator() const;
 
+			void SetBatteryCapacity(Real f_battery_capacity);
+
+			Real GetBatteryCapacity();
+
+			void SetRabConsumption(Real f_rab_consumption);
+
 		private:
+
+			void UpdateCapacity();
+
 			/*
 			 * The proximity sensors input.
 			 */
@@ -198,6 +207,14 @@ namespace argos {
 			 * Pointer to the range-and-bearing messages buffer.
 			 */
 			AutoMoDeRabBuffer m_pcRabMessageBuffer;
+
+			Real m_fBatteryCapacity;
+
+			Real m_fCPUConsumption;
+
+			Real m_fMotorConsumption;
+
+			Real m_fRabConsumption;
 	};
 }
 

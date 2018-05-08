@@ -22,6 +22,8 @@ namespace argos {
 		m_fMaxVelocity = 12;
 		m_fLeftWheelVelocity = 0;
 		m_fRightWheelVelocity = 0;
+		m_fCPUConsumption = 10;       // 100 mA/s * 1/10 period cycle
+		m_fMotorConsumption = 15;			// 150 mA/s * 1/10 period cycle
 	}
 
 	/****************************************/
@@ -181,5 +183,37 @@ namespace argos {
 
 	const Real& AutoMoDeRobotDAO::GetMaxVelocity() const{
 		return m_fMaxVelocity;
+	}
+
+	/****************************************/
+	/****************************************/
+
+	void AutoMoDeRobotDAO::SetBatteryCapacity(Real f_battery_capacity) {
+		m_fBatteryCapacity = f_battery_capacity * 3600;    // Multiply mAh by 3600 to obtain mAs.
+	}
+
+	/****************************************/
+	/****************************************/
+
+	Real AutoMoDeRobotDAO::GetBatteryCapacity() {
+		// Update battery capacity before
+		UpdateCapacity();
+		return m_fBatteryCapacity;
+	}
+
+	/****************************************/
+	/****************************************/
+
+	void AutoMoDeRobotDAO::UpdateCapacity() {
+		Real fLeftMotorIndex = fabs(m_fLeftWheelVelocity) / m_fMaxVelocity;
+		Real fRightMotorIndex = fabs(m_fRightWheelVelocity) / m_fMaxVelocity;
+		m_fBatteryCapacity -= (fLeftMotorIndex * m_fMotorConsumption) + (fRightMotorIndex * m_fMotorConsumption) + m_fCPUConsumption + m_fRabConsumption;
+ 	}
+
+	/****************************************/
+	/****************************************/
+
+	void AutoMoDeRobotDAO::SetRabConsumption(Real f_rab_consumption) {
+		m_fRabConsumption = f_rab_consumption;
 	}
 }
