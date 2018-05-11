@@ -100,7 +100,7 @@ namespace argos {
 	/****************************************/
 
 	void AutoMoDeController::ControlStep() {
-		LOG << m_unTimeStep << " " <<  m_pcRobotState->GetBatteryCapacity() << std::endl;
+		//LOG << m_unTimeStep << " " <<  m_pcRobotState->GetBatteryCapacity() << std::endl;
 	  if (m_pcRobotState->GetBatteryCapacity() > 0) {
 			/*
 			 * 1. Update RobotDAO

@@ -43,7 +43,7 @@
 		    <epuck_omnidirectional_camera implementation="rot_z_only" medium="leds" show_rays="false"/>
       </sensors>
       <!-- <params fsm-config="--rab 0 --nstates 2 --s0 4 --att0 5 --n0 1 --n0x0 0 --c0x0 0 --p0x0 1.0 --s1 1 --n1 2 --n1x0 0 --c1x0 5 --p1x0 0.25 --n1x1 0 --c1x1 1 --p1x1 1"/> -->
-      <params battery-cap="2" fsm-config="--robots 13 --rabsi 5 --rabar 10 --nstates 1 --s0 4 --att0 5 --n0 0"/>
+      <params battery-cap="8.25" fsm-config="--robots 13 --rabsi 5 --rabar 10 --nstates 1 --s0 4 --att0 5 --n0 0"/>
     </automode_controller>
   </controllers>
 

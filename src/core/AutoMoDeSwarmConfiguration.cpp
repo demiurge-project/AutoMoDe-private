@@ -62,21 +62,21 @@ namespace argos {
       THROW_ARGOSEXCEPTION("Error while parsing Hardware Modules configuration");
     }
 
-		/* RAB Sensor Battery Time (in seconds) */
+		/* RAB Sensor Current ratings (mA) */
 		m_mapRABSensorBatteryConsumption.insert(std::make_pair(0, 0));
-		m_mapRABSensorBatteryConsumption.insert(std::make_pair(1, 20));
-		m_mapRABSensorBatteryConsumption.insert(std::make_pair(2, 30));
-		m_mapRABSensorBatteryConsumption.insert(std::make_pair(3, 40));
-		m_mapRABSensorBatteryConsumption.insert(std::make_pair(4, 50));
-		m_mapRABSensorBatteryConsumption.insert(std::make_pair(5, 60));
-		m_mapRABSensorBatteryConsumption.insert(std::make_pair(6, 70));
+		m_mapRABSensorBatteryConsumption.insert(std::make_pair(1, 10));
+		m_mapRABSensorBatteryConsumption.insert(std::make_pair(2, 15));
+		m_mapRABSensorBatteryConsumption.insert(std::make_pair(3, 20));
+		m_mapRABSensorBatteryConsumption.insert(std::make_pair(4, 25));
+		m_mapRABSensorBatteryConsumption.insert(std::make_pair(5, 30));
+		m_mapRABSensorBatteryConsumption.insert(std::make_pair(6, 35));
 
-		/* RAB Actuator Range Battery Time (in seconds) */
-		m_mapRABRangeBatteryConsumption.insert(std::make_pair(0.6, 10));
-		m_mapRABRangeBatteryConsumption.insert(std::make_pair(0.7, 12));
-		m_mapRABRangeBatteryConsumption.insert(std::make_pair(0.8, 14));
-		m_mapRABRangeBatteryConsumption.insert(std::make_pair(0.9, 16));
-		m_mapRABRangeBatteryConsumption.insert(std::make_pair(1.0, 20));
+		/* RAB Actuator Range Current ratings (mA) */
+		m_mapRABRangeBatteryConsumption.insert(std::make_pair(0.6, 20));
+		m_mapRABRangeBatteryConsumption.insert(std::make_pair(0.7, 30));
+		m_mapRABRangeBatteryConsumption.insert(std::make_pair(0.8, 40));
+		m_mapRABRangeBatteryConsumption.insert(std::make_pair(0.9, 50));
+		m_mapRABRangeBatteryConsumption.insert(std::make_pair(1.0, 60));
 
 		if (m_bRabEquipped) {
 			m_unRabBatteryConsumption = (m_mapRABSensorBatteryConsumption.find(m_unRabSensorIndex)->second) + (m_mapRABRangeBatteryConsumption.find(m_fRabActuatorRange)->second);

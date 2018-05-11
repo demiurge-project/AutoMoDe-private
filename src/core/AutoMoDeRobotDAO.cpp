@@ -22,8 +22,8 @@ namespace argos {
 		m_fMaxVelocity = 12;
 		m_fLeftWheelVelocity = 0;
 		m_fRightWheelVelocity = 0;
-		m_fCPUConsumption = 10;       // 100 mA/s * 1/10 period cycle
-		m_fMotorConsumption = 15;			// 150 mA/s * 1/10 period cycle
+		m_fCPUConsumption = 100;       // 100 mA/s * 1/10 period cycle
+		m_fMotorConsumption = 150;			// 150 mA/s * 1/10 period cycle
 	}
 
 	/****************************************/
@@ -189,7 +189,7 @@ namespace argos {
 	/****************************************/
 
 	void AutoMoDeRobotDAO::SetBatteryCapacity(Real f_battery_capacity) {
-		m_fBatteryCapacity = f_battery_capacity * 3600;    // Multiply mAh by 3600 to obtain mAs.
+		m_fBatteryCapacity = f_battery_capacity * 3600 * 10;    // Multiply mAh by 3600 to obtain mAs.
 	}
 
 	/****************************************/
@@ -208,6 +208,8 @@ namespace argos {
 		Real fLeftMotorIndex = fabs(m_fLeftWheelVelocity) / m_fMaxVelocity;
 		Real fRightMotorIndex = fabs(m_fRightWheelVelocity) / m_fMaxVelocity;
 		m_fBatteryCapacity -= (fLeftMotorIndex * m_fMotorConsumption) + (fRightMotorIndex * m_fMotorConsumption) + m_fCPUConsumption + m_fRabConsumption;
+		LOG << "load " << (fLeftMotorIndex * m_fMotorConsumption) + (fRightMotorIndex * m_fMotorConsumption) + m_fCPUConsumption + m_fRabConsumption << std::endl;
+		LOG << "capacity left " << m_fBatteryCapacity << std::endl;
  	}
 
 	/****************************************/
