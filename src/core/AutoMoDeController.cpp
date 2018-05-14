@@ -148,6 +148,8 @@ namespace argos {
 			if (m_pcRabActuator != NULL) {
 				m_pcRabActuator->Disable();
 			}
+			// set battery is empty
+			m_pcRobotState->SetBatteryEmptyStatus(true);
 		}
 
 		m_unTimeStep++;

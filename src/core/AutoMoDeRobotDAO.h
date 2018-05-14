@@ -154,6 +154,10 @@ namespace argos {
 
 			void SetRabConsumption(Real f_rab_consumption);
 
+			void SetBatteryEmptyStatus(bool b_Battery_Empty);
+
+			bool IsBatteryEmpty();
+
 		private:
 
 			void UpdateCapacity();
@@ -215,6 +219,8 @@ namespace argos {
 			Real m_fMotorConsumption;
 
 			Real m_fRabConsumption;
+
+			bool m_bBatteryEmpty;
 	};
 }
 

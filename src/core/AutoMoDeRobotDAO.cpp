@@ -24,6 +24,7 @@ namespace argos {
 		m_fRightWheelVelocity = 0;
 		m_fCPUConsumption = 100;       // 100 mA/s * 1/10 period cycle
 		m_fMotorConsumption = 150;			// 150 mA/s * 1/10 period cycle
+		m_bBatteryEmpty = false;
 	}
 
 	/****************************************/
@@ -218,4 +219,19 @@ namespace argos {
 	void AutoMoDeRobotDAO::SetRabConsumption(Real f_rab_consumption) {
 		m_fRabConsumption = f_rab_consumption;
 	}
+
+	/****************************************/
+	/****************************************/
+
+	void AutoMoDeRobotDAO::SetBatteryEmptyStatus(bool b_Battery_Empty){
+		m_bBatteryEmpty = b_Battery_Empty;
+		LOG << "IsEmpty = " << m_bBatteryEmpty << std::endl;
+	}
+	/****************************************/
+	/****************************************/
+		// check if battery is empty or not
+	bool AutoMoDeRobotDAO::IsBatteryEmpty(){
+		return m_bBatteryEmpty;
+	}
+
 }
