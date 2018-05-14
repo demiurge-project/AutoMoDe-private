@@ -95,12 +95,23 @@ namespace argos {
 
 	}
 
+	bool AutoMoDeController::IsBatteryEmpty() {
+		m_pcRobotState->IsBatteryEmpty();
+	}
 
 	/****************************************/
 	/****************************************/
 
 	void AutoMoDeController::ControlStep() {
 		//LOG << m_unTimeStep << " " <<  m_pcRobotState->GetBatteryCapacity() << std::endl;
+		m_pcRobotState->IsBatteryEmpty()
+
+		if (! m_pcRobotState->IsBatteryEmpty()) {
+			update sensors; update battery; m_pcRobotState->UpdateBatteryLevel(); control step of fsm.
+		} else {
+			stop wheels; stop rab;
+		}
+
 	  if (m_pcRobotState->GetBatteryCapacity() > 0) {
 			/*
 			 * 1. Update RobotDAO
@@ -129,11 +140,13 @@ namespace argos {
 			m_pcFiniteStateMachine->ControlStep();
 
 			/*
-			 * 3. Update Actuators
+			 * 3. Update Actuators and battery
 			 */
 			if (m_pcWheelsActuator != NULL) {
 				m_pcWheelsActuator->SetLinearVelocity(m_pcRobotState->GetLeftWheelVelocity(),m_pcRobotState->GetRightWheelVelocity());
 			}
+			m_pcRobotState->UpdateBatteryLevel();
+
 
 			/*
 			 * 4. Update variables and sensors

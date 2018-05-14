@@ -100,6 +100,26 @@ void AutoMoDeLoopFunctions::MoveRobots() {
 /****************************************/
 /****************************************/
 
+bool AutoMoDeLoopFunctions::AllRobotsDown() {
+  UInt32 unNumberRobotsDown = 0;
+  CSpace::TMapPerType cEntities = cSimulator.GetSpace().GetEntitiesByType("controller");
+  for (CSpace::TMapPerType::iterator it = cEntities.begin(); it != cEntities.end(); ++it) {
+    CControllableEntity* pcEntity = any_cast<CControllableEntity*>(it->second);
+    try {
+      AutoMoDeController& cController = dynamic_cast<AutoMoDeController&> (pcEntity->GetController());
+      if (cController.IsBatteryEmpty()) {
+        unNumberRobotsDown = unNumberRobotsDown + 1;
+      }
+    } catch (std::exception& ex) {
+      LOGERR << "Error while casting: " << ex.what() << std::endl;
+    }
+  }
+  return (unNumberRobotsDown == m_unNumberRobots);
+}
+
+/****************************************/
+/****************************************/
+
 void AutoMoDeLoopFunctions::RemoveRobots() {
   for(UInt32 i = 1; i < m_unNumberRobots + 1; ++i) {
     std::ostringstream id;
