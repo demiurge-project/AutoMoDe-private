@@ -208,8 +208,8 @@ namespace argos {
 		Real fLeftMotorIndex = fabs(m_fLeftWheelVelocity) / m_fMaxVelocity;
 		Real fRightMotorIndex = fabs(m_fRightWheelVelocity) / m_fMaxVelocity;
 		m_fBatteryCapacity -= (fLeftMotorIndex * m_fMotorConsumption) + (fRightMotorIndex * m_fMotorConsumption) + m_fCPUConsumption + m_fRabConsumption;
-		LOG << "load " << (fLeftMotorIndex * m_fMotorConsumption) + (fRightMotorIndex * m_fMotorConsumption) + m_fCPUConsumption + m_fRabConsumption << std::endl;
-		LOG << "capacity left " << m_fBatteryCapacity << std::endl;
+		//LOG << "load " << (fLeftMotorIndex * m_fMotorConsumption) + (fRightMotorIndex * m_fMotorConsumption) + m_fCPUConsumption + m_fRabConsumption << std::endl;
+		//LOG << "capacity left " << m_fBatteryCapacity << std::endl;
  	}
 
 	/****************************************/

@@ -18,7 +18,6 @@ ForagingTwoSpotsPowerLoopFunction::ForagingTwoSpotsPowerLoopFunction() {
   m_cCoordSpot2 = CVector2(-0.75,0);
   m_fObjectiveFunction = 0;
   m_bInitializationStep = true;
-  m_unExpSteps = 0;
 }
 
 /****************************************/
@@ -82,10 +81,6 @@ bool ForagingTwoSpotsPowerLoopFunction::IsExperimentFinished(){
 /****************************************/
 
 void ForagingTwoSpotsPowerLoopFunction::PostStep() {
-  m_unExpSteps += 1;
-  if (m_unExpSteps == (m_unMaxExpTime - m_unBatteryLife)){
-    m_bExpFinished = true;
-  }
 
   if (m_bInitializationStep) {
     m_punFoodData = new UInt32[m_unNumberRobots+1];

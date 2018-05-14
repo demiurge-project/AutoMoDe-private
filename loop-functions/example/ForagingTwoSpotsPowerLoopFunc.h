@@ -48,8 +48,6 @@ class ForagingTwoSpotsPowerLoopFunction: public AutoMoDeLoopFunctions {
 
     UInt32 * m_punFoodData;
 
-    UInt32 m_unExpSteps; //exptest Steps
-
     bool m_bExpFinished;
 
 };

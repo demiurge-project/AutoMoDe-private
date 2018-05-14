@@ -18,7 +18,6 @@ AggregationTwoSpotsPowerLoopFunction::AggregationTwoSpotsPowerLoopFunction() {
   m_unScoreSpot1 = 0;
   m_unScoreSpot2 = 0;
   m_fObjectiveFunction = 0;
-  m_unExpSteps = 0; // Experiment Steps
   m_bExpFinished = false;
 }
 
@@ -65,16 +64,6 @@ void AggregationTwoSpotsPowerLoopFunction::Reset() {
   AutoMoDeLoopFunctions::Reset();
 }
 
-/****************************************/
-/****************************************/
-
-void AggregationTwoSpotsPowerLoopFunction::PostStep(){
-  m_unExpSteps += 1;
-  if (m_unExpSteps == (m_unMaxExpTime - m_unBatteryLife)){
-    //LOG << "Max Experiment time Check" << m_unMaxExpTime << std::endl;
-    m_bExpFinished = true;
-  }
-}
 /****************************************/
 /****************************************/
 

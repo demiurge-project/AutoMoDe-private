@@ -49,8 +49,6 @@ class AggregationTwoSpotsPowerLoopFunction: public AutoMoDeLoopFunctions {
     UInt32 m_unScoreSpot2;
     Real m_fObjectiveFunction;
 
-    UInt32 m_unExpSteps; //Experiment Steps
-
     bool m_bExpFinished;
 
 };

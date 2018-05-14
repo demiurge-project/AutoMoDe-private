@@ -50,16 +50,6 @@ class AutoMoDeLoopFunctions: public CLoopFunctions {
     UInt32 m_unNumberRobots;
 
     /*
-    * The Battery Life
-    */
-    UInt32 m_unBatteryLife;
-
-    /*
-    * The Max experiment time (in ticks (seconds * ticks_per_second))
-    */
-    UInt32 m_unMaxExpTime;
-
-    /*
      * The radius of the circle in which the robots will be distributed.
      */
     Real m_fDistributionRadius;
@@ -85,16 +75,6 @@ class AutoMoDeLoopFunctions: public CLoopFunctions {
 
 
     void SetNumberRobots(UInt32 un_number_robots);
-
-    /*
-     * Set Battery Life (in Seconds)
-     */
-    void SetBatteryLife(UInt32 un_battery_life);
-
-    /*
-    * Set Max experiment time (in ticks (seconds * ticks_per_second)).
-    */
-    void SetMaxExpTime(UInt32 un_max_exp_time);
 
     /*
     * Terminates the experiment
