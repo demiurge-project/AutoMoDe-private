@@ -81,6 +81,11 @@ class AutoMoDeLoopFunctions: public CLoopFunctions {
     */
     virtual bool IsExperimentFinished();
 
+    /*
+     * Check if all robots have empty battries
+     */
+     bool AllRobotsDown();
+
 };
 
 #endif

@@ -196,21 +196,15 @@ namespace argos {
 	/****************************************/
 	/****************************************/
 
-	Real AutoMoDeRobotDAO::GetBatteryCapacity() {
-		// Update battery capacity before
-		UpdateCapacity();
-		return m_fBatteryCapacity;
-	}
-
-	/****************************************/
-	/****************************************/
-
-	void AutoMoDeRobotDAO::UpdateCapacity() {
+	void AutoMoDeRobotDAO::UpdateBatteryCapacity() {
 		Real fLeftMotorIndex = fabs(m_fLeftWheelVelocity) / m_fMaxVelocity;
 		Real fRightMotorIndex = fabs(m_fRightWheelVelocity) / m_fMaxVelocity;
 		m_fBatteryCapacity -= (fLeftMotorIndex * m_fMotorConsumption) + (fRightMotorIndex * m_fMotorConsumption) + m_fCPUConsumption + m_fRabConsumption;
 		//LOG << "load " << (fLeftMotorIndex * m_fMotorConsumption) + (fRightMotorIndex * m_fMotorConsumption) + m_fCPUConsumption + m_fRabConsumption << std::endl;
 		//LOG << "capacity left " << m_fBatteryCapacity << std::endl;
+		if (m_fBatteryCapacity <= 0) {
+			m_bBatteryEmpty = true;
+		}
  	}
 
 	/****************************************/

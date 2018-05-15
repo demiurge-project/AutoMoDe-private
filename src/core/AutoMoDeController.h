@@ -81,6 +81,11 @@ namespace argos{
 			 */
 			void InitializeHardwareModules();
 
+			/*
+			 * Check if battery is avaiable
+			 */ 
+			bool IsBatteryDown();
+
 		private:
 			/*
 			 * Pointer to the finite state machine object that represents the behaviour

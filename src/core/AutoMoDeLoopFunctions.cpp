@@ -99,7 +99,7 @@ void AutoMoDeLoopFunctions::MoveRobots() {
 
 /****************************************/
 /****************************************/
-
+/*Check if robots have consumed there battery power*/
 bool AutoMoDeLoopFunctions::AllRobotsDown() {
   UInt32 unNumberRobotsDown = 0;
   CSpace::TMapPerType cEntities = cSimulator.GetSpace().GetEntitiesByType("controller");
@@ -139,5 +139,6 @@ void AutoMoDeLoopFunctions::SetNumberRobots(UInt32 un_number_robots) {
 /****************************************/
 
 bool AutoMoDeLoopFunctions::IsExperimentFinished(){
-  return false;
+  //return false;
+  return AutoMoDeLoopFunctions::AllRobotsDown();
 }

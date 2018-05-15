@@ -150,17 +150,15 @@ namespace argos {
 
 			void SetBatteryCapacity(Real f_battery_capacity);
 
-			Real GetBatteryCapacity();
-
 			void SetRabConsumption(Real f_rab_consumption);
 
 			void SetBatteryEmptyStatus(bool b_Battery_Empty);
 
 			bool IsBatteryEmpty();
 
-		private:
+			void UpdateBatteryCapacity();
 
-			void UpdateCapacity();
+		private:
 
 			/*
 			 * The proximity sensors input.
