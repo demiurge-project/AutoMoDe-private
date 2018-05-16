@@ -38,13 +38,13 @@
         <epuck_range_and_bearing_salman_sen4 implementation="medium" show_rays="true" medium="rab4" data_size="4" channel_interference="true" noise_std_dev="1.5" loss_probability="0.3" calibrated="true"/>
         <epuck_range_and_bearing_salman_sen5 implementation="medium" show_rays="true" medium="rab5" data_size="4" channel_interference="true" noise_std_dev="1.5" loss_probability="0.3" calibrated="true"/>
         <epuck_range_and_bearing_salman_sen6 implementation="medium" show_rays="true" medium="rab6" data_size="4" channel_interference="true" noise_std_dev="1.5" loss_probability="0.3" calibrated="true"/>
-      
+
         <epuck_light implementation="default" show_rays="false" noise_level="0.05" calibrated="true"/>
 		    <epuck_ground implementation="rot_z_only" noise_level="0.05" calibrated="true"/>
 		    <epuck_omnidirectional_camera implementation="rot_z_only" medium="leds" show_rays="false"/>
       </sensors>
       <!-- <params fsm-config="--rab 0 --nstates 2 --s0 4 --att0 5 --n0 1 --n0x0 0 --c0x0 0 --p0x0 1.0 --s1 1 --n1 2 --n1x0 0 --c1x0 5 --p1x0 0.25 --n1x1 0 --c1x1 1 --p1x1 1"/> -->
-      <params fsm-config="--robots 13 --rabsi 0 --rabar 10 --nstates 1 --s0 4 --att0 5 --n0 0"/>
+      <params battery-cap="16.5" fsm-config="--robots 13 --rabsi 0 --rabar 10 --nstates 1 --s0 4 --att0 5 --n0 0"/>
     </automode_controller>
   </controllers>
 

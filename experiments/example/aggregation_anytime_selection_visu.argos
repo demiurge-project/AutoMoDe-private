@@ -4,15 +4,15 @@
   <!-- * Framework * -->
   <!-- ************* -->
   <framework>
-    <experiment length="6"
+    <experiment length="3600"
                 ticks_per_second="10" random_seed="13"/>
   </framework>
 
   <!-- ****************** -->
   <!-- * Loop functions * -->
   <!-- ****************** -->
-  <loop_functions library="../../build/loop-functions/example/libaggregation_two_spots_power_loopfunc.so"
-   label="aggregation_two_spots_power_lf">
+  <loop_functions library="../../build/loop-functions/example/libaggregation_anytime_selection_loopfunc.so"
+   label="aggregation_anytime_selection_lf">
    <params dist_radius="1.2" number_robots="1"/>
   </loop_functions>
 
@@ -131,6 +131,16 @@
   <!-- * Visualization * -->
   <!-- ***************** -->
   <visualization>
+    <qt-opengl>
+      <user_functions library="../../build/loop-functions/visual-add-ons/libepuck_planning_user_functions.so"
+         label="epuck_planning_qtopengl_user_functions" />
+      <camera>
+        <placement idx="0"
+                   position="0,0,4.5"
+                   look_at="0,0,0"
+                   lens_focal_length="30" />
+      </camera>
+    </qt-opengl>
   </visualization>
 
 </argos-configuration>

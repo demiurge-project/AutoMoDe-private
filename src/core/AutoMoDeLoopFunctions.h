@@ -15,6 +15,8 @@
 #include <argos3/core/simulator/loop_functions.h>
 #include <argos3/plugins/robots/e-puck/simulator/epuck_entity.h>
 
+#include "AutoMoDeController.h"
+
 using namespace argos;
 
 class AutoMoDeLoopFunctions: public CLoopFunctions {

@@ -102,18 +102,19 @@ void AutoMoDeLoopFunctions::MoveRobots() {
 /*Check if robots have consumed there battery power*/
 bool AutoMoDeLoopFunctions::AllRobotsDown() {
   UInt32 unNumberRobotsDown = 0;
-  CSpace::TMapPerType cEntities = cSimulator.GetSpace().GetEntitiesByType("controller");
+  CSpace::TMapPerType cEntities = GetSpace().GetEntitiesByType("controller");
   for (CSpace::TMapPerType::iterator it = cEntities.begin(); it != cEntities.end(); ++it) {
     CControllableEntity* pcEntity = any_cast<CControllableEntity*>(it->second);
     try {
       AutoMoDeController& cController = dynamic_cast<AutoMoDeController&> (pcEntity->GetController());
-      if (cController.IsBatteryEmpty()) {
+      if (cController.IsBatteryDown()) {
         unNumberRobotsDown = unNumberRobotsDown + 1;
       }
     } catch (std::exception& ex) {
       LOGERR << "Error while casting: " << ex.what() << std::endl;
     }
   }
+  LOG << "Robots down " << unNumberRobotsDown << std::endl;
   return (unNumberRobotsDown == m_unNumberRobots);
 }
 
@@ -140,5 +141,5 @@ void AutoMoDeLoopFunctions::SetNumberRobots(UInt32 un_number_robots) {
 
 bool AutoMoDeLoopFunctions::IsExperimentFinished(){
   //return false;
-  return AutoMoDeLoopFunctions::AllRobotsDown();
+  return AutoMoDeLoopFunctions::AllRobotsDown(); // Mission stop when all robots are down
 }
