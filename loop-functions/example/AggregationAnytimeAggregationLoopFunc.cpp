@@ -6,39 +6,38 @@
   * @license MIT License
   */
 
-#include "AggregationAnytimeSelectionLoopFunc.h"
+#include "AggregationAnytimeAggregationLoopFunc.h"
 
 /****************************************/
 /****************************************/
 
-AggregationAnytimeSelectionLoopFunction::AggregationAnytimeSelectionLoopFunction() {
+AggregationAnytimeAggregationLoopFunction::AggregationAnytimeAggregationLoopFunction() {
   m_fRadius = 0.3;
   m_cCoordSpot1 = CVector2(0,0.5);
   m_cCoordSpot2 = CVector2(0,-0.5);
   m_unScoreSpot1 = 0;
-  m_unScoreSpot2 = 0;
   m_fObjectiveFunction = 0;
 }
 
 /****************************************/
 /****************************************/
 
-AggregationAnytimeSelectionLoopFunction::AggregationAnytimeSelectionLoopFunction(const AggregationAnytimeSelectionLoopFunction& orig) {}
+AggregationAnytimeAggregationLoopFunction::AggregationAnytimeAggregationLoopFunction(const AggregationAnytimeAggregationLoopFunction& orig) {}
 
 /****************************************/
 /****************************************/
 
-AggregationAnytimeSelectionLoopFunction::~AggregationAnytimeSelectionLoopFunction() {}
+AggregationAnytimeAggregationLoopFunction::~AggregationAnytimeAggregationLoopFunction() {}
 
 /****************************************/
 /****************************************/
 
-void AggregationAnytimeSelectionLoopFunction::Destroy() {}
+void AggregationAnytimeAggregationLoopFunction::Destroy() {}
 
 /****************************************/
 /****************************************/
 
-argos::CColor AggregationAnytimeSelectionLoopFunction::GetFloorColor(const argos::CVector2& c_position_on_plane) {
+argos::CColor AggregationAnytimeAggregationLoopFunction::GetFloorColor(const argos::CVector2& c_position_on_plane) {
   CVector2 vCurrentPoint(c_position_on_plane.GetX(), c_position_on_plane.GetY());
   Real d = (m_cCoordSpot1 - vCurrentPoint).Length();
   if (d <= m_fRadius) {
@@ -46,7 +45,7 @@ argos::CColor AggregationAnytimeSelectionLoopFunction::GetFloorColor(const argos
   }
   d = (m_cCoordSpot2 - vCurrentPoint).Length();
   if (d <= m_fRadius) {
-    return CColor::BLACK;
+    return CColor::WHITE;
   }
 
   return CColor::GRAY50;
@@ -56,21 +55,19 @@ argos::CColor AggregationAnytimeSelectionLoopFunction::GetFloorColor(const argos
 /****************************************/
 /****************************************/
 
-void AggregationAnytimeSelectionLoopFunction::Reset() {
+void AggregationAnytimeAggregationLoopFunction::Reset() {
   m_fObjectiveFunction = 0;
   m_unScoreSpot1 = 0;
-  m_unScoreSpot2 = 0;
   AutoMoDeLoopFunctions::Reset();
 }
 
 /****************************************/
 /****************************************/
-void AggregationAnytimeSelectionLoopFunction::PostStep() {
+void AggregationAnytimeAggregationLoopFunction::PostStep() {
   CSpace::TMapPerType cEntities = GetSpace().GetEntitiesByType("controller");
   CSpace::TMapPerType& tEpuckMap = GetSpace().GetEntitiesByType("epuck");
   CVector2 cEpuckPosition(0,0);
   m_unScoreSpot1 = 0;
-  m_unScoreSpot2 = 0;
   for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it) {
     CEPuckEntity* pcEpuck = any_cast<CEPuckEntity*>(it->second);
 
@@ -83,32 +80,29 @@ void AggregationAnytimeSelectionLoopFunction::PostStep() {
                           pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
 
         Real fDistanceSpot1 = (m_cCoordSpot1 - cEpuckPosition).Length();
-        Real fDistanceSpot2 = (m_cCoordSpot2 - cEpuckPosition).Length();
         if (fDistanceSpot1 <= m_fRadius) {
           m_unScoreSpot1 += 1;
-        } else if (fDistanceSpot2 <= m_fRadius){
-          m_unScoreSpot2 += 1;
         }
       }
     } catch (std::exception& ex) {
       LOGERR << "Error while casting: " << ex.what() << std::endl;
     }
   }
-  m_fObjectiveFunction += Max(m_unScoreSpot1, m_unScoreSpot2);
+  m_fObjectiveFunction += m_unScoreSpot1;
   LOG << "S65161core = " << m_fObjectiveFunction << std::endl;
 }
 
 /****************************************/
 /****************************************/
 
-Real AggregationAnytimeSelectionLoopFunction::GetObjectiveFunction() {
+Real AggregationAnytimeAggregationLoopFunction::GetObjectiveFunction() {
   return m_fObjectiveFunction;
 }
 
 /****************************************/
 /****************************************/
 
-CVector3 AggregationAnytimeSelectionLoopFunction::GetRandomPosition() {
+CVector3 AggregationAnytimeAggregationLoopFunction::GetRandomPosition() {
   Real temp;
   Real a = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
   Real  b = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
@@ -124,4 +118,4 @@ CVector3 AggregationAnytimeSelectionLoopFunction::GetRandomPosition() {
   return CVector3(fPosX, fPosY, 0);
 }
 
-REGISTER_LOOP_FUNCTIONS(AggregationAnytimeSelectionLoopFunction, "aggregation_anytime_selection_lf");
+REGISTER_LOOP_FUNCTIONS(AggregationAnytimeAggregationLoopFunction, "aggregation_anytime_aggregation_lf");
