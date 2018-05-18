@@ -1,7 +1,7 @@
   sensor_prices = c(0, 500, 600, 700, 800, 900, 1000)
   actuator_prices = c(0, 400, 400, 400, 600, 600)
   
-  robot_price = 0
+  robot_price = 2000
   max_robots = 30
   min_robots = 15
   
@@ -10,7 +10,7 @@
   sensor_values = c(0,1,2,3,4,5,6)
   actuator_values = c(0.0,0.6,0.7,0.8,0.9,1.0)
   
-  total_budget <- 15000
+  total_budget <- 50000
   
   ###############################################
   ###############################################
@@ -123,7 +123,7 @@
       current_cost <- matrix(0, nrow=7, ncol=6)
       for (a in 1:7) {
         for (b in 1:6) {
-          current_cost[a,b] <- nrobots * (sensor_prices[a] + actuator_prices[b])
+          current_cost[a,b] <- nrobots * (robot_price + sensor_prices[a] + actuator_prices[b])
         }
       }
       current_cost[ current_cost <= total_budget] <- 1
