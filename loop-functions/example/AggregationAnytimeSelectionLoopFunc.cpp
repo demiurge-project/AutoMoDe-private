@@ -95,7 +95,7 @@ void AggregationAnytimeSelectionLoopFunction::PostStep() {
     }
   }
   m_fObjectiveFunction += Max(m_unScoreSpot1, m_unScoreSpot2);
-  LOG << "S65161core = " << m_fObjectiveFunction << std::endl;
+  //LOG << "S65161core = " << m_fObjectiveFunction << std::endl;
 }
 
 /****************************************/

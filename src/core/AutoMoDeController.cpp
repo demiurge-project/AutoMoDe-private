@@ -208,7 +208,7 @@ namespace argos {
 
 	void AutoMoDeController::InitializeHardwareModules() {
 		UInt32 unIndexRabSensor = m_pcSwarmConfiguration->GetRabSensorIndex();
-		LOG << unIndexRabSensor << std::endl;
+		//LOG << unIndexRabSensor << std::endl;
 		switch(unIndexRabSensor) {
 			case 0:
 				m_pcRabSensor = NULL;

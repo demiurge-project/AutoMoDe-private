@@ -219,7 +219,7 @@ namespace argos {
 
 	void AutoMoDeRobotDAO::SetBatteryEmptyStatus(bool b_Battery_Empty){
 		m_bBatteryEmpty = b_Battery_Empty;
-		LOG << "IsEmpty = " << m_bBatteryEmpty << std::endl;
+		//LOG << "IsEmpty = " << m_bBatteryEmpty << std::endl;
 	}
 	/****************************************/
 	/****************************************/

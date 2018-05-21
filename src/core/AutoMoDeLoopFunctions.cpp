@@ -114,7 +114,7 @@ bool AutoMoDeLoopFunctions::AllRobotsDown() {
       LOGERR << "Error while casting: " << ex.what() << std::endl;
     }
   }
-  LOG << "Robots down " << unNumberRobotsDown << std::endl;
+  //LOG << "Robots down " << unNumberRobotsDown << std::endl;
   return (unNumberRobotsDown == m_unNumberRobots);
 }
 
