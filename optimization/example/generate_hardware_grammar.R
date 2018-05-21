@@ -1,7 +1,7 @@
   sensor_prices = c(0, 500, 600, 700, 800, 900, 1000)
   actuator_prices = c(0, 400, 400, 400, 600, 600)
   
-  robot_price = 2000
+  robot_price = 0
   max_robots = 30
   min_robots = 15
   
@@ -10,7 +10,7 @@
   sensor_values = c(0,1,2,3,4,5,6)
   actuator_values = c(0.0,0.6,0.7,0.8,0.9,1.0)
   
-  total_budget <- 50000
+  total_budget <- 15000
   
   ###############################################
   ###############################################
@@ -28,8 +28,8 @@
   ###############################################
   ###############################################
   
-  formatSensorIndexConstraint <- function(possible_sensors, robots_vec) {
-    final_str <- "RabSI        \"--rabsi \"    o ("
+  formatSensorIndexConstraint <- function(robot_range_index, possible_sensors, robots_vec) {
+    final_str <- paste("RabSI", robot_range_index, "        \"--rabsi \"    o (", sep="")
     for (i in 1:length(possible_sensors)) {
       final_str <- paste(final_str, sensor_values[possible_sensors[i]], sep="")
       if (i != length(possible_sensors)) {
@@ -43,15 +43,15 @@
   ###############################################
   ###############################################
   
-  formatActuatorRangeConstraint <- function(sensor_index, possible_actuators, robots_vec) {
-    final_str <- "RabAR        \"--rabar \"    o ("
+  formatActuatorRangeConstraint <- function(robot_range_index, sensor_index, possible_actuators, robots_vec) {
+    final_str <- paste("RabAR", robot_range_index, sensor_index, "        \"--rabar \"    o (", sep="")
     for (i in 1:length(possible_actuators)) {
       final_str <- paste(final_str, actuator_values[possible_actuators[i]], sep="")
       if (i != length(possible_actuators)) {
         final_str <- paste(final_str, ",", sep="")
       }
     }
-    sensor_constraint <- paste("(as.numerics(RabSI) == ", sensor_values[sensor_index], ")", sep="")
+    sensor_constraint <- paste("(as.numerics(RabSI", robot_range_index, ") == ", sensor_values[sensor_index], ")", sep="")
     final_str <- paste(final_str, ") | ", formatRobotConstraint(robots_vec), " && ", sensor_constraint, sep="")
     return(final_str)
   }
@@ -59,7 +59,7 @@
   ###############################################
   ###############################################
   
-  matrixToSensorConstraints <- function(conf_matrix, robots_vec) {
+  matrixToSensorConstraints <- function(index, conf_matrix, robots_vec) {
     #print(robots_vec)
     #print(conf_matrix)
     pos_sensors <- c()
@@ -71,7 +71,7 @@
       }
     }
     if (length(pos_sensors) > 0) {
-      write(formatSensorIndexConstraint(pos_sensors[!duplicated(pos_sensors)], robots_vec), file_name, append=TRUE, sep="\n")
+      write(formatSensorIndexConstraint(index, pos_sensors[!duplicated(pos_sensors)], robots_vec), file_name, append=TRUE, sep="\n")
       #print(formatSensorIndexConstraint(pos_sensors[!duplicated(pos_sensors)], robots_vec))
     }
   }
@@ -79,7 +79,7 @@
   ###############################################
   ###############################################
   
-  matrixToActuatorConstraints <- function(conf_matrix, robots_vec) {
+  matrixToActuatorConstraints <- function(index, conf_matrix, robots_vec) {
     for (s in 1:7) {
       pos_actuators <- c()
       for (a in 1:6) {
@@ -88,7 +88,7 @@
         }      
       }
       if (length(pos_actuators) > 0) {
-        write(formatActuatorRangeConstraint(s, pos_actuators[!duplicated(pos_actuators)], robots_vec), file_name, append=TRUE, sep="\n")
+        write(formatActuatorRangeConstraint(index, s, pos_actuators[!duplicated(pos_actuators)], robots_vec), file_name, append=TRUE, sep="\n")
         #print(formatActuatorRangeConstraint(s, pos_actuators[!duplicated(pos_actuators)], robots_vec))
       }
     }
@@ -117,6 +117,7 @@
   for (i in 1:2) {
     previous_cost <- 0
     previous_robots <- 0
+    robot_range_index <- 0
     num_robots <- c()
     for (nrobots in min_robots:max_robots) {
       current_robots <- nrobots
@@ -134,11 +135,12 @@
           num_robots <- c(num_robots, nrobots)
         } else if (length(num_robots) != 0) {
           if (i == 1) {
-            matrixToSensorConstraints(previous_cost, num_robots)  
+            matrixToSensorConstraints(robot_range_index, previous_cost, num_robots)  
           } else {
-            matrixToActuatorConstraints(previous_cost, num_robots)
+            matrixToActuatorConstraints(robot_range_index, previous_cost, num_robots)
           }
           num_robots <- c(nrobots)
+          robot_range_index <- robot_range_index + 1
         }
       } else {
         num_robots <- c(num_robots, nrobots)
@@ -146,9 +148,9 @@
       
       if (nrobots == max_robots) {
         if (i == 1) {
-          matrixToSensorConstraints(current_cost, num_robots)  
+          matrixToSensorConstraints(robot_range_index, current_cost, num_robots)  
         } else {
-          matrixToActuatorConstraints(current_cost, num_robots)
+          matrixToActuatorConstraints(robot_range_index, current_cost, num_robots)
         }
       }
       
