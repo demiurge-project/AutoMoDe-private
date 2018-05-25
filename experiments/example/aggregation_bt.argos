@@ -11,8 +11,8 @@
   <!-- ****************** -->
   <!-- * Loop functions * -->
   <!-- ****************** -->
-  <loop_functions library="../../build/loop-functions/vanilla/libvanilla_aggregation_loopfunc.so"
-   label="aggregation_two_spots_loop_functions">
+  <loop_functions library="../../../LoopFunctions/build/loop-functions/libaggregation_loopfunc.so"
+   label="aggregation_loop_functions">
    <params dist_radius="1.2" number_robots="20"/>
   </loop_functions>
 

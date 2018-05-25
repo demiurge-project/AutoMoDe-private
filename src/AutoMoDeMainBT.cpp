@@ -15,9 +15,10 @@
 #include <argos3/core/utility/plugins/dynamic_loading.h>
 #include <argos3/core/simulator/argos_command_line_arg_parser.h>
 
+#include <argos3/demiurge/loop-functions/CoreLoopFunctions.h>
+
 #include "./core/AutoMoDeBehaviorTree.h"
 #include "./core/AutoMoDeBehaviorTreeBuilder.h"
-#include "./core/AutoMoDeLoopFunctions.h"
 #include "./core/AutoMoDeControllerBehaviorTree.h"
 
 using namespace argos;
@@ -116,7 +117,7 @@ int main(int n_argc, char** ppch_argv) {
 
 				// Retrieval of the score of the swarm driven by the Finite State Machine
 
-				AutoMoDeLoopFunctions& cLoopFunctions = dynamic_cast<AutoMoDeLoopFunctions&> (cSimulator.GetLoopFunctions());
+				CoreLoopFunctions& cLoopFunctions = dynamic_cast<CoreLoopFunctions&> (cSimulator.GetLoopFunctions());
 				Real fObjectiveFunction = cLoopFunctions.GetObjectiveFunction();
 				std::cout << "Score " << fObjectiveFunction << std::endl;
 

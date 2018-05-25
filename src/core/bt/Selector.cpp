@@ -55,12 +55,12 @@ namespace argos {
 
 	Node::ReturnState Selector::Tick() {
 		for (UInt8 i = 0; i < m_vecConditions.size(); i++) {
-			//LOG << m_vecConditions.at(i)->GetLabel() << std::endl;
 			if (m_vecConditions.at(i)->Verify()) {
+				LOG << "[" << m_unRobotID << "]\t" << "Condition true: " << m_vecConditions.at(i)->GetLabel() << std::endl;
 				return Node::SUCCESS;
 			}
 		}
-		//LOG << "[" << m_unRobotID << "]\t"<< m_vecActions.at(0)->GetLabel() << std::endl;
+		LOG << "[" << m_unRobotID << "]\t"<< m_vecActions.at(0)->GetLabel() << std::endl;
 		m_vecActions.at(0)->ControlStep();
 		return Node::RUNNING;
 	}
@@ -83,10 +83,10 @@ namespace argos {
   void Selector::FillDOTDescription(std::ostringstream& ss_dot_string){
 		// Creation of graphical nodes
 		for (UInt8 i = 0; i < m_vecConditions.size(); i++) {
-			ss_dot_string << "cond" << m_unBranchId << "x" << i << " [shape=circle;label=\"" << m_vecConditions.at(i)->GetDOTDescription() << "\";color=lightgray;style=filled];";
+			ss_dot_string << "cond" << m_unBranchId << "x" << i << " [shape=diamond;label=\"" << m_vecConditions.at(i)->GetDOTDescription() << "\";];";
 		}
 		for (UInt8 i = 0; i < m_vecActions.size(); i++) {
-			ss_dot_string << "act" << m_unBranchId << "x" << i << " [shape=square;label=\"" << m_vecActions.at(i)->GetDOTDescription() << "\";color=gray;style=filled];";
+			ss_dot_string << "act" << m_unBranchId << "x" << i << " [shape=circle;label=\"" << m_vecActions.at(i)->GetDOTDescription() << "\";];";
 		}
 
 		// Linking nodes

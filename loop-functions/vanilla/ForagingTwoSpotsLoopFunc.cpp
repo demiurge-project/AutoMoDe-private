@@ -131,4 +131,4 @@ CVector3 ForagingTwoSpotsLoopFunction::GetRandomPosition() {
   return CVector3(fPosX, fPosY, 0);
 }
 
-REGISTER_LOOP_FUNCTIONS(ForagingTwoSpotsLoopFunction, "foraging_two_spots_lf");
+REGISTER_LOOP_FUNCTIONS(ForagingTwoSpotsLoopFunction, "foraging_loop_functions");

@@ -8,8 +8,8 @@
  * @license MIT License
  */
 
-#ifndef AUTOMODE_CONTROLLER_H
-#define AUTOMODE_CONTROLLER_H
+#ifndef AUTOMODE_BT_CONTROLLER_H
+#define AUTOMODE_BT_CONTROLLER_H
 
 #include <argos3/core/utility/logging/argos_log.h>
 #include <argos3/core/control_interface/ci_controller.h>

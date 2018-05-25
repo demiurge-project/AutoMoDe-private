@@ -8,8 +8,8 @@
  * @license MIT License
  */
 
-#ifndef AUTOMODE_LOOP_FUNCTIONS
-#define AUTOMODE_LOOP_FUNCTIONS
+#ifndef AUTOMODE_BT_LOOP_FUNCTIONS
+#define AUTOMODE_BT_LOOP_FUNCTIONS
 
 #include <argos3/core/simulator/space/space.h>
 #include <argos3/core/simulator/loop_functions.h>

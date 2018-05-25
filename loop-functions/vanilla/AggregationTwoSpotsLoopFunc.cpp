@@ -114,4 +114,4 @@ CVector3 AggregationTwoSpotsLoopFunction::GetRandomPosition() {
   return CVector3(fPosX, fPosY, 0);
 }
 
-REGISTER_LOOP_FUNCTIONS(AggregationTwoSpotsLoopFunction, "aggregation_two_spots_loop_functions");
+REGISTER_LOOP_FUNCTIONS(AggregationTwoSpotsLoopFunction, "aggregation_loop_functions");
