@@ -26,8 +26,10 @@ namespace argos {
 			virtual void ResumeStep();
 			virtual void Init();
 
-
 			virtual AutoMoDeBehaviourStop* Clone();
+
+			virtual bool Succeeded();
+			virtual bool Failed();
 	};
 }
 

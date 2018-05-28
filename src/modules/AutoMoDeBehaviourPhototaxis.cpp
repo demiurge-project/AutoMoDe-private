@@ -89,4 +89,18 @@ namespace argos {
 	void AutoMoDeBehaviourPhototaxis::ResumeStep() {
 		m_bOperational = true;
 	}
+
+	/****************************************/
+	/****************************************/
+
+	bool AutoMoDeBehaviourPhototaxis::Succeeded() {
+		return false;
+	}
+
+	/****************************************/
+	/****************************************/
+
+	bool AutoMoDeBehaviourPhototaxis::Failed() {
+		return false;
+	}
 }

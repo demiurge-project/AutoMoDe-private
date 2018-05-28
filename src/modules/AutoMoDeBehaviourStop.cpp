@@ -73,4 +73,18 @@ namespace argos {
 	void AutoMoDeBehaviourStop::ResumeStep() {
 		m_bOperational = true;
 	}
+
+	/****************************************/
+	/****************************************/
+
+	bool AutoMoDeBehaviourStop::Succeeded() {
+		return false;
+	}
+
+	/****************************************/
+	/****************************************/
+
+	bool AutoMoDeBehaviourStop::Failed() {
+		return false;
+	}
 }

@@ -130,4 +130,18 @@ namespace argos {
 		}
 		return false;
 	}
+
+	/****************************************/
+	/****************************************/
+
+	bool AutoMoDeBehaviourExploration::Succeeded() {
+		return false;
+	}
+
+	/****************************************/
+	/****************************************/
+
+	bool AutoMoDeBehaviourExploration::Failed() {
+		return false;
+	}
 }

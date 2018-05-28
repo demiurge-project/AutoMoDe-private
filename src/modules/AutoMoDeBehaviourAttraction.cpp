@@ -100,4 +100,18 @@ namespace argos {
 	void AutoMoDeBehaviourAttraction::ResumeStep() {
 		m_bOperational = true;
 	}
+
+	/****************************************/
+	/****************************************/
+
+	bool AutoMoDeBehaviourAttraction::Succeeded() {
+		return false;
+	}
+
+	/****************************************/
+	/****************************************/
+
+	bool AutoMoDeBehaviourAttraction::Failed() {
+		return false;
+	}
 }

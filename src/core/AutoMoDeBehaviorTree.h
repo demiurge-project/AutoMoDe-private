@@ -14,7 +14,11 @@
 #define AUTOMODE_BEHAVIOR_TREE_H
 
 #include "bt/Node.h"
+#include "bt/Action.h"
+#include "bt/Condition.h"
 #include "bt/Selector.h"
+#include "bt/SelectorStar.h"
+#include "bt/Sequence.h"
 #include "bt/SequenceStar.h"
 #include "../modules/AutoMoDeBehaviour.h"
 #include "../modules/AutoMoDeBehaviourAttraction.h"

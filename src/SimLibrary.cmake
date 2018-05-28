@@ -5,6 +5,8 @@ link_directories(${ARGOS_LIBRARY_DIRS})
 set(BEHAVIOR_TREE_HEADERS
 	core/AutoMoDeBehaviorTree.h
 	core/AutoMoDeBehaviorTreeBuilder.h
+	core/bt/Action.h
+	core/bt/Condition.h
 	core/bt/Node.h
 	core/bt/Selector.h
 	core/bt/SelectorStar.h
@@ -33,6 +35,8 @@ set(BEHAVIOR_TREE_HEADERS
 set(BEHAVIOR_TREE_SOURCES
 	core/AutoMoDeBehaviorTree.cpp
 	core/AutoMoDeBehaviorTreeBuilder.cpp
+	core/bt/Action.cpp
+	core/bt/Condition.cpp
 	core/bt/Node.cpp
 	core/bt/Selector.cpp
 	core/bt/SelectorStar.cpp

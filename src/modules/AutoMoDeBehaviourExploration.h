@@ -27,6 +27,9 @@ namespace argos {
 
 			virtual AutoMoDeBehaviourExploration* Clone();
 
+			virtual bool Succeeded();
+			virtual bool Failed();
+
 		private:
 			SInt32 m_unTurnSteps;
 

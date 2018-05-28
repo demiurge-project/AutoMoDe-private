@@ -21,19 +21,7 @@
 #include <map>
 
 #include "../../modules/AutoMoDeBehaviour.h"
-#include "../../modules/AutoMoDeBehaviourAttraction.h"
-#include "../../modules/AutoMoDeBehaviourAntiPhototaxis.h"
-#include "../../modules/AutoMoDeBehaviourExploration.h"
-#include "../../modules/AutoMoDeBehaviourPhototaxis.h"
-#include "../../modules/AutoMoDeBehaviourRepulsion.h"
-#include "../../modules/AutoMoDeBehaviourStop.h"
 #include "../../modules/AutoMoDeCondition.h"
-#include "../../modules/AutoMoDeConditionBlackFloor.h"
-#include "../../modules/AutoMoDeConditionGrayFloor.h"
-#include "../../modules/AutoMoDeConditionWhiteFloor.h"
-#include "../../modules/AutoMoDeConditionFixedProbability.h"
-#include "../../modules/AutoMoDeConditionNeighborsCount.h"
-#include "../../modules/AutoMoDeConditionInvertedNeighborsCount.h"
 
 namespace argos {
 	class Node {

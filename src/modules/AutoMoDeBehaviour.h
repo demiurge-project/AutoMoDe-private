@@ -169,6 +169,16 @@ namespace argos {
 			 * Setter for the shared pointer to the representation of the robot state.
 			 */
 			void SetRobotDAO(EpuckDAO* pc_robot_dao);
+
+			/*
+			 * BT function: checks if behavior is in SUCCESS state.
+			 */
+			virtual bool Succeeded() = 0;
+
+			/*
+			 * BT function: checks if behavior is in FAILURE state.
+			 */
+			virtual bool Failed() = 0;
 	};
 }
 
