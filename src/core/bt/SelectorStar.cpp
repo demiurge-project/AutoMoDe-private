@@ -1,5 +1,5 @@
 /*
- * @file <src/core/bt/SequenceStar.cpp>
+ * @file <src/core/bt/SelectorStar.cpp>
  *
  * @author Antoine Ligot - <aligot@ulb.ac.be>
  *
@@ -8,23 +8,23 @@
  * @license MIT License
  */
 
-#include "SequenceStar.h"
+#include "SelectorStar.h"
 
 namespace argos {
 
   /****************************************/
   /****************************************/
 
-	SequenceStar::SequenceStar() {
-    m_strLabel = "SequenceStar";
-		m_strDOTLabel = "-->*";
+	SelectorStar::SelectorStar() {
+    m_strLabel = "SelectorStar";
+		m_strDOTLabel = "?*";
     m_unIndexRunningChild = 0;
   }
 
   /****************************************/
 	/****************************************/
 
-  SequenceStar::~SequenceStar() {
+  SelectorStar::~SelectorStar() {
 		for (UInt8 i = 0; i < m_vecChilds.size(); i++) {
 			delete m_vecChilds.at(i);
 		}
@@ -33,10 +33,10 @@ namespace argos {
   /****************************************/
   /****************************************/
 
-	SequenceStar::SequenceStar(SequenceStar* pc_sequencestar) {
-		m_unIndexRunningChild = pc_sequencestar->GetIndexRunningChild();
+	SelectorStar::SelectorStar(SelectorStar* pc_selectorstar) {
+		m_unIndexRunningChild = pc_selectorstar->GetIndexRunningChild();
 
-		std::vector<Node*> vecChildNodes = pc_sequencestar->GetChildNodes();
+		std::vector<Node*> vecChildNodes = pc_selectorstar->GetChildNodes();
 		m_vecChilds.clear();
 		for (std::vector<Node*>::iterator it = vecChildNodes.begin(); it != vecChildNodes.end(); ++it) {
 			m_vecChilds.push_back((*it)->Clone());
@@ -46,16 +46,16 @@ namespace argos {
 	/****************************************/
 	/****************************************/
 
-	Node::ReturnState SequenceStar::Tick() {
+	Node::ReturnState SelectorStar::Tick() {
 		Node::ReturnState eCurrentState;
 		for (UInt8 i = m_unIndexRunningChild; i < m_vecChilds.size(); i++) {
 			eCurrentState = m_vecChilds.at(i)->Tick();
 			if (eCurrentState == Node::RUNNING) {
 				m_unIndexRunningChild = i;
 				return Node::RUNNING;
-			} else if (eCurrentState == Node::FAILURE) {
+			} else if (eCurrentState == Node::SUCCESS) {
 				m_unIndexRunningChild = 0;
-				return Node::FAILURE;
+				return Node::SUCCESS;
 			}
 		}
 		m_unIndexRunningChild = 0;
@@ -65,28 +65,28 @@ namespace argos {
 	/****************************************/
 	/****************************************/
 
-	void SequenceStar::Reset() {
+	void SelectorStar::Reset() {
 		m_unIndexRunningChild = 0;
 	}
 
 	/****************************************/
 	/****************************************/
 
-	SequenceStar* SequenceStar::Clone() {
-		return new SequenceStar(this);
+	SelectorStar* SelectorStar::Clone() {
+		return new SelectorStar(this);
 	}
 
 	/****************************************/
 	/****************************************/
 
-	std::string SequenceStar::GetLabel() {
+	std::string SelectorStar::GetLabel() {
 		return m_strLabel;
 	}
 
   /****************************************/
   /****************************************/
 
-  void SequenceStar::FillDOTDescription(std::ostringstream& ss_dot_string) {
+  void SelectorStar::FillDOTDescription(std::ostringstream& ss_dot_string) {
 		// Creation of graphical nodes
 		ss_dot_string << "node [shape = square];";
 		ss_dot_string << "Root [label=\"" << m_strDOTLabel << "\"];";
@@ -108,35 +108,35 @@ namespace argos {
   /****************************************/
   /****************************************/
 
-  void SequenceStar::AddChildNode(Node* pc_new_child_node) {
+  void SelectorStar::AddChildNode(Node* pc_new_child_node) {
     m_vecChilds.push_back(pc_new_child_node);
   }
 
 	/****************************************/
 	/****************************************/
 
-	UInt32 SequenceStar::GetIndexRunningChild() {
+	UInt32 SelectorStar::GetIndexRunningChild() {
 		return m_unIndexRunningChild;
 	}
 
 	/****************************************/
 	/****************************************/
-	
-	// void SequenceStar::AddAction(AutoMoDeBehaviour* pc_action) {
-	// 	THROW_ARGOSEXCEPTION("As of now, a SequenceStar node should not have an Action as child");
+
+	// void SelectorStar::AddAction(AutoMoDeBehaviour* pc_action) {
+	// 	THROW_ARGOSEXCEPTION("As of now, a SelectorStar node should not have an Action as child");
 	// }
 	//
 	// /****************************************/
 	// /****************************************/
 	//
-	// void SequenceStar::AddCondition(AutoMoDeCondition* pc_condition) {
-	// 	THROW_ARGOSEXCEPTION("As of now, a SequenceStar node should not have a Condition as child");
+	// void SelectorStar::AddCondition(AutoMoDeCondition* pc_condition) {
+	// 	THROW_ARGOSEXCEPTION("As of now, a SelectorStar node should not have a Condition as child");
 	// }
 
 	/****************************************/
 	/****************************************/
 
-	void SequenceStar::ShareRobotDAO(EpuckDAO* pc_robot_dao) {
+	void SelectorStar::ShareRobotDAO(EpuckDAO* pc_robot_dao) {
 		for (UInt8 i = 0; i < m_vecChilds.size(); i++) {
 			m_vecChilds.at(i)->ShareRobotDAO(pc_robot_dao);
 		}

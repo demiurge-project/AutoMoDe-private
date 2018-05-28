@@ -84,17 +84,17 @@ namespace argos {
 			 */
 			virtual void FillDOTDescription(std::ostringstream& ss_dot_string) = 0;
 
-			/*
-			 * Adds condition to list of conditions.
-			 * If particular node should not have a condition leaf as child, throw an error!
-			 */
-			virtual void AddCondition(AutoMoDeCondition* pc_condition) = 0;
-
-			/*
-			 * Adds action to list of actions.
-			 * If particular node should not have a action leaf as child, throw an error!
-			 */
-			virtual void AddAction(AutoMoDeBehaviour* pc_action) = 0;
+			// /*
+			//  * Adds condition to list of conditions.
+			//  * If particular node should not have a condition leaf as child, throw an error!
+			//  */
+			// virtual void AddCondition(AutoMoDeCondition* pc_condition) = 0;
+			//
+			// /*
+			//  * Adds action to list of actions.
+			//  * If particular node should not have a action leaf as child, throw an error!
+			//  */
+			// virtual void AddAction(AutoMoDeBehaviour* pc_action) = 0;
 
 			/*
 			 * Adds node (Selector or SequenceStar) to list of childs.

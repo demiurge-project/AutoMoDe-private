@@ -1,5 +1,5 @@
 /**
-  * @file <src/core/bt/SequenceStar.h>
+  * @file <src/core/bt/SelectorStar.h>
   *
   * @author Antoine Ligot - <aligot@ulb.ac.be>
   *
@@ -8,23 +8,23 @@
   * @license MIT License
   */
 
-#ifndef SEQUENCESTAR_H
-#define SEQUENCESTAR_H
+#ifndef SELECTORSTAR_H
+#define SELECTORSTAR_H
 
 #include "Node.h"
 
 namespace argos {
-	class SequenceStar: public Node {
+	class SelectorStar: public Node {
 		public:
-			SequenceStar();
-			SequenceStar(SequenceStar* pc_behaviour);
-			virtual ~SequenceStar();
+			SelectorStar();
+			SelectorStar(SelectorStar* pc_behaviour);
+			virtual ~SelectorStar();
 
 			virtual ReturnState Tick();
 
 			virtual void Reset();
 
-			virtual SequenceStar* Clone();
+			virtual SelectorStar* Clone();
 
 			virtual std::string GetLabel();
 

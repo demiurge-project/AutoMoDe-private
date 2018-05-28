@@ -1,5 +1,5 @@
 /**
-  * @file <src/core/bt/SequenceStar.h>
+  * @file <src/core/bt/Sequence.h>
   *
   * @author Antoine Ligot - <aligot@ulb.ac.be>
   *
@@ -8,40 +8,35 @@
   * @license MIT License
   */
 
-#ifndef SEQUENCESTAR_H
-#define SEQUENCESTAR_H
+#ifndef SEQUENCE_H
+#define SEQUENCE_H
 
 #include "Node.h"
 
 namespace argos {
-	class SequenceStar: public Node {
+	class Sequence: public Node {
 		public:
-			SequenceStar();
-			SequenceStar(SequenceStar* pc_behaviour);
-			virtual ~SequenceStar();
+			Sequence();
+			Sequence(Sequence* pc_behaviour);
+			virtual ~Sequence();
 
 			virtual ReturnState Tick();
 
 			virtual void Reset();
 
-			virtual SequenceStar* Clone();
+			virtual Sequence* Clone();
 
 			virtual std::string GetLabel();
 
       virtual void FillDOTDescription(std::ostringstream& ss_dot_string);
 
 			// virtual void AddCondition(AutoMoDeCondition* pc_condition);
-			//
+      //
 			// virtual void AddAction(AutoMoDeBehaviour* pc_action);
 
       virtual void AddChildNode(Node* pc_new_child_node);
 
 			virtual void ShareRobotDAO(EpuckDAO* pc_robot_dao);
-
-			UInt32 GetIndexRunningChild();
-
-    private:
-      UInt8 m_unIndexRunningChild;
 	};
 }
 

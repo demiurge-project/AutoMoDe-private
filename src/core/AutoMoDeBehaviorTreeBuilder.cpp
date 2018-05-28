@@ -217,7 +217,7 @@ namespace argos {
 		}
 		cNewBehaviour->Init();
 		// Add the constructed Behaviour to the FSM
-		pc_parent_node->AddAction(cNewBehaviour);
+		//pc_parent_node->AddAction(cNewBehaviour);
 	}
 
 	/****************************************/
@@ -270,6 +270,6 @@ void AutoMoDeBehaviorTreeBuilder::HandleCondition(Node* pc_parent_node, std::vec
 			}
 		}
 		cNewCondition->Init();
-		pc_parent_node->AddCondition(cNewCondition);
+		//pc_parent_node->AddCondition(cNewCondition);
 	}
 }

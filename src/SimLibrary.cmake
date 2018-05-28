@@ -7,6 +7,8 @@ set(BEHAVIOR_TREE_HEADERS
 	core/AutoMoDeBehaviorTreeBuilder.h
 	core/bt/Node.h
 	core/bt/Selector.h
+	core/bt/SelectorStar.h
+	core/bt/Sequence.h
 	core/bt/SequenceStar.h
 	#AutoMoDe
 	core/AutoMoDeController.h
@@ -33,6 +35,8 @@ set(BEHAVIOR_TREE_SOURCES
 	core/AutoMoDeBehaviorTreeBuilder.cpp
 	core/bt/Node.cpp
 	core/bt/Selector.cpp
+	core/bt/SelectorStar.cpp
+	core/bt/Sequence.cpp
 	core/bt/SequenceStar.cpp
 	#AutoMoDe
 	core/AutoMoDeController.cpp

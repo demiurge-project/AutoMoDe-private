@@ -30,9 +30,9 @@ namespace argos {
 
       virtual void FillDOTDescription(std::ostringstream& ss_dot_string);
 
-			virtual void AddCondition(AutoMoDeCondition* pc_condition);
-
-			virtual void AddAction(AutoMoDeBehaviour* pc_action);
+			// virtual void AddCondition(AutoMoDeCondition* pc_condition);
+			//
+			// virtual void AddAction(AutoMoDeBehaviour* pc_action);
 
 			virtual void AddChildNode(Node* pc_new_child_node);
 
