@@ -84,7 +84,7 @@ namespace argos {
 	/****************************************/
 	/****************************************/
 
-	void AutoMoDeBehaviorTree::SetRobotDAO(AutoMoDeRobotDAO* pc_robot_dao) {
+	void AutoMoDeBehaviorTree::SetRobotDAO(EpuckDAO* pc_robot_dao) {
 		m_pcRobotDAO = pc_robot_dao;
 	}
 

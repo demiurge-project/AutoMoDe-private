@@ -36,7 +36,7 @@ namespace argos {
 
       virtual void AddChildNode(Node* pc_new_child_node);
 
-			virtual void ShareRobotDAO(AutoMoDeRobotDAO* pc_robot_dao);
+			virtual void ShareRobotDAO(EpuckDAO* pc_robot_dao);
 
 			UInt32 GetIndexRunningChild();
 

@@ -101,7 +101,7 @@ namespace argos {
 			 */
 			virtual void AddChildNode(Node* pc_new_child_node) = 0;
 
-			virtual void ShareRobotDAO(AutoMoDeRobotDAO* pc_robot_dao) = 0;
+			virtual void ShareRobotDAO(EpuckDAO* pc_robot_dao) = 0;
 
 			std::vector<Node*> GetChildNodes();
 

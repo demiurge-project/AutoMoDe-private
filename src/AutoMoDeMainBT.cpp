@@ -19,7 +19,7 @@
 
 #include "./core/AutoMoDeBehaviorTree.h"
 #include "./core/AutoMoDeBehaviorTreeBuilder.h"
-#include "./core/AutoMoDeControllerBehaviorTree.h"
+#include "./core/AutoMoDeController.h"
 
 using namespace argos;
 

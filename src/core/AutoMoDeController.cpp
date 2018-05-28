@@ -8,7 +8,7 @@
  * @license MIT License
  */
 
-#include "AutoMoDeControllerBehaviorTree.h"
+#include "AutoMoDeController.h"
 
 namespace argos {
 
@@ -16,7 +16,7 @@ namespace argos {
 	/****************************************/
 
 	AutoMoDeControllerBehaviorTree::AutoMoDeControllerBehaviorTree() {
-		m_pcRobotState = new AutoMoDeRobotDAO();
+		m_pcRobotState = new ReferenceModel1Dot1();
 		m_unTimeStep = 0;
 		m_strBtConfiguration = "";
 		m_bMaintainHistory = false;

@@ -133,7 +133,7 @@ namespace argos {
 	/****************************************/
 	/****************************************/
 
-	void SequenceStar::ShareRobotDAO(AutoMoDeRobotDAO* pc_robot_dao) {
+	void SequenceStar::ShareRobotDAO(EpuckDAO* pc_robot_dao) {
 		for (UInt8 i = 0; i < m_vecChilds.size(); i++) {
 			m_vecChilds.at(i)->ShareRobotDAO(pc_robot_dao);
 		}

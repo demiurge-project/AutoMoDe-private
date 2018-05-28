@@ -1,5 +1,5 @@
 /*
- * @file <src/core/AutoMoDeControllerBehaviorTree.h>
+ * @file <src/core/.h>
  *
  * @author Antoine Ligot - <aligot@ulb.ac.be>
  *
@@ -16,7 +16,9 @@
 
 #include "./AutoMoDeBehaviorTree.h"
 #include "./AutoMoDeBehaviorTreeBuilder.h"
-#include "./AutoMoDeRobotDAO.h"
+
+#include <argos3/demiurge/epuck-dao/EpuckDAO.h>
+#include <argos3/demiurge/epuck-dao/ReferenceModel1Dot1.h>
 
 #include <argos3/plugins/robots/e-puck/control_interface/ci_epuck_wheels_actuator.h>
 #include <argos3/plugins/robots/e-puck/control_interface/ci_epuck_range_and_bearing_sensor.h>
@@ -83,7 +85,7 @@ namespace argos{
 			 * Pointer to the object representing the state of the robot. This object is
 			 * shared with the finite state object AutoMoDeBehaviorTree.
 			 */
-			AutoMoDeRobotDAO* m_pcRobotState;
+			EpuckDAO* m_pcRobotState;
 
 			/*
 			 * Time step variable.

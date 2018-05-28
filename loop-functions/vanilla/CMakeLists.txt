@@ -1,5 +1,0 @@
-add_library(vanilla_aggregation_loopfunc SHARED AggregationTwoSpotsLoopFunc.h AggregationTwoSpotsLoopFunc.cpp)
-target_link_libraries(vanilla_aggregation_loopfunc argos3plugin_${ARGOS_BUILD_FOR}_epuck)
-
-add_library(vanilla_foraging_loopfunc SHARED ForagingTwoSpotsLoopFunc.h ForagingTwoSpotsLoopFunc.cpp)
-target_link_libraries(vanilla_foraging_loopfunc argos3plugin_${ARGOS_BUILD_FOR}_epuck)

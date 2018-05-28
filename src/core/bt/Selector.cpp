@@ -129,7 +129,7 @@ namespace argos {
 	/****************************************/
 	/****************************************/
 
-	void Selector::ShareRobotDAO(AutoMoDeRobotDAO* pc_robot_dao) {
+	void Selector::ShareRobotDAO(EpuckDAO* pc_robot_dao) {
 		m_unRobotID = pc_robot_dao->GetRobotIdentifier();
 		for (UInt8 i = 0; i < m_vecConditions.size(); i++) {
 			m_vecConditions.at(i)->SetRobotDAO(pc_robot_dao);

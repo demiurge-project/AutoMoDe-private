@@ -77,7 +77,7 @@ namespace argos {
 
 			void ShareRobotDAO();
 
-			void SetRobotDAO(AutoMoDeRobotDAO* m_pcRobotDAO);
+			void SetRobotDAO(EpuckDAO* m_pcRobotDAO);
 
 		private:
 
@@ -85,9 +85,9 @@ namespace argos {
 
 			/*
 			 * Pointer to the object representing the state of the robot.
-			 * @see AutoMoDeRobotDAO.
+			 * @see EpuckDAO.
 			 */
-			AutoMoDeRobotDAO* m_pcRobotDAO;
+			EpuckDAO* m_pcRobotDAO;
 
 			UInt32 m_unTimeStep;
 
