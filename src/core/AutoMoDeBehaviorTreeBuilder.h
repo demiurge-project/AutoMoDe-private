@@ -52,21 +52,29 @@ namespace argos {
 			virtual ~AutoMoDeBehaviorTreeBuilder();
 
 		private:
-			/**
-			 * Creates a AutoMoDeBehaviour from an action configuration and add it to the
-			 * parent node in construction.
+			/*
+			 * Creates a AutoMoDeBehaviour from an action configuration.
 			 */
-			void HandleAction(Node* pc_parent_node, std::vector<std::string>& vec_bt_action_config);
+			Action* HandleAction(std::vector<std::string>& vec_bt_action_config);
 
-			/**
+			/*
 			 * Creates a AutoMoDeCondition from a condition configuration and add it to the
 			 * parent node in construction.
 			 */
-			void HandleCondition(Node* pc_parent_node, std::vector<std::string>& vec_bt_condition_config, const UInt32& un_branch_index, const UInt32& un_condition_index);
+			Condition* HandleCondition(std::vector<std::string>& vec_bt_condition_config);
 
 			void HandleRootNode(AutoMoDeBehaviorTree* pc_behaviour_tree, std::vector<std::string>& vec_bt_root_node_config);
 
 			void HandleChild(Node* pc_parent_node, std::vector<std::string>& vec_bt_child_config);
+
+			/*
+			 * Splits a subtree into more subtrees.
+			 */
+			std::vector<std::vector<std::string>> ExtractBranches(std::vector<std::string>& vec_sub_tree);
+
+			Node* ParseSubTree(std::vector<std::string>& vec_sub_tree);
+
+			Node* GetNodeFromType(UInt8 un_node_type);
 
 			AutoMoDeBehaviorTree* cBehaviorTree;
 

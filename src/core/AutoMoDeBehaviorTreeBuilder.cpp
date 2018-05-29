@@ -41,221 +41,227 @@ namespace argos {
 
 	AutoMoDeBehaviorTree* AutoMoDeBehaviorTreeBuilder::BuildBehaviorTree(std::vector<std::string>& vec_bt_config) {
 		cBehaviorTree = new AutoMoDeBehaviorTree();
-		Node* cRootNode;
+		Node* pcRootNode;
 
 		// Get root node type and create root node.
 		std::vector<std::string>::iterator it;
 		try {
-			it = std::find(vec_bt_config.begin(), vec_bt_config.end(), "--rootnode");
+			it = std::find(vec_bt_config.begin(), vec_bt_config.end(), "--nroot");
 			UInt8 unRootNodeType = atoi((*(it+1)).c_str());
-
-			// Create root node.
-			switch(unRootNodeType) {
-				case 0:
-					cRootNode = new SequenceStar();
-					break;
-			}
+			pcRootNode = GetNodeFromType(unRootNodeType);
 		}
 		catch (std::exception e) {
 			THROW_ARGOSEXCEPTION("[Error while parsing]: Could not instanciate Root Node");
 		}
 
-		// Identifying root's childs
-		UInt8 unNumberChilds;
 		try {
-			it = std::find(vec_bt_config.begin(), vec_bt_config.end(), "--nchildsroot");
-			unNumberChilds = atoi((*(it+1)).c_str());
-			std::vector<std::string>::iterator first_child;
-			std::vector<std::string>::iterator second_child;
-			for (UInt32 i = 0; i < unNumberChilds; i++) {
-				std::ostringstream oss;
-				oss << "--n" << i;
-				first_child = std::find(vec_bt_config.begin(), vec_bt_config.end(), oss.str());
-				if (i+1 < unNumberChilds) {
-					std::ostringstream oss;
-					oss << "--n" << i+1;
-					second_child = std::find(vec_bt_config.begin(), vec_bt_config.end(), oss.str());
-				} else {
-					second_child = vec_bt_config.end();
-				}
-				std::vector<std::string> vecChildConfig(first_child, second_child);
-				// Debug
+			std::vector<std::string> vecRemainingTree(it+2, vec_bt_config.end());
+			std::vector<std::vector<std::string>> vecBranches = ExtractBranches(vecRemainingTree);
+			for (UInt8 i = 0; i < vecBranches.size(); i++) {
+				pcRootNode->AddChildNode(ParseSubTree(vecBranches.at(i)));
+			}
+			//std::vector<std::string> vecSubTree(it+2, vec_bt_config.end());
+			//ExtractBranches(vecSubTree);
+				//Debug
 				// std::cout << "Child " << i << std::endl;
 				// for (it=vecChildConfig.begin(); it!=vecChildConfig.end(); it++) {
 				// 	std::cout << *(it) << std::endl;
 				// }
-				HandleChild(cRootNode, vecChildConfig);
-			}
+				//HandleChild(cRootNode, vecChildConfig);
 		}
 		catch (std::exception e) {
 			THROW_ARGOSEXCEPTION("[Error while parsing]: Error while parsing Root's childs");
 		}
 
-		cBehaviorTree->SetRootNode(cRootNode);
+		cBehaviorTree->SetRootNode(pcRootNode);
 		return cBehaviorTree;
 	}
 
 	/****************************************/
 	/****************************************/
 
-	void AutoMoDeBehaviorTreeBuilder::HandleChild(Node* pc_parent_node, std::vector<std::string>& vec_bt_child_config) {
-		Node* cChildNode;
+	Node* AutoMoDeBehaviorTreeBuilder::ParseSubTree(std::vector<std::string>& vec_sub_tree) {
 
+		Node* pcNode;
+		std::ostringstream oss;
 		std::vector<std::string>::iterator it;
-		UInt8 unBranchIndex =  atoi((*vec_bt_child_config.begin()).substr(3,4).c_str());
-		UInt8 unChildType = atoi((*(vec_bt_child_config.begin()+1)).c_str());
 
-		// Selector case
-		if (unChildType == 0) {
-			cChildNode = new Selector();
-			cChildNode->SetBranchId(unBranchIndex);
-
-			try {
-				// Conditions
-				std::ostringstream oss;
-				oss << "--nc" << unBranchIndex;
-				it = std::find(vec_bt_child_config.begin(), vec_bt_child_config.end(), oss.str());
-				UInt8 unNbrConditions = atoi((*(it+1)).c_str());
-				std::vector<std::string>::iterator first_condition;
-				std::vector<std::string>::iterator second_condition;
-				for (UInt8 unConditionIndex = 0; unConditionIndex < unNbrConditions; unConditionIndex++) {
-					std::ostringstream ssConditionVariable;
-					ssConditionVariable << "--c" << unBranchIndex << "x" << unConditionIndex ;
-					first_condition = std::find(vec_bt_child_config.begin(), vec_bt_child_config.end(), ssConditionVariable.str());
-					if (unConditionIndex+1 < unNbrConditions) {
-						std::ostringstream ssNextConditionVariable;
-						ssNextConditionVariable << "--c" << unBranchIndex << "x" << unConditionIndex+1;
-						second_condition = std::find(vec_bt_child_config.begin(), vec_bt_child_config.end(), ssNextConditionVariable.str());
-					} else {
-						std::ostringstream ssActionVariable;
-						ssActionVariable << "--a" << unBranchIndex;
-						second_condition = std::find(vec_bt_child_config.begin(), vec_bt_child_config.end(), ssActionVariable.str());
-					}
-					std::vector<std::string> vecConditionConfig(first_condition, second_condition);
-					// Debug
-					// std::cout << "\tCond " << unConditionIndex << std::endl;
-					// for (it=vecConditionConfig.begin(); it!=vecConditionConfig.end(); it++) {
-					//  	std::cout << "\t" << *(it) << std::endl;
-					// }
-					HandleCondition(cChildNode, vecConditionConfig, unBranchIndex, unConditionIndex);
-				}
-
-				// Action
-				std::ostringstream ssActionVariable;
-				ssActionVariable << "--a" << unBranchIndex;
-				std::vector<std::string>::iterator action_start;
-				std::vector<std::string>::iterator action_end;
-				action_start = std::find(vec_bt_child_config.begin(), vec_bt_child_config.end(), ssActionVariable.str());
-				action_end = vec_bt_child_config.end();
-				std::vector<std::string> vecActionConfig(action_start, action_end);
-				// Debug
-				// std::cout << "\tAction " << std::endl;
-				// for (it=vecActionConfig.begin(); it!=vecActionConfig.end(); it++) {
-				// 	std::cout << "\t" << *(it) << std::endl;
-				// }
-				HandleAction(cChildNode, vecActionConfig);
-
-				pc_parent_node->AddChildNode(cChildNode);
-			} catch(std::exception e) {
-				LOGERR << "[Error while parsing]: Error in Selector node" << std::endl;
-				THROW_ARGOSEXCEPTION("");
-			}
-
-		} else { // Unknown case: throw exception
- 			LOGERR << "[Error while parsing]: Node's type unidentified" << std::endl;
-			THROW_ARGOSEXCEPTION("");
+		std::cout << "Parsing subtree of size " << vec_sub_tree.size() << std::endl;
+		for (it=vec_sub_tree.begin(); it!=vec_sub_tree.end(); it++) {
+			std::cout << *(it) << " ";
 		}
+		std::cout << std::endl;
+
+		UInt8 unNodeIdentifier = atoi((*vec_sub_tree.begin()).substr(3,4).c_str());
+		UInt8 unNodeType = atoi((*(vec_sub_tree.begin()+1)).c_str());
+
+		if (unNodeType < 5) {   // If not an action or condition
+			std::cout << "Reached node " << unNodeType << std::endl;
+			pcNode = GetNodeFromType(unNodeType);
+			oss << "--nchild" << unNodeIdentifier;
+			it = std::find(vec_sub_tree.begin(), vec_sub_tree.end(), oss.str());
+			if (it != vec_sub_tree.end()) {
+				std::vector<std::string> vecRemainingTree(it, vec_sub_tree.end());
+				std::vector<std::vector<std::string>> vecBranches = ExtractBranches(vecRemainingTree);
+				for (UInt8 i = 0; i < vecBranches.size(); i++) {
+					pcNode->AddChildNode(ParseSubTree(vecBranches.at(i)));
+				}
+			} else {
+				THROW_ARGOSEXCEPTION("Error while parsing scheduling node");
+			}
+		} else if (unNodeType == 5) { // If an Action node
+			std::cout << "Reached Action" << std::endl;
+			oss << "--a" << unNodeIdentifier;
+			it = std::find(vec_sub_tree.begin(), vec_sub_tree.end(), oss.str());
+			if (it != vec_sub_tree.end()) {
+				std::vector<std::string> vecRemainingTree(it, vec_sub_tree.end());
+				pcNode = HandleAction(vecRemainingTree);
+			} else {
+				THROW_ARGOSEXCEPTION("Error while parsing action");
+			}
+		} else if (unNodeType == 6) { // If a Condition node
+			std::cout << "Reached Condition" << std::endl;
+			oss << "--c" << unNodeIdentifier;
+			it = std::find(vec_sub_tree.begin(), vec_sub_tree.end(), oss.str());
+			if (it != vec_sub_tree.end()) {
+				std::vector<std::string> vecRemainingTree(it, vec_sub_tree.end());
+				pcNode = HandleCondition(vecRemainingTree);
+			} else {
+				THROW_ARGOSEXCEPTION("Error while parsing action");
+			}
+		}
+		return pcNode;
 	}
 
 	/****************************************/
 	/****************************************/
 
-	void AutoMoDeBehaviorTreeBuilder::HandleAction(Node* pc_parent_node, std::vector<std::string>& vec_bt_action_config) {
-		Action* cActionNode = new Action();
-		AutoMoDeBehaviour* cNewBehaviour;
+	std::vector<std::vector<std::string>> AutoMoDeBehaviorTreeBuilder::ExtractBranches(std::vector<std::string>& vec_sub_tree) {
+		std::vector<std::vector<std::string>> vecBranches;
 		std::vector<std::string>::iterator it;
-		// Extraction of the index of the action
-		UInt8 unActionIndex =  atoi((*vec_bt_action_config.begin()).substr(3,4).c_str());
+		UInt8 unNumberChilds = atoi((*(vec_sub_tree.begin()+1)).c_str());
+		std::vector<std::string>::iterator first_child;
+		std::vector<std::string>::iterator second_child;
+		std::string strBranchIdentifier;
+		if ( (*vec_sub_tree.begin()).compare("--nchildroot") == 0 ) {  // First node (aka root) case
+			strBranchIdentifier = "";
+		} else {
+			strBranchIdentifier = (*vec_sub_tree.begin()).substr(8,5).c_str(); // All other cases
+		}
+
+		for (UInt32 i = 0; i < unNumberChilds; i++) {
+			std::ostringstream oss;
+			oss << "--n" << strBranchIdentifier << i;
+			first_child = std::find(vec_sub_tree.begin(), vec_sub_tree.end(), oss.str());
+			if (i+1 < unNumberChilds) {
+				std::ostringstream oss;
+				oss << "--n" << strBranchIdentifier << i+1;
+				second_child = std::find(vec_sub_tree.begin(), vec_sub_tree.end(), oss.str());
+			} else {
+				second_child = vec_sub_tree.end();
+			}
+			std::vector<std::string> vecChildConfig(first_child, second_child);
+			vecBranches.push_back(vecChildConfig);
+		}
+		return vecBranches;
+	}
+
+	/****************************************/
+	/****************************************/
+
+	Action* AutoMoDeBehaviorTreeBuilder::HandleAction(std::vector<std::string>& vec_bt_action_config) {
+		Action* pcActionNode = new Action();
+		AutoMoDeBehaviour* pcNewBehaviour;
+		std::vector<std::string>::iterator it;
+		// Extraction of the index of the node
+		UInt8 unNodeIndex =  atoi((*vec_bt_action_config.begin()).substr(3,4).c_str());
 		// Extraction of the identifier of the behaviour
 		UInt8 unBehaviourIdentifier =  atoi((*(vec_bt_action_config.begin()+1)).c_str());
 
 		// Creation of the Behaviour object
 		switch(unBehaviourIdentifier) {
 			case 0:
-				//cNewBehaviour = new AutoMoDeBehaviourExploration();
+				//pcNewBehaviour = new AutoMoDeBehaviourExploration();
 				break;
 			case 1:
-				cNewBehaviour = new AutoMoDeBehaviourStop();
+				pcNewBehaviour = new AutoMoDeBehaviourStop();
 				break;
 			case 2:
-				cNewBehaviour = new AutoMoDeBehaviourPhototaxis();
+				pcNewBehaviour = new AutoMoDeBehaviourPhototaxis();
 				break;
 			case 3:
-				cNewBehaviour = new AutoMoDeBehaviourAntiPhototaxis();
+				pcNewBehaviour = new AutoMoDeBehaviourAntiPhototaxis();
 				break;
 			case 4:
-				cNewBehaviour = new AutoMoDeBehaviourAttraction();
+				pcNewBehaviour = new AutoMoDeBehaviourAttraction();
 				break;
 			case 5:
-				cNewBehaviour = new AutoMoDeBehaviourRepulsion();
+				pcNewBehaviour = new AutoMoDeBehaviourRepulsion();
+				break;
+			case 6:
+				pcNewBehaviour = new AutoMoDeBehaviourStraight();
+				break;
+			case 7:
+				pcNewBehaviour = new AutoMoDeBehaviourRotation();
 				break;
 		}
-		cNewBehaviour->SetIndex(unActionIndex);
-		cNewBehaviour->SetIdentifier(unBehaviourIdentifier);
+		pcNewBehaviour->SetIndex(unNodeIndex);
+		pcNewBehaviour->SetIdentifier(unBehaviourIdentifier);
 
 		// Checking for parameters
-		std::string vecPossibleParameters[] = {"rwm", "att", "rep", "b"};
+		std::string vecPossibleParameters[] = {"rwm", "att", "rep", "p"};
 		UInt8 unNumberPossibleParameters = sizeof(vecPossibleParameters) / sizeof(vecPossibleParameters[0]);
 		for (UInt8 i = 0; i < unNumberPossibleParameters; i++) {
 			std::string strCurrentParameter = vecPossibleParameters[i];
 			std::ostringstream oss;
-			oss << "--" << strCurrentParameter << unActionIndex;
+			oss << "--" << strCurrentParameter << unNodeIndex;
 			it = std::find(vec_bt_action_config.begin(), vec_bt_action_config.end(), oss.str());
 			if (it != vec_bt_action_config.end()) {
 				Real fCurrentParameterValue = strtod((*(it+1)).c_str(), NULL);
-				cNewBehaviour->AddParameter(strCurrentParameter, fCurrentParameterValue);
+				pcNewBehaviour->AddParameter(strCurrentParameter, fCurrentParameterValue);
 			}
 		}
-		cNewBehaviour->Init();
-		cActionNode->SetBehaviour(cNewBehaviour);
-		// Add the constructed Behaviour to the FSM
-		pc_parent_node->AddChildNode(cActionNode);
+		pcNewBehaviour->Init();
+		pcActionNode->SetBehaviour(pcNewBehaviour);
+		return pcActionNode;
 	}
 
 	/****************************************/
 	/****************************************/
 
-void AutoMoDeBehaviorTreeBuilder::HandleCondition(Node* pc_parent_node, std::vector<std::string>& vec_bt_condition_config, const UInt32& un_branch_index, const UInt32& un_condition_index){
-		Condition* cConditionNode = new Condition();
-		AutoMoDeCondition* cNewCondition;
+	Condition* AutoMoDeBehaviorTreeBuilder::HandleCondition(std::vector<std::string>& vec_bt_condition_config){
+		Condition* pcConditionNode = new Condition();
+		AutoMoDeCondition* pcNewCondition;
 
+		// Extraction of the index of the node
+		UInt8 unNodeIndex =  atoi((*vec_bt_condition_config.begin()).substr(3,4).c_str());
 		// Extract Condition identifier
 		UInt32 unConditionIdentifier = atoi((*(vec_bt_condition_config.begin()+1)).c_str());
 
 		switch(unConditionIdentifier) {
 			case 0:
-				cNewCondition = new AutoMoDeConditionBlackFloor();
+				pcNewCondition = new AutoMoDeConditionBlackFloor();
 				break;
 			case 1:
-				cNewCondition = new AutoMoDeConditionGrayFloor();
+				pcNewCondition = new AutoMoDeConditionGrayFloor();
 				break;
 			case 2:
-				cNewCondition = new AutoMoDeConditionWhiteFloor();
+				pcNewCondition = new AutoMoDeConditionWhiteFloor();
 				break;
 			case 3:
-				cNewCondition = new AutoMoDeConditionNeighborsCount();
+				pcNewCondition = new AutoMoDeConditionNeighborsCount();
 				break;
 			case 4:
-				cNewCondition = new AutoMoDeConditionInvertedNeighborsCount();
+				pcNewCondition = new AutoMoDeConditionInvertedNeighborsCount();
 				break;
 			case 5:
-				cNewCondition = new AutoMoDeConditionFixedProbability();
+				pcNewCondition = new AutoMoDeConditionFixedProbability();
 				break;
 		}
 
-		cNewCondition->SetOriginAndExtremity(0, 0);  // No need of origin and extremity in cas of Behavior Trees. Set them to random value.
-		cNewCondition->SetIndex(0); // Same here, no need of index.
-		cNewCondition->SetIdentifier(unConditionIdentifier);
+		pcNewCondition->SetOriginAndExtremity(0, 0);  // No need of origin and extremity in cas of Behavior Trees. Set them to random value.
+		pcNewCondition->SetIndex(0); // Same here, no need of index.
+		pcNewCondition->SetIdentifier(unConditionIdentifier);
 
 
 		// Checking for parameters
@@ -265,16 +271,55 @@ void AutoMoDeBehaviorTreeBuilder::HandleCondition(Node* pc_parent_node, std::vec
 		for (UInt8 i = 0; i < unNumberPossibleParameters; i++) {
 			std::string strCurrentParameter = vecPossibleParameters[i];
 			std::stringstream ssParamVariable;
-			ssParamVariable << "--" << strCurrentParameter << un_branch_index << "x" << un_condition_index;
+			ssParamVariable << "--" << strCurrentParameter << unNodeIndex;
 			it = std::find(vec_bt_condition_config.begin(), vec_bt_condition_config.end(), ssParamVariable.str());
 			if (it != vec_bt_condition_config.end()) {
 				Real fCurrentParameterValue = strtod((*(it+1)).c_str(), NULL);
-				cNewCondition->AddParameter(strCurrentParameter, fCurrentParameterValue);
+				pcNewCondition->AddParameter(strCurrentParameter, fCurrentParameterValue);
 			}
 		}
-		cNewCondition->Init();
+		pcNewCondition->Init();
 
-		cConditionNode->SetCondition(cNewCondition);
-		pc_parent_node->AddChildNode(cConditionNode);
+		pcConditionNode->SetCondition(pcNewCondition);
+		return pcConditionNode;
+	}
+
+	/****************************************/
+	/****************************************/
+
+	Node* AutoMoDeBehaviorTreeBuilder::GetNodeFromType(UInt8 un_node_type) {
+		Node* pcNode;
+		switch(un_node_type) {
+			case 0: {
+				pcNode = new Selector();
+				break;
+			}
+			case 1: {
+				pcNode = new SelectorStar();
+				break;
+			}
+			case 2: {
+				pcNode = new Sequence();
+				break;
+			}
+			case 3: {
+				pcNode = new SequenceStar();
+				break;
+			}
+			case 4: {
+				//pcNode = new NegationDecorator();
+				break;
+			}
+			case 5: {
+				pcNode = new Action();
+				break;
+			}
+			case 6: {
+				pcNode = new Condition();
+				break;
+			}
+		}
+
+		return pcNode;
 	}
 }

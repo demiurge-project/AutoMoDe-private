@@ -20,7 +20,9 @@ set(BEHAVIOR_TREE_HEADERS
 	modules/AutoMoDeBehaviourPhototaxis.h
 	modules/AutoMoDeBehaviourAttraction.h
 	modules/AutoMoDeBehaviourRepulsion.h
+	modules/AutoMoDeBehaviourRotation.h
 	modules/AutoMoDeBehaviourStop.h
+	modules/AutoMoDeBehaviourStraight.h
 	# Conditions
 	modules/AutoMoDeCondition.h
 	modules/AutoMoDeConditionBlackFloor.h
@@ -49,7 +51,9 @@ set(BEHAVIOR_TREE_SOURCES
 	modules/AutoMoDeBehaviourPhototaxis.cpp
 	modules/AutoMoDeBehaviourAttraction.cpp
 	modules/AutoMoDeBehaviourRepulsion.cpp
+	modules/AutoMoDeBehaviourRotation.cpp
 	modules/AutoMoDeBehaviourStop.cpp
+	modules/AutoMoDeBehaviourStraight.cpp
 	# Conditions
 	modules/AutoMoDeCondition.cpp
 	modules/AutoMoDeConditionBlackFloor.cpp

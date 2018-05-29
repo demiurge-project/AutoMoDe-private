@@ -58,7 +58,7 @@ namespace argos {
 
 	void AutoMoDeBehaviourStop::Init() {
 		// Success probability
-		std::map<std::string, Real>::iterator it = m_mapParameters.find("b");
+		std::map<std::string, Real>::iterator it = m_mapParameters.find("p");
 		if (it != m_mapParameters.end()) {
 			m_fSuccessProbabilityParameter = it->second;
 		} else {

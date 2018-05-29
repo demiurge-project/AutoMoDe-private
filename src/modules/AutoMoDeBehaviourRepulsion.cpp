@@ -84,7 +84,7 @@ namespace argos {
 		}
 
 		// Success probability
-		it = m_mapParameters.find("b");
+		it = m_mapParameters.find("p");
 		if (it != m_mapParameters.end()) {
 			m_fSuccessProbabilityParameter = it->second;
 		} else {
