@@ -81,9 +81,18 @@ namespace argos {
 		if (it != m_mapParameters.end()) {
 			m_unAttractionParameter = it->second;
 		} else {
-			LOGERR << "[FATAL] Missing parameter for the following behaviour:" << m_strLabel << std::endl;
+			LOGERR << "[FATAL] Missing attraction parameter for the following behaviour:" << m_strLabel << std::endl;
 			THROW_ARGOSEXCEPTION("Missing Parameter");
 		}
+
+		// Success probability
+		it = m_mapParameters.find("b");
+		if (it != m_mapParameters.end()) {
+ 			m_fSuccessProbabilityParameter = it->second;
+ 		} else {
+ 			LOGERR << "[FATAL] Missing probability parameter for the following behaviour:" << m_strLabel << std::endl;
+ 			THROW_ARGOSEXCEPTION("Missing Parameter");
+ 		}
 	}
 
 	/****************************************/
@@ -105,13 +114,13 @@ namespace argos {
 	/****************************************/
 
 	bool AutoMoDeBehaviourAttraction::Succeeded() {
-		return false;
+		return EvaluateBernoulliProbability(m_fSuccessProbabilityParameter);
 	}
 
 	/****************************************/
 	/****************************************/
 
 	bool AutoMoDeBehaviourAttraction::Failed() {
-		return false;
+		return (ObstacleInFront() || (m_pcRobotDAO->GetNumberNeighbors() == 0));
 	}
 }

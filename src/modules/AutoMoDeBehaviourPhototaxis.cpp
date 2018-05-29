@@ -73,7 +73,16 @@ namespace argos {
 	/****************************************/
 	/****************************************/
 
-	void AutoMoDeBehaviourPhototaxis::Init() {}
+	void AutoMoDeBehaviourPhototaxis::Init() {
+		// Success probability
+	  std::map<std::string, Real>::iterator it = m_mapParameters.find("b");
+		if (it != m_mapParameters.end()) {
+			m_fSuccessProbabilityParameter = it->second;
+		} else {
+			LOGERR << "[FATAL] Missing probability parameter for the following behaviour:" << m_strLabel << std::endl;
+			THROW_ARGOSEXCEPTION("Missing Parameter");
+		}
+	}
 
 	/****************************************/
 	/****************************************/
@@ -94,13 +103,13 @@ namespace argos {
 	/****************************************/
 
 	bool AutoMoDeBehaviourPhototaxis::Succeeded() {
-		return false;
+		return EvaluateBernoulliProbability(m_fSuccessProbabilityParameter);
 	}
 
 	/****************************************/
 	/****************************************/
 
 	bool AutoMoDeBehaviourPhototaxis::Failed() {
-		return false;
+		return (ObstacleInFront() || !LightPerceived());
 	}
 }

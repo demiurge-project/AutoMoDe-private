@@ -139,4 +139,31 @@ namespace argos {
 		m_pcRobotDAO = pc_robot_dao;
 	}
 
+	/****************************************/
+	/****************************************/
+
+	bool AutoMoDeBehaviour::ObstacleInFront() {
+		CRange<CRadians> cRobotFront(-CRadians::PI_OVER_FOUR, CRadians::PI_OVER_FOUR);
+		CRadians cAngle = m_pcRobotDAO->GetProximityVector().Angle().UnsignedNormalize();
+		if ((m_pcRobotDAO->GetProximityVector().Length() >= 0.5) && ((cAngle <= CRadians::PI_OVER_FOUR) || (cAngle >= (CRadians::TWO_PI - CRadians::PI_OVER_FOUR)))) {
+			LOG << "ObstacleInFront" << std::endl;
+		}
+		LOG << " ---> " << m_pcRobotDAO->GetProximityVector().Length() << " " << m_pcRobotDAO->GetProximityVector().Angle().UnsignedNormalize() << std::endl;
+		return false;
+	}
+
+	/****************************************/
+	/****************************************/
+
+	bool AutoMoDeBehaviour::LightPerceived() {
+		return true;
+	}
+
+	/****************************************/
+	/****************************************/
+
+	bool AutoMoDeBehaviour::EvaluateBernoulliProbability(const Real& f_probability) const {
+		return m_pcRobotDAO->GetRandomNumberGenerator()->Bernoulli(f_probability);
+	}
+
 }

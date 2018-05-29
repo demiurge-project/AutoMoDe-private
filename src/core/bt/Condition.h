@@ -40,6 +40,8 @@ namespace argos {
 
 			UInt32 m_unRobotID;
 
+			void SetCondition(AutoMoDeCondition* pc_condition);
+
 			AutoMoDeCondition* GetCondition();
 
 		private:

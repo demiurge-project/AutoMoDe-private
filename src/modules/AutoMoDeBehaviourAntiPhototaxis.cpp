@@ -94,13 +94,13 @@ namespace argos {
 	/****************************************/
 
 	bool AutoMoDeBehaviourAntiPhototaxis::Succeeded() {
-		return false;
+		return EvaluateBernoulliProbability(m_fSuccessProbabilityParameter);
 	}
 
 	/****************************************/
 	/****************************************/
 
 	bool AutoMoDeBehaviourAntiPhototaxis::Failed() {
-		return false;
+		return (ObstacleInFront() || !LightPerceived());
 	}
 }

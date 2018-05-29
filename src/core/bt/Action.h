@@ -40,6 +40,8 @@ namespace argos {
 
 			UInt32 m_unRobotID;
 
+			void SetBehaviour(AutoMoDeBehaviour* pc_behaviour);
+
 			AutoMoDeBehaviour* GetBehaviour();
 
 		private:

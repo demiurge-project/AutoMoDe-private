@@ -170,6 +170,11 @@ namespace argos {
 			 */
 			void SetRobotDAO(EpuckDAO* pc_robot_dao);
 
+
+			/*****************/
+			/* Behavior Tree */
+			/*****************/
+
 			/*
 			 * BT function: checks if behavior is in SUCCESS state.
 			 */
@@ -179,6 +184,12 @@ namespace argos {
 			 * BT function: checks if behavior is in FAILURE state.
 			 */
 			virtual bool Failed() = 0;
+
+			bool ObstacleInFront();
+
+			bool LightPerceived();
+
+			bool EvaluateBernoulliProbability(const Real& f_probability) const;
 	};
 }
 

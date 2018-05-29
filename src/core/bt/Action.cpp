@@ -107,6 +107,13 @@ namespace argos {
 	/****************************************/
 	/****************************************/
 
+	void Action::SetBehaviour(AutoMoDeBehaviour* pc_behaviour) {
+		m_pcBehaviour = pc_behaviour;
+	}
+
+	/****************************************/
+	/****************************************/
+
 	AutoMoDeBehaviour* Action::GetBehaviour() {
 		return m_pcBehaviour;
 	}

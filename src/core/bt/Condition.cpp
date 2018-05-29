@@ -40,8 +40,10 @@ namespace argos {
 	Node::ReturnState Condition::Tick() {
 		Node::ReturnState eCurrentState;
 		if (m_pcCondition->Verify()) {
+			LOG << m_pcCondition->GetLabel() << " SUCCESS" << std::endl;
 			eCurrentState = Node::SUCCESS;
 		} else {
+			LOG << m_pcCondition->GetLabel() << " FAILURE" << std::endl;
 			eCurrentState = Node::FAILURE;
 		}
 		return eCurrentState;
@@ -99,6 +101,13 @@ namespace argos {
 
 	void Condition::ShareRobotDAO(EpuckDAO* pc_robot_dao) {
 		m_pcCondition->SetRobotDAO(pc_robot_dao);
+	}
+
+	/****************************************/
+	/****************************************/
+
+	void Condition::SetCondition(AutoMoDeCondition* pc_condition) {
+		m_pcCondition = pc_condition;
 	}
 
 	/****************************************/

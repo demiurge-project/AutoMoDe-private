@@ -16,7 +16,7 @@ namespace argos {
 	/****************************************/
 
 	AutoMoDeControllerBehaviorTree::AutoMoDeControllerBehaviorTree() {
-		m_pcRobotState = new ReferenceModel1Dot1();
+		m_pcRobotState = new ReferenceModel1Dot2();
 		m_unTimeStep = 0;
 		m_strBtConfiguration = "";
 		m_bMaintainHistory = false;

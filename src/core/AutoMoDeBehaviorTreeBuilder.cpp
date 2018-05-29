@@ -171,6 +171,7 @@ namespace argos {
 	/****************************************/
 
 	void AutoMoDeBehaviorTreeBuilder::HandleAction(Node* pc_parent_node, std::vector<std::string>& vec_bt_action_config) {
+		Action* cActionNode = new Action();
 		AutoMoDeBehaviour* cNewBehaviour;
 		std::vector<std::string>::iterator it;
 		// Extraction of the index of the action
@@ -181,7 +182,7 @@ namespace argos {
 		// Creation of the Behaviour object
 		switch(unBehaviourIdentifier) {
 			case 0:
-				cNewBehaviour = new AutoMoDeBehaviourExploration();
+				//cNewBehaviour = new AutoMoDeBehaviourExploration();
 				break;
 			case 1:
 				cNewBehaviour = new AutoMoDeBehaviourStop();
@@ -203,7 +204,7 @@ namespace argos {
 		cNewBehaviour->SetIdentifier(unBehaviourIdentifier);
 
 		// Checking for parameters
-		std::string vecPossibleParameters[] = {"rwm", "att", "rep"};
+		std::string vecPossibleParameters[] = {"rwm", "att", "rep", "b"};
 		UInt8 unNumberPossibleParameters = sizeof(vecPossibleParameters) / sizeof(vecPossibleParameters[0]);
 		for (UInt8 i = 0; i < unNumberPossibleParameters; i++) {
 			std::string strCurrentParameter = vecPossibleParameters[i];
@@ -216,14 +217,16 @@ namespace argos {
 			}
 		}
 		cNewBehaviour->Init();
+		cActionNode->SetBehaviour(cNewBehaviour);
 		// Add the constructed Behaviour to the FSM
-		//pc_parent_node->AddAction(cNewBehaviour);
+		pc_parent_node->AddChildNode(cActionNode);
 	}
 
 	/****************************************/
 	/****************************************/
 
 void AutoMoDeBehaviorTreeBuilder::HandleCondition(Node* pc_parent_node, std::vector<std::string>& vec_bt_condition_config, const UInt32& un_branch_index, const UInt32& un_condition_index){
+		Condition* cConditionNode = new Condition();
 		AutoMoDeCondition* cNewCondition;
 
 		// Extract Condition identifier
@@ -270,6 +273,8 @@ void AutoMoDeBehaviorTreeBuilder::HandleCondition(Node* pc_parent_node, std::vec
 			}
 		}
 		cNewCondition->Init();
-		//pc_parent_node->AddCondition(cNewCondition);
+
+		cConditionNode->SetCondition(cNewCondition);
+		pc_parent_node->AddChildNode(cConditionNode);
 	}
 }

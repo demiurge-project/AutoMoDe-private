@@ -62,7 +62,7 @@ namespace argos {
 		 * However, not all conditions have been tested if the pervious RUNNING branch is not the first (left) branch
 		 */
 		if (m_eTreeStatus == Node::SUCCESS) {
-			//LOG << "STOP" << std::endl;
+			LOG << "STOP" << std::endl;
 			m_pcRobotDAO->SetWheelsVelocity(0.0, 0.0);
 		}
 	}

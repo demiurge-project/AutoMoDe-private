@@ -21,7 +21,6 @@ set(BEHAVIOR_TREE_HEADERS
 	modules/AutoMoDeBehaviourAttraction.h
 	modules/AutoMoDeBehaviourRepulsion.h
 	modules/AutoMoDeBehaviourStop.h
-	modules/AutoMoDeBehaviourExploration.h
 	# Conditions
 	modules/AutoMoDeCondition.h
 	modules/AutoMoDeConditionBlackFloor.h
@@ -51,7 +50,6 @@ set(BEHAVIOR_TREE_SOURCES
 	modules/AutoMoDeBehaviourAttraction.cpp
 	modules/AutoMoDeBehaviourRepulsion.cpp
 	modules/AutoMoDeBehaviourStop.cpp
-	modules/AutoMoDeBehaviourExploration.cpp
 	# Conditions
 	modules/AutoMoDeCondition.cpp
 	modules/AutoMoDeConditionBlackFloor.cpp

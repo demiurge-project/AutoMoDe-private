@@ -29,6 +29,10 @@ namespace argos {
 
 			virtual bool Succeeded();
 			virtual bool Failed();
+
+		private:
+			Real m_fSuccessProbabilityParameter;
+		
 	};
 }
 

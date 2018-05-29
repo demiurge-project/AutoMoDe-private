@@ -60,6 +60,15 @@ namespace argos {
 			LOGERR << "[FATAL] Missing parameter for the following behaviour:" << m_strLabel << std::endl;
 			THROW_ARGOSEXCEPTION("Missing Parameter");
 		}
+
+		// Success probability
+		it = m_mapParameters.find("b");
+		if (it != m_mapParameters.end()) {
+			m_fSuccessProbabilityParameter = it->second;
+		} else {
+			LOGERR << "[FATAL] Missing probability parameter for the following behaviour:" << m_strLabel << std::endl;
+			THROW_ARGOSEXCEPTION("Missing Parameter");
+		}
 	}
 
 	/****************************************/
