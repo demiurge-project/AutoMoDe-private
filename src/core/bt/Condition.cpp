@@ -66,20 +66,7 @@ namespace argos {
 
   void Condition::FillDOTDescription(std::ostringstream& ss_dot_string){
 		// Creation of graphical nodes
-		// for (UInt8 i = 0; i < m_vecConditions.size(); i++) {
-		// 	ss_dot_string << "cond" << m_unBranchId << "x" << i << " [shape=diamond;label=\"" << m_vecConditions.at(i)->GetDOTDescription() << "\";];";
-		// }
-		// for (UInt8 i = 0; i < m_vecConditions.size(); i++) {
-		// 	ss_dot_string << "act" << m_unBranchId << "x" << i << " [shape=circle;label=\"" << m_vecConditions.at(i)->GetDOTDescription() << "\";];";
-		// }
-		//
-		// // Linking nodes
-		// for (UInt8 i = 0; i < m_vecConditions.size(); i++) {
-		// 	ss_dot_string << m_strLabel << m_unBranchId << " -> " << "cond" << m_unBranchId << "x" << i <<  ";";
-		// }
-		// for (UInt8 i = 0; i < m_vecConditions.size(); i++) {
-		// 	ss_dot_string << m_strLabel << m_unBranchId << " -> " << "act" << m_unBranchId << "x" << i <<  ";";
-		// }
+		ss_dot_string << m_strLabel << m_unBranchId << " [shape=diamond;label=\"" << m_pcCondition->GetDOTDescription() << "\";color=green];";
   }
 
 	/****************************************/

@@ -60,14 +60,6 @@ namespace argos {
 			for (UInt8 i = 0; i < vecBranches.size(); i++) {
 				pcRootNode->AddChildNode(ParseSubTree(vecBranches.at(i)));
 			}
-			//std::vector<std::string> vecSubTree(it+2, vec_bt_config.end());
-			//ExtractBranches(vecSubTree);
-				//Debug
-				// std::cout << "Child " << i << std::endl;
-				// for (it=vecChildConfig.begin(); it!=vecChildConfig.end(); it++) {
-				// 	std::cout << *(it) << std::endl;
-				// }
-				//HandleChild(cRootNode, vecChildConfig);
 		}
 		catch (std::exception e) {
 			THROW_ARGOSEXCEPTION("[Error while parsing]: Error while parsing Root's childs");
@@ -81,22 +73,20 @@ namespace argos {
 	/****************************************/
 
 	Node* AutoMoDeBehaviorTreeBuilder::ParseSubTree(std::vector<std::string>& vec_sub_tree) {
-
 		Node* pcNode;
 		std::ostringstream oss;
 		std::vector<std::string>::iterator it;
 
-		std::cout << "Parsing subtree of size " << vec_sub_tree.size() << std::endl;
-		for (it=vec_sub_tree.begin(); it!=vec_sub_tree.end(); it++) {
-			std::cout << *(it) << " ";
-		}
-		std::cout << std::endl;
+		// std::cout << "Parsing subtree of size " << vec_sub_tree.size() << std::endl;
+		// for (it=vec_sub_tree.begin(); it!=vec_sub_tree.end(); it++) {
+		// 	std::cout << *(it) << " ";
+		// }
+		// std::cout << std::endl;
 
 		UInt8 unNodeIdentifier = atoi((*vec_sub_tree.begin()).substr(3,4).c_str());
 		UInt8 unNodeType = atoi((*(vec_sub_tree.begin()+1)).c_str());
 
 		if (unNodeType < 5) {   // If not an action or condition
-			std::cout << "Reached node " << unNodeType << std::endl;
 			pcNode = GetNodeFromType(unNodeType);
 			oss << "--nchild" << unNodeIdentifier;
 			it = std::find(vec_sub_tree.begin(), vec_sub_tree.end(), oss.str());
@@ -110,7 +100,6 @@ namespace argos {
 				THROW_ARGOSEXCEPTION("Error while parsing scheduling node");
 			}
 		} else if (unNodeType == 5) { // If an Action node
-			std::cout << "Reached Action" << std::endl;
 			oss << "--a" << unNodeIdentifier;
 			it = std::find(vec_sub_tree.begin(), vec_sub_tree.end(), oss.str());
 			if (it != vec_sub_tree.end()) {
@@ -120,7 +109,6 @@ namespace argos {
 				THROW_ARGOSEXCEPTION("Error while parsing action");
 			}
 		} else if (unNodeType == 6) { // If a Condition node
-			std::cout << "Reached Condition" << std::endl;
 			oss << "--c" << unNodeIdentifier;
 			it = std::find(vec_sub_tree.begin(), vec_sub_tree.end(), oss.str());
 			if (it != vec_sub_tree.end()) {
@@ -130,6 +118,7 @@ namespace argos {
 				THROW_ARGOSEXCEPTION("Error while parsing action");
 			}
 		}
+		pcNode->SetBranchId(unNodeIdentifier);
 		return pcNode;
 	}
 

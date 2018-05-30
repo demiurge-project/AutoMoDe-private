@@ -17,8 +17,9 @@ namespace argos {
 
 	SequenceStar::SequenceStar() {
     m_strLabel = "SequenceStar";
-		m_strDOTLabel = "-->*";
+		m_strDOTLabel = "   -->*   ";
     m_unIndexRunningChild = 0;
+		m_unBranchId = 0;
   }
 
   /****************************************/
@@ -89,14 +90,14 @@ namespace argos {
   void SequenceStar::FillDOTDescription(std::ostringstream& ss_dot_string) {
 		// Creation of graphical nodes
 		ss_dot_string << "node [shape = square];";
-		ss_dot_string << "Root [label=\"" << m_strDOTLabel << "\"];";
+		ss_dot_string << m_strLabel << m_unBranchId << " [label=\"" << m_strDOTLabel << "\"];";
 		for (UInt8 i = 0; i < m_vecChilds.size(); i++) {
 			ss_dot_string << m_vecChilds.at(i)->GetLabel() << m_vecChilds.at(i)->GetBranchId() << " [label=\"" << m_vecChilds.at(i)->GetDOTLabel() << "\"];";
 		}
 
 		// Linking nodes
     for (UInt8 i = 0; i < m_vecChilds.size(); i++) {
-			ss_dot_string << "Root -> " << m_vecChilds.at(i)->GetLabel() << m_vecChilds.at(i)->GetBranchId() << ";";
+			ss_dot_string << m_strLabel << m_unBranchId << " -> " << m_vecChilds.at(i)->GetLabel() << m_vecChilds.at(i)->GetBranchId() << ";";
 		}
 
 		// Ask childs to fill DOT description
@@ -121,7 +122,7 @@ namespace argos {
 
 	/****************************************/
 	/****************************************/
-	
+
 	// void SequenceStar::AddAction(AutoMoDeBehaviour* pc_action) {
 	// 	THROW_ARGOSEXCEPTION("As of now, a SequenceStar node should not have an Action as child");
 	// }
