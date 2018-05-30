@@ -77,18 +77,20 @@ namespace argos {
 		std::ostringstream oss;
 		std::vector<std::string>::iterator it;
 
-		// std::cout << "Parsing subtree of size " << vec_sub_tree.size() << std::endl;
-		// for (it=vec_sub_tree.begin(); it!=vec_sub_tree.end(); it++) {
-		// 	std::cout << *(it) << " ";
-		// }
-		// std::cout << std::endl;
+		std::cout << "Parsing subtree of size " << vec_sub_tree.size() << std::endl;
+		for (it=vec_sub_tree.begin(); it!=vec_sub_tree.end(); it++) {
+			std::cout << *(it) << " ";
+		}
+		std::cout << std::endl;
 
-		UInt8 unNodeIdentifier = atoi((*vec_sub_tree.begin()).substr(3,4).c_str());
+		std::string strNodeIdentifier = (*vec_sub_tree.begin()).substr(3,2).c_str();
 		UInt8 unNodeType = atoi((*(vec_sub_tree.begin()+1)).c_str());
+
+		std::cout << strNodeIdentifier << " " << unNodeType << std::endl;
 
 		if (unNodeType < 5) {   // If not an action or condition
 			pcNode = GetNodeFromType(unNodeType);
-			oss << "--nchild" << unNodeIdentifier;
+			oss << "--nchild" << strNodeIdentifier;
 			it = std::find(vec_sub_tree.begin(), vec_sub_tree.end(), oss.str());
 			if (it != vec_sub_tree.end()) {
 				std::vector<std::string> vecRemainingTree(it, vec_sub_tree.end());
@@ -100,7 +102,8 @@ namespace argos {
 				THROW_ARGOSEXCEPTION("Error while parsing scheduling node");
 			}
 		} else if (unNodeType == 5) { // If an Action node
-			oss << "--a" << unNodeIdentifier;
+			std::cout << "Action leaf reached" << std::endl;
+			oss << "--a" << strNodeIdentifier;
 			it = std::find(vec_sub_tree.begin(), vec_sub_tree.end(), oss.str());
 			if (it != vec_sub_tree.end()) {
 				std::vector<std::string> vecRemainingTree(it, vec_sub_tree.end());
@@ -109,7 +112,9 @@ namespace argos {
 				THROW_ARGOSEXCEPTION("Error while parsing action");
 			}
 		} else if (unNodeType == 6) { // If a Condition node
-			oss << "--c" << unNodeIdentifier;
+			std::cout << "Condition leaf reached" << std::endl;
+			std::cout << strNodeIdentifier << std::endl;
+			oss << "--c" << strNodeIdentifier;
 			it = std::find(vec_sub_tree.begin(), vec_sub_tree.end(), oss.str());
 			if (it != vec_sub_tree.end()) {
 				std::vector<std::string> vecRemainingTree(it, vec_sub_tree.end());
@@ -118,7 +123,7 @@ namespace argos {
 				THROW_ARGOSEXCEPTION("Error while parsing action");
 			}
 		}
-		pcNode->SetBranchId(unNodeIdentifier);
+		pcNode->SetBranchId(strNodeIdentifier);
 		return pcNode;
 	}
 
@@ -163,7 +168,7 @@ namespace argos {
 		AutoMoDeBehaviour* pcNewBehaviour;
 		std::vector<std::string>::iterator it;
 		// Extraction of the index of the node
-		UInt8 unNodeIndex =  atoi((*vec_bt_action_config.begin()).substr(3,4).c_str());
+		std::string strNodeIndex =  (*vec_bt_action_config.begin()).substr(3,2).c_str();
 		// Extraction of the identifier of the behaviour
 		UInt8 unBehaviourIdentifier =  atoi((*(vec_bt_action_config.begin()+1)).c_str());
 
@@ -194,7 +199,7 @@ namespace argos {
 				pcNewBehaviour = new AutoMoDeBehaviourRotation();
 				break;
 		}
-		pcNewBehaviour->SetIndex(unNodeIndex);
+		pcNewBehaviour->SetIndex(0);
 		pcNewBehaviour->SetIdentifier(unBehaviourIdentifier);
 
 		// Checking for parameters
@@ -203,7 +208,7 @@ namespace argos {
 		for (UInt8 i = 0; i < unNumberPossibleParameters; i++) {
 			std::string strCurrentParameter = vecPossibleParameters[i];
 			std::ostringstream oss;
-			oss << "--" << strCurrentParameter << unNodeIndex;
+			oss << "--" << strCurrentParameter << strNodeIndex;
 			it = std::find(vec_bt_action_config.begin(), vec_bt_action_config.end(), oss.str());
 			if (it != vec_bt_action_config.end()) {
 				Real fCurrentParameterValue = strtod((*(it+1)).c_str(), NULL);
@@ -223,7 +228,7 @@ namespace argos {
 		AutoMoDeCondition* pcNewCondition;
 
 		// Extraction of the index of the node
-		UInt8 unNodeIndex =  atoi((*vec_bt_condition_config.begin()).substr(3,4).c_str());
+		std::string strNodeIndex =  (*vec_bt_condition_config.begin()).substr(3,2).c_str();
 		// Extract Condition identifier
 		UInt32 unConditionIdentifier = atoi((*(vec_bt_condition_config.begin()+1)).c_str());
 
@@ -260,7 +265,7 @@ namespace argos {
 		for (UInt8 i = 0; i < unNumberPossibleParameters; i++) {
 			std::string strCurrentParameter = vecPossibleParameters[i];
 			std::stringstream ssParamVariable;
-			ssParamVariable << "--" << strCurrentParameter << unNodeIndex;
+			ssParamVariable << "--" << strCurrentParameter << strNodeIndex;
 			it = std::find(vec_bt_condition_config.begin(), vec_bt_condition_config.end(), ssParamVariable.str());
 			if (it != vec_bt_condition_config.end()) {
 				Real fCurrentParameterValue = strtod((*(it+1)).c_str(), NULL);

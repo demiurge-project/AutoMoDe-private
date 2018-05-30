@@ -39,7 +39,7 @@ namespace argos {
 			std::vector<AutoMoDeCondition*> m_vecConditions;
 			std::vector<AutoMoDeBehaviour*> m_vecActions;
 
-			UInt8 m_unBranchId;
+			std::string m_strBranchId;
 
 			std::string m_strDOTLabel;
 
@@ -97,9 +97,9 @@ namespace argos {
 
 			std::vector<AutoMoDeCondition*> GetConditions();
 
-			UInt8 GetBranchId();
+			std::string GetBranchId();
 
-			void SetBranchId(UInt8 un_branch_id);
+			void SetBranchId(std::string str_branch_id);
 
 			std::string GetDOTLabel();
 

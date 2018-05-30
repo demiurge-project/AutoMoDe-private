@@ -61,7 +61,7 @@ namespace argos {
 		/* If state returned by the tree is SUCCESS, then no action has been performed, and the robot should not move.
 		 * However, not all conditions have been tested if the pervious RUNNING branch is not the first (left) branch
 		 */
-		if (m_eTreeStatus == Node::SUCCESS) {
+		if ((m_eTreeStatus == Node::SUCCESS) || (m_eTreeStatus == Node::FAILURE)) {
 			LOG << "STOP" << std::endl;
 			m_pcRobotDAO->SetWheelsVelocity(0.0, 0.0);
 		}

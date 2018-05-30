@@ -17,6 +17,7 @@ namespace argos {
 
 	Action::Action() {
     m_strLabel = "Action";
+		m_strBranchId = "";
   }
 
   /****************************************/
@@ -38,12 +39,16 @@ namespace argos {
 	/****************************************/
 
 	Node::ReturnState Action::Tick() {
+		LOG << m_strLabel << m_strBranchId  << " (" << m_pcBehaviour->GetLabel() << ")" << std::endl;
 		Node::ReturnState eCurrentState;
 		if (m_pcBehaviour->Failed()) {
+			LOG << "---> Failure" << std::endl;
 			eCurrentState = Node::FAILURE;
 		} else if (m_pcBehaviour->Succeeded()) {
+			LOG << "---> Success" << std::endl;
 			eCurrentState = Node::SUCCESS;
 		} else {
+			LOG << "---> Running" << std::endl;
 			m_pcBehaviour->ControlStep();
 			eCurrentState = Node::RUNNING;
 		}
@@ -67,7 +72,7 @@ namespace argos {
 
   void Action::FillDOTDescription(std::ostringstream& ss_dot_string){
 		// Creation of graphical nodes
-  	ss_dot_string << m_strLabel << m_unBranchId << " [shape=circle;label=\"" << m_pcBehaviour->GetDOTDescription() << "\";color=blue];";
+  	ss_dot_string << m_strLabel << m_strBranchId << " [shape=circle;label=\"" << m_pcBehaviour->GetDOTDescription() << "\";color=blue];";
   }
 
 	/****************************************/

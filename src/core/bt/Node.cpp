@@ -20,15 +20,15 @@ namespace argos {
 	/****************************************/
 	/****************************************/
 
-	UInt8 Node::GetBranchId(){
-		return m_unBranchId;
+	std::string Node::GetBranchId(){
+		return m_strBranchId;
 	}
 
 	/****************************************/
 	/****************************************/
 
-	void Node::SetBranchId(UInt8 un_branch_id) {
-		m_unBranchId = un_branch_id;
+	void Node::SetBranchId(std::string str_branch_id) {
+		m_strBranchId = str_branch_id;
 	}
 
 	/****************************************/

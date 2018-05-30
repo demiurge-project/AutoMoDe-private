@@ -17,6 +17,7 @@ namespace argos {
 
 	Condition::Condition() {
     m_strLabel = "Condition";
+		m_strBranchId = "";
   }
 
   /****************************************/
@@ -38,12 +39,13 @@ namespace argos {
 	/****************************************/
 
 	Node::ReturnState Condition::Tick() {
+		LOG << m_strLabel << m_strBranchId  << " (" << m_pcCondition->GetLabel() << ")" << std::endl;
 		Node::ReturnState eCurrentState;
 		if (m_pcCondition->Verify()) {
-			LOG << m_pcCondition->GetLabel() << " SUCCESS" << std::endl;
+			LOG << "---> Success" << std::endl;
 			eCurrentState = Node::SUCCESS;
 		} else {
-			LOG << m_pcCondition->GetLabel() << " FAILURE" << std::endl;
+			LOG << "---> Failure" << std::endl;
 			eCurrentState = Node::FAILURE;
 		}
 		return eCurrentState;
@@ -66,7 +68,7 @@ namespace argos {
 
   void Condition::FillDOTDescription(std::ostringstream& ss_dot_string){
 		// Creation of graphical nodes
-		ss_dot_string << m_strLabel << m_unBranchId << " [shape=diamond;label=\"" << m_pcCondition->GetDOTDescription() << "\";color=green];";
+		ss_dot_string << m_strLabel << m_strBranchId << " [shape=diamond;label=\"" << m_pcCondition->GetDOTDescription() << "\";color=green];";
   }
 
 	/****************************************/

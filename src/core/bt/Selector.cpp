@@ -18,7 +18,7 @@ namespace argos {
 	Selector::Selector() {
     m_strLabel = "Selector";
 		m_strDOTLabel = "     ?     ";
-		m_unBranchId = 0;
+		m_strBranchId = "";
   }
 
   /****************************************/
@@ -46,6 +46,7 @@ namespace argos {
 	/****************************************/
 
 	Node::ReturnState Selector::Tick() {
+		LOG << m_strLabel << m_strBranchId << std::endl;
 		Node::ReturnState eCurrentState;
 		for (UInt8 i = 0; i < m_vecChilds.size(); i++) {
 			eCurrentState = m_vecChilds.at(i)->Tick();
@@ -74,32 +75,15 @@ namespace argos {
   /****************************************/
 
   void Selector::FillDOTDescription(std::ostringstream& ss_dot_string){
-		// Creation of graphical nodes
-		// for (UInt8 i = 0; i < m_vecConditions.size(); i++) {
-		// 	ss_dot_string << "cond" << m_unBranchId << "x" << i << " [shape=diamond;label=\"" << m_vecConditions.at(i)->GetDOTDescription() << "\";];";
-		// }
-		// for (UInt8 i = 0; i < m_vecActions.size(); i++) {
-		// 	ss_dot_string << "act" << m_unBranchId << "x" << i << " [shape=circle;label=\"" << m_vecActions.at(i)->GetDOTDescription() << "\";];";
-		// }
-		//
-		// // Linking nodes
-		// for (UInt8 i = 0; i < m_vecConditions.size(); i++) {
-		// 	ss_dot_string << m_strLabel << m_unBranchId << " -> " << "cond" << m_unBranchId << "x" << i <<  ";";
-		// }
-		// for (UInt8 i = 0; i < m_vecActions.size(); i++) {
-		// 	ss_dot_string << m_strLabel << m_unBranchId << " -> " << "act" << m_unBranchId << "x" << i <<  ";";
-		// }
-		// Creation of graphical nodes
-		std::cout << "branch id = " << m_unBranchId << std::endl;
 		ss_dot_string << "node [shape=square;];";
-		ss_dot_string << m_strLabel << m_unBranchId << " [label=\"" << m_strDOTLabel << "\"];";
+		ss_dot_string << m_strLabel << m_strBranchId << " [label=\"" << m_strDOTLabel << "\"];";
 		for (UInt8 i = 0; i < m_vecChilds.size(); i++) {
 			ss_dot_string << m_vecChilds.at(i)->GetLabel() << m_vecChilds.at(i)->GetBranchId() << " [label=\"" << m_vecChilds.at(i)->GetDOTLabel() << "\"];";
 		}
 
 		// Linking nodes
 		for (UInt8 i = 0; i < m_vecChilds.size(); i++) {
-			ss_dot_string << m_strLabel << m_unBranchId << " -> " << m_vecChilds.at(i)->GetLabel() << m_vecChilds.at(i)->GetBranchId() << ";";
+			ss_dot_string << m_strLabel << m_strBranchId << " -> " << m_vecChilds.at(i)->GetLabel() << m_vecChilds.at(i)->GetBranchId() << ";";
 		}
 
 		// Ask childs to fill DOT description
