@@ -49,26 +49,23 @@ namespace argos {
 	/****************************************/
 
 	void AutoMoDeBehaviourAttraction::ControlStep() {
-		CCI_EPuckRangeAndBearingSensor::TPackets sLastPackets = m_pcRobotDAO->GetRangeAndBearingMessages();
-	 	CCI_EPuckRangeAndBearingSensor::TPackets::iterator it;
-		CVector2 sRabVectorSum(0,CRadians::ZERO);
-		CVector2 sProxVectorSum(0,CRadians::ZERO);
-		CVector2 sResultVector(0,CRadians::ZERO);
+		CVector2 sRabVector(0,CRadians::ZERO);
+		CCI_EPuckRangeAndBearingSensor::SReceivedPacket cRabReading = m_pcRobotDAO->GetNeighborsCenterOfMass();
 
-		for (it = sLastPackets.begin(); it != sLastPackets.end(); it++) {
-			if ((*it)->Data[0] != (UInt8) m_pcRobotDAO->GetRobotIdentifier()) {
-				sRabVectorSum += CVector2(m_unAttractionParameter / ((*it)->Range + 1),(*it)->Bearing.SignedNormalize());
-			}
+		if (cRabReading.Range > 0.0f) {
+			sRabVector = CVector2(cRabReading.Range, cRabReading.Bearing);
+		}
+		
+		// LOG << "[" << m_pcRobotDAO->GetRobotIdentifier() << "] " << cRabReading.Range << " " << cRabReading.Bearing << std::endl;
+		// LOG << "[" << m_pcRobotDAO->GetRobotIdentifier() << "] " << sRabVector << std::endl;
+
+		if (sRabVector.Length() < 0.1) {
+			sRabVector = CVector2(1.0, CRadians::ZERO);
 		}
 
-		sProxVectorSum = SumProximityReadings(m_pcRobotDAO->GetProximityInput());
-		sResultVector = sRabVectorSum - 6*sProxVectorSum;
+		LOG << "[" << m_pcRobotDAO->GetRobotIdentifier() << "] " << sRabVector << std::endl;
 
-		if (sResultVector.Length() < 0.1) {
-			sResultVector = CVector2(1, CRadians::ZERO);
-		}
-
-		m_pcRobotDAO->SetWheelsVelocity(ComputeWheelsVelocityFromVector(sResultVector));
+		m_pcRobotDAO->SetWheelsVelocity(ComputeWheelsVelocityFromVector(sRabVector));
 
 		m_bLocked = false;
 	}
@@ -77,13 +74,16 @@ namespace argos {
 	/****************************************/
 
 	void AutoMoDeBehaviourAttraction::Init() {
-		std::map<std::string, Real>::iterator it = m_mapParameters.find("att");
-		if (it != m_mapParameters.end()) {
-			m_unAttractionParameter = it->second;
-		} else {
-			LOGERR << "[FATAL] Missing attraction parameter for the following behaviour:" << m_strLabel << std::endl;
-			THROW_ARGOSEXCEPTION("Missing Parameter");
-		}
+		std::map<std::string, Real>::iterator it;
+
+		// Attraction parameter not needed anymore
+		// = m_mapParameters.find("att");
+		// if (it != m_mapParameters.end()) {
+		// 	m_unAttractionParameter = it->second;
+		// } else {
+		// 	LOGERR << "[FATAL] Missing attraction parameter for the following behaviour:" << m_strLabel << std::endl;
+		// 	THROW_ARGOSEXCEPTION("Missing Parameter");
+		// }
 
 		// Success probability
 		it = m_mapParameters.find("p");

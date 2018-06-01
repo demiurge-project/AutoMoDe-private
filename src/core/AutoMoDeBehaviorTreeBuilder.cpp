@@ -77,16 +77,14 @@ namespace argos {
 		std::ostringstream oss;
 		std::vector<std::string>::iterator it;
 
-		std::cout << "Parsing subtree of size " << vec_sub_tree.size() << std::endl;
-		for (it=vec_sub_tree.begin(); it!=vec_sub_tree.end(); it++) {
-			std::cout << *(it) << " ";
-		}
-		std::cout << std::endl;
+		// std::cout << "Parsing subtree of size " << vec_sub_tree.size() << std::endl;
+		// for (it=vec_sub_tree.begin(); it!=vec_sub_tree.end(); it++) {
+		// 	std::cout << *(it) << " ";
+		// }
+		// std::cout << std::endl;
 
 		std::string strNodeIdentifier = (*vec_sub_tree.begin()).substr(3,2).c_str();
 		UInt8 unNodeType = atoi((*(vec_sub_tree.begin()+1)).c_str());
-
-		std::cout << strNodeIdentifier << " " << unNodeType << std::endl;
 
 		if (unNodeType < 5) {   // If not an action or condition
 			pcNode = GetNodeFromType(unNodeType);
@@ -102,7 +100,7 @@ namespace argos {
 				THROW_ARGOSEXCEPTION("Error while parsing scheduling node");
 			}
 		} else if (unNodeType == 5) { // If an Action node
-			std::cout << "Action leaf reached" << std::endl;
+			//std::cout << "Action leaf reached" << std::endl;
 			oss << "--a" << strNodeIdentifier;
 			it = std::find(vec_sub_tree.begin(), vec_sub_tree.end(), oss.str());
 			if (it != vec_sub_tree.end()) {
@@ -112,8 +110,7 @@ namespace argos {
 				THROW_ARGOSEXCEPTION("Error while parsing action");
 			}
 		} else if (unNodeType == 6) { // If a Condition node
-			std::cout << "Condition leaf reached" << std::endl;
-			std::cout << strNodeIdentifier << std::endl;
+			//std::cout << "Condition leaf reached" << std::endl;
 			oss << "--c" << strNodeIdentifier;
 			it = std::find(vec_sub_tree.begin(), vec_sub_tree.end(), oss.str());
 			if (it != vec_sub_tree.end()) {
@@ -131,8 +128,8 @@ namespace argos {
 	/****************************************/
 
 	std::vector<std::vector<std::string>> AutoMoDeBehaviorTreeBuilder::ExtractBranches(std::vector<std::string>& vec_sub_tree) {
-		std::vector<std::vector<std::string>> vecBranches;
 		std::vector<std::string>::iterator it;
+		std::vector<std::vector<std::string>> vecBranches;
 		UInt8 unNumberChilds = atoi((*(vec_sub_tree.begin()+1)).c_str());
 		std::vector<std::string>::iterator first_child;
 		std::vector<std::string>::iterator second_child;
@@ -250,6 +247,12 @@ namespace argos {
 				break;
 			case 5:
 				pcNewCondition = new AutoMoDeConditionFixedProbability();
+				break;
+			case 6:
+				pcNewCondition = new AutoMoDeConditionLight();
+				break;
+			case 7:
+				pcNewCondition = new AutoMoDeConditionObstacleInFront();
 				break;
 		}
 

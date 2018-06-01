@@ -39,13 +39,13 @@ namespace argos {
 	/****************************************/
 
 	Node::ReturnState Condition::Tick() {
-		LOG << m_strLabel << m_strBranchId  << " (" << m_pcCondition->GetLabel() << ")" << std::endl;
+		//LOG << m_strLabel << m_strBranchId  << " (" << m_pcCondition->GetLabel() << ")" << std::endl;
 		Node::ReturnState eCurrentState;
 		if (m_pcCondition->Verify()) {
-			LOG << "---> Success" << std::endl;
+			//LOG << "---> Success" << std::endl;
 			eCurrentState = Node::SUCCESS;
 		} else {
-			LOG << "---> Failure" << std::endl;
+			//LOG << "---> Failure" << std::endl;
 			eCurrentState = Node::FAILURE;
 		}
 		return eCurrentState;

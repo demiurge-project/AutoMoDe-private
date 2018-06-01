@@ -30,6 +30,8 @@ set(BEHAVIOR_TREE_HEADERS
 	modules/AutoMoDeConditionGrayFloor.h
 	modules/AutoMoDeConditionNeighborsCount.h
 	modules/AutoMoDeConditionInvertedNeighborsCount.h
+	modules/AutoMoDeConditionLight.h
+	modules/AutoMoDeConditionObstacleInFront.h
 	modules/AutoMoDeConditionFixedProbability.h)
 
 
@@ -61,6 +63,8 @@ set(BEHAVIOR_TREE_SOURCES
 	modules/AutoMoDeConditionGrayFloor.cpp
 	modules/AutoMoDeConditionNeighborsCount.cpp
 	modules/AutoMoDeConditionInvertedNeighborsCount.cpp
+	modules/AutoMoDeConditionLight.cpp
+	modules/AutoMoDeConditionObstacleInFront.cpp
 	modules/AutoMoDeConditionFixedProbability.cpp)
 
 

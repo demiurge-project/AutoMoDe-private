@@ -19,13 +19,11 @@ execDir = "./execution-folder"
 trainInstancesDir = "./experiments-folder"
 
 #The maximum total budget for the runs of targetRunner
-maxExperiments = 200
+maxExperiments = 20000
 
 ## Indicates the number of decimal places to be considered for the
 ## real parameters.
 digits = 2
-
-nbIterations = 2
 
 ## END of scenario file
 ############################################################################

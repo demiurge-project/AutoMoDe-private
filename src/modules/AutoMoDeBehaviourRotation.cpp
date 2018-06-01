@@ -51,7 +51,7 @@ namespace argos {
 	void AutoMoDeBehaviourRotation::ControlStep() {
 		switch (m_eRotationState) {
 			case IDLE: {
-				if ((m_pcRobotDAO->GetProximityVector().Angle().UnsignedNormalize() > CRadians::ZERO) || m_pcRobotDAO->GetRandomNumberGenerator()->Bernoulli(0.5)) {
+				if ((m_pcRobotDAO->GetProximityReading().Angle > CRadians::ZERO) || m_pcRobotDAO->GetRandomNumberGenerator()->Bernoulli(0.5)) {
 					m_pcRobotDAO->SetWheelsVelocity(m_pcRobotDAO->GetMaxVelocity(), -m_pcRobotDAO->GetMaxVelocity());
 					m_eRotationState = RIGHT;
 				} else {

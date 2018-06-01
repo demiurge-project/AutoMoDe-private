@@ -48,7 +48,7 @@ namespace argos {
 	/****************************************/
 
 	Node::ReturnState SequenceStar::Tick() {
-		LOG << m_strLabel << m_strBranchId << std::endl;
+		//LOG << m_strLabel << m_strBranchId << std::endl;
 		Node::ReturnState eCurrentState;
 		for (UInt8 i = m_unIndexRunningChild; i < m_vecChilds.size(); i++) {
 			eCurrentState = m_vecChilds.at(i)->Tick();

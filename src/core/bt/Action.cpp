@@ -39,16 +39,16 @@ namespace argos {
 	/****************************************/
 
 	Node::ReturnState Action::Tick() {
-		LOG << m_strLabel << m_strBranchId  << " (" << m_pcBehaviour->GetLabel() << ")" << std::endl;
+		//LOG << m_strLabel << m_strBranchId  << " (" << m_pcBehaviour->GetLabel() << ")" << std::endl;
 		Node::ReturnState eCurrentState;
 		if (m_pcBehaviour->Failed()) {
-			LOG << "---> Failure" << std::endl;
+			//LOG << "---> Failure" << std::endl;
 			eCurrentState = Node::FAILURE;
 		} else if (m_pcBehaviour->Succeeded()) {
-			LOG << "---> Success" << std::endl;
+			//LOG << "---> Success" << std::endl;
 			eCurrentState = Node::SUCCESS;
 		} else {
-			LOG << "---> Running" << std::endl;
+			//LOG << "---> Running" << std::endl;
 			m_pcBehaviour->ControlStep();
 			eCurrentState = Node::RUNNING;
 		}
