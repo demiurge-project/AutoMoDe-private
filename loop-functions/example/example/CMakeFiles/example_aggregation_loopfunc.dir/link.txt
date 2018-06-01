@@ -1,0 +1,1 @@
+/usr/bin/c++  -fPIC   -shared -Wl,-soname,libexample_aggregation_loopfunc.so -o libexample_aggregation_loopfunc.so CMakeFiles/example_aggregation_loopfunc.dir/ExampleAggregationLoopFunc.o -largos3plugin__epuck 

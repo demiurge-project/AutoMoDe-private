@@ -89,7 +89,7 @@ void AggregationAnytimeAggregationLoopFunction::PostStep() {
     }
   }
   m_fObjectiveFunction += m_unScoreSpot1;
-  LOG << "Score = " << m_fObjectiveFunction << std::endl;
+  //LOG << "Score = " << m_fObjectiveFunction << std::endl;
 }
 
 /****************************************/

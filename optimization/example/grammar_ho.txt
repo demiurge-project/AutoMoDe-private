@@ -1,0 +1,250 @@
+NumRobots    "--robots "   i (15,30) 
+abSI0        "--rabsi "    o (0,1,2,3,4,5,6) |
+((as.numeric(NumRobots)>=15)&&(as.numeric(NumRobots)<=22))
+RabSI1        "--rabsi "    o (0,1,2,3,4,5,6) | (as.numeric(NumRobots)==23)
+RabSI2        "--rabsi "    o (0,1,2,3,4,5,6) | (as.numeric(NumRobots)==24)
+RabSI3        "--rabsi "    o (0,1,2,3,4,5,6) | (as.numeric(NumRobots)==25)
+RabSI4        "--rabsi "    o (0,1,2,3,4,5,6) | (as.numeric(NumRobots)==26)
+RabSI5        "--rabsi "    o (0,1,2,3,4,5) | (as.numeric(NumRobots)==27)
+RabSI6        "--rabsi "    o (0,1,2,3,4) | (as.numeric(NumRobots)==28)
+RabSI7        "--rabsi "    o (0,1,2,3) | (as.numeric(NumRobots)==29)
+RabSI8        "--rabsi "    o (0,1,2) | (as.numeric(NumRobots)==30)
+RabAR01        "--rabar "    o (0,0.6,0.7,0.8,0.9,1) |
+((as.numeric(NumRobots)>=15)&&(as.numeric(NumRobots)<=22))&&(as.numeric(RabSI0)==0)
+RabAR02        "--rabar "    o (0,0.6,0.7,0.8,0.9,1) |
+((as.numeric(NumRobots)>=15)&&(as.numeric(NumRobots)<=22))&&(as.numeric(RabSI0)==1)
+RabAR03        "--rabar "    o (0,0.6,0.7,0.8,0.9,1) |
+((as.numeric(NumRobots)>=15)&&(as.numeric(NumRobots)<=22))&&(as.numeric(RabSI0)==2)
+RabAR04        "--rabar "    o (0,0.6,0.7,0.8,0.9,1) |
+((as.numeric(NumRobots)>=15)&&(as.numeric(NumRobots)<=22))&&(as.numeric(RabSI0)==3)
+RabAR05        "--rabar "    o (0,0.6,0.7,0.8,0.9,1) |
+((as.numeric(NumRobots)>=15)&&(as.numeric(NumRobots)<=22))&&(as.numeric(RabSI0)==4)
+RabAR06        "--rabar "    o (0,0.6,0.7,0.8,0.9,1) |
+((as.numeric(NumRobots)>=15)&&(as.numeric(NumRobots)<=22))&&(as.numeric(RabSI0)==5)
+RabAR07        "--rabar "    o (0,0.6,0.7,0.8,0.9,1) |
+((as.numeric(NumRobots)>=15)&&(as.numeric(NumRobots)<=22))&&(as.numeric(RabSI0)==6)
+RabAR11        "--rabar "    o (0,0.6,0.7,0.8,0.9,1) |
+(as.numeric(NumRobots)==23)&&(as.numeric(RabSI1)==0)
+RabAR12        "--rabar "    o (0,0.6,0.7,0.8,0.9,1) |
+(as.numeric(NumRobots)==23)&&(as.numeric(RabSI1)==1)
+RabAR13        "--rabar "    o (0,0.6,0.7,0.8,0.9,1) |
+(as.numeric(NumRobots)==23)&&(as.numeric(RabSI1)==2)
+RabAR14        "--rabar "    o (0,0.6,0.7,0.8,0.9,1) |
+(as.numeric(NumRobots)==23)&&(as.numeric(RabSI1)==3)
+RabAR15        "--rabar "    o (0,0.6,0.7,0.8,0.9,1) |
+(as.numeric(NumRobots)==23)&&(as.numeric(RabSI1)==4)
+RabAR16        "--rabar "    o (0,0.6,0.7,0.8) |
+(as.numeric(NumRobots)==23)&&(as.numeric(RabSI1)==5)
+RabAR17        "--rabar "    o (0,0.6,0.7,0.8) |
+(as.numeric(NumRobots)==23)&&(as.numeric(RabSI1)==6)
+RabAR21        "--rabar "    o (0,0.6,0.7,0.8,0.9,1) |
+(as.numeric(NumRobots)==24)&&(as.numeric(RabSI2)==0)
+RabAR22        "--rabar "    o (0,0.6,0.7,0.8,0.9,1) |
+(as.numeric(NumRobots)==24)&&(as.numeric(RabSI2)==1)
+RabAR23        "--rabar "    o (0,0.6,0.7,0.8,0.9,1) |
+(as.numeric(NumRobots)==24)&&(as.numeric(RabSI2)==2)
+RabAR24        "--rabar "    o (0,0.6,0.7,0.8,0.9,1) |
+(as.numeric(NumRobots)==24)&&(as.numeric(RabSI2)==3)
+RabAR25        "--rabar "    o (0,0.6,0.7,0.8) |
+(as.numeric(NumRobots)==24)&&(as.numeric(RabSI2)==4)
+RabAR26        "--rabar "    o (0,0.6,0.7,0.8) |
+(as.numeric(NumRobots)==24)&&(as.numeric(RabSI2)==5)
+RabAR27        "--rabar "    o (0) |
+(as.numeric(NumRobots)==24)&&(as.numeric(RabSI2)==6)
+RabAR31        "--rabar "    o (0,0.6,0.7,0.8,0.9,1) |
+(as.numeric(NumRobots)==25)&&(as.numeric(RabSI3)==0)
+RabAR32        "--rabar "    o (0,0.6,0.7,0.8,0.9,1) |
+(as.numeric(NumRobots)==25)&&(as.numeric(RabSI3)==1)
+RabAR33        "--rabar "    o (0,0.6,0.7,0.8,0.9,1) |
+(as.numeric(NumRobots)==25)&&(as.numeric(RabSI3)==2)
+RabAR34        "--rabar "    o (0,0.6,0.7,0.8) |
+(as.numeric(NumRobots)==25)&&(as.numeric(RabSI3)==3)
+RabAR35        "--rabar "    o (0,0.6,0.7,0.8) |
+(as.numeric(NumRobots)==25)&&(as.numeric(RabSI3)==4)
+RabAR36        "--rabar "    o (0) |
+(as.numeric(NumRobots)==25)&&(as.numeric(RabSI3)==5)
+RabAR37        "--rabar "    o (0) |
+(as.numeric(NumRobots)==25)&&(as.numeric(RabSI3)==6)
+RabAR41        "--rabar "    o (0,0.6,0.7,0.8,0.9,1) |
+(as.numeric(NumRobots)==26)&&(as.numeric(RabSI4)==0)
+RabAR42        "--rabar "    o (0,0.6,0.7,0.8) |
+(as.numeric(NumRobots)==26)&&(as.numeric(RabSI4)==1)
+RabAR43        "--rabar "    o (0,0.6,0.7,0.8) |
+(as.numeric(NumRobots)==26)&&(as.numeric(RabSI4)==2)
+RabAR44        "--rabar "    o (0) |
+(as.numeric(NumRobots)==26)&&(as.numeric(RabSI4)==3)
+RabAR45        "--rabar "    o (0) |
+(as.numeric(NumRobots)==26)&&(as.numeric(RabSI4)==4)
+RabAR46        "--rabar "    o (0) |
+(as.numeric(NumRobots)==26)&&(as.numeric(RabSI4)==5)
+RabAR47        "--rabar "    o (0) |
+(as.numeric(NumRobots)==26)&&(as.numeric(RabSI4)==6)
+RabAR51        "--rabar "    o (0,0.6,0.7,0.8,0.9,1) |
+(as.numeric(NumRobots)==27)&&(as.numeric(RabSI5)==0)
+RabAR52        "--rabar "    o (0,0.6,0.7,0.8) |
+(as.numeric(NumRobots)==27)&&(as.numeric(RabSI5)==1)
+RabAR53        "--rabar "    o (0) |
+(as.numeric(NumRobots)==27)&&(as.numeric(RabSI5)==2)
+RabAR54        "--rabar "    o (0) |
+(as.numeric(NumRobots)==27)&&(as.numeric(RabSI5)==3)
+RabAR55        "--rabar "    o (0) |
+(as.numeric(NumRobots)==27)&&(as.numeric(RabSI5)==4)
+RabAR56        "--rabar "    o (0) |
+(as.numeric(NumRobots)==27)&&(as.numeric(RabSI5)==5)
+RabAR61        "--rabar "    o (0,0.6,0.7,0.8,0.9,1) |
+(as.numeric(NumRobots)==28)&&(as.numeric(RabSI6)==0)
+RabAR62        "--rabar "    o (0) |
+(as.numeric(NumRobots)==28)&&(as.numeric(RabSI6)==1)
+RabAR63        "--rabar "    o (0) |
+(as.numeric(NumRobots)==28)&&(as.numeric(RabSI6)==2)
+RabAR64        "--rabar "    o (0) |
+(as.numeric(NumRobots)==28)&&(as.numeric(RabSI6)==3)
+RabAR65        "--rabar "    o (0) |
+(as.numeric(NumRobots)==28)&&(as.numeric(RabSI6)==4)
+RabAR71        "--rabar "    o (0,0.6,0.7,0.8,0.9,1) |
+(as.numeric(NumRobots)==29)&&(as.numeric(RabSI7)==0)
+RabAR72        "--rabar "    o (0) |
+(as.numeric(NumRobots)==29)&&(as.numeric(RabSI7)==1)
+RabAR73        "--rabar "    o (0) |
+(as.numeric(NumRobots)==29)&&(as.numeric(RabSI7)==2)
+RabAR74        "--rabar "    o (0) |
+(as.numeric(NumRobots)==29)&&(as.numeric(RabSI7)==3)
+RabAR81        "--rabar "    o (0,0.6,0.7,0.8,0.9,1) |
+(as.numeric(NumRobots)==30)&&(as.numeric(RabSI8)==0)
+RabAR82        "--rabar "    o (0) |
+(as.numeric(NumRobots)==30)&&(as.numeric(RabSI8)==1)
+RabAR83        "--rabar "    o (0) |
+(as.numeric(NumRobots)==30)&&(as.numeric(RabSI8)==2)
+NumStates   "--nstates "   i (1,4)
+S0     "--s0 "  c   (0,1,2,3,4,5) | as.numeric(NumStates)>0 
+RWM0   "--rwm0 "  i (1,100) | as.numeric(S0)==0
+ATT0   "--att0 "  r (1,5) | as.numeric(S0)==4
+REP0   "--rep0 "  r (1,5) | as.numeric(S0)==5
+NumConnections0 "--n0 " i (1,4) | as.numeric(NumStates)>1
+N0x0  "--n0x0 " i   (0,3) | as.numeric(NumConnections0)>0 
+C0x0  "--c0x0 " c   (0,1,2,3,4,5) | as.numeric(NumConnections0)>0 
+P0x0  "--p0x0 " r   (0,1) | as.numeric(C0x0) %in% c(0,1,2,5) 
+B0x0  "--p0x0 " i   (1,10) | as.numeric(C0x0)==3 
+W0x0  "--w0x0 " r   (0,20) | as.numeric(C0x0)==3 
+BI0x0  "--p0x0 " i   (1,10) | as.numeric(C0x0)==4 
+WI0x0  "--w0x0 " r   (0,20) | as.numeric(C0x0)==4 
+N0x1  "--n0x1 " i   (0,3) | as.numeric(NumConnections0)>1 
+C0x1  "--c0x1 " c   (0,1,2,3,4,5) | as.numeric(NumConnections0)>1 
+P0x1  "--p0x1 " r   (0,1) | as.numeric(C0x1) %in% c(0,1,2,5) 
+B0x1  "--p0x1 " i   (1,10) | as.numeric(C0x1)==3 
+W0x1  "--w0x1 " r   (0,20) | as.numeric(C0x1)==3 
+BI0x1  "--p0x1 " i   (1,10) | as.numeric(C0x1)==4 
+WI0x1  "--w0x1 " r   (0,20) | as.numeric(C0x1)==4 
+N0x2  "--n0x2 " i   (0,3) | as.numeric(NumConnections0)>2 
+C0x2  "--c0x2 " c   (0,1,2,3,4,5) | as.numeric(NumConnections0)>2 
+P0x2  "--p0x2 " r   (0,1) | as.numeric(C0x2) %in% c(0,1,2,5) 
+B0x2  "--p0x2 " i   (1,10) | as.numeric(C0x2)==3 
+W0x2  "--w0x2 " r   (0,20) | as.numeric(C0x2)==3 
+BI0x2  "--p0x2 " i   (1,10) | as.numeric(C0x2)==4 
+WI0x2  "--w0x2 " r   (0,20) | as.numeric(C0x2)==4 
+N0x3  "--n0x3 " i   (0,3) | as.numeric(NumConnections0)>3 
+C0x3  "--c0x3 " c   (0,1,2,3,4,5) | as.numeric(NumConnections0)>3 
+P0x3  "--p0x3 " r   (0,1) | as.numeric(C0x3) %in% c(0,1,2,5) 
+B0x3  "--p0x3 " i   (1,10) | as.numeric(C0x3)==3 
+W0x3  "--w0x3 " r   (0,20) | as.numeric(C0x3)==3 
+BI0x3  "--p0x3 " i   (1,10) | as.numeric(C0x3)==4 
+WI0x3  "--w0x3 " r   (0,20) | as.numeric(C0x3)==4 
+S1     "--s1 "  c   (0,1,2,3,4,5) | as.numeric(NumStates)>1 
+RWM1   "--rwm1 "  i (1,100) | as.numeric(S1)==0
+ATT1   "--att1 "  r (1,5) | as.numeric(S1)==4
+REP1   "--rep1 "  r (1,5) | as.numeric(S1)==5
+NumConnections1 "--n1 " i (1,4) | as.numeric(NumStates)>1
+N1x0  "--n1x0 " i   (0,3) | as.numeric(NumConnections1)>0 
+C1x0  "--c1x0 " c   (0,1,2,3,4,5) | as.numeric(NumConnections1)>0 
+P1x0  "--p1x0 " r   (0,1) | as.numeric(C1x0) %in% c(0,1,2,5) 
+B1x0  "--p1x0 " i   (1,10) | as.numeric(C1x0)==3 
+W1x0  "--w1x0 " r   (0,20) | as.numeric(C1x0)==3 
+BI1x0  "--p1x0 " i   (1,10) | as.numeric(C1x0)==4 
+WI1x0  "--w1x0 " r   (0,20) | as.numeric(C1x0)==4 
+N1x1  "--n1x1 " i   (0,3) | as.numeric(NumConnections1)>1 
+C1x1  "--c1x1 " c   (0,1,2,3,4,5) | as.numeric(NumConnections1)>1 
+P1x1  "--p1x1 " r   (0,1) | as.numeric(C1x1) %in% c(0,1,2,5) 
+B1x1  "--p1x1 " i   (1,10) | as.numeric(C1x1)==3 
+W1x1  "--w1x1 " r   (0,20) | as.numeric(C1x1)==3 
+BI1x1  "--p1x1 " i   (1,10) | as.numeric(C1x1)==4 
+WI1x1  "--w1x1 " r   (0,20) | as.numeric(C1x1)==4 
+N1x2  "--n1x2 " i   (0,3) | as.numeric(NumConnections1)>2 
+C1x2  "--c1x2 " c   (0,1,2,3,4,5) | as.numeric(NumConnections1)>2 
+P1x2  "--p1x2 " r   (0,1) | as.numeric(C1x2) %in% c(0,1,2,5) 
+B1x2  "--p1x2 " i   (1,10) | as.numeric(C1x2)==3 
+W1x2  "--w1x2 " r   (0,20) | as.numeric(C1x2)==3 
+BI1x2  "--p1x2 " i   (1,10) | as.numeric(C1x2)==4 
+WI1x2  "--w1x2 " r   (0,20) | as.numeric(C1x2)==4 
+N1x3  "--n1x3 " i   (0,3) | as.numeric(NumConnections1)>3 
+C1x3  "--c1x3 " c   (0,1,2,3,4,5) | as.numeric(NumConnections1)>3 
+P1x3  "--p1x3 " r   (0,1) | as.numeric(C1x3) %in% c(0,1,2,5) 
+B1x3  "--p1x3 " i   (1,10) | as.numeric(C1x3)==3 
+W1x3  "--w1x3 " r   (0,20) | as.numeric(C1x3)==3 
+BI1x3  "--p1x3 " i   (1,10) | as.numeric(C1x3)==4 
+WI1x3  "--w1x3 " r   (0,20) | as.numeric(C1x3)==4 
+S2     "--s2 "  c   (0,1,2,3,4,5) | as.numeric(NumStates)>2 
+RWM2   "--rwm2 "  i (1,100) | as.numeric(S2)==0
+ATT2   "--att2 "  r (1,5) | as.numeric(S2)==4
+REP2   "--rep2 "  r (1,5) | as.numeric(S2)==5
+NumConnections2 "--n2 " i (1,4) | as.numeric(NumStates)>2
+N2x0  "--n2x0 " i   (0,3) | as.numeric(NumConnections2)>0 
+C2x0  "--c2x0 " c   (0,1,2,3,4,5) | as.numeric(NumConnections2)>0 
+P2x0  "--p2x0 " r   (0,1) | as.numeric(C2x0) %in% c(0,1,2,5) 
+B2x0  "--p2x0 " i   (1,10) | as.numeric(C2x0)==3 
+W2x0  "--w2x0 " r   (0,20) | as.numeric(C2x0)==3 
+BI2x0  "--p2x0 " i   (1,10) | as.numeric(C2x0)==4 
+WI2x0  "--w2x0 " r   (0,20) | as.numeric(C2x0)==4 
+N2x1  "--n2x1 " i   (0,3) | as.numeric(NumConnections2)>1 
+C2x1  "--c2x1 " c   (0,1,2,3,4,5) | as.numeric(NumConnections2)>1 
+P2x1  "--p2x1 " r   (0,1) | as.numeric(C2x1) %in% c(0,1,2,5) 
+B2x1  "--p2x1 " i   (1,10) | as.numeric(C2x1)==3 
+W2x1  "--w2x1 " r   (0,20) | as.numeric(C2x1)==3 
+BI2x1  "--p2x1 " i   (1,10) | as.numeric(C2x1)==4 
+WI2x1  "--w2x1 " r   (0,20) | as.numeric(C2x1)==4 
+N2x2  "--n2x2 " i   (0,3) | as.numeric(NumConnections2)>2 
+C2x2  "--c2x2 " c   (0,1,2,3,4,5) | as.numeric(NumConnections2)>2 
+P2x2  "--p2x2 " r   (0,1) | as.numeric(C2x2) %in% c(0,1,2,5) 
+B2x2  "--p2x2 " i   (1,10) | as.numeric(C2x2)==3 
+W2x2  "--w2x2 " r   (0,20) | as.numeric(C2x2)==3 
+BI2x2  "--p2x2 " i   (1,10) | as.numeric(C2x2)==4 
+WI2x2  "--w2x2 " r   (0,20) | as.numeric(C2x2)==4 
+N2x3  "--n2x3 " i   (0,3) | as.numeric(NumConnections2)>3 
+C2x3  "--c2x3 " c   (0,1,2,3,4,5) | as.numeric(NumConnections2)>3 
+P2x3  "--p2x3 " r   (0,1) | as.numeric(C2x3) %in% c(0,1,2,5) 
+B2x3  "--p2x3 " i   (1,10) | as.numeric(C2x3)==3 
+W2x3  "--w2x3 " r   (0,20) | as.numeric(C2x3)==3 
+BI2x3  "--p2x3 " i   (1,10) | as.numeric(C2x3)==4 
+WI2x3  "--w2x3 " r   (0,20) | as.numeric(C2x3)==4 
+S3     "--s3 "  c   (0,1,2,3,4,5) | as.numeric(NumStates)>3 
+RWM3   "--rwm3 "  i (1,100) | as.numeric(S3)==0
+ATT3   "--att3 "  r (1,5) | as.numeric(S3)==4
+REP3   "--rep3 "  r (1,5) | as.numeric(S3)==5
+NumConnections3 "--n3 " i (1,4) | as.numeric(NumStates)>3
+N3x0  "--n3x0 " i   (0,3) | as.numeric(NumConnections3)>0 
+C3x0  "--c3x0 " c   (0,1,2,3,4,5) | as.numeric(NumConnections3)>0 
+P3x0  "--p3x0 " r   (0,1) | as.numeric(C3x0) %in% c(0,1,2,5) 
+B3x0  "--p3x0 " i   (1,10) | as.numeric(C3x0)==3 
+W3x0  "--w3x0 " r   (0,20) | as.numeric(C3x0)==3 
+BI3x0  "--p3x0 " i   (1,10) | as.numeric(C3x0)==4 
+WI3x0  "--w3x0 " r   (0,20) | as.numeric(C3x0)==4 
+N3x1  "--n3x1 " i   (0,3) | as.numeric(NumConnections3)>1 
+C3x1  "--c3x1 " c   (0,1,2,3,4,5) | as.numeric(NumConnections3)>1 
+P3x1  "--p3x1 " r   (0,1) | as.numeric(C3x1) %in% c(0,1,2,5) 
+B3x1  "--p3x1 " i   (1,10) | as.numeric(C3x1)==3 
+W3x1  "--w3x1 " r   (0,20) | as.numeric(C3x1)==3 
+BI3x1  "--p3x1 " i   (1,10) | as.numeric(C3x1)==4 
+WI3x1  "--w3x1 " r   (0,20) | as.numeric(C3x1)==4 
+N3x2  "--n3x2 " i   (0,3) | as.numeric(NumConnections3)>2 
+C3x2  "--c3x2 " c   (0,1,2,3,4,5) | as.numeric(NumConnections3)>2 
+P3x2  "--p3x2 " r   (0,1) | as.numeric(C3x2) %in% c(0,1,2,5) 
+B3x2  "--p3x2 " i   (1,10) | as.numeric(C3x2)==3 
+W3x2  "--w3x2 " r   (0,20) | as.numeric(C3x2)==3 
+BI3x2  "--p3x2 " i   (1,10) | as.numeric(C3x2)==4 
+WI3x2  "--w3x2 " r   (0,20) | as.numeric(C3x2)==4 
+N3x3  "--n3x3 " i   (0,3) | as.numeric(NumConnections3)>3 
+C3x3  "--c3x3 " c   (0,1,2,3,4,5) | as.numeric(NumConnections3)>3 
+P3x3  "--p3x3 " r   (0,1) | as.numeric(C3x3) %in% c(0,1,2,5) 
+B3x3  "--p3x3 " i   (1,10) | as.numeric(C3x3)==3 
+W3x3  "--w3x3 " r   (0,20) | as.numeric(C3x3)==3 
+BI3x3  "--p3x3 " i   (1,10) | as.numeric(C3x3)==4 
+WI3x3  "--w3x3 " r   (0,20) | as.numeric(C3x3)==4 

@@ -1,10 +1,10 @@
- <?xml version="1.0" ?>
+<?xml version="1.0" ?>
 <argos-configuration>
   <!-- ************* -->
   <!-- * Framework * -->
   <!-- ************* -->
   <framework>
-    <experiment length="120"
+    <experiment length="3600"
                 ticks_per_second="10" random_seed="13"/>
   </framework>
 
@@ -29,9 +29,9 @@
         <epuck_range_and_bearing implementation="medium" medium="rab" data_size="4"/>
       </actuators>
       <sensors>
-		    <epuck_proximity implementation="default" show_rays="false" noise_level="0.05" calibrated="true"/>
+		    <epuck_proximity implementation="default" show_rays="false" noise_level="0.0" calibrated="true"/>
 
-        <epuck_range_and_bearing_salman_sen1 implementation="medium" show_rays="true" medium="rab1" data_size="4" channel_interference="true" noise_std_dev="1.5" loss_probability="0.3" calibrated="true"/> -->
+        <epuck_range_and_bearing_salman_sen1 implementation="medium" show_rays="true" medium="rab1" data_size="4" channel_interference="true" noise_std_dev="1.5" loss_probability="0.3" calibrated="true"/>
         <epuck_range_and_bearing_salman_sen2 implementation="medium" show_rays="true" medium="rab2" data_size="4" channel_interference="true" noise_std_dev="1.5" loss_probability="0.3" calibrated="true"/>
         <epuck_range_and_bearing_salman_sen3 implementation="medium" show_rays="true" medium="rab3" data_size="4" channel_interference="true" noise_std_dev="1.5" loss_probability="0.3" calibrated="true"/>
         <epuck_range_and_bearing_salman_sen4 implementation="medium" show_rays="true" medium="rab4" data_size="4" channel_interference="true" noise_std_dev="1.5" loss_probability="0.3" calibrated="true"/>
@@ -43,7 +43,7 @@
 		    <epuck_omnidirectional_camera implementation="rot_z_only" medium="leds" show_rays="false"/>
       </sensors>
       <!-- <params fsm-config="--rab 0 --nstates 2 --s0 4 --att0 5 --n0 1 --n0x0 0 --c0x0 0 --p0x0 1.0 --s1 1 --n1 2 --n1x0 0 --c1x0 5 --p1x0 0.25 --n1x1 0 --c1x1 1 --p1x1 1"/> -->
-      <params fsm-config="--robots 13 --rabsi 0 --rabar 10 --nstates 1 --s0 4 --att0 5 --n0 0"/>
+      <params battery-cap="15.0" fsm-config="--robots 13 --rabsi 5 --rabar 10 --nstates 1 --s0 4 --att0 5 --n0 0"/>
     </automode_controller>
   </controllers>
 

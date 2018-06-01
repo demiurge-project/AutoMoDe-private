@@ -1,0 +1,1 @@
+/usr/bin/c++  -fPIC   -shared -Wl,-soname,libaggregation_anytime_selection_loopfunc.so -o libaggregation_anytime_selection_loopfunc.so CMakeFiles/aggregation_anytime_selection_loopfunc.dir/AggregationAnytimeSelectionLoopFunc.o -largos3plugin__epuck 
