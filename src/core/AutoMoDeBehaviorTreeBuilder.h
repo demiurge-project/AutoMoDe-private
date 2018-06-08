@@ -70,13 +70,15 @@ namespace argos {
 			/*
 			 * Splits a subtree into more subtrees.
 			 */
-			std::vector<std::vector<std::string>> ExtractBranches(std::vector<std::string>& vec_sub_tree);
+			std::vector<std::vector<std::string> > ExtractBranches(std::vector<std::string>& vec_sub_tree);
 
 			Node* ParseSubTree(std::vector<std::string>& vec_sub_tree);
 
 			Node* GetNodeFromType(UInt8 un_node_type);
 
 			AutoMoDeBehaviorTree* cBehaviorTree;
+
+			UInt8 m_unMaxTreeLevel;
 
 	};
 }

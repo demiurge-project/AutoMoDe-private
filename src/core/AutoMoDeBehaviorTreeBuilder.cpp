@@ -15,7 +15,9 @@ namespace argos {
 	/****************************************/
 	/****************************************/
 
-	AutoMoDeBehaviorTreeBuilder::AutoMoDeBehaviorTreeBuilder() {}
+	AutoMoDeBehaviorTreeBuilder::AutoMoDeBehaviorTreeBuilder() {
+		m_unMaxTreeLevel = 5;
+	}
 
 	/****************************************/
 	/****************************************/
@@ -56,7 +58,7 @@ namespace argos {
 
 		try {
 			std::vector<std::string> vecRemainingTree(it+2, vec_bt_config.end());
-			std::vector<std::vector<std::string>> vecBranches = ExtractBranches(vecRemainingTree);
+			std::vector<std::vector<std::string> > vecBranches = ExtractBranches(vecRemainingTree);
 			for (UInt8 i = 0; i < vecBranches.size(); i++) {
 				pcRootNode->AddChildNode(ParseSubTree(vecBranches.at(i)));
 			}
@@ -77,13 +79,13 @@ namespace argos {
 		std::ostringstream oss;
 		std::vector<std::string>::iterator it;
 
-		// std::cout << "Parsing subtree of size " << vec_sub_tree.size() << std::endl;
-		// for (it=vec_sub_tree.begin(); it!=vec_sub_tree.end(); it++) {
-		// 	std::cout << *(it) << " ";
-		// }
-		// std::cout << std::endl;
+		std::cout << "Parsing subtree of size " << vec_sub_tree.size() << std::endl;
+		for (it=vec_sub_tree.begin(); it!=vec_sub_tree.end(); it++) {
+			std::cout << *(it) << " ";
+		}
+		std::cout << std::endl;
 
-		std::string strNodeIdentifier = (*vec_sub_tree.begin()).substr(3,2).c_str();
+		std::string strNodeIdentifier = (*vec_sub_tree.begin()).substr(3, m_unMaxTreeLevel).c_str();
 		UInt8 unNodeType = atoi((*(vec_sub_tree.begin()+1)).c_str());
 
 		if (unNodeType < 5) {   // If not an action or condition
@@ -92,7 +94,7 @@ namespace argos {
 			it = std::find(vec_sub_tree.begin(), vec_sub_tree.end(), oss.str());
 			if (it != vec_sub_tree.end()) {
 				std::vector<std::string> vecRemainingTree(it, vec_sub_tree.end());
-				std::vector<std::vector<std::string>> vecBranches = ExtractBranches(vecRemainingTree);
+				std::vector<std::vector<std::string> > vecBranches = ExtractBranches(vecRemainingTree);
 				for (UInt8 i = 0; i < vecBranches.size(); i++) {
 					pcNode->AddChildNode(ParseSubTree(vecBranches.at(i)));
 				}
@@ -100,7 +102,7 @@ namespace argos {
 				THROW_ARGOSEXCEPTION("Error while parsing scheduling node");
 			}
 		} else if (unNodeType == 5) { // If an Action node
-			//std::cout << "Action leaf reached" << std::endl;
+			std::cout << "Action leaf reached" << std::endl;
 			oss << "--a" << strNodeIdentifier;
 			it = std::find(vec_sub_tree.begin(), vec_sub_tree.end(), oss.str());
 			if (it != vec_sub_tree.end()) {
@@ -110,7 +112,7 @@ namespace argos {
 				THROW_ARGOSEXCEPTION("Error while parsing action");
 			}
 		} else if (unNodeType == 6) { // If a Condition node
-			//std::cout << "Condition leaf reached" << std::endl;
+			std::cout << "Condition leaf reached" << std::endl;
 			oss << "--c" << strNodeIdentifier;
 			it = std::find(vec_sub_tree.begin(), vec_sub_tree.end(), oss.str());
 			if (it != vec_sub_tree.end()) {
@@ -127,9 +129,9 @@ namespace argos {
 	/****************************************/
 	/****************************************/
 
-	std::vector<std::vector<std::string>> AutoMoDeBehaviorTreeBuilder::ExtractBranches(std::vector<std::string>& vec_sub_tree) {
+	std::vector<std::vector<std::string> > AutoMoDeBehaviorTreeBuilder::ExtractBranches(std::vector<std::string>& vec_sub_tree) {
 		std::vector<std::string>::iterator it;
-		std::vector<std::vector<std::string>> vecBranches;
+		std::vector<std::vector<std::string> > vecBranches;
 		UInt8 unNumberChilds = atoi((*(vec_sub_tree.begin()+1)).c_str());
 		std::vector<std::string>::iterator first_child;
 		std::vector<std::string>::iterator second_child;
@@ -137,7 +139,7 @@ namespace argos {
 		if ( (*vec_sub_tree.begin()).compare("--nchildroot") == 0 ) {  // First node (aka root) case
 			strBranchIdentifier = "";
 		} else {
-			strBranchIdentifier = (*vec_sub_tree.begin()).substr(8,5).c_str(); // All other cases
+			strBranchIdentifier = (*vec_sub_tree.begin()).substr(8, m_unMaxTreeLevel).c_str(); // All other cases
 		}
 
 		for (UInt32 i = 0; i < unNumberChilds; i++) {
@@ -165,7 +167,7 @@ namespace argos {
 		AutoMoDeBehaviour* pcNewBehaviour;
 		std::vector<std::string>::iterator it;
 		// Extraction of the index of the node
-		std::string strNodeIndex =  (*vec_bt_action_config.begin()).substr(3,2).c_str();
+		std::string strNodeIndex =  (*vec_bt_action_config.begin()).substr(3, m_unMaxTreeLevel).c_str();
 		// Extraction of the identifier of the behaviour
 		UInt8 unBehaviourIdentifier =  atoi((*(vec_bt_action_config.begin()+1)).c_str());
 
@@ -225,7 +227,7 @@ namespace argos {
 		AutoMoDeCondition* pcNewCondition;
 
 		// Extraction of the index of the node
-		std::string strNodeIndex =  (*vec_bt_condition_config.begin()).substr(3,2).c_str();
+		std::string strNodeIndex =  (*vec_bt_condition_config.begin()).substr(3, m_unMaxTreeLevel).c_str();
 		// Extract Condition identifier
 		UInt32 unConditionIdentifier = atoi((*(vec_bt_condition_config.begin()+1)).c_str());
 
