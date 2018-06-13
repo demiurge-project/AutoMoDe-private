@@ -4,15 +4,15 @@
   <!-- * Framework * -->
   <!-- ************* -->
   <framework>
-    <experiment length="6"
+    <experiment length="3600"
                 ticks_per_second="10" random_seed="13"/>
   </framework>
 
   <!-- ****************** -->
   <!-- * Loop functions * -->
   <!-- ****************** -->
-  <loop_functions library="../../build/loop-functions/example/libaggregation_two_spots_power_loopfunc.so"
-   label="aggregation_two_spots_power_lf">
+  <loop_functions library="../../build/loop-functions/example/libaggregation_two_spots_original_loopfunc.so"
+   label="aggregation_two_spots_original_lf">
    <params dist_radius="1.2" number_robots="1"/>
   </loop_functions>
 
@@ -42,7 +42,7 @@
 		    <epuck_ground implementation="rot_z_only" noise_level="0.05" calibrated="true"/>
 		    <epuck_omnidirectional_camera implementation="rot_z_only" medium="leds" show_rays="false"/>
       </sensors>
-      <params battery-cap="16.5" fsm-config="--robots 13 --rabsi 0 --rabar 10 --nstates 1 --s0 4 --att0 5 --n0 0"/>
+      <params battery-cap="15.0" fsm-config="--robots 13 --rabsi 0 --rabar 10 --nstates 1 --s0 4 --att0 5 --n0 0"/>
     </automode_controller>
   </controllers>
 

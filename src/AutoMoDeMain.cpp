@@ -39,7 +39,7 @@ const std::string ExplainParameters() {
  */
 int main(int n_argc, char** ppch_argv) {
 
-
+	bool bHistory = false;
 	bool bReadableFSM = false;
 	std::vector<std::string> vecConfigFsm;
 	bool bFsmControllerFound = false;
@@ -74,6 +74,8 @@ int main(int n_argc, char** ppch_argv) {
 		// Configure the command line options
 		CARGoSCommandLineArgParser cACLAP;
 		cACLAP.AddFlag('r', "readable-fsm", "", bReadableFSM);
+
+		cACLAP.AddFlag('t', "history", "", bHistory);
 
 		cACLAP.AddArgument<UInt32>('s', "seed", "", unSeed);
 
@@ -114,6 +116,7 @@ int main(int n_argc, char** ppch_argv) {
 					try {
 						AutoMoDeController& cController = dynamic_cast<AutoMoDeController&> (pcEntity->GetController());
 						cController.SetFiniteStateMachine(pcPersonalFsm);
+						cController.SetHistoryFlag(bHistory);
 						cController.SetSwarmConfiguration(pcSwarmConfiguration);
 						cController.InitializeHardwareModules();
 					} catch (std::exception& ex) {

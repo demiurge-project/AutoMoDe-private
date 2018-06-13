@@ -67,6 +67,9 @@ namespace argos{
 			 */
 			void SetFiniteStateMachine(AutoMoDeFiniteStateMachine* pc_fine_state_machine);
 
+			void SetHistoryFlag(bool b_history_flag);
+
+
 			/*
 			 * Function that contains all actuations required at the start of an experiment or during the entire experiment.
 			 * Example of what you might add in the future: display LED colors, start omnidirectional camera, etc.
@@ -83,7 +86,7 @@ namespace argos{
 
 			/*
 			 * Check if battery is avaiable
-			 */ 
+			 */
 			bool IsBatteryDown();
 
 		private:

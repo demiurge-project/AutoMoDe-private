@@ -184,6 +184,15 @@ namespace argos {
 	/****************************************/
 	/****************************************/
 
+	void AutoMoDeController::SetHistoryFlag(bool b_history_flag) {
+		if (b_history_flag) {
+			m_pcFiniteStateMachine->MaintainHistory();
+		}
+	}
+
+	/****************************************/
+	/****************************************/
+
 	void AutoMoDeController::InitializeActuation() {
 		if (m_pcRabActuator != NULL) {
 			UInt8 data[4];
