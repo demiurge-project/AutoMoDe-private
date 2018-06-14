@@ -48,7 +48,8 @@ namespace argos {
       m_unNumberOfRobots = atoi((*(it+1)).c_str());
       it = std::find(vec_fsm_config.begin(), vec_fsm_config.end(), "--rabsi");
       m_unRabSensorIndex = atoi((*(it+1)).c_str());
-			if (m_unRabSensorIndex != 0) {
+		//if (m_unRabSensorIndex != 0) { // In case RAB sen and act both should be equiped
+			if (m_unRabSensorIndex >= 0) {
 				m_bRabEquipped = true;
 				it = std::find(vec_fsm_config.begin(), vec_fsm_config.end(), "--rabar");
 	      if (it != vec_fsm_config.end()) {

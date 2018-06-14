@@ -21,3 +21,9 @@ target_link_libraries(foraging_loopfunc argos3plugin_${ARGOS_BUILD_FOR}_epuck)
 
 add_library(foraging_power_loopfunc SHARED ForagingTwoSpotsPowerLoopFunc.h ForagingTwoSpotsPowerLoopFunc.cpp)
 target_link_libraries(foraging_power_loopfunc argos3plugin_${ARGOS_BUILD_FOR}_epuck)
+
+add_library(endtime_diff_loopfunc SHARED EndtimeDiffLoopFunc.h EndtimeDiffLoopFunc.cpp)
+target_link_libraries(endtime_diff_loopfunc argos3plugin_${ARGOS_BUILD_FOR}_epuck)
+
+add_library(anytime_selection_diff_loopfunc SHARED AnytimeSelectionDiffLoopFunc.h AnytimeSelectionDiffLoopFunc.cpp)
+target_link_libraries(anytime_selection_diff_loopfunc argos3plugin_${ARGOS_BUILD_FOR}_epuck)
