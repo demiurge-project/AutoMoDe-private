@@ -11,7 +11,7 @@
   <!-- ****************** -->
   <!-- * Loop functions * -->
   <!-- ****************** -->
-  <loop_functions library="../../build/loop-functions/vanilla/libvanilla_foraging_loopfunc.so"
+  <loop_functions library="/home/aligot/Desktop/Arena/demiurge-loop-functions/build/loop-functions/vanilla/libforaging_loopfunc.so"
    label="foraging_loop_functions">
    <params dist_radius="1.2" number_robots="20"/>
   </loop_functions>
@@ -21,10 +21,10 @@
   <!-- *************** -->
   <controllers>
 	<!-- TRANSMITTER -->
-    <automode_controller_bt id="automode"
-                        library="../../build/src/libautomode_bt.so">
+    <automode_controller_bt id="automode_bt"
+                        library="/home/aligot/Desktop/Arena/AutoMoDe-BT/build/src/libautomode_bt.so">
       <actuators>
-        <epuck_wheels implementation="default" noise_std_dev="0.05"/>
+        <epuck_wheels implementation="default" noise_std_dev="0.0"/>
         <epuck_rgb_leds implementation="default" medium="leds"/>
         <epuck_range_and_bearing implementation="medium" medium="rab" data_size="4" range="0.7"/>
       </actuators>
@@ -35,7 +35,7 @@
 		    <epuck_ground implementation="rot_z_only" noise_level="0.05" calibrated="true"/>
 		    <epuck_omnidirectional_camera implementation="rot_z_only" medium="leds" show_rays="false"/>
       </sensors>
-    <params bt-config="--rootnode 0 --nchildsroot 4 --n0 0 --nc0 1 --c0x0 2 --p0x0 0.5 --a0 2 --n1 0 --nc1 1 --c1x0 4 --p1x0 9 --w1x0 14.39 --a1 2 --n2 0 --nc2 1 --c2x0 4 --p2x0 3 --w2x0 2.45 --a2 1 --n3 0 --nc3 1 --c3x0 0 --p3x0 0.2 --a3 0 --rwm3 4" />
+      <params bt-config="--nroot 0 --nchildroot 3 --n0 5 --a0 6 --p0 0.0 --n1 2 --nchild1 2 --n10 6 --c10 1 --p10 0.3 --n11 5 --a11 7 --p11 0.5 --n2 5 --a2 6 --p2 1.0"/>
   </automode_controller_bt>
   </controllers>
 
@@ -43,6 +43,20 @@
   <!-- * Arena * -->
   <!-- ********* -->
   <arena size="10, 10, 2" center="0,0,0">
+
+  <!-- ********** -->
+  <!-- * E-Puck * -->
+  <!-- ********** -->
+
+  <distribute>
+    <position method="uniform" min="-1,-1,0" max="1,1,0" />
+    <orientation method="gaussian" mean="0,0,0" std_dev="0,0,0" />
+    <entity quantity="20" max_trials="100">
+      <e-puck id="epuck">
+        <controller config="automode_bt" />
+      </e-puck>
+    </entity>
+  </distribute>
 
   <!-- Change the floor here -->
   <floor id="floor" source="loop_functions" pixels_per_meter="300"/>
@@ -88,9 +102,6 @@
     <body position="1.066,-.615,0" orientation="-30,0,0"/>
   </box>
 
-  <!-- ********** -->
-  <!-- * E-Puck * -->
-  <!-- ********** -->
 
   <!-- The epucks are distributed by the loop functions. -->
   </arena>
@@ -116,8 +127,8 @@
   <!-- ***************** -->
   <visualization>
   <qt-opengl>
-     <user_functions library="../../build/loop-functions/visual-add-ons/libepuck_planning_user_functions.so"
-        label="epuck_planning_qtopengl_user_functions" />
+     <!-- <user_functions library="../../build/loop-functions/visual-add-ons/libepuck_planning_user_functions.so"
+        label="epuck_planning_qtopengl_user_functions" /> -->
     <camera>
       <placement idx="0"
                  position="0,0,4.5"

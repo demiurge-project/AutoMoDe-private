@@ -90,6 +90,7 @@ namespace argos {
 	/****************************************/
 
 	void AutoMoDeBehaviourRotation::Reset() {
+		m_eRotationState = IDLE;
 		m_bOperational = false;
 		ResumeStep();
 	}
@@ -105,8 +106,11 @@ namespace argos {
 	/****************************************/
 
 	bool AutoMoDeBehaviourRotation::Succeeded() {
-		m_eRotationState = IDLE;
-		return EvaluateBernoulliProbability(m_fSuccessProbabilityParameter);
+		if (EvaluateBernoulliProbability(m_fSuccessProbabilityParameter)) {
+			m_eRotationState = IDLE;
+			return true;
+		};
+		return false;
 	}
 
 	/****************************************/

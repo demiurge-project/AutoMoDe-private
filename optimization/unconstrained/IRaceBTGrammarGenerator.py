@@ -8,18 +8,22 @@ import re
 
 CONTROL_FLOW_CATEGORIES = '(0,1,2,3)'
 TERMINAL_CATEGORIES = '(5,6)'
-ALL_NODES_CATEGORIES = '(0,1,2,3,5,6)'
-UNIQUE_CHILD_CATEGORIES = '(5,6)'
+ALL_NODES_CATEGORIES = '(0,1,2,3,4,5,6)'
+UNIQUE_CHILD_CATEGORIES = '(4,5,6)'
+DECORATOR_NODE = 4
 
 ACTION_CATEGORIES = '(1,2,3,4,5,6,7)'
 CONDITION_CATEGORIES = '(0,1,2,3,4,5,6,7)'
 
-max_children = 4
+max_children = 3
 max_level = 3
 
 grammar_file_name = "grammar_bt.txt"
 
 def generate_grammar():
+
+    def is_first_child(id, search=re.compile(r'[^0]').search):
+        return not bool(search(id))
 
     def write_line_to_grammar_file(name, cmd_id, type, range, conditions=""):
         if conditions != "":
@@ -40,7 +44,7 @@ def generate_grammar():
 
     def write_possible_actions_to_file(node_id, second_condition=False):
         if (second_condition) :
-            condition = '(as.numeric(Node{})==5 || as.numeric(Node{}b)==5)'.format(node_id, node_id)
+            condition = '(as.numeric(Node{})==5 || as.numeric(Node{}b)==5 || as.numeric(Node{}c)==5)'.format(node_id, node_id, node_id)
         else:
             condition = 'as.numeric(Node{})==5'.format(node_id)
 
@@ -62,7 +66,7 @@ def generate_grammar():
 
     def write_possible_conditions_to_file(node_id, second_condition=False):
         if (second_condition):
-            condition = '(as.numeric(Node{}b)==6 || as.numeric(Node{})==6)'.format(node_id, node_id)
+            condition = '(as.numeric(Node{})==6 || as.numeric(Node{}b)==6 || as.numeric(Node{}c)==6)'.format(node_id, node_id, node_id)
         else:
             condition = 'as.numeric(Node{})==6'.format(node_id)
         write_line_to_grammar_file(
@@ -136,7 +140,15 @@ def generate_grammar():
             else:
                 if node["id"].endswith('0') and node["has_children"]:  # if its the first child of a node
                     node["first_child"] = True
-                    condition_1 = 'as.numeric(NumChilds{})>{}'.format(node["id"][:-1],1)
+                    if ((len(node["id"]) > 1)):
+                        condition_1 = '((as.numeric(NumChilds{})>{}) || (as.numeric(NumChilds{}b)>{}))'.format(node["id"][:-1], 1, node["id"][:-1], 1)
+                        condition_2 = '(((as.numeric(NumChilds{})=={}) || (as.numeric(NumChilds{}b)=={})) && (as.numeric(Node{}) != {}))'.format(node["id"][:-1], 1, node["id"][:-1], 1, node["id"][:-1], DECORATOR_NODE)
+                        condition_3 = '(((as.numeric(NumChilds{})=={}) || (as.numeric(NumChilds{}b)=={})) && (as.numeric(Node{}) == {}))'.format(node["id"][:-1], 1, node["id"][:-1], 1, node["id"][:-1], DECORATOR_NODE)
+                    else:
+                        condition_1 = '(as.numeric(NumChilds{})>{})'.format(node["id"][:-1], 1)
+                        condition_2 = '((as.numeric(NumChilds{})=={})  && (as.numeric(Node{}) != {}))'.format(node["id"][:-1], 1, node["id"][:-1], DECORATOR_NODE)
+                        condition_3 = '(as.numeric(NumChilds{})=={})'.format(node["id"][:-1], 1)
+
                     write_line_to_grammar_file(
                         'Node{}'.format(node["id"]),
                         node["node_arg"],
@@ -144,7 +156,6 @@ def generate_grammar():
                         node["type_range"],
                         condition_1
                     )
-                    condition_2 = 'as.numeric(NumChilds{})=={}'.format(node["id"][:-1],1)
                     write_line_to_grammar_file(
                         'Node{}b'.format(node["id"]),
                         node["node_arg"],
@@ -152,8 +163,18 @@ def generate_grammar():
                         UNIQUE_CHILD_CATEGORIES,
                         condition_2
                     )
+                    write_line_to_grammar_file(
+                        'Node{}c'.format(node["id"]),
+                        node["node_arg"],
+                        node["type"],
+                        TERMINAL_CATEGORIES,
+                        condition_3
+                    )
                 else:
-                    conditions = 'as.numeric(NumChilds{})>{}'.format(node["id"][:-1],node["id"][-1:])
+                    if (len(node["id"]) > 2):
+                        conditions = '(as.numeric(NumChilds{})>{} || as.numeric(NumChilds{}b)>{})'.format(node["id"][:-1], node["id"][-1:], node["id"][:-1],node["id"][-1:])
+                    else:
+                        conditions = '(as.numeric(NumChilds{})>{})'.format(node["id"][:-1], node["id"][-1:])
             if (not node["first_child"]):
                 write_line_to_grammar_file(
                     'Node{}'.format(node["id"]),
@@ -163,13 +184,31 @@ def generate_grammar():
                     conditions
                 )
             if node["has_children"]: # the node can have children
+                print(node["id"])
                 write_line_to_grammar_file(
                     'NumChilds{}'.format(node["id"]),
                     '\"--nchild{} \"'.format(node["id"]),
                     'i',
                     children_range,
                     'as.numeric(Node{}) %in% c{}'.format(node["id"], CONTROL_FLOW_CATEGORIES)
-            )
+                )
+                #if (len(node["id"])>1):
+                if (node["first_child"]):
+                    write_line_to_grammar_file(             # in case of decorator, only one child is authorized
+                        'NumChilds{}b'.format(node["id"]),
+                        '\"--nchild{} \"'.format(node["id"]),
+                        'c',
+                        '(1)',
+                        '(as.numeric(Node{}) == {} || as.numeric(Node{}b) == {})'.format(node["id"], DECORATOR_NODE, node["id"], DECORATOR_NODE)
+                    )
+                else:
+                    write_line_to_grammar_file(             # in case of decorator, only one child is authorized
+                        'NumChilds{}b'.format(node["id"]),
+                        '\"--nchild{} \"'.format(node["id"]),
+                        'c',
+                        '(1)',
+                        '(as.numeric(Node{}) == {})'.format(node["id"], DECORATOR_NODE)
+                    )
             # TODO: At the moment every node (except the root) can be an action or a conditions
             # TODO: However in the future this might not be True
             # TODO: It needs to be checked, if action and condition are in the range

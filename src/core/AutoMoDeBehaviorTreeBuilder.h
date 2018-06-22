@@ -72,6 +72,11 @@ namespace argos {
 			 */
 			std::vector<std::vector<std::string> > ExtractBranches(std::vector<std::string>& vec_sub_tree);
 
+			/*
+			 * Transforms action description into selector subtree with said action as first child, and Rotation as second child
+			 */
+			std::vector<std::string> TransformIntoSelectorSubtree(std::vector<std::string>& vecRemainingTree, std::string strNodeIdentifier);
+
 			Node* ParseSubTree(std::vector<std::string>& vec_sub_tree);
 
 			Node* GetNodeFromType(UInt8 un_node_type);

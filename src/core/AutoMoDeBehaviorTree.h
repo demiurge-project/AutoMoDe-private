@@ -16,6 +16,7 @@
 #include "bt/Node.h"
 #include "bt/Action.h"
 #include "bt/Condition.h"
+#include "bt/NegationDecorator.h"
 #include "bt/Selector.h"
 #include "bt/SelectorStar.h"
 #include "bt/Sequence.h"
@@ -23,6 +24,7 @@
 #include "../modules/AutoMoDeBehaviour.h"
 #include "../modules/AutoMoDeBehaviourAttraction.h"
 #include "../modules/AutoMoDeBehaviourAntiPhototaxis.h"
+#include "../modules/AutoMoDeBehaviourCurve.h"
 //#include "../modules/AutoMoDeBehaviourExploration.h"
 #include "../modules/AutoMoDeBehaviourPhototaxis.h"
 #include "../modules/AutoMoDeBehaviourRepulsion.h"
@@ -36,6 +38,7 @@
 #include "../modules/AutoMoDeConditionFixedProbability.h"
 #include "../modules/AutoMoDeConditionNeighborsCount.h"
 #include "../modules/AutoMoDeConditionInvertedNeighborsCount.h"
+#include "../modules/AutoMoDeConditionCloseToNeighbors.h"
 #include "../modules/AutoMoDeConditionLight.h"
 #include "../modules/AutoMoDeConditionObstacleInFront.h"
 

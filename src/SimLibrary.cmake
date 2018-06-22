@@ -7,6 +7,7 @@ set(BEHAVIOR_TREE_HEADERS
 	core/AutoMoDeBehaviorTreeBuilder.h
 	core/bt/Action.h
 	core/bt/Condition.h
+	core/bt/NegationDecorator.h
 	core/bt/Node.h
 	core/bt/Selector.h
 	core/bt/SelectorStar.h
@@ -17,8 +18,9 @@ set(BEHAVIOR_TREE_HEADERS
 	# Behaviours
 	modules/AutoMoDeBehaviour.h
 	modules/AutoMoDeBehaviourAntiPhototaxis.h
-	modules/AutoMoDeBehaviourPhototaxis.h
 	modules/AutoMoDeBehaviourAttraction.h
+	modules/AutoMoDeBehaviourCurve.h
+	modules/AutoMoDeBehaviourPhototaxis.h
 	modules/AutoMoDeBehaviourRepulsion.h
 	modules/AutoMoDeBehaviourRotation.h
 	modules/AutoMoDeBehaviourStop.h
@@ -26,6 +28,7 @@ set(BEHAVIOR_TREE_HEADERS
 	# Conditions
 	modules/AutoMoDeCondition.h
 	modules/AutoMoDeConditionBlackFloor.h
+	modules/AutoMoDeConditionCloseToNeighbors.h
 	modules/AutoMoDeConditionWhiteFloor.h
 	modules/AutoMoDeConditionGrayFloor.h
 	modules/AutoMoDeConditionNeighborsCount.h
@@ -40,6 +43,7 @@ set(BEHAVIOR_TREE_SOURCES
 	core/AutoMoDeBehaviorTreeBuilder.cpp
 	core/bt/Action.cpp
 	core/bt/Condition.cpp
+	core/bt/NegationDecorator.cpp
 	core/bt/Node.cpp
 	core/bt/Selector.cpp
 	core/bt/SelectorStar.cpp
@@ -50,8 +54,9 @@ set(BEHAVIOR_TREE_SOURCES
 	# Behaviours
 	modules/AutoMoDeBehaviour.cpp
 	modules/AutoMoDeBehaviourAntiPhototaxis.cpp
-	modules/AutoMoDeBehaviourPhototaxis.cpp
 	modules/AutoMoDeBehaviourAttraction.cpp
+	modules/AutoMoDeBehaviourCurve.cpp
+	modules/AutoMoDeBehaviourPhototaxis.cpp
 	modules/AutoMoDeBehaviourRepulsion.cpp
 	modules/AutoMoDeBehaviourRotation.cpp
 	modules/AutoMoDeBehaviourStop.cpp
@@ -59,6 +64,7 @@ set(BEHAVIOR_TREE_SOURCES
 	# Conditions
 	modules/AutoMoDeCondition.cpp
 	modules/AutoMoDeConditionBlackFloor.cpp
+	modules/AutoMoDeConditionCloseToNeighbors.cpp
 	modules/AutoMoDeConditionWhiteFloor.cpp
 	modules/AutoMoDeConditionGrayFloor.cpp
 	modules/AutoMoDeConditionNeighborsCount.cpp

@@ -68,6 +68,7 @@ namespace argos {
 		}
 
 		cBehaviorTree->SetRootNode(pcRootNode);
+		std::cout << "Parsing done succesfully!" << std::endl;
 		return cBehaviorTree;
 	}
 
@@ -79,11 +80,11 @@ namespace argos {
 		std::ostringstream oss;
 		std::vector<std::string>::iterator it;
 
-		std::cout << "Parsing subtree of size " << vec_sub_tree.size() << std::endl;
-		for (it=vec_sub_tree.begin(); it!=vec_sub_tree.end(); it++) {
-			std::cout << *(it) << " ";
-		}
-		std::cout << std::endl;
+		// std::cout << "Parsing subtree of size " << vec_sub_tree.size() << std::endl;
+		// for (it=vec_sub_tree.begin(); it!=vec_sub_tree.end(); it++) {
+		// 	std::cout << *(it) << " ";
+		// }
+		// std::cout << std::endl;
 
 		std::string strNodeIdentifier = (*vec_sub_tree.begin()).substr(3, m_unMaxTreeLevel).c_str();
 		UInt8 unNodeType = atoi((*(vec_sub_tree.begin()+1)).c_str());
@@ -102,17 +103,34 @@ namespace argos {
 				THROW_ARGOSEXCEPTION("Error while parsing scheduling node");
 			}
 		} else if (unNodeType == 5) { // If an Action node
-			std::cout << "Action leaf reached" << std::endl;
-			oss << "--a" << strNodeIdentifier;
+			// std::cout << "Action leaf reached" << std::endl;
+			oss << "--af" << strNodeIdentifier;     // Action fixed -> parse action normaly
 			it = std::find(vec_sub_tree.begin(), vec_sub_tree.end(), oss.str());
 			if (it != vec_sub_tree.end()) {
+				// std::cout << "--> Action Fixed (af)" << std::endl;
 				std::vector<std::string> vecRemainingTree(it, vec_sub_tree.end());
 				pcNode = HandleAction(vecRemainingTree);
 			} else {
-				THROW_ARGOSEXCEPTION("Error while parsing action");
+				std::ostringstream osss;
+				osss << "--a" << strNodeIdentifier;  // Action defined by IRACE, modify tree to incorporate subtree with obstacle avoidance.
+				it = std::find(vec_sub_tree.begin(), vec_sub_tree.end(), osss.str());
+				if (it != vec_sub_tree.end()) {
+					//  std::cout << "--> Action (a)" << std::endl;
+					std::vector<std::string> vecRemainingTree(it, vec_sub_tree.end());
+
+					std::vector<std::string> additionalSubtree = TransformIntoSelectorSubtree(vecRemainingTree, strNodeIdentifier);
+					pcNode = GetNodeFromType(0);
+					std::vector<std::vector<std::string> > vecBranches = ExtractBranches(additionalSubtree);
+					for (UInt8 i = 0; i < vecBranches.size(); i++) {
+						pcNode->AddChildNode(ParseSubTree(vecBranches.at(i)));
+					}
+
+				}	else {
+					THROW_ARGOSEXCEPTION("Error while parsing action");
+				}
 			}
 		} else if (unNodeType == 6) { // If a Condition node
-			std::cout << "Condition leaf reached" << std::endl;
+			// std::cout << "Condition leaf reached" << std::endl;
 			oss << "--c" << strNodeIdentifier;
 			it = std::find(vec_sub_tree.begin(), vec_sub_tree.end(), oss.str());
 			if (it != vec_sub_tree.end()) {
@@ -139,7 +157,7 @@ namespace argos {
 		if ( (*vec_sub_tree.begin()).compare("--nchildroot") == 0 ) {  // First node (aka root) case
 			strBranchIdentifier = "";
 		} else {
-			strBranchIdentifier = (*vec_sub_tree.begin()).substr(8, m_unMaxTreeLevel).c_str(); // All other cases
+			strBranchIdentifier = (*vec_sub_tree.begin()).substr(8, m_unMaxTreeLevel+1).c_str(); // All other cases
 		}
 
 		for (UInt32 i = 0; i < unNumberChilds; i++) {
@@ -162,12 +180,46 @@ namespace argos {
 	/****************************************/
 	/****************************************/
 
+	std::vector<std::string> AutoMoDeBehaviorTreeBuilder::TransformIntoSelectorSubtree(std::vector<std::string>& vec_action_config, std::string str_node_identifier) {
+		std::vector<std::string> vecSelectorSubtree;
+		std::ostringstream oss;
+		oss << "--nchild" << str_node_identifier << " 2 --n" << str_node_identifier << "0 5 --af" << str_node_identifier << "0 ";
+		oss << *(vec_action_config.begin() + 1) << " ";
+
+		// Checking for parameters
+		std::string vecPossibleParameters[] = {"rwm", "att", "rep", "p", "r"};
+		UInt8 unNumberPossibleParameters = sizeof(vecPossibleParameters) / sizeof(vecPossibleParameters[0]);
+		std::vector<std::string>::iterator it;
+		for (UInt8 i = 0; i < unNumberPossibleParameters; i++) {
+			std::string strCurrentParameter = vecPossibleParameters[i];
+			std::ostringstream oss_param;
+			oss_param << "--" << strCurrentParameter << str_node_identifier;
+			it = std::find(vec_action_config.begin(), vec_action_config.end(), oss_param.str());
+			if (it != vec_action_config.end()) {
+				Real fCurrentParameterValue = strtod((*(it+1)).c_str(), NULL);
+				oss << oss_param.str().c_str() << "0 " << fCurrentParameterValue << " ";
+			}
+		}
+
+		// Addition of Rotation action
+		oss << "--n" << str_node_identifier << "1 5 --af" << str_node_identifier << "1 7 --p" << str_node_identifier << "1 0.0";
+		//std::cout << oss.str().c_str() << std::endl;
+
+		// Transforming stringstream to vector of strings
+		std::istringstream iss(oss.str().c_str());
+		copy(std::istream_iterator<std::string>(iss), std::istream_iterator<std::string>(), std::back_inserter(vecSelectorSubtree));
+		return vecSelectorSubtree;
+	}
+
+	/****************************************/
+	/****************************************/
+
 	Action* AutoMoDeBehaviorTreeBuilder::HandleAction(std::vector<std::string>& vec_bt_action_config) {
 		Action* pcActionNode = new Action();
 		AutoMoDeBehaviour* pcNewBehaviour;
 		std::vector<std::string>::iterator it;
 		// Extraction of the index of the node
-		std::string strNodeIndex =  (*vec_bt_action_config.begin()).substr(3, m_unMaxTreeLevel).c_str();
+		std::string strNodeIndex =  (*vec_bt_action_config.begin()).substr(4, m_unMaxTreeLevel+1).c_str();
 		// Extraction of the identifier of the behaviour
 		UInt8 unBehaviourIdentifier =  atoi((*(vec_bt_action_config.begin()+1)).c_str());
 
@@ -197,12 +249,15 @@ namespace argos {
 			case 7:
 				pcNewBehaviour = new AutoMoDeBehaviourRotation();
 				break;
+			case 8:
+				pcNewBehaviour = new AutoMoDeBehaviourCurve();
+				break;
 		}
 		pcNewBehaviour->SetIndex(0);
 		pcNewBehaviour->SetIdentifier(unBehaviourIdentifier);
 
 		// Checking for parameters
-		std::string vecPossibleParameters[] = {"rwm", "att", "rep", "p"};
+		std::string vecPossibleParameters[] = {"rwm", "att", "rep", "p", "r"};
 		UInt8 unNumberPossibleParameters = sizeof(vecPossibleParameters) / sizeof(vecPossibleParameters[0]);
 		for (UInt8 i = 0; i < unNumberPossibleParameters; i++) {
 			std::string strCurrentParameter = vecPossibleParameters[i];
@@ -256,6 +311,9 @@ namespace argos {
 			case 7:
 				pcNewCondition = new AutoMoDeConditionObstacleInFront();
 				break;
+			case 8:
+				pcNewCondition = new AutoMoDeConditionCloseToNeighbors();
+				break;
 		}
 
 		pcNewCondition->SetOriginAndExtremity(0, 0);  // No need of origin and extremity in cas of Behavior Trees. Set them to random value.
@@ -265,7 +323,7 @@ namespace argos {
 
 		// Checking for parameters
 		std::vector<std::string>::iterator it;
-		std::string vecPossibleParameters[] = {"p", "w"};
+		std::string vecPossibleParameters[] = {"p", "w", "d"};
 		UInt8 unNumberPossibleParameters = sizeof(vecPossibleParameters) / sizeof(vecPossibleParameters[0]);
 		for (UInt8 i = 0; i < unNumberPossibleParameters; i++) {
 			std::string strCurrentParameter = vecPossibleParameters[i];
@@ -306,7 +364,7 @@ namespace argos {
 				break;
 			}
 			case 4: {
-				//pcNode = new NegationDecorator();
+				pcNode = new NegationDecorator();
 				break;
 			}
 			case 5: {
