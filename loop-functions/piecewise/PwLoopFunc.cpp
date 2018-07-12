@@ -300,9 +300,15 @@ Real PwLoopFunction::PwFunctionFlee(UInt32 unClock, UInt32 unInitTime, UInt32 un
 
     if (unClock > unInitTime && unClock <= unEndTime){
         Real unScore = 0;
+        Real d = 0;
         TPosMap::iterator it;
         for (it = m_tPositions.begin(); it != m_tPositions.end(); ++it) {
-            unScore = 1-(((it->second - m_cCoordSpotB).Length())/1.72);
+            d = ((it->second - m_cCoordSpotB).Length())-m_fRadiusSpot;
+                        if(d < 0)
+                            unScore+=1;
+                        else{
+                            unScore+=(1-(d/1.42));
+                        }
             //Real d = (it->second - m_cCoordSpotB).Length();
             //if (d < 1.62)
             //    unScore+=1;

@@ -18,8 +18,8 @@ function write_state() {
   echo "RWM$INDEX   \"--rwm$INDEX \"  i (1,100) | as.numeric(S$INDEX)==0" >> ${TXT_FILE}
   echo "ATT$INDEX   \"--att$INDEX \"  r (1,5) | as.numeric(S$INDEX) %in% c(4,6)" >> ${TXT_FILE}
   echo "REP$INDEX   \"--rep$INDEX \"  r (1,5) | as.numeric(S$INDEX) %in% c(5,7)" >> ${TXT_FILE}
-  echo "CLE$INDEX   \"--cle$INDEX \"  c (0,4,5,6) | as.numeric(S$INDEX) %in% c(0,1,2,3,4,5,6,7)" >> ${TXT_FILE}
-  echo "CLR$INDEX   \"--clr$INDEX \"  c (1,2,4,5,6) | as.numeric(S$INDEX) %in% c(6,7)" >> ${TXT_FILE}
+  echo "CLE$INDEX   \"--cle$INDEX \"  c (0,4) | as.numeric(S$INDEX) %in% c(0,1,2,3,4,5,6,7)" >> ${TXT_FILE}
+  echo "CLR$INDEX   \"--clr$INDEX \"  c (1,2,3,4) | as.numeric(S$INDEX) %in% c(6,7)" >> ${TXT_FILE}
   if [ ${INDEX} == 0 ]; then
     echo "NumConnections$INDEX \"--n$INDEX \" i (1,$NB_TRANS) | as.numeric(NumStates)>1" >> ${TXT_FILE}
   else
@@ -40,8 +40,8 @@ function write_connection() {
   echo "WI${STATE}x$CONNECTION  \"--w${STATE}x$CONNECTION \" r   (0,20) | as.numeric(C${STATE}x$CONNECTION)==4 " >> ${TXT_FILE}
   echo "I${STATE}x$CONNECTION  \"--i${STATE}x$CONNECTION \" c   (3) | as.numeric(C${STATE}x$CONNECTION)==6 " >> ${TXT_FILE}
   echo "E${STATE}x$CONNECTION  \"--e${STATE}x$CONNECTION \" c   (5) | as.numeric(C${STATE}x$CONNECTION)==6 " >> ${TXT_FILE}
-  echo "L${STATE}x$CONNECTION  \"--l${STATE}x$CONNECTION \" c   (1,2,4,5,6) | as.numeric(C${STATE}x$CONNECTION)==6 " >> ${TXT_FILE}
-  echo "D${STATE}x$CONNECTION  \"--d${STATE}x$CONNECTION \" o   (15,30,50) | as.numeric(C${STATE}x$CONNECTION)==6 " >> ${TXT_FILE}
+  echo "L${STATE}x$CONNECTION  \"--l${STATE}x$CONNECTION \" c   (1,2,3,4) | as.numeric(C${STATE}x$CONNECTION)==6 " >> ${TXT_FILE}
+  echo "D${STATE}x$CONNECTION  \"--d${STATE}x$CONNECTION \" o   (15,35) | as.numeric(C${STATE}x$CONNECTION)==6 " >> ${TXT_FILE}
   
   
 }

@@ -5,13 +5,13 @@
   <!-- ************* -->
   <framework>
     <experiment length="240"
-                ticks_per_second="10" random_seed="0"/>
+                ticks_per_second="10" random_seed="1224"/>
   </framework>
 
   <!-- ****************** -->
   <!-- * Loop functions * -->
   <!-- ****************** -->
-  <loop_functions library="../../build/loop-functions/piecewise/libpw_loopfunc.so"
+  <loop_functions library="../../../build/loop-functions/piecewise/libpw_loopfunc.so"
    label="pw_loop_function">
        <params number_robots="20"
                build_arena="true"
@@ -29,7 +29,7 @@
   <controllers>
 	<!-- TRANSMITTER -->
     <automode_controller id="automode"
-                        library="../../build/src/libautomode.so">
+                        library="../../../build/src/libautomode.so">
       <actuators>
         <epuck_wheels implementation="default" noise_std_dev="0.05"/>
         <epuck_rgb_leds implementation="default" medium="leds"/>

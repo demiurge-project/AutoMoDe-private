@@ -4,8 +4,8 @@
   <!-- * Framework * -->
   <!-- ************* -->
   <framework>
-    <experiment length="50"
-                ticks_per_second="10" random_seed="0"/>
+    <experiment length="480"
+                ticks_per_second="10" random_seed="16221"/>
   </framework>
 
   <!-- ****************** -->
@@ -13,14 +13,14 @@
   <!-- ****************** -->
   <loop_functions library="../../build/loop-functions/piecewise/libpw_loopfunc.so"
    label="pw_loop_function">
-       <params number_robots="1"
+       <params number_robots="20"
                build_arena="true"
                number_edges="12"
                number_boxes_per_edge="3"
                lenght_boxes="0.2"
-               piecewise_exp="9"
-               piecewise_config="0"
-               piecewise_time="1200"/>
+               piecewise_exp="0"
+               piecewise_config="1"
+               piecewise_time="2400"/>
   </loop_functions>
 
   <!-- *************** -->
@@ -42,11 +42,7 @@
 		    <epuck_ground implementation="rot_z_only" noise_level="0.05" calibrated="true"/>
             <epuck_omnidirectional_camera implementation="rot_z_only" medium="leds" show_rays="false"/>
       </sensors>
-    <params readable="true" fsm-config="--nstates 1
-
-                                        --s0 1 --cle0 6
-                                        --n0 0
-                                        "/>
+    <params readable="true" fsm-config="--nstates 2 --s0 7 --rep0 1.09 --cle0 4 --clr0 4 --n0 1 --n0x0 0 --c0x0 6 --i0x0 3 --e0x0 5 --l0x0 1 --d0x0 50 --s1 1 --cle1 0 --n1 3 --n1x0 0 --c1x0 6 --i1x0 3 --e1x0 5 --l1x0 2 --d1x0 50 --n1x1 0 --c1x1 3 --p1x1 10 --w1x1 16.95 --n1x2 0 --c1x2 0 --p1x2 0.85"/>
 
                                         <!-- From sa -> n0x0 sb = n0x0 sb+1, (a < b) -->
                                         <!-- From sa -> n0x0 sb = n0x0 sb  , (a > b)-->
@@ -102,7 +98,7 @@
   <!-- * Visualization * -->
   <!-- ***************** -->
   <visualization>
-    <qt-opengl>
+	<qt-opengl>
       <camera>
         <placement idx="0"
                    position="0,0,4.5"
