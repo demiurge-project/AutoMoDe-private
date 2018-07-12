@@ -38,14 +38,11 @@ void IcraAggLoopFunction::Destroy() {
 
 argos::CColor IcraAggLoopFunction::GetFloorColor(const argos::CVector2& c_position_on_plane) {
 
-    if (c_position_on_plane.GetX() >= -0.375 && c_position_on_plane.GetX() <= 0.375){
-        if (c_position_on_plane.GetY() >= 0 && c_position_on_plane.GetY() <= 0.905)
+        if (c_position_on_plane.GetY() <= -0.655 || c_position_on_plane.GetX() >= 0.655)
             return CColor::WHITE;
-        else if(c_position_on_plane.GetY() <= 0 && c_position_on_plane.GetY() >= -0.905)
-        {
+        else if(c_position_on_plane.GetX() <= -0.655 || c_position_on_plane.GetY() >= 0.655)
             return CColor::BLACK;
-        }
-    }
+
     return CColor::GRAY50;
 }
 

@@ -38,14 +38,11 @@ void IcraStopLoopFunction::Destroy() {
 
 argos::CColor IcraStopLoopFunction::GetFloorColor(const argos::CVector2& c_position_on_plane) {
 
-    if (c_position_on_plane.GetX() >= -0.375 && c_position_on_plane.GetX() <= 0.375){
-        if (c_position_on_plane.GetY() >= 0 && c_position_on_plane.GetY() <= 0.905)
+        if (c_position_on_plane.GetY() <= -0.655 || c_position_on_plane.GetX() >= 0.655)
             return CColor::WHITE;
-        else if(c_position_on_plane.GetY() <= 0 && c_position_on_plane.GetY() >= -0.905)
-        {
+        else if(c_position_on_plane.GetX() <= -0.655 || c_position_on_plane.GetY() >= 0.655)
             return CColor::BLACK;
-        }
-    }
+
     return CColor::GRAY50;
 }
 
@@ -130,7 +127,7 @@ Real IcraStopLoopFunction::GetMissionScore(UInt32 unClock){
     Real unScore = 0;
 
     if (m_unPwConfig == 0){
-        unScore += PwFunctionMove(unClock,0,m_unPwTime,true);
+        unScore += PwFunctionMove(unClock,0,m_unPwTime,false);
         unScore += PwFunctionStop(unClock,m_unPwTime,(2*m_unPwTime));
         return unScore;
     }
@@ -138,11 +135,11 @@ Real IcraStopLoopFunction::GetMissionScore(UInt32 unClock){
     if (m_unPwConfig == 1){
         if (m_fRandomIndex <= 0.5){
             unScore += PwFunctionStop(unClock,0,m_unPwTime);
-            unScore += PwFunctionMove(unClock,m_unPwTime,(2*m_unPwTime),true);
+            unScore += PwFunctionMove(unClock,m_unPwTime,(2*m_unPwTime),false);
             return unScore;
         }
         else{
-            unScore += PwFunctionMove(unClock,m_unPwTime,(2*m_unPwTime),true);
+            unScore += PwFunctionMove(unClock,m_unPwTime,(2*m_unPwTime),false);
             unScore += PwFunctionStop(unClock,0,m_unPwTime);
             return unScore;
         }
