@@ -42,7 +42,7 @@
 		    <epuck_ground implementation="rot_z_only" noise_level="0.05" calibrated="true"/>
             <epuck_omnidirectional_camera implementation="rot_z_only" medium="leds" show_rays="true"/>
       </sensors>
-    <params readable="true" history='false' fsm-config="--nstates 2 --s0 7 --rep0 4.28 --cle0 0 --clr0 3 --n0 4 --n0x0 0 --c0x0 6 --i0x0 3 --e0x0 5 --l0x0 1 --d0x0 35 --n0x1 0 --c0x1 1 --p0x1 0.23 --n0x2 0 --c0x2 5 --p0x2 0.1 --n0x3 0 --c0x3 1 --p0x3 0.64 --s1 4 --att1 3.57 --cle1 0 --n1 3 --n1x0 0 --c1x0 2 --p1x0 0.25 --n1x1 0 --c1x1 0 --p1x1 0.33 --n1x2 0 --c1x2 2 --p1x2 0.76"/>
+    <params readable="true" history='false' fsm-config="--nstates 3 --s0 0 --rwm0 16 --cle0 0 --n0 4 --n0x0 0 --c0x0 0 --p0x0 0.9 --n0x1 1 --c0x1 2 --p0x1 0.93 --n0x2 0 --c0x2 5 --p0x2 0.8 --n0x3 0 --c0x3 6 --i0x3 3 --e0x3 5 --l0x3 2 --d0x3 35 --s1 6 --att1 2.16 --cle1 0 --clr1 2 --n1 4 --n1x0 1 --c1x0 1 --p1x0 0.83 --n1x1 1 --c1x1 6 --i1x1 3 --e1x1 5 --l1x1 4 --d1x1 35 --n1x2 1 --c1x2 0 --p1x2 0.35 --n1x3 1 --c1x3 6 --i1x3 3 --e1x3 5 --l1x3 1 --d1x3 35 --s2 6 --att2 4.89 --cle2 0 --clr2 3 --n2 4 --n2x0 0 --c2x0 3 --p2x0 5 --w2x0 12.08 --n2x1 0 --c2x1 5 --p2x1 0.63 --n2x2 1 --c2x2 2 --p2x2 0.97 --n2x3 1 --c2x3 3 --p2x3 7 --w2x3 6.53"/>
 
                                         <!-- From sa -> n0x0 sb = n0x0 sb+1, (a < b) -->
                                         <!-- From sa -> n0x0 sb = n0x0 sb  , (a > b)-->

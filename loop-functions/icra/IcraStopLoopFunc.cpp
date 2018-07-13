@@ -134,13 +134,13 @@ Real IcraStopLoopFunction::GetMissionScore(UInt32 unClock){
 
     if (m_unPwConfig == 1){
         if (m_fRandomIndex <= 0.5){
-            unScore += PwFunctionStop(unClock,0,m_unPwTime);
             unScore += PwFunctionMove(unClock,m_unPwTime,(2*m_unPwTime),false);
+            unScore += PwFunctionStop(unClock,0,m_unPwTime);
             return unScore;
         }
         else{
-            unScore += PwFunctionMove(unClock,m_unPwTime,(2*m_unPwTime),false);
             unScore += PwFunctionStop(unClock,0,m_unPwTime);
+            unScore += PwFunctionMove(unClock,m_unPwTime,(2*m_unPwTime),false);
             return unScore;
         }
     }
