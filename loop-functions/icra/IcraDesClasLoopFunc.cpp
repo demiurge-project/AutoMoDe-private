@@ -75,7 +75,6 @@ void IcraDesClasLoopFunction::PostStep() {
     GetRobotPositions(false);
     m_fObjectiveFunction += GetMissionScore(unClock);
     m_tMemPositions = m_tPositions;
-    LOG << m_fObjectiveFunction << std::endl;
 }
 
 /****************************************/
