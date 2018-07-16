@@ -6,12 +6,12 @@
   * @license MIT License
   */
 
-#include "IcraDesLoopFunc.h"
+#include "IcraAggClasLoopFunc.h"
 
 /****************************************/
 /****************************************/
 
-IcraDesLoopFunction::IcraDesLoopFunction() {
+IcraAggClasLoopFunction::IcraAggClasLoopFunction() {
     m_fObjectiveFunction = 0;
     m_fRandomIndex = 0;
 }
@@ -19,24 +19,24 @@ IcraDesLoopFunction::IcraDesLoopFunction() {
 /****************************************/
 /****************************************/
 
-IcraDesLoopFunction::IcraDesLoopFunction(const IcraDesLoopFunction& orig) {
+IcraAggClasLoopFunction::IcraAggClasLoopFunction(const IcraAggClasLoopFunction& orig) {
 }
 
 /****************************************/
 /****************************************/
 
-IcraDesLoopFunction::~IcraDesLoopFunction() {}
+IcraAggClasLoopFunction::~IcraAggClasLoopFunction() {}
 
 /****************************************/
 /****************************************/
 
-void IcraDesLoopFunction::Destroy() {
+void IcraAggClasLoopFunction::Destroy() {
 }
 
 /****************************************/
 /****************************************/
 
-argos::CColor IcraDesLoopFunction::GetFloorColor(const argos::CVector2& c_position_on_plane) {
+argos::CColor IcraAggClasLoopFunction::GetFloorColor(const argos::CVector2& c_position_on_plane) {
 
         if (c_position_on_plane.GetY() <= -0.655 || c_position_on_plane.GetX() >= 0.655)
             return CColor::WHITE;
@@ -49,7 +49,7 @@ argos::CColor IcraDesLoopFunction::GetFloorColor(const argos::CVector2& c_positi
 /****************************************/
 /****************************************/
 
-void IcraDesLoopFunction::Init(TConfigurationNode& t_tree) {
+void IcraAggClasLoopFunction::Init(TConfigurationNode& t_tree) {
     AutoMoDeLoopFunctions::Init(t_tree);
     GetRobotPositions(true);
 
@@ -59,7 +59,7 @@ void IcraDesLoopFunction::Init(TConfigurationNode& t_tree) {
 /****************************************/
 /****************************************/
 
-void IcraDesLoopFunction::Reset() {
+void IcraAggClasLoopFunction::Reset() {
     AutoMoDeLoopFunctions::Reset();
     m_fObjectiveFunction = 0;
     m_fRandomIndex = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
@@ -68,7 +68,7 @@ void IcraDesLoopFunction::Reset() {
 /****************************************/
 /****************************************/
 
-void IcraDesLoopFunction::PostStep() {
+void IcraAggClasLoopFunction::PostStep() {
     UInt32 unClock = GetSpace().GetSimulationClock();
 
     ArenaControl(unClock);
@@ -80,7 +80,7 @@ void IcraDesLoopFunction::PostStep() {
 /****************************************/
 /****************************************/
 
-void IcraDesLoopFunction::PostExperiment() {
+void IcraAggClasLoopFunction::PostExperiment() {
 
   LOG << m_fObjectiveFunction << std::endl;
 }
@@ -88,7 +88,7 @@ void IcraDesLoopFunction::PostExperiment() {
 /****************************************/
 /****************************************/
 
-Real IcraDesLoopFunction::GetObjectiveFunction() {
+Real IcraAggClasLoopFunction::GetObjectiveFunction() {
 
   return m_fObjectiveFunction;
 }
@@ -96,16 +96,26 @@ Real IcraDesLoopFunction::GetObjectiveFunction() {
 /****************************************/
 /****************************************/
 
-void IcraDesLoopFunction::ArenaControl(UInt32 unClock) {
+void IcraAggClasLoopFunction::ArenaControl(UInt32 unClock) {
 
     if (unClock == 1 && m_unPwConfig == 0)
-        m_pcArena->SetArenaColor(CColor::BLACK);
-
-    if (unClock == m_unPwTime && m_unPwConfig == 0 && m_fRandomIndex <= 0.5)
         m_pcArena->SetArenaColor(CColor::BLUE);
 
-    if (unClock == m_unPwTime && m_unPwConfig == 0 && m_fRandomIndex > 0.5)
+    if (unClock == m_unPwTime && m_unPwConfig == 0)
         m_pcArena->SetArenaColor(CColor::GREEN);
+
+
+    if (unClock == 1 && m_unPwConfig == 1 && m_fRandomIndex <= 0.5)
+        m_pcArena->SetArenaColor(CColor::BLUE);
+
+    if (unClock == 1 && m_unPwConfig == 1 && m_fRandomIndex > 0.5)
+        m_pcArena->SetArenaColor(CColor::GREEN);
+
+    if (unClock == m_unPwTime && m_unPwConfig == 1 && m_fRandomIndex <= 0.5)
+        m_pcArena->SetArenaColor(CColor::GREEN);
+
+    if (unClock == m_unPwTime && m_unPwConfig == 1 && m_fRandomIndex > 0.5)
+        m_pcArena->SetArenaColor(CColor::BLUE);
 
     return;
 }
@@ -113,21 +123,27 @@ void IcraDesLoopFunction::ArenaControl(UInt32 unClock) {
 /****************************************/
 /****************************************/
 
-Real IcraDesLoopFunction::GetMissionScore(UInt32 unClock){
+Real IcraAggClasLoopFunction::GetMissionScore(UInt32 unClock){
 
     Real unScore = 0;
 
     if (m_unPwConfig == 0){
-        unScore += PwFunctionMove(unClock,0,m_unPwTime,false);
+        unScore += PwFunctionAgg(unClock,0,m_unPwTime,false);
+        unScore += PwFunctionAgg(unClock,m_unPwTime,(2*m_unPwTime),true);
+        return unScore;
+    }
+
+    if (m_unPwConfig == 1){
         if (m_fRandomIndex <= 0.5){
-            unScore += PwFunctionAgg(unClock,m_unPwTime,(2*m_unPwTime),false);
-            return unScore;
-        }
-        else{
+            unScore += PwFunctionAgg(unClock,0,m_unPwTime,false);
             unScore += PwFunctionAgg(unClock,m_unPwTime,(2*m_unPwTime),true);
             return unScore;
         }
-        return unScore;
+        else{
+            unScore += PwFunctionAgg(unClock,0,m_unPwTime,true);
+            unScore += PwFunctionAgg(unClock,m_unPwTime,(2*m_unPwTime),false);
+            return unScore;
+        }
     }
 
     return 0;
@@ -136,7 +152,7 @@ Real IcraDesLoopFunction::GetMissionScore(UInt32 unClock){
 /****************************************/
 /****************************************/
 
-void IcraDesLoopFunction::GetRobotPositions(bool bSavePositions) {
+void IcraAggClasLoopFunction::GetRobotPositions(bool bSavePositions) {
     CSpace::TMapPerType& tEpuckMap = GetSpace().GetEntitiesByType("epuck");
     CVector2 cEpuckPosition(0,0);
     for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it) {
@@ -154,25 +170,22 @@ void IcraDesLoopFunction::GetRobotPositions(bool bSavePositions) {
 /****************************************/
 /****************************************/
 
-Real IcraDesLoopFunction::PwFunctionAgg(UInt32 unClock, UInt32 unInitTime, UInt32 unEndTime, bool bWhiteColor) {
+Real IcraAggClasLoopFunction::PwFunctionAgg(UInt32 unClock, UInt32 unInitTime, UInt32 unEndTime, bool bWhiteColor) {
 
-    if (unClock > unInitTime && unClock <= unEndTime){
+    if (unClock == unEndTime){
         Real unScore = 0;
-        TPosMap::iterator it, jt;
-        for (it = m_tPositions.begin(), jt = m_tMemPositions.begin(); it != m_tPositions.end(); ++it, ++jt) {
-            Real d = (it->second - jt->second).Length();
-            if (d > 0.0005)
-                unScore+=1;
-            else {
+        TPosMap::iterator it;
+        for (it = m_tPositions.begin(); it != m_tPositions.end(); ++it) {
+
                 if (bWhiteColor){
-                    if(GetFloorColor(it->second) != CColor::WHITE)
+                    if(it->second.GetY() > -0.62  && it->second.GetX() < 0.62)
                         unScore+=1;
                 }
                 else {
-                    if(GetFloorColor(it->second) != CColor::BLACK)
+                    if(it->second.GetX() > -0.62 && it->second.GetY() < 0.62)
                         unScore+=1;
                 }
-            }
+
         }
         return unScore;
     }
@@ -183,51 +196,7 @@ Real IcraDesLoopFunction::PwFunctionAgg(UInt32 unClock, UInt32 unInitTime, UInt3
 /****************************************/
 /****************************************/
 
-Real IcraDesLoopFunction::PwFunctionStop(UInt32 unClock, UInt32 unInitTime, UInt32 unEndTime) {
-
-    if (unClock > unInitTime && unClock <= unEndTime){
-        Real unScore = 0;
-        TPosMap::iterator it, jt;
-        for (it = m_tPositions.begin(), jt = m_tMemPositions.begin(); it != m_tPositions.end(); ++it, ++jt) {
-            Real d = (it->second - jt->second).Length();
-            if (d > 0.0005)
-                unScore+=1;
-        }
-        return unScore;
-    }
-
-    return 0;
-}
-
-/****************************************/
-/****************************************/
-
-Real IcraDesLoopFunction::PwFunctionMove(UInt32 unClock, UInt32 unInitTime, UInt32 unEndTime, bool bCheckColor) {
-
-    if (unClock > unInitTime && unClock < unEndTime){
-        Real unScore = 0;
-        TPosMap::iterator it, jt;
-        for (it = m_tPositions.begin(), jt = m_tMemPositions.begin(); it != m_tPositions.end(); ++it, ++jt) {
-            Real d = (it->second - jt->second).Length();
-            if (d > 0.0005){
-                if (bCheckColor){
-                    if(GetFloorColor(it->second) != CColor::GRAY50)
-                        unScore+=1;
-                }
-            }
-            else
-                unScore+=1;
-        }
-        return unScore;
-    }
-
-    return 0;
-}
-
-/****************************************/
-/****************************************/
-
-CVector3 IcraDesLoopFunction::GetRandomPosition() {
+CVector3 IcraAggClasLoopFunction::GetRandomPosition() {
   Real temp;
   Real a = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
   Real b = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
@@ -246,4 +215,4 @@ CVector3 IcraDesLoopFunction::GetRandomPosition() {
 /****************************************/
 /****************************************/
 
-REGISTER_LOOP_FUNCTIONS(IcraDesLoopFunction, "icra_des_loop_function");
+REGISTER_LOOP_FUNCTIONS(IcraAggClasLoopFunction, "icra_agg_clas_loop_function");
