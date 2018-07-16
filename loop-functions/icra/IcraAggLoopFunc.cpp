@@ -75,6 +75,7 @@ void IcraAggLoopFunction::PostStep() {
     GetRobotPositions(false);
     m_fObjectiveFunction += GetMissionScore(unClock);
     m_tMemPositions = m_tPositions;
+    LOG << m_fObjectiveFunction << std::endl;
 }
 
 /****************************************/
@@ -181,16 +182,12 @@ Real IcraAggLoopFunction::PwFunctionAgg(UInt32 unClock, UInt32 unInitTime, UInt3
                 unScore+=1;
             else {
                 if (bWhiteColor){
-                    if(GetFloorColor(it->second) == CColor::GRAY50)
+                    if(GetFloorColor(it->second) != CColor::WHITE)
                         unScore+=1;
-                    else if (GetFloorColor(it->second) == CColor::BLACK)
-                        unScore+=2;
                 }
                 else {
-                    if(GetFloorColor(it->second) == CColor::GRAY50)
+                    if(GetFloorColor(it->second) != CColor::BLACK)
                         unScore+=1;
-                    else if (GetFloorColor(it->second) == CColor::WHITE)
-                        unScore+=2;
                 }
             }
         }
