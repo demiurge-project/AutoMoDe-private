@@ -177,25 +177,21 @@ Real IcraAggLoopFunction::PwFunctionAgg(UInt32 unClock, UInt32 unInitTime, UInt3
         TPosMap::iterator it, jt;
         for (it = m_tPositions.begin(), jt = m_tMemPositions.begin(); it != m_tPositions.end(); ++it, ++jt) {
             Real d = (it->second - jt->second).Length();
-            if (bWhiteColor) {
-                if(GetFloorColor(it->second) == CColor::WHITE) {
-                    if (d > 0.0005)
-                        unScore+=1;
-                }
-                else if(GetFloorColor(it->second) == CColor::GRAY50)
-                    unScore+=1;
-                else if (GetFloorColor(it->second) == CColor::BLACK)
-                    unScore+=2;
-            }
+            if (d > 0.0005)
+                unScore+=1;
             else {
-                if(GetFloorColor(it->second) == CColor::BLACK) {
-                    if (d > 0.0005)
+                if (bWhiteColor){
+                    if(GetFloorColor(it->second) == CColor::GRAY50)
                         unScore+=1;
+                    else if (GetFloorColor(it->second) == CColor::BLACK)
+                        unScore+=2;
                 }
-                else if(GetFloorColor(it->second) == CColor::GRAY50)
-                    unScore+=1;
-                else if (GetFloorColor(it->second) == CColor::WHITE)
-                    unScore+=2;
+                else {
+                    if(GetFloorColor(it->second) == CColor::GRAY50)
+                        unScore+=1;
+                    else if (GetFloorColor(it->second) == CColor::WHITE)
+                        unScore+=2;
+                }
             }
         }
         return unScore;
