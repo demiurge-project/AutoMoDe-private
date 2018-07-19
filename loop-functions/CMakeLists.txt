@@ -8,4 +8,4 @@ add_subdirectory(foraging)
 add_subdirectory(colors)
 add_subdirectory(piecewise)
 add_subdirectory(icra)
-
+add_subdirectory(adaptation)

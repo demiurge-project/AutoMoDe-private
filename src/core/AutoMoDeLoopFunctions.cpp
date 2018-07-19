@@ -157,7 +157,7 @@ Real AutoMoDeLoopFunctions::GetArenaRadious() {
     Real fRadious;
     fRadious =  (m_fLenghtBoxes*m_unNumberBoxes) / (2 * Tan(CRadians::PI / m_unNumberEdges));
     //fRadious = fRadious - 0.10; // Avoids to place robots close the walls.
-    fRadious = fRadious - 0.50; // Reduced cluster at the begining
+    fRadious = fRadious - 0.65; // Reduced cluster at the begining
 
     return fRadious;
 }
