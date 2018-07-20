@@ -15,8 +15,9 @@ StopMtcLoopFunction::StopMtcLoopFunction() {
     m_fObjectiveFunction = 0;
     m_fRandomIndex = 0;
     m_cCoordSpot1 = CVector2(0.54, 0.54);
-    m_cCoordSpot2 = CVector2(0.54, 0.00);
+    m_cCoordSpot2 = CVector2(0.765, 0.00);
     m_cCoordSpot3 = CVector2(0.54,-0.54);
+    m_cStopCoord = CVector2(0,0);
     m_fSafeDist = 0.16;
     m_fRadiusSpot = 0.125;
     m_bStopSignal = false;
@@ -100,7 +101,7 @@ void StopMtcLoopFunction::PostStep() {
 void StopMtcLoopFunction::PostExperiment() {
 
     if (!m_bStopSignal)
-        m_unStopTime = 1800;
+        m_unStopTime = 1200;
 
     Real fTimeScore = (Real)m_unStopTime * (Real)m_unNumberRobots;
     m_fObjectiveFunction += fTimeScore;
@@ -120,17 +121,85 @@ Real StopMtcLoopFunction::GetObjectiveFunction() {
 
 void StopMtcLoopFunction::ArenaControl(UInt32 unClock) {
 
-    if (unClock == 1 && m_fRandomIndex <= 0.5)
-        ArenaConfigOne();
+    if (unClock == 1)
+        ArenaControlSelector(unClock);
 
-    if (unClock == m_unPwTime && m_fRandomIndex <= 0.5)
-        ArenaConfigTwo();
+    if (unClock == 400)
+        ArenaControlSelector(unClock);
 
-    if (unClock == 1 && m_fRandomIndex > 0.5)
-        ArenaConfigTwo();
+    if (unClock == 800)
+        ArenaControlSelector(unClock);
 
-    if (unClock == m_unPwTime && m_fRandomIndex > 0.5)
-        ArenaConfigOne();
+    return;
+}
+
+/****************************************/
+/****************************************/
+
+void StopMtcLoopFunction::ArenaControlSelector(UInt32 unClock) {
+
+    Real fSelector = 0.167;
+    LOG << m_fRandomIndex << std::endl;
+
+    if (m_fRandomIndex < (fSelector)) {
+        if (unClock == 1)
+            ArenaConfigOne();
+        if (unClock == 400)
+            ArenaConfigTwo();
+        if (unClock == 800)
+            ArenaConfigThree();
+        return;
+    }
+
+    if (m_fRandomIndex < (2*fSelector)) {
+        if (unClock == 1)
+            ArenaConfigOne();
+        if (unClock == 400)
+            ArenaConfigThree();
+        if (unClock == 800)
+            ArenaConfigTwo();
+        return;
+    }
+
+    if (m_fRandomIndex < (3*fSelector)) {
+        if (unClock == 1)
+            ArenaConfigTwo();
+        if (unClock == 400)
+            ArenaConfigOne();
+        if (unClock == 800)
+            ArenaConfigThree();
+        return;
+    }
+
+    if (m_fRandomIndex < (4*fSelector)) {
+        if (unClock == 1)
+            ArenaConfigTwo();
+        if (unClock == 400)
+            ArenaConfigThree();
+        if (unClock == 800)
+            ArenaConfigOne();
+        return;
+    }
+
+    if (m_fRandomIndex < (5*fSelector)) {
+        if (unClock == 1)
+            ArenaConfigThree();
+        if (unClock == 400)
+            ArenaConfigOne();
+        if (unClock == 800)
+            ArenaConfigTwo();
+        return;
+    }
+
+    if (m_fRandomIndex < (6*fSelector)) {
+        if (unClock == 1)
+            ArenaConfigThree();
+        if (unClock == 400)
+            ArenaConfigTwo();
+        if (unClock == 800)
+            ArenaConfigOne();
+        return;
+    }
 
     return;
 }
@@ -140,8 +209,9 @@ void StopMtcLoopFunction::ArenaControl(UInt32 unClock) {
 
 void StopMtcLoopFunction::ArenaConfigOne () {
     m_pcArena->SetArenaColor(CColor::BLACK);
-    m_pcArena->SetWallColor(1,CColor::GREEN);
+    m_pcArena->SetBoxColor(2,1,CColor::GREEN);
     m_cStopColor = CColor::YELLOW;
+    m_cStopCoord = m_cCoordSpot1;
 
     return;
 }
@@ -151,8 +221,22 @@ void StopMtcLoopFunction::ArenaConfigOne () {
 
 void StopMtcLoopFunction::ArenaConfigTwo () {
     m_pcArena->SetArenaColor(CColor::BLACK);
-    m_pcArena->SetWallColor(7,CColor::BLUE);
+    m_pcArena->SetBoxColor(2,8,CColor::BLUE);
     m_cStopColor = CColor::CYAN;
+    m_cStopCoord = m_cCoordSpot2;
+
+
+    return;
+}
+
+/****************************************/
+/****************************************/
+
+void StopMtcLoopFunction::ArenaConfigThree () {
+    m_pcArena->SetArenaColor(CColor::BLACK);
+    m_pcArena->SetBoxColor(2,7,CColor::RED);
+    m_cStopColor = CColor::MAGENTA;
+    m_cStopCoord = m_cCoordSpot3;
 
     return;
 }
@@ -166,7 +250,7 @@ Real StopMtcLoopFunction::GetStepScore(UInt32 unClock) {
     CVector2 cEpuckPosition(0,0);
     CColor cEpuckColor = CColor::BLACK;
     Real fScore = 0;
-    Real d1, d2, dm;
+    Real dt, dm;
 
     for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it) {
 
@@ -182,13 +266,12 @@ Real StopMtcLoopFunction::GetStepScore(UInt32 unClock) {
             if (!m_bStopSignal) {
 
                 cEpuckColor = pcEpuck->GetLEDEquippedEntity().GetLED(10).GetColor();
-                d1 = (cEpuckPosition - m_cCoordSpot1).Length();
-                d2 = (cEpuckPosition - m_cCoordSpot1).Length();
+                dt = (cEpuckPosition - m_cStopCoord).Length();
 
                 if (dm <= 0.0005)
                     fScore+=1;
 
-                if ( d1 <= m_fSafeDist || d2 <= m_fSafeDist)
+                if (dt <= m_fSafeDist)
                     if (cEpuckColor == m_cStopColor) {
                         m_bStopSignal = true;
                         m_unStopTime = unClock;

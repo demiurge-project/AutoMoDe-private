@@ -39,14 +39,17 @@ class StopMtcLoopFunction: public AutoMoDeLoopFunctions {
     Real GetStepScore(UInt32 unClock);
 
     void ArenaControl(UInt32 unClock);
+    void ArenaControlSelector(UInt32 unClock);
     void ArenaConfigOne();
     void ArenaConfigTwo();
+    void ArenaConfigThree();
 
 
   private:
     CVector2 m_cCoordSpot1;
     CVector2 m_cCoordSpot2;
     CVector2 m_cCoordSpot3;
+    CVector2 m_cStopCoord;
     Real m_fRadiusSpot;
     Real m_fSafeDist;
     Real m_fObjectiveFunction;
