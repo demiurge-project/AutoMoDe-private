@@ -6,45 +6,41 @@
   * @license MIT License
   */
 
-#include "StopMtcLoopFunc.h"
+#include "SynMtcLoopFunc.h"
 
 /****************************************/
 /****************************************/
 
-StopMtcLoopFunction::StopMtcLoopFunction() {
+SynMtcLoopFunction::SynMtcLoopFunction() {
     m_fObjectiveFunction = 0;
     m_fRandomIndex = 0;
     m_cCoordSpot1 = CVector2(0.54, 0.54);
     m_cCoordSpot2 = CVector2(0.765, 0.00);
     m_cCoordSpot3 = CVector2(0.54,-0.54);
-    m_cStopCoord = CVector2(0,0);
-    m_fSafeDist = 0.16;
     m_fRadiusSpot = 0.125;
-    m_bStopSignal = false;
-    m_bInit = false;
 }
 
 /****************************************/
 /****************************************/
 
-StopMtcLoopFunction::StopMtcLoopFunction(const StopMtcLoopFunction& orig) {
+SynMtcLoopFunction::SynMtcLoopFunction(const SynMtcLoopFunction& orig) {
 }
 
 /****************************************/
 /****************************************/
 
-StopMtcLoopFunction::~StopMtcLoopFunction() {}
+SynMtcLoopFunction::~SynMtcLoopFunction() {}
 
 /****************************************/
 /****************************************/
 
-void StopMtcLoopFunction::Destroy() {
+void SynMtcLoopFunction::Destroy() {
 }
 
 /****************************************/
 /****************************************/
 
-argos::CColor StopMtcLoopFunction::GetFloorColor(const argos::CVector2& c_position_on_plane) {
+argos::CColor SynMtcLoopFunction::GetFloorColor(const argos::CVector2& c_position_on_plane) {
 
     if (c_position_on_plane.GetX() <= -0.375)
         return CColor::WHITE;
@@ -70,7 +66,7 @@ argos::CColor StopMtcLoopFunction::GetFloorColor(const argos::CVector2& c_positi
 /****************************************/
 /****************************************/
 
-void StopMtcLoopFunction::Init(TConfigurationNode& t_tree) {
+void SynMtcLoopFunction::Init(TConfigurationNode& t_tree) {
     AutoMoDeLoopFunctions::Init(t_tree);
     m_fRandomIndex = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
 }
@@ -78,48 +74,39 @@ void StopMtcLoopFunction::Init(TConfigurationNode& t_tree) {
 /****************************************/
 /****************************************/
 
-void StopMtcLoopFunction::Reset() {
+void SynMtcLoopFunction::Reset() {
     AutoMoDeLoopFunctions::Reset();
     m_fObjectiveFunction = 0;
-    m_bInit = false;
-    m_bStopSignal = false;
     m_fRandomIndex = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
 }
 
 /****************************************/
 /****************************************/
 
-void StopMtcLoopFunction::PostStep() {
+void SynMtcLoopFunction::PostStep() {
     UInt32 unClock = GetSpace().GetSimulationClock();
     ArenaControl(unClock);
-    m_fObjectiveFunction += GetStepScore(unClock);
+    m_fObjectiveFunction += GetStepScore();
 }
 
 /****************************************/
 /****************************************/
 
-void StopMtcLoopFunction::PostExperiment() {
-
-    if (!m_bStopSignal)
-        m_unStopTime = 1200;
-
-    Real fTimeScore = (Real)m_unStopTime * (Real)m_unNumberRobots;
-    m_fObjectiveFunction += fTimeScore;
-
+void SynMtcLoopFunction::PostExperiment() {
     LOG << m_fObjectiveFunction << std::endl;
 }
 
 /****************************************/
 /****************************************/
 
-Real StopMtcLoopFunction::GetObjectiveFunction() {
+Real SynMtcLoopFunction::GetObjectiveFunction() {
   return m_fObjectiveFunction;
 }
 
 /****************************************/
 /****************************************/
 
-void StopMtcLoopFunction::ArenaControl(UInt32 unClock) {
+void SynMtcLoopFunction::ArenaControl(UInt32 unClock) {
 
     if (unClock == 1)
         ArenaControlSelector(unClock);
@@ -136,7 +123,7 @@ void StopMtcLoopFunction::ArenaControl(UInt32 unClock) {
 /****************************************/
 /****************************************/
 
-void StopMtcLoopFunction::ArenaControlSelector(UInt32 unClock) {
+void SynMtcLoopFunction::ArenaControlSelector(UInt32 unClock) {
 
     Real fSelector = 0.167;
 
@@ -206,11 +193,12 @@ void StopMtcLoopFunction::ArenaControlSelector(UInt32 unClock) {
 /****************************************/
 /****************************************/
 
-void StopMtcLoopFunction::ArenaConfigOne () {
+void SynMtcLoopFunction::ArenaConfigOne () {
     m_pcArena->SetArenaColor(CColor::BLACK);
     m_pcArena->SetBoxColor(2,1,CColor::GREEN);
-    m_cStopColor = CColor::YELLOW;
-    m_cStopCoord = m_cCoordSpot1;
+    m_pcArena->SetBoxColor(2,7,CColor::GREEN);
+    m_pcArena->SetBoxColor(2,8,CColor::GREEN);
+    m_cSynColor = CColor::YELLOW;
 
     return;
 }
@@ -218,12 +206,12 @@ void StopMtcLoopFunction::ArenaConfigOne () {
 /****************************************/
 /****************************************/
 
-void StopMtcLoopFunction::ArenaConfigTwo () {
+void SynMtcLoopFunction::ArenaConfigTwo () {
     m_pcArena->SetArenaColor(CColor::BLACK);
+    m_pcArena->SetBoxColor(2,1,CColor::BLUE);
+    m_pcArena->SetBoxColor(2,7,CColor::BLUE);
     m_pcArena->SetBoxColor(2,8,CColor::BLUE);
-    m_cStopColor = CColor::CYAN;
-    m_cStopCoord = m_cCoordSpot2;
-
+    m_cSynColor = CColor::CYAN;
 
     return;
 }
@@ -231,11 +219,12 @@ void StopMtcLoopFunction::ArenaConfigTwo () {
 /****************************************/
 /****************************************/
 
-void StopMtcLoopFunction::ArenaConfigThree () {
+void SynMtcLoopFunction::ArenaConfigThree () {
     m_pcArena->SetArenaColor(CColor::BLACK);
+    m_pcArena->SetBoxColor(2,1,CColor::RED);
     m_pcArena->SetBoxColor(2,7,CColor::RED);
-    m_cStopColor = CColor::MAGENTA;
-    m_cStopCoord = m_cCoordSpot3;
+    m_pcArena->SetBoxColor(2,8,CColor::RED);
+    m_cSynColor = CColor::MAGENTA;
 
     return;
 }
@@ -243,47 +232,20 @@ void StopMtcLoopFunction::ArenaConfigThree () {
 /****************************************/
 /****************************************/
 
-Real StopMtcLoopFunction::GetStepScore(UInt32 unClock) {
+Real SynMtcLoopFunction::GetStepScore() {
 
     CSpace::TMapPerType& tEpuckMap = GetSpace().GetEntitiesByType("epuck");
-    CVector2 cEpuckPosition(0,0);
     CColor cEpuckColor = CColor::BLACK;
     Real fScore = 0;
-    Real dt, dm;
 
     for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it) {
 
         CEPuckEntity* pcEpuck = any_cast<CEPuckEntity*>(it->second);
 
-        cEpuckPosition.Set(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
-                           pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
+        cEpuckColor = pcEpuck->GetLEDEquippedEntity().GetLED(10).GetColor();
 
-        if (m_bInit) {
-
-            dm = (cEpuckPosition - m_tMemPositions[pcEpuck]).Length();
-
-            if (!m_bStopSignal) {
-
-                cEpuckColor = pcEpuck->GetLEDEquippedEntity().GetLED(10).GetColor();
-                dt = (cEpuckPosition - m_cStopCoord).Length();
-
-                if (dm <= 0.0005)
-                    fScore+=1;
-
-                if (dt <= m_fSafeDist)
-                    if (cEpuckColor == m_cStopColor) {
-                        m_bStopSignal = true;
-                        m_unStopTime = unClock;
-                    }
-            }
-            else
-                if (dm > 0.0005)
-                    fScore+=1;
-        }
-        else
-            m_bInit = true;
-
-        m_tMemPositions[pcEpuck] = cEpuckPosition;
+        if (cEpuckColor != m_cSynColor)
+            fScore+=1;
     }
 
     return fScore;
@@ -292,7 +254,7 @@ Real StopMtcLoopFunction::GetStepScore(UInt32 unClock) {
 /****************************************/
 /****************************************/
 
-CVector3 StopMtcLoopFunction::GetRandomPosition() {
+CVector3 SynMtcLoopFunction::GetRandomPosition() {
   Real temp;
   Real a = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
   Real b = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
@@ -311,4 +273,4 @@ CVector3 StopMtcLoopFunction::GetRandomPosition() {
 /****************************************/
 /****************************************/
 
-REGISTER_LOOP_FUNCTIONS(StopMtcLoopFunction, "stop_mtc_loop_function");
+REGISTER_LOOP_FUNCTIONS(SynMtcLoopFunction, "syn_mtc_loop_function");
