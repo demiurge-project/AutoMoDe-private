@@ -85,8 +85,19 @@ void SynMtcLoopFunction::Reset() {
 
 void SynMtcLoopFunction::PostStep() {
     UInt32 unClock = GetSpace().GetSimulationClock();
+
+    if (unClock == 400)
+        m_fObjectiveFunction += GetStepScore(false);
+
+    if (unClock == 800)
+        m_fObjectiveFunction += GetStepScore(true);
+
+    if (unClock == 1200)
+        m_fObjectiveFunction += GetStepScore(true);
+
     ArenaControl(unClock);
-    m_fObjectiveFunction += GetStepScore();
+
+    LOG << m_fObjectiveFunction << std::endl;
 }
 
 /****************************************/
@@ -232,7 +243,7 @@ void SynMtcLoopFunction::ArenaConfigThree () {
 /****************************************/
 /****************************************/
 
-Real SynMtcLoopFunction::GetStepScore() {
+Real SynMtcLoopFunction::GetStepScore(bool bChange) {
 
     CSpace::TMapPerType& tEpuckMap = GetSpace().GetEntitiesByType("epuck");
     CColor cEpuckColor = CColor::BLACK;
@@ -244,8 +255,21 @@ Real SynMtcLoopFunction::GetStepScore() {
 
         cEpuckColor = pcEpuck->GetLEDEquippedEntity().GetLED(10).GetColor();
 
-        if (cEpuckColor != m_cSynColor)
+        LOG << "m_cSynColor: " << m_cSynColor << "----------------" << std::endl;
+        LOG << "cEpuckColor: " << cEpuckColor << std::endl;
+        LOG << "m_tMemColors[pcEpuck]: " << m_tMemColors[pcEpuck] << std::endl;
+
+        if (cEpuckColor != m_cSynColor){
             fScore+=1;
+            LOG << "Points error: " << fScore << std::endl;
+            if (bChange)
+                if (m_tMemColors[pcEpuck] == cEpuckColor){
+                    fScore+=1;
+                    LOG << "Points change: " << fScore << std::endl;
+                }
+        }
+
+        m_tMemColors[pcEpuck] = cEpuckColor;
     }
 
     return fScore;
