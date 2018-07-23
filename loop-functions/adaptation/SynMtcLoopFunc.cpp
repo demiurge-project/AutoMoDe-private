@@ -86,18 +86,20 @@ void SynMtcLoopFunction::Reset() {
 void SynMtcLoopFunction::PostStep() {
     UInt32 unClock = GetSpace().GetSimulationClock();
 
+    if (unClock == 3)
+        m_fObjectiveFunction += GetStepScore(true);
+
     if (unClock == 400)
         m_fObjectiveFunction += GetStepScore(false);
 
     if (unClock == 800)
-        m_fObjectiveFunction += GetStepScore(true);
+        m_fObjectiveFunction += GetStepScore(false);
 
     if (unClock == 1200)
-        m_fObjectiveFunction += GetStepScore(true);
+        m_fObjectiveFunction += GetStepScore(false);
 
     ArenaControl(unClock);
 
-    LOG << m_fObjectiveFunction << std::endl;
 }
 
 /****************************************/
@@ -243,7 +245,7 @@ void SynMtcLoopFunction::ArenaConfigThree () {
 /****************************************/
 /****************************************/
 
-Real SynMtcLoopFunction::GetStepScore(bool bChange) {
+Real SynMtcLoopFunction::GetStepScore(bool bInit) {
 
     CSpace::TMapPerType& tEpuckMap = GetSpace().GetEntitiesByType("epuck");
     CColor cEpuckColor = CColor::BLACK;
@@ -255,20 +257,19 @@ Real SynMtcLoopFunction::GetStepScore(bool bChange) {
 
         cEpuckColor = pcEpuck->GetLEDEquippedEntity().GetLED(10).GetColor();
 
-        LOG << "m_cSynColor: " << m_cSynColor << "----------------" << std::endl;
-        LOG << "cEpuckColor: " << cEpuckColor << std::endl;
-        LOG << "m_tMemColors[pcEpuck]: " << m_tMemColors[pcEpuck] << std::endl;
+        if (!bInit) {
+            if (cEpuckColor == m_cSynColor && m_tMemColors[pcEpuck] != cEpuckColor)
+                fScore-=1;
 
-        if (cEpuckColor != m_cSynColor){
-            fScore+=1;
-            LOG << "Points error: " << fScore << std::endl;
-            if (bChange)
-                if (m_tMemColors[pcEpuck] == cEpuckColor){
-                    fScore+=1;
-                    LOG << "Points change: " << fScore << std::endl;
-                }
+            if (cEpuckColor == m_cSynColor && m_tMemColors[pcEpuck] == cEpuckColor)
+                fScore+= (1 - (Real)m_unPwConfig);
+
+            if (cEpuckColor != m_cSynColor && m_tMemColors[pcEpuck] == cEpuckColor)
+                fScore+= (0 + (Real)m_unPwConfig);
+
+            if (cEpuckColor != m_cSynColor && m_tMemColors[pcEpuck] == cEpuckColor)
+                fScore+=2;
         }
-
         m_tMemColors[pcEpuck] = cEpuckColor;
     }
 
