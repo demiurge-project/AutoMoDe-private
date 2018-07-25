@@ -51,7 +51,7 @@ namespace argos {
 
 	void AutoMoDeBehaviourRepulsion::ControlStep() {
 		CVector2 sRabVector(0,CRadians::ZERO);
-		CCI_EPuckRangeAndBearingSensor::SReceivedPacket cRabReading = m_pcRobotDAO->GetNeighborsCenterOfMass();
+		CCI_EPuckRangeAndBearingSensor::SReceivedPacket cRabReading = m_pcRobotDAO->GetAttractionVectorToNeighbors(m_unRepulsionParameter);
 
 		if (cRabReading.Range > 0.0f) {
 			sRabVector = CVector2(cRabReading.Range, cRabReading.Bearing);
@@ -72,14 +72,14 @@ namespace argos {
 	void AutoMoDeBehaviourRepulsion::Init() {
 		std::map<std::string, Real>::iterator it;
 
-		// Repulsion parameter not needed anymore
-		// = m_mapParameters.find("rep");
-		// if (it != m_mapParameters.end()) {
-		// 	m_unRepulsionParameter = it->second;
-		// } else {
-		// 	LOGERR << "[FATAL] Missing parameter for the following behaviour:" << m_strLabel << std::endl;
-		// 	THROW_ARGOSEXCEPTION("Missing Parameter");
-		// }
+		// Repulsion parameter
+		it = m_mapParameters.find("rep");
+		if (it != m_mapParameters.end()) {
+			m_unRepulsionParameter = it->second;
+		} else {
+			LOGERR << "[FATAL] Missing parameter for the following behaviour:" << m_strLabel << std::endl;
+			THROW_ARGOSEXCEPTION("Missing Parameter");
+		}
 
 		// Success probability
 		it = m_mapParameters.find("p");

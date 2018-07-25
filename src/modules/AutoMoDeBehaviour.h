@@ -190,6 +190,12 @@ namespace argos {
 			bool LightPerceived();
 
 			bool EvaluateBernoulliProbability(const Real& f_probability) const;
+
+			/* Debug functions */
+
+		 UInt32 LogRobotIdientifier() {
+				return m_pcRobotDAO->GetRobotIdentifier();
+			};
 	};
 }
 

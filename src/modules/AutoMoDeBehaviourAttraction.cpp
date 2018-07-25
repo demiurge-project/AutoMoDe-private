@@ -50,12 +50,12 @@ namespace argos {
 
 	void AutoMoDeBehaviourAttraction::ControlStep() {
 		CVector2 sRabVector(0,CRadians::ZERO);
-		CCI_EPuckRangeAndBearingSensor::SReceivedPacket cRabReading = m_pcRobotDAO->GetNeighborsCenterOfMass();
+		CCI_EPuckRangeAndBearingSensor::SReceivedPacket cRabReading = m_pcRobotDAO->GetAttractionVectorToNeighbors(m_unAttractionParameter);
 
 		if (cRabReading.Range > 0.0f) {
 			sRabVector = CVector2(cRabReading.Range, cRabReading.Bearing);
 		}
-		
+
 		// LOG << "[" << m_pcRobotDAO->GetRobotIdentifier() << "] " << cRabReading.Range << " " << cRabReading.Bearing << std::endl;
 		// LOG << "[" << m_pcRobotDAO->GetRobotIdentifier() << "] " << sRabVector << std::endl;
 
@@ -76,14 +76,14 @@ namespace argos {
 	void AutoMoDeBehaviourAttraction::Init() {
 		std::map<std::string, Real>::iterator it;
 
-		// Attraction parameter not needed anymore
-		// = m_mapParameters.find("att");
-		// if (it != m_mapParameters.end()) {
-		// 	m_unAttractionParameter = it->second;
-		// } else {
-		// 	LOGERR << "[FATAL] Missing attraction parameter for the following behaviour:" << m_strLabel << std::endl;
-		// 	THROW_ARGOSEXCEPTION("Missing Parameter");
-		// }
+		// Attraction parameter
+		it = m_mapParameters.find("att");
+		if (it != m_mapParameters.end()) {
+			m_unAttractionParameter = it->second;
+		} else {
+			LOGERR << "[FATAL] Missing attraction parameter for the following behaviour:" << m_strLabel << std::endl;
+			THROW_ARGOSEXCEPTION("Missing Parameter");
+		}
 
 		// Success probability
 		it = m_mapParameters.find("p");

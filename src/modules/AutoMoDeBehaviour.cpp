@@ -144,8 +144,7 @@ namespace argos {
 
 	bool AutoMoDeBehaviour::ObstacleInFront() {
 		CRadians cAngle = m_pcRobotDAO->GetProximityReading().Angle;
-		if ((m_pcRobotDAO->GetProximityReading().Value >= 0.5) && ((cAngle <= CRadians::PI_OVER_TWO) || (cAngle >= (CRadians::TWO_PI - CRadians::PI_OVER_TWO)))) {
-			//LOG << "ObstacleInFront" << std::endl;
+		if ((m_pcRobotDAO->GetProximityReading().Value >= 0.5) && ((cAngle <= CRadians::PI_OVER_TWO) && (cAngle >= -CRadians::PI_OVER_TWO))) {
 			return true;
 		}
 		return false;

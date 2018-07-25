@@ -49,25 +49,34 @@ namespace argos {
 	/****************************************/
 
 	void AutoMoDeBehaviourRotation::ControlStep() {
-		switch (m_eRotationState) {
-			case IDLE: {
-				if ((m_pcRobotDAO->GetProximityReading().Angle > CRadians::ZERO) || m_pcRobotDAO->GetRandomNumberGenerator()->Bernoulli(0.5)) {
-					m_pcRobotDAO->SetWheelsVelocity(m_pcRobotDAO->GetMaxVelocity(), -m_pcRobotDAO->GetMaxVelocity());
-					m_eRotationState = RIGHT;
-				} else {
-					m_pcRobotDAO->SetWheelsVelocity(-m_pcRobotDAO->GetMaxVelocity(), m_pcRobotDAO->GetMaxVelocity());
-					m_eRotationState = LEFT;
-				}
-				break;
-			}
-			case LEFT: {
-				m_pcRobotDAO->SetWheelsVelocity(-m_pcRobotDAO->GetMaxVelocity(), m_pcRobotDAO->GetMaxVelocity());
-				break;
-			}
-			case RIGHT: {
-				m_pcRobotDAO->SetWheelsVelocity(m_pcRobotDAO->GetMaxVelocity(), -m_pcRobotDAO->GetMaxVelocity());
-				break;
-			}
+		// switch (m_eRotationState) {
+		// 	case IDLE: {
+		// 		LOG << m_pcRobotDAO->GetProximityReading().Angle << std::endl;
+		// 		if ((m_pcRobotDAO->GetProximityReading().Angle > CRadians::ZERO) || m_pcRobotDAO->GetRandomNumberGenerator()->Bernoulli(0.5)) {
+		// 			m_pcRobotDAO->SetWheelsVelocity(m_pcRobotDAO->GetMaxVelocity(), -m_pcRobotDAO->GetMaxVelocity());
+		// 			m_eRotationState = RIGHT;
+		// 		} else {
+		// 			m_pcRobotDAO->SetWheelsVelocity(-m_pcRobotDAO->GetMaxVelocity(), m_pcRobotDAO->GetMaxVelocity());
+		// 			m_eRotationState = LEFT;
+		// 		}
+		// 		break;
+		// 	}
+		// 	case LEFT: {
+		// 		m_pcRobotDAO->SetWheelsVelocity(-m_pcRobotDAO->GetMaxVelocity(), m_pcRobotDAO->GetMaxVelocity());
+		// 		break;
+		// 	}
+		// 	case RIGHT: {
+		// 		m_pcRobotDAO->SetWheelsVelocity(m_pcRobotDAO->GetMaxVelocity(), -m_pcRobotDAO->GetMaxVelocity());
+		// 		break;
+		// 	}
+		// }
+
+		if ((m_pcRobotDAO->GetProximityReading().Angle > CRadians::ZERO)) {
+			m_pcRobotDAO->SetWheelsVelocity(m_pcRobotDAO->GetMaxVelocity(), -m_pcRobotDAO->GetMaxVelocity());
+			//LOG << "RIGHT" << std::endl;
+		} else {
+			m_pcRobotDAO->SetWheelsVelocity(-m_pcRobotDAO->GetMaxVelocity(), m_pcRobotDAO->GetMaxVelocity());
+			//LOG << "LEFT" << std::endl;
 		}
 		m_bLocked = false;
 	}

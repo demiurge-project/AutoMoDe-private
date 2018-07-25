@@ -18,6 +18,7 @@ namespace argos {
 
 	AutoMoDeBehaviourAntiPhototaxis::AutoMoDeBehaviourAntiPhototaxis() {
 		m_strLabel = "Anti-Phototaxis";
+		m_fSuccessProbabilityParameter = 0;
 	}
 
 	/****************************************/
@@ -69,7 +70,17 @@ namespace argos {
 	/****************************************/
 	/****************************************/
 
-	void AutoMoDeBehaviourAntiPhototaxis::Init() {}
+	void AutoMoDeBehaviourAntiPhototaxis::Init() {
+		// Success probability
+		std::map<std::string, Real>::iterator it = m_mapParameters.find("p");
+		it = m_mapParameters.find("p");
+		if (it != m_mapParameters.end()) {
+			m_fSuccessProbabilityParameter = it->second;
+		} else {
+			LOGERR << "[FATAL] Missing probability parameter for the following behaviour:" << m_strLabel << std::endl;
+			THROW_ARGOSEXCEPTION("Missing Parameter");
+		}
+	}
 
 	/****************************************/
 	/****************************************/

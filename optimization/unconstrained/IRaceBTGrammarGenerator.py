@@ -64,6 +64,22 @@ def generate_grammar():
             condition
         )
 
+        write_line_to_grammar_file(
+            "Att{}".format(node_id),
+            '\"--att{} \"'.format(node_id),
+            'r',
+            '(1,5)',
+            'as.numeric(Action{})==4'.format(node_id)
+        )
+
+        write_line_to_grammar_file(
+            "Rep{}".format(node_id),
+            '\"--rep{} \"'.format(node_id),
+            'r',
+            '(1,5)',
+            'as.numeric(Action{})==5'.format(node_id)
+        )
+
     def write_possible_conditions_to_file(node_id, second_condition=False):
         if (second_condition):
             condition = '(as.numeric(Node{})==6 || as.numeric(Node{}b)==6 || as.numeric(Node{}c)==6)'.format(node_id, node_id, node_id)
