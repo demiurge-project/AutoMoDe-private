@@ -53,14 +53,14 @@ OUTPUT=$($EXE -n -c $INSTANCE --seed $SEED --bt-config ${CONFIG_PARAMS})
 
 # Extract the score from the AutoMoDe (i.e. and ARGoS) output
 SCORE=$(echo ${OUTPUT} | grep -o -E 'Score [-+0-9.e]+' | cut -d ' ' -f2)
-echo $SCORE
+#echo $SCORE
 if ! [[ "$SCORE" =~ ^[-+0-9.e]+$ ]] ; then
     error "Output is not a number"
 fi
 
 #TIME=$(echo "$end - $start" | bc -l)
 
-echo " score $SCORE" >> $FSM_LOG
+echo " scooore $SCORE" >> $FSM_LOG
 
 # Print score!
 echo "-$SCORE"

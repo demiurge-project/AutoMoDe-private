@@ -8,15 +8,15 @@ import re
 
 CONTROL_FLOW_CATEGORIES = '(0,1,2,3)'
 TERMINAL_CATEGORIES = '(5,6)'
-ALL_NODES_CATEGORIES = '(0,1,2,3,4,5,6)'
-UNIQUE_CHILD_CATEGORIES = '(4,5,6)'
+ALL_NODES_CATEGORIES = '(0,3,5,6)'
+UNIQUE_CHILD_CATEGORIES = '(5,6)'
 DECORATOR_NODE = 4
 
 ACTION_CATEGORIES = '(1,2,3,4,5,6,7)'
-CONDITION_CATEGORIES = '(0,1,2,3,4,5,6,7)'
+CONDITION_CATEGORIES = '(0,1,2,3,4,5)'
 
 max_children = 3
-max_level = 3
+max_level = 2
 
 grammar_file_name = "grammar_bt.txt"
 

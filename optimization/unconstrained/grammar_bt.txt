@@ -1,461 +1,140 @@
 Rootnode	"--nroot "	c	(0,1,2,3)
 NumChildsRoot	"--nchildroot "	i	(1,3)
-Node0	"--n0 "	c	(0,1,2,3,4,5,6)	|	as.numeric(NumChildsRoot)>0
+Node0	"--n0 "	c	(0,3,5,6)	|	as.numeric(NumChildsRoot)>0
 NumChilds0	"--nchild0 "	i	(1,3)	|	as.numeric(Node0) %in% c(0,1,2,3)
 NumChilds0b	"--nchild0 "	c	(1)	|	(as.numeric(Node0) == 4)
 Action0	"--a0 "	c	(1,2,3,4,5,6,7)	|	as.numeric(Node0)==5
 ProbS0	"--p0 "	r	(0,1)	|	as.numeric(Node0)==5
 Att0	"--att0 "	r	(1,5)	|	as.numeric(Action0)==4
 Rep0	"--rep0 "	r	(1,5)	|	as.numeric(Action0)==5
-Condition0	"--c0 "	c	(0,1,2,3,4,5,6,7)	|	as.numeric(Node0)==6
+Condition0	"--c0 "	c	(0,1,2,3,4,5)	|	as.numeric(Node0)==6
 P0	"--p0 "	r	(0,1)	|	as.numeric(Condition0) %in% c(0,1,2,5,6,7)
 B0	"--p0 "	i	(1,20)	|	as.numeric(Condition0)==3
 W0	"--w0 "	r	(0,20)	|	as.numeric(Condition0)==3
 BI0	"--p0 "	i	(1,10)	|	as.numeric(Condition0)==4
 WI0	"--w0 "	r	(0,20)	|	as.numeric(Condition0)==4
-Node00	"--n00 "	c	(0,1,2,3,4,5,6)	|	((as.numeric(NumChilds0)>1) || (as.numeric(NumChilds0b)>1))
-Node00b	"--n00 "	c	(4,5,6)	|	(((as.numeric(NumChilds0)==1) || (as.numeric(NumChilds0b)==1)) && (as.numeric(Node0) != 4))
-Node00c	"--n00 "	c	(5,6)	|	(((as.numeric(NumChilds0)==1) || (as.numeric(NumChilds0b)==1)) && (as.numeric(Node0) == 4))
-NumChilds00	"--nchild00 "	i	(1,3)	|	as.numeric(Node00) %in% c(0,1,2,3)
-NumChilds00b	"--nchild00 "	c	(1)	|	(as.numeric(Node00) == 4 || as.numeric(Node00b) == 4)
-Action00	"--a00 "	c	(1,2,3,4,5,6,7)	|	(as.numeric(Node00)==5 || as.numeric(Node00b)==5 || as.numeric(Node00c)==5)
-ProbS00	"--p00 "	r	(0,1)	|	(as.numeric(Node00)==5 || as.numeric(Node00b)==5 || as.numeric(Node00c)==5)
+Node00	"--n00 "	c	(5,6)	|	(as.numeric(NumChilds0)>0)
+Action00	"--a00 "	c	(1,2,3,4,5,6,7)	|	as.numeric(Node00)==5
+ProbS00	"--p00 "	r	(0,1)	|	as.numeric(Node00)==5
 Att00	"--att00 "	r	(1,5)	|	as.numeric(Action00)==4
 Rep00	"--rep00 "	r	(1,5)	|	as.numeric(Action00)==5
-Condition00	"--c00 "	c	(0,1,2,3,4,5,6,7)	|	(as.numeric(Node00)==6 || as.numeric(Node00b)==6 || as.numeric(Node00c)==6)
+Condition00	"--c00 "	c	(0,1,2,3,4,5)	|	as.numeric(Node00)==6
 P00	"--p00 "	r	(0,1)	|	as.numeric(Condition00) %in% c(0,1,2,5,6,7)
 B00	"--p00 "	i	(1,20)	|	as.numeric(Condition00)==3
 W00	"--w00 "	r	(0,20)	|	as.numeric(Condition00)==3
 BI00	"--p00 "	i	(1,10)	|	as.numeric(Condition00)==4
 WI00	"--w00 "	r	(0,20)	|	as.numeric(Condition00)==4
-Node000	"--n000 "	c	(5,6)	|	(as.numeric(NumChilds00)>0 || as.numeric(NumChilds00b)>0)
-Action000	"--a000 "	c	(1,2,3,4,5,6,7)	|	as.numeric(Node000)==5
-ProbS000	"--p000 "	r	(0,1)	|	as.numeric(Node000)==5
-Att000	"--att000 "	r	(1,5)	|	as.numeric(Action000)==4
-Rep000	"--rep000 "	r	(1,5)	|	as.numeric(Action000)==5
-Condition000	"--c000 "	c	(0,1,2,3,4,5,6,7)	|	as.numeric(Node000)==6
-P000	"--p000 "	r	(0,1)	|	as.numeric(Condition000) %in% c(0,1,2,5,6,7)
-B000	"--p000 "	i	(1,20)	|	as.numeric(Condition000)==3
-W000	"--w000 "	r	(0,20)	|	as.numeric(Condition000)==3
-BI000	"--p000 "	i	(1,10)	|	as.numeric(Condition000)==4
-WI000	"--w000 "	r	(0,20)	|	as.numeric(Condition000)==4
-Node001	"--n001 "	c	(5,6)	|	(as.numeric(NumChilds00)>1 || as.numeric(NumChilds00b)>1)
-Action001	"--a001 "	c	(1,2,3,4,5,6,7)	|	as.numeric(Node001)==5
-ProbS001	"--p001 "	r	(0,1)	|	as.numeric(Node001)==5
-Att001	"--att001 "	r	(1,5)	|	as.numeric(Action001)==4
-Rep001	"--rep001 "	r	(1,5)	|	as.numeric(Action001)==5
-Condition001	"--c001 "	c	(0,1,2,3,4,5,6,7)	|	as.numeric(Node001)==6
-P001	"--p001 "	r	(0,1)	|	as.numeric(Condition001) %in% c(0,1,2,5,6,7)
-B001	"--p001 "	i	(1,20)	|	as.numeric(Condition001)==3
-W001	"--w001 "	r	(0,20)	|	as.numeric(Condition001)==3
-BI001	"--p001 "	i	(1,10)	|	as.numeric(Condition001)==4
-WI001	"--w001 "	r	(0,20)	|	as.numeric(Condition001)==4
-Node002	"--n002 "	c	(5,6)	|	(as.numeric(NumChilds00)>2 || as.numeric(NumChilds00b)>2)
-Action002	"--a002 "	c	(1,2,3,4,5,6,7)	|	as.numeric(Node002)==5
-ProbS002	"--p002 "	r	(0,1)	|	as.numeric(Node002)==5
-Att002	"--att002 "	r	(1,5)	|	as.numeric(Action002)==4
-Rep002	"--rep002 "	r	(1,5)	|	as.numeric(Action002)==5
-Condition002	"--c002 "	c	(0,1,2,3,4,5,6,7)	|	as.numeric(Node002)==6
-P002	"--p002 "	r	(0,1)	|	as.numeric(Condition002) %in% c(0,1,2,5,6,7)
-B002	"--p002 "	i	(1,20)	|	as.numeric(Condition002)==3
-W002	"--w002 "	r	(0,20)	|	as.numeric(Condition002)==3
-BI002	"--p002 "	i	(1,10)	|	as.numeric(Condition002)==4
-WI002	"--w002 "	r	(0,20)	|	as.numeric(Condition002)==4
-Node01	"--n01 "	c	(0,1,2,3,4,5,6)	|	(as.numeric(NumChilds0)>1)
-NumChilds01	"--nchild01 "	i	(1,3)	|	as.numeric(Node01) %in% c(0,1,2,3)
-NumChilds01b	"--nchild01 "	c	(1)	|	(as.numeric(Node01) == 4)
+Node01	"--n01 "	c	(5,6)	|	(as.numeric(NumChilds0)>1)
 Action01	"--a01 "	c	(1,2,3,4,5,6,7)	|	as.numeric(Node01)==5
 ProbS01	"--p01 "	r	(0,1)	|	as.numeric(Node01)==5
 Att01	"--att01 "	r	(1,5)	|	as.numeric(Action01)==4
 Rep01	"--rep01 "	r	(1,5)	|	as.numeric(Action01)==5
-Condition01	"--c01 "	c	(0,1,2,3,4,5,6,7)	|	as.numeric(Node01)==6
+Condition01	"--c01 "	c	(0,1,2,3,4,5)	|	as.numeric(Node01)==6
 P01	"--p01 "	r	(0,1)	|	as.numeric(Condition01) %in% c(0,1,2,5,6,7)
 B01	"--p01 "	i	(1,20)	|	as.numeric(Condition01)==3
 W01	"--w01 "	r	(0,20)	|	as.numeric(Condition01)==3
 BI01	"--p01 "	i	(1,10)	|	as.numeric(Condition01)==4
 WI01	"--w01 "	r	(0,20)	|	as.numeric(Condition01)==4
-Node010	"--n010 "	c	(5,6)	|	(as.numeric(NumChilds01)>0 || as.numeric(NumChilds01b)>0)
-Action010	"--a010 "	c	(1,2,3,4,5,6,7)	|	as.numeric(Node010)==5
-ProbS010	"--p010 "	r	(0,1)	|	as.numeric(Node010)==5
-Att010	"--att010 "	r	(1,5)	|	as.numeric(Action010)==4
-Rep010	"--rep010 "	r	(1,5)	|	as.numeric(Action010)==5
-Condition010	"--c010 "	c	(0,1,2,3,4,5,6,7)	|	as.numeric(Node010)==6
-P010	"--p010 "	r	(0,1)	|	as.numeric(Condition010) %in% c(0,1,2,5,6,7)
-B010	"--p010 "	i	(1,20)	|	as.numeric(Condition010)==3
-W010	"--w010 "	r	(0,20)	|	as.numeric(Condition010)==3
-BI010	"--p010 "	i	(1,10)	|	as.numeric(Condition010)==4
-WI010	"--w010 "	r	(0,20)	|	as.numeric(Condition010)==4
-Node011	"--n011 "	c	(5,6)	|	(as.numeric(NumChilds01)>1 || as.numeric(NumChilds01b)>1)
-Action011	"--a011 "	c	(1,2,3,4,5,6,7)	|	as.numeric(Node011)==5
-ProbS011	"--p011 "	r	(0,1)	|	as.numeric(Node011)==5
-Att011	"--att011 "	r	(1,5)	|	as.numeric(Action011)==4
-Rep011	"--rep011 "	r	(1,5)	|	as.numeric(Action011)==5
-Condition011	"--c011 "	c	(0,1,2,3,4,5,6,7)	|	as.numeric(Node011)==6
-P011	"--p011 "	r	(0,1)	|	as.numeric(Condition011) %in% c(0,1,2,5,6,7)
-B011	"--p011 "	i	(1,20)	|	as.numeric(Condition011)==3
-W011	"--w011 "	r	(0,20)	|	as.numeric(Condition011)==3
-BI011	"--p011 "	i	(1,10)	|	as.numeric(Condition011)==4
-WI011	"--w011 "	r	(0,20)	|	as.numeric(Condition011)==4
-Node012	"--n012 "	c	(5,6)	|	(as.numeric(NumChilds01)>2 || as.numeric(NumChilds01b)>2)
-Action012	"--a012 "	c	(1,2,3,4,5,6,7)	|	as.numeric(Node012)==5
-ProbS012	"--p012 "	r	(0,1)	|	as.numeric(Node012)==5
-Att012	"--att012 "	r	(1,5)	|	as.numeric(Action012)==4
-Rep012	"--rep012 "	r	(1,5)	|	as.numeric(Action012)==5
-Condition012	"--c012 "	c	(0,1,2,3,4,5,6,7)	|	as.numeric(Node012)==6
-P012	"--p012 "	r	(0,1)	|	as.numeric(Condition012) %in% c(0,1,2,5,6,7)
-B012	"--p012 "	i	(1,20)	|	as.numeric(Condition012)==3
-W012	"--w012 "	r	(0,20)	|	as.numeric(Condition012)==3
-BI012	"--p012 "	i	(1,10)	|	as.numeric(Condition012)==4
-WI012	"--w012 "	r	(0,20)	|	as.numeric(Condition012)==4
-Node02	"--n02 "	c	(0,1,2,3,4,5,6)	|	(as.numeric(NumChilds0)>2)
-NumChilds02	"--nchild02 "	i	(1,3)	|	as.numeric(Node02) %in% c(0,1,2,3)
-NumChilds02b	"--nchild02 "	c	(1)	|	(as.numeric(Node02) == 4)
+Node02	"--n02 "	c	(5,6)	|	(as.numeric(NumChilds0)>2)
 Action02	"--a02 "	c	(1,2,3,4,5,6,7)	|	as.numeric(Node02)==5
 ProbS02	"--p02 "	r	(0,1)	|	as.numeric(Node02)==5
 Att02	"--att02 "	r	(1,5)	|	as.numeric(Action02)==4
 Rep02	"--rep02 "	r	(1,5)	|	as.numeric(Action02)==5
-Condition02	"--c02 "	c	(0,1,2,3,4,5,6,7)	|	as.numeric(Node02)==6
+Condition02	"--c02 "	c	(0,1,2,3,4,5)	|	as.numeric(Node02)==6
 P02	"--p02 "	r	(0,1)	|	as.numeric(Condition02) %in% c(0,1,2,5,6,7)
 B02	"--p02 "	i	(1,20)	|	as.numeric(Condition02)==3
 W02	"--w02 "	r	(0,20)	|	as.numeric(Condition02)==3
 BI02	"--p02 "	i	(1,10)	|	as.numeric(Condition02)==4
 WI02	"--w02 "	r	(0,20)	|	as.numeric(Condition02)==4
-Node020	"--n020 "	c	(5,6)	|	(as.numeric(NumChilds02)>0 || as.numeric(NumChilds02b)>0)
-Action020	"--a020 "	c	(1,2,3,4,5,6,7)	|	as.numeric(Node020)==5
-ProbS020	"--p020 "	r	(0,1)	|	as.numeric(Node020)==5
-Att020	"--att020 "	r	(1,5)	|	as.numeric(Action020)==4
-Rep020	"--rep020 "	r	(1,5)	|	as.numeric(Action020)==5
-Condition020	"--c020 "	c	(0,1,2,3,4,5,6,7)	|	as.numeric(Node020)==6
-P020	"--p020 "	r	(0,1)	|	as.numeric(Condition020) %in% c(0,1,2,5,6,7)
-B020	"--p020 "	i	(1,20)	|	as.numeric(Condition020)==3
-W020	"--w020 "	r	(0,20)	|	as.numeric(Condition020)==3
-BI020	"--p020 "	i	(1,10)	|	as.numeric(Condition020)==4
-WI020	"--w020 "	r	(0,20)	|	as.numeric(Condition020)==4
-Node021	"--n021 "	c	(5,6)	|	(as.numeric(NumChilds02)>1 || as.numeric(NumChilds02b)>1)
-Action021	"--a021 "	c	(1,2,3,4,5,6,7)	|	as.numeric(Node021)==5
-ProbS021	"--p021 "	r	(0,1)	|	as.numeric(Node021)==5
-Att021	"--att021 "	r	(1,5)	|	as.numeric(Action021)==4
-Rep021	"--rep021 "	r	(1,5)	|	as.numeric(Action021)==5
-Condition021	"--c021 "	c	(0,1,2,3,4,5,6,7)	|	as.numeric(Node021)==6
-P021	"--p021 "	r	(0,1)	|	as.numeric(Condition021) %in% c(0,1,2,5,6,7)
-B021	"--p021 "	i	(1,20)	|	as.numeric(Condition021)==3
-W021	"--w021 "	r	(0,20)	|	as.numeric(Condition021)==3
-BI021	"--p021 "	i	(1,10)	|	as.numeric(Condition021)==4
-WI021	"--w021 "	r	(0,20)	|	as.numeric(Condition021)==4
-Node022	"--n022 "	c	(5,6)	|	(as.numeric(NumChilds02)>2 || as.numeric(NumChilds02b)>2)
-Action022	"--a022 "	c	(1,2,3,4,5,6,7)	|	as.numeric(Node022)==5
-ProbS022	"--p022 "	r	(0,1)	|	as.numeric(Node022)==5
-Att022	"--att022 "	r	(1,5)	|	as.numeric(Action022)==4
-Rep022	"--rep022 "	r	(1,5)	|	as.numeric(Action022)==5
-Condition022	"--c022 "	c	(0,1,2,3,4,5,6,7)	|	as.numeric(Node022)==6
-P022	"--p022 "	r	(0,1)	|	as.numeric(Condition022) %in% c(0,1,2,5,6,7)
-B022	"--p022 "	i	(1,20)	|	as.numeric(Condition022)==3
-W022	"--w022 "	r	(0,20)	|	as.numeric(Condition022)==3
-BI022	"--p022 "	i	(1,10)	|	as.numeric(Condition022)==4
-WI022	"--w022 "	r	(0,20)	|	as.numeric(Condition022)==4
-Node1	"--n1 "	c	(0,1,2,3,4,5,6)	|	as.numeric(NumChildsRoot)>1
+Node1	"--n1 "	c	(0,3,5,6)	|	as.numeric(NumChildsRoot)>1
 NumChilds1	"--nchild1 "	i	(1,3)	|	as.numeric(Node1) %in% c(0,1,2,3)
 NumChilds1b	"--nchild1 "	c	(1)	|	(as.numeric(Node1) == 4)
 Action1	"--a1 "	c	(1,2,3,4,5,6,7)	|	as.numeric(Node1)==5
 ProbS1	"--p1 "	r	(0,1)	|	as.numeric(Node1)==5
 Att1	"--att1 "	r	(1,5)	|	as.numeric(Action1)==4
 Rep1	"--rep1 "	r	(1,5)	|	as.numeric(Action1)==5
-Condition1	"--c1 "	c	(0,1,2,3,4,5,6,7)	|	as.numeric(Node1)==6
+Condition1	"--c1 "	c	(0,1,2,3,4,5)	|	as.numeric(Node1)==6
 P1	"--p1 "	r	(0,1)	|	as.numeric(Condition1) %in% c(0,1,2,5,6,7)
 B1	"--p1 "	i	(1,20)	|	as.numeric(Condition1)==3
 W1	"--w1 "	r	(0,20)	|	as.numeric(Condition1)==3
 BI1	"--p1 "	i	(1,10)	|	as.numeric(Condition1)==4
 WI1	"--w1 "	r	(0,20)	|	as.numeric(Condition1)==4
-Node10	"--n10 "	c	(0,1,2,3,4,5,6)	|	((as.numeric(NumChilds1)>1) || (as.numeric(NumChilds1b)>1))
-Node10b	"--n10 "	c	(4,5,6)	|	(((as.numeric(NumChilds1)==1) || (as.numeric(NumChilds1b)==1)) && (as.numeric(Node1) != 4))
-Node10c	"--n10 "	c	(5,6)	|	(((as.numeric(NumChilds1)==1) || (as.numeric(NumChilds1b)==1)) && (as.numeric(Node1) == 4))
-NumChilds10	"--nchild10 "	i	(1,3)	|	as.numeric(Node10) %in% c(0,1,2,3)
-NumChilds10b	"--nchild10 "	c	(1)	|	(as.numeric(Node10) == 4 || as.numeric(Node10b) == 4)
-Action10	"--a10 "	c	(1,2,3,4,5,6,7)	|	(as.numeric(Node10)==5 || as.numeric(Node10b)==5 || as.numeric(Node10c)==5)
-ProbS10	"--p10 "	r	(0,1)	|	(as.numeric(Node10)==5 || as.numeric(Node10b)==5 || as.numeric(Node10c)==5)
+Node10	"--n10 "	c	(5,6)	|	(as.numeric(NumChilds1)>0)
+Action10	"--a10 "	c	(1,2,3,4,5,6,7)	|	as.numeric(Node10)==5
+ProbS10	"--p10 "	r	(0,1)	|	as.numeric(Node10)==5
 Att10	"--att10 "	r	(1,5)	|	as.numeric(Action10)==4
 Rep10	"--rep10 "	r	(1,5)	|	as.numeric(Action10)==5
-Condition10	"--c10 "	c	(0,1,2,3,4,5,6,7)	|	(as.numeric(Node10)==6 || as.numeric(Node10b)==6 || as.numeric(Node10c)==6)
+Condition10	"--c10 "	c	(0,1,2,3,4,5)	|	as.numeric(Node10)==6
 P10	"--p10 "	r	(0,1)	|	as.numeric(Condition10) %in% c(0,1,2,5,6,7)
 B10	"--p10 "	i	(1,20)	|	as.numeric(Condition10)==3
 W10	"--w10 "	r	(0,20)	|	as.numeric(Condition10)==3
 BI10	"--p10 "	i	(1,10)	|	as.numeric(Condition10)==4
 WI10	"--w10 "	r	(0,20)	|	as.numeric(Condition10)==4
-Node100	"--n100 "	c	(5,6)	|	(as.numeric(NumChilds10)>0 || as.numeric(NumChilds10b)>0)
-Action100	"--a100 "	c	(1,2,3,4,5,6,7)	|	as.numeric(Node100)==5
-ProbS100	"--p100 "	r	(0,1)	|	as.numeric(Node100)==5
-Att100	"--att100 "	r	(1,5)	|	as.numeric(Action100)==4
-Rep100	"--rep100 "	r	(1,5)	|	as.numeric(Action100)==5
-Condition100	"--c100 "	c	(0,1,2,3,4,5,6,7)	|	as.numeric(Node100)==6
-P100	"--p100 "	r	(0,1)	|	as.numeric(Condition100) %in% c(0,1,2,5,6,7)
-B100	"--p100 "	i	(1,20)	|	as.numeric(Condition100)==3
-W100	"--w100 "	r	(0,20)	|	as.numeric(Condition100)==3
-BI100	"--p100 "	i	(1,10)	|	as.numeric(Condition100)==4
-WI100	"--w100 "	r	(0,20)	|	as.numeric(Condition100)==4
-Node101	"--n101 "	c	(5,6)	|	(as.numeric(NumChilds10)>1 || as.numeric(NumChilds10b)>1)
-Action101	"--a101 "	c	(1,2,3,4,5,6,7)	|	as.numeric(Node101)==5
-ProbS101	"--p101 "	r	(0,1)	|	as.numeric(Node101)==5
-Att101	"--att101 "	r	(1,5)	|	as.numeric(Action101)==4
-Rep101	"--rep101 "	r	(1,5)	|	as.numeric(Action101)==5
-Condition101	"--c101 "	c	(0,1,2,3,4,5,6,7)	|	as.numeric(Node101)==6
-P101	"--p101 "	r	(0,1)	|	as.numeric(Condition101) %in% c(0,1,2,5,6,7)
-B101	"--p101 "	i	(1,20)	|	as.numeric(Condition101)==3
-W101	"--w101 "	r	(0,20)	|	as.numeric(Condition101)==3
-BI101	"--p101 "	i	(1,10)	|	as.numeric(Condition101)==4
-WI101	"--w101 "	r	(0,20)	|	as.numeric(Condition101)==4
-Node102	"--n102 "	c	(5,6)	|	(as.numeric(NumChilds10)>2 || as.numeric(NumChilds10b)>2)
-Action102	"--a102 "	c	(1,2,3,4,5,6,7)	|	as.numeric(Node102)==5
-ProbS102	"--p102 "	r	(0,1)	|	as.numeric(Node102)==5
-Att102	"--att102 "	r	(1,5)	|	as.numeric(Action102)==4
-Rep102	"--rep102 "	r	(1,5)	|	as.numeric(Action102)==5
-Condition102	"--c102 "	c	(0,1,2,3,4,5,6,7)	|	as.numeric(Node102)==6
-P102	"--p102 "	r	(0,1)	|	as.numeric(Condition102) %in% c(0,1,2,5,6,7)
-B102	"--p102 "	i	(1,20)	|	as.numeric(Condition102)==3
-W102	"--w102 "	r	(0,20)	|	as.numeric(Condition102)==3
-BI102	"--p102 "	i	(1,10)	|	as.numeric(Condition102)==4
-WI102	"--w102 "	r	(0,20)	|	as.numeric(Condition102)==4
-Node11	"--n11 "	c	(0,1,2,3,4,5,6)	|	(as.numeric(NumChilds1)>1)
-NumChilds11	"--nchild11 "	i	(1,3)	|	as.numeric(Node11) %in% c(0,1,2,3)
-NumChilds11b	"--nchild11 "	c	(1)	|	(as.numeric(Node11) == 4)
+Node11	"--n11 "	c	(5,6)	|	(as.numeric(NumChilds1)>1)
 Action11	"--a11 "	c	(1,2,3,4,5,6,7)	|	as.numeric(Node11)==5
 ProbS11	"--p11 "	r	(0,1)	|	as.numeric(Node11)==5
 Att11	"--att11 "	r	(1,5)	|	as.numeric(Action11)==4
 Rep11	"--rep11 "	r	(1,5)	|	as.numeric(Action11)==5
-Condition11	"--c11 "	c	(0,1,2,3,4,5,6,7)	|	as.numeric(Node11)==6
+Condition11	"--c11 "	c	(0,1,2,3,4,5)	|	as.numeric(Node11)==6
 P11	"--p11 "	r	(0,1)	|	as.numeric(Condition11) %in% c(0,1,2,5,6,7)
 B11	"--p11 "	i	(1,20)	|	as.numeric(Condition11)==3
 W11	"--w11 "	r	(0,20)	|	as.numeric(Condition11)==3
 BI11	"--p11 "	i	(1,10)	|	as.numeric(Condition11)==4
 WI11	"--w11 "	r	(0,20)	|	as.numeric(Condition11)==4
-Node110	"--n110 "	c	(5,6)	|	(as.numeric(NumChilds11)>0 || as.numeric(NumChilds11b)>0)
-Action110	"--a110 "	c	(1,2,3,4,5,6,7)	|	as.numeric(Node110)==5
-ProbS110	"--p110 "	r	(0,1)	|	as.numeric(Node110)==5
-Att110	"--att110 "	r	(1,5)	|	as.numeric(Action110)==4
-Rep110	"--rep110 "	r	(1,5)	|	as.numeric(Action110)==5
-Condition110	"--c110 "	c	(0,1,2,3,4,5,6,7)	|	as.numeric(Node110)==6
-P110	"--p110 "	r	(0,1)	|	as.numeric(Condition110) %in% c(0,1,2,5,6,7)
-B110	"--p110 "	i	(1,20)	|	as.numeric(Condition110)==3
-W110	"--w110 "	r	(0,20)	|	as.numeric(Condition110)==3
-BI110	"--p110 "	i	(1,10)	|	as.numeric(Condition110)==4
-WI110	"--w110 "	r	(0,20)	|	as.numeric(Condition110)==4
-Node111	"--n111 "	c	(5,6)	|	(as.numeric(NumChilds11)>1 || as.numeric(NumChilds11b)>1)
-Action111	"--a111 "	c	(1,2,3,4,5,6,7)	|	as.numeric(Node111)==5
-ProbS111	"--p111 "	r	(0,1)	|	as.numeric(Node111)==5
-Att111	"--att111 "	r	(1,5)	|	as.numeric(Action111)==4
-Rep111	"--rep111 "	r	(1,5)	|	as.numeric(Action111)==5
-Condition111	"--c111 "	c	(0,1,2,3,4,5,6,7)	|	as.numeric(Node111)==6
-P111	"--p111 "	r	(0,1)	|	as.numeric(Condition111) %in% c(0,1,2,5,6,7)
-B111	"--p111 "	i	(1,20)	|	as.numeric(Condition111)==3
-W111	"--w111 "	r	(0,20)	|	as.numeric(Condition111)==3
-BI111	"--p111 "	i	(1,10)	|	as.numeric(Condition111)==4
-WI111	"--w111 "	r	(0,20)	|	as.numeric(Condition111)==4
-Node112	"--n112 "	c	(5,6)	|	(as.numeric(NumChilds11)>2 || as.numeric(NumChilds11b)>2)
-Action112	"--a112 "	c	(1,2,3,4,5,6,7)	|	as.numeric(Node112)==5
-ProbS112	"--p112 "	r	(0,1)	|	as.numeric(Node112)==5
-Att112	"--att112 "	r	(1,5)	|	as.numeric(Action112)==4
-Rep112	"--rep112 "	r	(1,5)	|	as.numeric(Action112)==5
-Condition112	"--c112 "	c	(0,1,2,3,4,5,6,7)	|	as.numeric(Node112)==6
-P112	"--p112 "	r	(0,1)	|	as.numeric(Condition112) %in% c(0,1,2,5,6,7)
-B112	"--p112 "	i	(1,20)	|	as.numeric(Condition112)==3
-W112	"--w112 "	r	(0,20)	|	as.numeric(Condition112)==3
-BI112	"--p112 "	i	(1,10)	|	as.numeric(Condition112)==4
-WI112	"--w112 "	r	(0,20)	|	as.numeric(Condition112)==4
-Node12	"--n12 "	c	(0,1,2,3,4,5,6)	|	(as.numeric(NumChilds1)>2)
-NumChilds12	"--nchild12 "	i	(1,3)	|	as.numeric(Node12) %in% c(0,1,2,3)
-NumChilds12b	"--nchild12 "	c	(1)	|	(as.numeric(Node12) == 4)
+Node12	"--n12 "	c	(5,6)	|	(as.numeric(NumChilds1)>2)
 Action12	"--a12 "	c	(1,2,3,4,5,6,7)	|	as.numeric(Node12)==5
 ProbS12	"--p12 "	r	(0,1)	|	as.numeric(Node12)==5
 Att12	"--att12 "	r	(1,5)	|	as.numeric(Action12)==4
 Rep12	"--rep12 "	r	(1,5)	|	as.numeric(Action12)==5
-Condition12	"--c12 "	c	(0,1,2,3,4,5,6,7)	|	as.numeric(Node12)==6
+Condition12	"--c12 "	c	(0,1,2,3,4,5)	|	as.numeric(Node12)==6
 P12	"--p12 "	r	(0,1)	|	as.numeric(Condition12) %in% c(0,1,2,5,6,7)
 B12	"--p12 "	i	(1,20)	|	as.numeric(Condition12)==3
 W12	"--w12 "	r	(0,20)	|	as.numeric(Condition12)==3
 BI12	"--p12 "	i	(1,10)	|	as.numeric(Condition12)==4
 WI12	"--w12 "	r	(0,20)	|	as.numeric(Condition12)==4
-Node120	"--n120 "	c	(5,6)	|	(as.numeric(NumChilds12)>0 || as.numeric(NumChilds12b)>0)
-Action120	"--a120 "	c	(1,2,3,4,5,6,7)	|	as.numeric(Node120)==5
-ProbS120	"--p120 "	r	(0,1)	|	as.numeric(Node120)==5
-Att120	"--att120 "	r	(1,5)	|	as.numeric(Action120)==4
-Rep120	"--rep120 "	r	(1,5)	|	as.numeric(Action120)==5
-Condition120	"--c120 "	c	(0,1,2,3,4,5,6,7)	|	as.numeric(Node120)==6
-P120	"--p120 "	r	(0,1)	|	as.numeric(Condition120) %in% c(0,1,2,5,6,7)
-B120	"--p120 "	i	(1,20)	|	as.numeric(Condition120)==3
-W120	"--w120 "	r	(0,20)	|	as.numeric(Condition120)==3
-BI120	"--p120 "	i	(1,10)	|	as.numeric(Condition120)==4
-WI120	"--w120 "	r	(0,20)	|	as.numeric(Condition120)==4
-Node121	"--n121 "	c	(5,6)	|	(as.numeric(NumChilds12)>1 || as.numeric(NumChilds12b)>1)
-Action121	"--a121 "	c	(1,2,3,4,5,6,7)	|	as.numeric(Node121)==5
-ProbS121	"--p121 "	r	(0,1)	|	as.numeric(Node121)==5
-Att121	"--att121 "	r	(1,5)	|	as.numeric(Action121)==4
-Rep121	"--rep121 "	r	(1,5)	|	as.numeric(Action121)==5
-Condition121	"--c121 "	c	(0,1,2,3,4,5,6,7)	|	as.numeric(Node121)==6
-P121	"--p121 "	r	(0,1)	|	as.numeric(Condition121) %in% c(0,1,2,5,6,7)
-B121	"--p121 "	i	(1,20)	|	as.numeric(Condition121)==3
-W121	"--w121 "	r	(0,20)	|	as.numeric(Condition121)==3
-BI121	"--p121 "	i	(1,10)	|	as.numeric(Condition121)==4
-WI121	"--w121 "	r	(0,20)	|	as.numeric(Condition121)==4
-Node122	"--n122 "	c	(5,6)	|	(as.numeric(NumChilds12)>2 || as.numeric(NumChilds12b)>2)
-Action122	"--a122 "	c	(1,2,3,4,5,6,7)	|	as.numeric(Node122)==5
-ProbS122	"--p122 "	r	(0,1)	|	as.numeric(Node122)==5
-Att122	"--att122 "	r	(1,5)	|	as.numeric(Action122)==4
-Rep122	"--rep122 "	r	(1,5)	|	as.numeric(Action122)==5
-Condition122	"--c122 "	c	(0,1,2,3,4,5,6,7)	|	as.numeric(Node122)==6
-P122	"--p122 "	r	(0,1)	|	as.numeric(Condition122) %in% c(0,1,2,5,6,7)
-B122	"--p122 "	i	(1,20)	|	as.numeric(Condition122)==3
-W122	"--w122 "	r	(0,20)	|	as.numeric(Condition122)==3
-BI122	"--p122 "	i	(1,10)	|	as.numeric(Condition122)==4
-WI122	"--w122 "	r	(0,20)	|	as.numeric(Condition122)==4
-Node2	"--n2 "	c	(0,1,2,3,4,5,6)	|	as.numeric(NumChildsRoot)>2
+Node2	"--n2 "	c	(0,3,5,6)	|	as.numeric(NumChildsRoot)>2
 NumChilds2	"--nchild2 "	i	(1,3)	|	as.numeric(Node2) %in% c(0,1,2,3)
 NumChilds2b	"--nchild2 "	c	(1)	|	(as.numeric(Node2) == 4)
 Action2	"--a2 "	c	(1,2,3,4,5,6,7)	|	as.numeric(Node2)==5
 ProbS2	"--p2 "	r	(0,1)	|	as.numeric(Node2)==5
 Att2	"--att2 "	r	(1,5)	|	as.numeric(Action2)==4
 Rep2	"--rep2 "	r	(1,5)	|	as.numeric(Action2)==5
-Condition2	"--c2 "	c	(0,1,2,3,4,5,6,7)	|	as.numeric(Node2)==6
+Condition2	"--c2 "	c	(0,1,2,3,4,5)	|	as.numeric(Node2)==6
 P2	"--p2 "	r	(0,1)	|	as.numeric(Condition2) %in% c(0,1,2,5,6,7)
 B2	"--p2 "	i	(1,20)	|	as.numeric(Condition2)==3
 W2	"--w2 "	r	(0,20)	|	as.numeric(Condition2)==3
 BI2	"--p2 "	i	(1,10)	|	as.numeric(Condition2)==4
 WI2	"--w2 "	r	(0,20)	|	as.numeric(Condition2)==4
-Node20	"--n20 "	c	(0,1,2,3,4,5,6)	|	((as.numeric(NumChilds2)>1) || (as.numeric(NumChilds2b)>1))
-Node20b	"--n20 "	c	(4,5,6)	|	(((as.numeric(NumChilds2)==1) || (as.numeric(NumChilds2b)==1)) && (as.numeric(Node2) != 4))
-Node20c	"--n20 "	c	(5,6)	|	(((as.numeric(NumChilds2)==1) || (as.numeric(NumChilds2b)==1)) && (as.numeric(Node2) == 4))
-NumChilds20	"--nchild20 "	i	(1,3)	|	as.numeric(Node20) %in% c(0,1,2,3)
-NumChilds20b	"--nchild20 "	c	(1)	|	(as.numeric(Node20) == 4 || as.numeric(Node20b) == 4)
-Action20	"--a20 "	c	(1,2,3,4,5,6,7)	|	(as.numeric(Node20)==5 || as.numeric(Node20b)==5 || as.numeric(Node20c)==5)
-ProbS20	"--p20 "	r	(0,1)	|	(as.numeric(Node20)==5 || as.numeric(Node20b)==5 || as.numeric(Node20c)==5)
+Node20	"--n20 "	c	(5,6)	|	(as.numeric(NumChilds2)>0)
+Action20	"--a20 "	c	(1,2,3,4,5,6,7)	|	as.numeric(Node20)==5
+ProbS20	"--p20 "	r	(0,1)	|	as.numeric(Node20)==5
 Att20	"--att20 "	r	(1,5)	|	as.numeric(Action20)==4
 Rep20	"--rep20 "	r	(1,5)	|	as.numeric(Action20)==5
-Condition20	"--c20 "	c	(0,1,2,3,4,5,6,7)	|	(as.numeric(Node20)==6 || as.numeric(Node20b)==6 || as.numeric(Node20c)==6)
+Condition20	"--c20 "	c	(0,1,2,3,4,5)	|	as.numeric(Node20)==6
 P20	"--p20 "	r	(0,1)	|	as.numeric(Condition20) %in% c(0,1,2,5,6,7)
 B20	"--p20 "	i	(1,20)	|	as.numeric(Condition20)==3
 W20	"--w20 "	r	(0,20)	|	as.numeric(Condition20)==3
 BI20	"--p20 "	i	(1,10)	|	as.numeric(Condition20)==4
 WI20	"--w20 "	r	(0,20)	|	as.numeric(Condition20)==4
-Node200	"--n200 "	c	(5,6)	|	(as.numeric(NumChilds20)>0 || as.numeric(NumChilds20b)>0)
-Action200	"--a200 "	c	(1,2,3,4,5,6,7)	|	as.numeric(Node200)==5
-ProbS200	"--p200 "	r	(0,1)	|	as.numeric(Node200)==5
-Att200	"--att200 "	r	(1,5)	|	as.numeric(Action200)==4
-Rep200	"--rep200 "	r	(1,5)	|	as.numeric(Action200)==5
-Condition200	"--c200 "	c	(0,1,2,3,4,5,6,7)	|	as.numeric(Node200)==6
-P200	"--p200 "	r	(0,1)	|	as.numeric(Condition200) %in% c(0,1,2,5,6,7)
-B200	"--p200 "	i	(1,20)	|	as.numeric(Condition200)==3
-W200	"--w200 "	r	(0,20)	|	as.numeric(Condition200)==3
-BI200	"--p200 "	i	(1,10)	|	as.numeric(Condition200)==4
-WI200	"--w200 "	r	(0,20)	|	as.numeric(Condition200)==4
-Node201	"--n201 "	c	(5,6)	|	(as.numeric(NumChilds20)>1 || as.numeric(NumChilds20b)>1)
-Action201	"--a201 "	c	(1,2,3,4,5,6,7)	|	as.numeric(Node201)==5
-ProbS201	"--p201 "	r	(0,1)	|	as.numeric(Node201)==5
-Att201	"--att201 "	r	(1,5)	|	as.numeric(Action201)==4
-Rep201	"--rep201 "	r	(1,5)	|	as.numeric(Action201)==5
-Condition201	"--c201 "	c	(0,1,2,3,4,5,6,7)	|	as.numeric(Node201)==6
-P201	"--p201 "	r	(0,1)	|	as.numeric(Condition201) %in% c(0,1,2,5,6,7)
-B201	"--p201 "	i	(1,20)	|	as.numeric(Condition201)==3
-W201	"--w201 "	r	(0,20)	|	as.numeric(Condition201)==3
-BI201	"--p201 "	i	(1,10)	|	as.numeric(Condition201)==4
-WI201	"--w201 "	r	(0,20)	|	as.numeric(Condition201)==4
-Node202	"--n202 "	c	(5,6)	|	(as.numeric(NumChilds20)>2 || as.numeric(NumChilds20b)>2)
-Action202	"--a202 "	c	(1,2,3,4,5,6,7)	|	as.numeric(Node202)==5
-ProbS202	"--p202 "	r	(0,1)	|	as.numeric(Node202)==5
-Att202	"--att202 "	r	(1,5)	|	as.numeric(Action202)==4
-Rep202	"--rep202 "	r	(1,5)	|	as.numeric(Action202)==5
-Condition202	"--c202 "	c	(0,1,2,3,4,5,6,7)	|	as.numeric(Node202)==6
-P202	"--p202 "	r	(0,1)	|	as.numeric(Condition202) %in% c(0,1,2,5,6,7)
-B202	"--p202 "	i	(1,20)	|	as.numeric(Condition202)==3
-W202	"--w202 "	r	(0,20)	|	as.numeric(Condition202)==3
-BI202	"--p202 "	i	(1,10)	|	as.numeric(Condition202)==4
-WI202	"--w202 "	r	(0,20)	|	as.numeric(Condition202)==4
-Node21	"--n21 "	c	(0,1,2,3,4,5,6)	|	(as.numeric(NumChilds2)>1)
-NumChilds21	"--nchild21 "	i	(1,3)	|	as.numeric(Node21) %in% c(0,1,2,3)
-NumChilds21b	"--nchild21 "	c	(1)	|	(as.numeric(Node21) == 4)
+Node21	"--n21 "	c	(5,6)	|	(as.numeric(NumChilds2)>1)
 Action21	"--a21 "	c	(1,2,3,4,5,6,7)	|	as.numeric(Node21)==5
 ProbS21	"--p21 "	r	(0,1)	|	as.numeric(Node21)==5
 Att21	"--att21 "	r	(1,5)	|	as.numeric(Action21)==4
 Rep21	"--rep21 "	r	(1,5)	|	as.numeric(Action21)==5
-Condition21	"--c21 "	c	(0,1,2,3,4,5,6,7)	|	as.numeric(Node21)==6
+Condition21	"--c21 "	c	(0,1,2,3,4,5)	|	as.numeric(Node21)==6
 P21	"--p21 "	r	(0,1)	|	as.numeric(Condition21) %in% c(0,1,2,5,6,7)
 B21	"--p21 "	i	(1,20)	|	as.numeric(Condition21)==3
 W21	"--w21 "	r	(0,20)	|	as.numeric(Condition21)==3
 BI21	"--p21 "	i	(1,10)	|	as.numeric(Condition21)==4
 WI21	"--w21 "	r	(0,20)	|	as.numeric(Condition21)==4
-Node210	"--n210 "	c	(5,6)	|	(as.numeric(NumChilds21)>0 || as.numeric(NumChilds21b)>0)
-Action210	"--a210 "	c	(1,2,3,4,5,6,7)	|	as.numeric(Node210)==5
-ProbS210	"--p210 "	r	(0,1)	|	as.numeric(Node210)==5
-Att210	"--att210 "	r	(1,5)	|	as.numeric(Action210)==4
-Rep210	"--rep210 "	r	(1,5)	|	as.numeric(Action210)==5
-Condition210	"--c210 "	c	(0,1,2,3,4,5,6,7)	|	as.numeric(Node210)==6
-P210	"--p210 "	r	(0,1)	|	as.numeric(Condition210) %in% c(0,1,2,5,6,7)
-B210	"--p210 "	i	(1,20)	|	as.numeric(Condition210)==3
-W210	"--w210 "	r	(0,20)	|	as.numeric(Condition210)==3
-BI210	"--p210 "	i	(1,10)	|	as.numeric(Condition210)==4
-WI210	"--w210 "	r	(0,20)	|	as.numeric(Condition210)==4
-Node211	"--n211 "	c	(5,6)	|	(as.numeric(NumChilds21)>1 || as.numeric(NumChilds21b)>1)
-Action211	"--a211 "	c	(1,2,3,4,5,6,7)	|	as.numeric(Node211)==5
-ProbS211	"--p211 "	r	(0,1)	|	as.numeric(Node211)==5
-Att211	"--att211 "	r	(1,5)	|	as.numeric(Action211)==4
-Rep211	"--rep211 "	r	(1,5)	|	as.numeric(Action211)==5
-Condition211	"--c211 "	c	(0,1,2,3,4,5,6,7)	|	as.numeric(Node211)==6
-P211	"--p211 "	r	(0,1)	|	as.numeric(Condition211) %in% c(0,1,2,5,6,7)
-B211	"--p211 "	i	(1,20)	|	as.numeric(Condition211)==3
-W211	"--w211 "	r	(0,20)	|	as.numeric(Condition211)==3
-BI211	"--p211 "	i	(1,10)	|	as.numeric(Condition211)==4
-WI211	"--w211 "	r	(0,20)	|	as.numeric(Condition211)==4
-Node212	"--n212 "	c	(5,6)	|	(as.numeric(NumChilds21)>2 || as.numeric(NumChilds21b)>2)
-Action212	"--a212 "	c	(1,2,3,4,5,6,7)	|	as.numeric(Node212)==5
-ProbS212	"--p212 "	r	(0,1)	|	as.numeric(Node212)==5
-Att212	"--att212 "	r	(1,5)	|	as.numeric(Action212)==4
-Rep212	"--rep212 "	r	(1,5)	|	as.numeric(Action212)==5
-Condition212	"--c212 "	c	(0,1,2,3,4,5,6,7)	|	as.numeric(Node212)==6
-P212	"--p212 "	r	(0,1)	|	as.numeric(Condition212) %in% c(0,1,2,5,6,7)
-B212	"--p212 "	i	(1,20)	|	as.numeric(Condition212)==3
-W212	"--w212 "	r	(0,20)	|	as.numeric(Condition212)==3
-BI212	"--p212 "	i	(1,10)	|	as.numeric(Condition212)==4
-WI212	"--w212 "	r	(0,20)	|	as.numeric(Condition212)==4
-Node22	"--n22 "	c	(0,1,2,3,4,5,6)	|	(as.numeric(NumChilds2)>2)
-NumChilds22	"--nchild22 "	i	(1,3)	|	as.numeric(Node22) %in% c(0,1,2,3)
-NumChilds22b	"--nchild22 "	c	(1)	|	(as.numeric(Node22) == 4)
+Node22	"--n22 "	c	(5,6)	|	(as.numeric(NumChilds2)>2)
 Action22	"--a22 "	c	(1,2,3,4,5,6,7)	|	as.numeric(Node22)==5
 ProbS22	"--p22 "	r	(0,1)	|	as.numeric(Node22)==5
 Att22	"--att22 "	r	(1,5)	|	as.numeric(Action22)==4
 Rep22	"--rep22 "	r	(1,5)	|	as.numeric(Action22)==5
-Condition22	"--c22 "	c	(0,1,2,3,4,5,6,7)	|	as.numeric(Node22)==6
+Condition22	"--c22 "	c	(0,1,2,3,4,5)	|	as.numeric(Node22)==6
 P22	"--p22 "	r	(0,1)	|	as.numeric(Condition22) %in% c(0,1,2,5,6,7)
 B22	"--p22 "	i	(1,20)	|	as.numeric(Condition22)==3
 W22	"--w22 "	r	(0,20)	|	as.numeric(Condition22)==3
 BI22	"--p22 "	i	(1,10)	|	as.numeric(Condition22)==4
 WI22	"--w22 "	r	(0,20)	|	as.numeric(Condition22)==4
-Node220	"--n220 "	c	(5,6)	|	(as.numeric(NumChilds22)>0 || as.numeric(NumChilds22b)>0)
-Action220	"--a220 "	c	(1,2,3,4,5,6,7)	|	as.numeric(Node220)==5
-ProbS220	"--p220 "	r	(0,1)	|	as.numeric(Node220)==5
-Att220	"--att220 "	r	(1,5)	|	as.numeric(Action220)==4
-Rep220	"--rep220 "	r	(1,5)	|	as.numeric(Action220)==5
-Condition220	"--c220 "	c	(0,1,2,3,4,5,6,7)	|	as.numeric(Node220)==6
-P220	"--p220 "	r	(0,1)	|	as.numeric(Condition220) %in% c(0,1,2,5,6,7)
-B220	"--p220 "	i	(1,20)	|	as.numeric(Condition220)==3
-W220	"--w220 "	r	(0,20)	|	as.numeric(Condition220)==3
-BI220	"--p220 "	i	(1,10)	|	as.numeric(Condition220)==4
-WI220	"--w220 "	r	(0,20)	|	as.numeric(Condition220)==4
-Node221	"--n221 "	c	(5,6)	|	(as.numeric(NumChilds22)>1 || as.numeric(NumChilds22b)>1)
-Action221	"--a221 "	c	(1,2,3,4,5,6,7)	|	as.numeric(Node221)==5
-ProbS221	"--p221 "	r	(0,1)	|	as.numeric(Node221)==5
-Att221	"--att221 "	r	(1,5)	|	as.numeric(Action221)==4
-Rep221	"--rep221 "	r	(1,5)	|	as.numeric(Action221)==5
-Condition221	"--c221 "	c	(0,1,2,3,4,5,6,7)	|	as.numeric(Node221)==6
-P221	"--p221 "	r	(0,1)	|	as.numeric(Condition221) %in% c(0,1,2,5,6,7)
-B221	"--p221 "	i	(1,20)	|	as.numeric(Condition221)==3
-W221	"--w221 "	r	(0,20)	|	as.numeric(Condition221)==3
-BI221	"--p221 "	i	(1,10)	|	as.numeric(Condition221)==4
-WI221	"--w221 "	r	(0,20)	|	as.numeric(Condition221)==4
-Node222	"--n222 "	c	(5,6)	|	(as.numeric(NumChilds22)>2 || as.numeric(NumChilds22b)>2)
-Action222	"--a222 "	c	(1,2,3,4,5,6,7)	|	as.numeric(Node222)==5
-ProbS222	"--p222 "	r	(0,1)	|	as.numeric(Node222)==5
-Att222	"--att222 "	r	(1,5)	|	as.numeric(Action222)==4
-Rep222	"--rep222 "	r	(1,5)	|	as.numeric(Action222)==5
-Condition222	"--c222 "	c	(0,1,2,3,4,5,6,7)	|	as.numeric(Node222)==6
-P222	"--p222 "	r	(0,1)	|	as.numeric(Condition222) %in% c(0,1,2,5,6,7)
-B222	"--p222 "	i	(1,20)	|	as.numeric(Condition222)==3
-W222	"--w222 "	r	(0,20)	|	as.numeric(Condition222)==3
-BI222	"--p222 "	i	(1,10)	|	as.numeric(Condition222)==4
-WI222	"--w222 "	r	(0,20)	|	as.numeric(Condition222)==4
