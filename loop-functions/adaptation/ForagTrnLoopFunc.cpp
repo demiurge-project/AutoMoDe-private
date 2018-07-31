@@ -83,6 +83,12 @@ void ForagTrnLoopFunction::Reset() {
     m_fTotalObjects = 0;
     m_fTotalRobots = 0;
     m_fRandomIndex = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
+
+    CSpace::TMapPerType& tEpuckMap = GetSpace().GetEntitiesByType("epuck");
+    for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it) {
+        CEPuckEntity* pcEpuck = any_cast<CEPuckEntity*>(it->second);
+        m_tMemObjects[pcEpuck] = false;
+    }
 }
 
 /****************************************/
@@ -111,8 +117,13 @@ void ForagTrnLoopFunction::PostStep() {
 
 void ForagTrnLoopFunction::PostExperiment() {
 
-    Real fNormalizedAgg = m_fTotalRobots/20.0;
-    m_fObjectiveFunction = m_fTotalObjects + (m_fTotalObjects * fNormalizedAgg);
+    if (m_fTotalRobots >= 12) {
+        m_fObjectiveFunction = m_fTotalObjects;
+    }
+
+    else {
+         m_fObjectiveFunction = 0;
+    }
     LOG << m_fObjectiveFunction << std::endl;
 }
 
@@ -179,7 +190,7 @@ void ForagTrnLoopFunction::GetStepScore(bool bAggregate) {
                 fDc = (cEpuckPosition - m_cCoordSpot3).Length();
 
                 if (fDa <= m_fSafeDist || fDb <= m_fSafeDist || fDc <= m_fSafeDist)
-                m_tMemObjects[pcEpuck] = true;
+                    m_tMemObjects[pcEpuck] = true;
             }
         }
         else {

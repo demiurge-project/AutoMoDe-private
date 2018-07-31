@@ -49,10 +49,6 @@ class SynTrnLoopFunction: public AutoMoDeLoopFunctions {
     Real m_fRandomIndex;    
     CColor m_cSynColor;
 
-    typedef std::map<CEPuckEntity*, CColor > TColorMap;
-
-    TColorMap m_tMemColors;
-
 };
 
 #endif

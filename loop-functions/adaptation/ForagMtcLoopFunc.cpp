@@ -19,6 +19,7 @@ ForagMtcLoopFunction::ForagMtcLoopFunction() {
     m_cCoordSpot3 = CVector2(0.54,-0.54);
     m_fSafeDist = 0.16;
     m_fRadiusSpot = 0.125;
+    m_cForagColor = CColor::BLACK;
 }
 
 /****************************************/
@@ -79,6 +80,13 @@ void ForagMtcLoopFunction::Reset() {
     AutoMoDeLoopFunctions::Reset();
     m_fObjectiveFunction = 0;
     m_fRandomIndex = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
+    m_cForagColor = CColor::BLACK;
+
+    CSpace::TMapPerType& tEpuckMap = GetSpace().GetEntitiesByType("epuck");
+    for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it) {
+        CEPuckEntity* pcEpuck = any_cast<CEPuckEntity*>(it->second);
+        m_tMemObjects[pcEpuck] = false;
+    }
 }
 
 /****************************************/
@@ -86,8 +94,8 @@ void ForagMtcLoopFunction::Reset() {
 
 void ForagMtcLoopFunction::PostStep() {
     UInt32 unClock = GetSpace().GetSimulationClock();
-    ArenaControl(unClock);
     m_fObjectiveFunction += GetStepScore(unClock);
+    ArenaControl(unClock);
 }
 
 /****************************************/
@@ -247,18 +255,22 @@ Real ForagMtcLoopFunction::GetStepScore(UInt32 unClock) {
 
         cEpuckColor = pcEpuck->GetLEDEquippedEntity().GetLED(10).GetColor();
 
+        cEpuckPosition.Set(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
+                           pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
+
+
         if (cEpuckColor == m_cForagColor) {
 
-            cEpuckPosition.Set(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
-                               pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
+
 
             fDa = (cEpuckPosition - m_cCoordSpot1).Length();
             fDb = (cEpuckPosition - m_cCoordSpot2).Length();
             fDc = (cEpuckPosition - m_cCoordSpot3).Length();
 
-            if (fDa <= m_fSafeDist || fDb <= m_fSafeDist || fDc <= m_fSafeDist)
+            if (fDa <= m_fSafeDist || fDb <= m_fSafeDist || fDc <= m_fSafeDist){
                 m_tMemObjects[pcEpuck] = true;
             }
+        }
 
         if (m_tMemObjects[pcEpuck] == true && cEpuckPosition.GetX() <= -0.34) {
             m_tMemObjects[pcEpuck] = false;

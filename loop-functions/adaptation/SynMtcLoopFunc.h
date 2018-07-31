@@ -36,7 +36,7 @@ class SynMtcLoopFunction: public AutoMoDeLoopFunctions {
 
     CVector3 GetRandomPosition();
 
-    Real GetStepScore(bool bChange);
+    Real GetStepScore();
 
     void ArenaControl(UInt32 unClock);
     void ArenaControlSelector(UInt32 unClock);
@@ -53,10 +53,6 @@ class SynMtcLoopFunction: public AutoMoDeLoopFunctions {
     Real m_fObjectiveFunction;
     Real m_fRandomIndex;    
     CColor m_cSynColor;
-
-    typedef std::map<CEPuckEntity*, CColor > TColorMap;
-
-    TColorMap m_tMemColors;
 
 };
 
