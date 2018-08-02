@@ -261,8 +261,6 @@ Real ForagMtcLoopFunction::GetStepScore(UInt32 unClock) {
 
         if (cEpuckColor == m_cForagColor) {
 
-
-
             fDa = (cEpuckPosition - m_cCoordSpot1).Length();
             fDb = (cEpuckPosition - m_cCoordSpot2).Length();
             fDc = (cEpuckPosition - m_cCoordSpot3).Length();

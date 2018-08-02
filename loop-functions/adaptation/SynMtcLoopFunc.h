@@ -49,10 +49,13 @@ class SynMtcLoopFunction: public AutoMoDeLoopFunctions {
     CVector2 m_cCoordSpot1;
     CVector2 m_cCoordSpot2;
     CVector2 m_cCoordSpot3;
+    CColor m_cSynColor1;
+    CColor m_cSynColor2;
+    CColor m_cSynColor3;
     Real m_fRadiusSpot;
+    Real m_fSafeDist;
     Real m_fObjectiveFunction;
-    Real m_fRandomIndex;    
-    CColor m_cSynColor;
+    Real m_fRandomIndex;
 
 };
 

@@ -18,6 +18,7 @@ SynMtcLoopFunction::SynMtcLoopFunction() {
     m_cCoordSpot2 = CVector2(0.765, 0.00);
     m_cCoordSpot3 = CVector2(0.54,-0.54);
     m_fRadiusSpot = 0.125;
+    m_fSafeDist = 0.16;
 }
 
 /****************************************/
@@ -85,16 +86,7 @@ void SynMtcLoopFunction::Reset() {
 
 void SynMtcLoopFunction::PostStep() {
     UInt32 unClock = GetSpace().GetSimulationClock();
-
-    if (unClock == 400)
-        m_fObjectiveFunction += GetStepScore();
-
-    if (unClock == 800)
-        m_fObjectiveFunction += GetStepScore();
-
-    if (unClock == 1200)
-        m_fObjectiveFunction += GetStepScore();
-
+    m_fObjectiveFunction += GetStepScore();
     ArenaControl(unClock);
 }
 
@@ -204,10 +196,13 @@ void SynMtcLoopFunction::ArenaControlSelector(UInt32 unClock) {
 
 void SynMtcLoopFunction::ArenaConfigOne () {
     m_pcArena->SetArenaColor(CColor::BLACK);
-    m_pcArena->SetBoxColor(2,1,CColor::GREEN);
-    m_pcArena->SetBoxColor(2,7,CColor::GREEN);
+    m_pcArena->SetBoxColor(2,1,CColor::RED);
     m_pcArena->SetBoxColor(2,8,CColor::GREEN);
-    m_cSynColor = CColor::YELLOW;
+    m_pcArena->SetBoxColor(2,7,CColor::BLUE);
+    m_cSynColor1 = CColor::MAGENTA;
+    m_cSynColor2 = CColor::YELLOW;
+    m_cSynColor3 = CColor::CYAN;
+
 
     return;
 }
@@ -218,9 +213,11 @@ void SynMtcLoopFunction::ArenaConfigOne () {
 void SynMtcLoopFunction::ArenaConfigTwo () {
     m_pcArena->SetArenaColor(CColor::BLACK);
     m_pcArena->SetBoxColor(2,1,CColor::BLUE);
-    m_pcArena->SetBoxColor(2,7,CColor::BLUE);
-    m_pcArena->SetBoxColor(2,8,CColor::BLUE);
-    m_cSynColor = CColor::CYAN;
+    m_pcArena->SetBoxColor(2,8,CColor::RED);
+    m_pcArena->SetBoxColor(2,7,CColor::GREEN);
+    m_cSynColor1 = CColor::CYAN;
+    m_cSynColor2 = CColor::MAGENTA;
+    m_cSynColor3 = CColor::YELLOW;
 
     return;
 }
@@ -230,10 +227,12 @@ void SynMtcLoopFunction::ArenaConfigTwo () {
 
 void SynMtcLoopFunction::ArenaConfigThree () {
     m_pcArena->SetArenaColor(CColor::BLACK);
-    m_pcArena->SetBoxColor(2,1,CColor::RED);
+    m_pcArena->SetBoxColor(2,1,CColor::GREEN);
+    m_pcArena->SetBoxColor(2,8,CColor::BLUE);
     m_pcArena->SetBoxColor(2,7,CColor::RED);
-    m_pcArena->SetBoxColor(2,8,CColor::RED);
-    m_cSynColor = CColor::MAGENTA;
+    m_cSynColor1 = CColor::YELLOW;
+    m_cSynColor2 = CColor::CYAN;
+    m_cSynColor3 = CColor::MAGENTA;
 
     return;
 }
@@ -244,8 +243,13 @@ void SynMtcLoopFunction::ArenaConfigThree () {
 Real SynMtcLoopFunction::GetStepScore() {
 
     CSpace::TMapPerType& tEpuckMap = GetSpace().GetEntitiesByType("epuck");
+    CVector2 cEpuckPosition(0,0);
     CColor cEpuckColor = CColor::BLACK;
     Real fScore = 0;
+    Real fDist;
+    bool bScoreC1 = false;
+    bool bScoreC2 = false;
+    bool bScoreC3 = false;
 
     for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it) {
 
@@ -253,12 +257,28 @@ Real SynMtcLoopFunction::GetStepScore() {
 
         cEpuckColor = pcEpuck->GetLEDEquippedEntity().GetLED(10).GetColor();
 
-        if (cEpuckColor == m_cSynColor)
-            fScore-=1;
+        cEpuckPosition.Set(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
+                           pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
+
+        if (cEpuckColor == m_cSynColor1){
+            fDist = (cEpuckPosition - m_cCoordSpot1).Length();
+            if (fDist <= m_fSafeDist)
+                bScoreC1 = true;
+        }
+        else if (cEpuckColor == m_cSynColor2){
+            fDist = (cEpuckPosition - m_cCoordSpot2).Length();
+            if (fDist <= m_fSafeDist)
+                bScoreC2 = true;
+        }
+        else if (cEpuckColor == m_cSynColor3){
+            fDist = (cEpuckPosition - m_cCoordSpot3).Length();
+            if (fDist <= m_fSafeDist)
+                bScoreC3 = true;
+        }
     }
 
-    if (fScore > -12)
-        fScore = 0;
+    if (bScoreC1 && bScoreC2 && bScoreC3)
+        fScore = -1;
 
     return fScore;
 }
