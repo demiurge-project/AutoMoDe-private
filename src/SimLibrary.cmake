@@ -82,5 +82,5 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 add_executable(automode_main_bt AutoMoDeMainBT.cpp)
 target_link_libraries(automode_main_bt automode_bt argos3core_${ARGOS_BUILD_FOR} argos3plugin_${ARGOS_BUILD_FOR}_epuck argos3_demiurge_loop_functions argos3_demiurge_epuck_dao)
 
-#add_executable(visualize_bt AutoMoDeVisualizeBT.cpp)
-#target_link_libraries(visualize_bt automode_bt argos3core_${ARGOS_BUILD_FOR} argos3plugin_${ARGOS_BUILD_FOR}_epuck argos3_demiurge_epuck_dao)
+add_executable(visualize_bt AutoMoDeVisualizeBT.cpp)
+target_link_libraries(visualize_bt automode_bt argos3core_${ARGOS_BUILD_FOR} argos3plugin_${ARGOS_BUILD_FOR}_epuck argos3_demiurge_epuck_dao)

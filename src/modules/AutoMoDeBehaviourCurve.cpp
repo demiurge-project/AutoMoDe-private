@@ -93,7 +93,7 @@ namespace argos {
 		std::map<std::string, Real>::iterator itRadius = m_mapParameters.find("r");
 		if ((itProba != m_mapParameters.end()) && (itRadius != m_mapParameters.end())) {
 			m_fSuccessProbabilityParameter = itProba->second;
-			m_fRadiusParameter = itRadius->second * 100;  // expressed in meters in grammar -> from 0.1 to 2.0 by steps of 0.1
+			m_fRadiusParameter = itRadius->second * 10;  // expressed in centimeters in grammar -> integer from 1 to 20
 		} else {
 			LOGERR << "[FATAL] Missing probability parameter for the following behaviour:" << m_strLabel << std::endl;
 			THROW_ARGOSEXCEPTION("Missing Parameter");
