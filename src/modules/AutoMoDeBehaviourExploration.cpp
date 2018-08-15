@@ -62,7 +62,7 @@ namespace argos {
 		}
 
 		// Success probability
-		it = m_mapParameters.find("b");
+		it = m_mapParameters.find("p");
 		if (it != m_mapParameters.end()) {
 			m_fSuccessProbabilityParameter = it->second;
 		} else {
@@ -78,10 +78,10 @@ namespace argos {
 		switch (m_eExplorationState) {
 			case RANDOM_WALK: {
 				m_pcRobotDAO->SetWheelsVelocity(m_pcRobotDAO->GetMaxVelocity(), m_pcRobotDAO->GetMaxVelocity());
-				if (IsObstacleInFront(m_pcRobotDAO->GetProximityInput())) {
+				if (ObstacleInFront()) {
 					m_eExplorationState = OBSTACLE_AVOIDANCE;
 					m_unTurnSteps = (m_pcRobotDAO->GetRandomNumberGenerator())->Uniform(m_cRandomStepsRange);
-					CRadians cAngle = SumProximityReadings(m_pcRobotDAO->GetProximityInput()).Angle().SignedNormalize();
+					CRadians cAngle = m_pcRobotDAO->GetProximityReading().Angle;
 					if (cAngle.GetValue() < 0) {
 						m_eTurnDirection = LEFT;
 					} else {
@@ -130,21 +130,8 @@ namespace argos {
 	/****************************************/
 	/****************************************/
 
-	bool AutoMoDeBehaviourExploration::IsObstacleInFront(CCI_EPuckProximitySensor::TReadings s_prox_input) {
-		if (s_prox_input[0].Value >= m_fProximityThreshold ||
-				s_prox_input[1].Value >= m_fProximityThreshold ||
-				s_prox_input[6].Value >= m_fProximityThreshold ||
-				s_prox_input[7].Value >= m_fProximityThreshold) {
-			return true;
-		}
-		return false;
-	}
-
-	/****************************************/
-	/****************************************/
-
 	bool AutoMoDeBehaviourExploration::Succeeded() {
-		return false;
+		return EvaluateBernoulliProbability(m_fSuccessProbabilityParameter);
 	}
 
 	/****************************************/

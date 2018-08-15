@@ -19,6 +19,7 @@ set(BEHAVIOR_TREE_HEADERS
 	modules/AutoMoDeBehaviour.h
 	modules/AutoMoDeBehaviourAntiPhototaxis.h
 	modules/AutoMoDeBehaviourAttraction.h
+	modules/AutoMoDeBehaviourExploration.h
 	modules/AutoMoDeBehaviourCurve.h
 	modules/AutoMoDeBehaviourPhototaxis.h
 	modules/AutoMoDeBehaviourRepulsion.h
@@ -55,6 +56,7 @@ set(BEHAVIOR_TREE_SOURCES
 	modules/AutoMoDeBehaviour.cpp
 	modules/AutoMoDeBehaviourAntiPhototaxis.cpp
 	modules/AutoMoDeBehaviourAttraction.cpp
+	modules/AutoMoDeBehaviourExploration.cpp
 	modules/AutoMoDeBehaviourCurve.cpp
 	modules/AutoMoDeBehaviourPhototaxis.cpp
 	modules/AutoMoDeBehaviourRepulsion.cpp

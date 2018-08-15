@@ -25,7 +25,7 @@
 #include "../modules/AutoMoDeBehaviourAttraction.h"
 #include "../modules/AutoMoDeBehaviourAntiPhototaxis.h"
 #include "../modules/AutoMoDeBehaviourCurve.h"
-//#include "../modules/AutoMoDeBehaviourExploration.h"
+#include "../modules/AutoMoDeBehaviourExploration.h"
 #include "../modules/AutoMoDeBehaviourPhototaxis.h"
 #include "../modules/AutoMoDeBehaviourRepulsion.h"
 #include "../modules/AutoMoDeBehaviourRotation.h"

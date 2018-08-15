@@ -226,7 +226,7 @@ namespace argos {
 		// Creation of the Behaviour object
 		switch(unBehaviourIdentifier) {
 			case 0:
-				//pcNewBehaviour = new AutoMoDeBehaviourExploration();
+				pcNewBehaviour = new AutoMoDeBehaviourExploration();
 				break;
 			case 1:
 				pcNewBehaviour = new AutoMoDeBehaviourStop();
