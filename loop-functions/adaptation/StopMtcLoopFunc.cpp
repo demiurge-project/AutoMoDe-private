@@ -72,7 +72,11 @@ argos::CColor StopMtcLoopFunction::GetFloorColor(const argos::CVector2& c_positi
 
 void StopMtcLoopFunction::Init(TConfigurationNode& t_tree) {
     AutoMoDeLoopFunctions::Init(t_tree);
-    m_fRandomIndex = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
+    if (m_unPwConfig  == 0)
+        m_fRandomIndex = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
+    else{
+        m_fRandomIndex = (m_unPwConfig * 0.167) - (0.167/2) ;
+    }
 }
 
 /****************************************/
@@ -83,7 +87,11 @@ void StopMtcLoopFunction::Reset() {
     m_fObjectiveFunction = 0;
     m_bInit = false;
     m_bStopSignal = false;
-    m_fRandomIndex = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
+    if (m_unPwConfig  == 0)
+        m_fRandomIndex = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
+    else{
+        m_fRandomIndex = (m_unPwConfig * 0.167) - (0.167/2) ;
+    }
 }
 
 /****************************************/

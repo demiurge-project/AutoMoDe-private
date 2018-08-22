@@ -70,7 +70,11 @@ argos::CColor ForagMtcLoopFunction::GetFloorColor(const argos::CVector2& c_posit
 
 void ForagMtcLoopFunction::Init(TConfigurationNode& t_tree) {
     AutoMoDeLoopFunctions::Init(t_tree);
-    m_fRandomIndex = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
+    if (m_unPwConfig  == 0)
+        m_fRandomIndex = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
+    else{
+        m_fRandomIndex = (m_unPwConfig * 0.167) - (0.167/2) ;
+    }
 }
 
 /****************************************/
@@ -79,7 +83,11 @@ void ForagMtcLoopFunction::Init(TConfigurationNode& t_tree) {
 void ForagMtcLoopFunction::Reset() {
     AutoMoDeLoopFunctions::Reset();
     m_fObjectiveFunction = 0;
-    m_fRandomIndex = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
+    if (m_unPwConfig  == 0)
+        m_fRandomIndex = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
+    else{
+        m_fRandomIndex = (m_unPwConfig * 0.167) - (0.167/2) ;
+    }
     m_cForagColor = CColor::BLACK;
 
     CSpace::TMapPerType& tEpuckMap = GetSpace().GetEntitiesByType("epuck");

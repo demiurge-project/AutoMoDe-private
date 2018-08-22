@@ -70,7 +70,11 @@ void StopTrnLoopFunction::Init(TConfigurationNode& t_tree) {
     AutoMoDeLoopFunctions::Init(t_tree);
     GetRobotPositions(true);
 
-    m_fRandomIndex = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
+    if (m_unPwConfig  == 0)
+        m_fRandomIndex = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
+    else{
+        m_fRandomIndex = (m_unPwConfig * 0.5) - (0.5/2) ;
+    }
 }
 
 /****************************************/
@@ -79,7 +83,11 @@ void StopTrnLoopFunction::Init(TConfigurationNode& t_tree) {
 void StopTrnLoopFunction::Reset() {
     AutoMoDeLoopFunctions::Reset();
     m_fObjectiveFunction = 0;
-    m_fRandomIndex = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
+    if (m_unPwConfig  == 0)
+        m_fRandomIndex = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
+    else{
+        m_fRandomIndex = (m_unPwConfig * 0.5) - (0.5/2) ;
+    }
 }
 
 /****************************************/
@@ -92,7 +100,6 @@ void StopTrnLoopFunction::PostStep() {
     GetRobotPositions(false);
     m_fObjectiveFunction += GetMissionScore(unClock);
     m_tMemPositions = m_tPositions;
-    LOG << m_fObjectiveFunction << std::endl;
 }
 
 /****************************************/

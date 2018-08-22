@@ -68,7 +68,11 @@ argos::CColor SynTrnLoopFunction::GetFloorColor(const argos::CVector2& c_positio
 
 void SynTrnLoopFunction::Init(TConfigurationNode& t_tree) {
     AutoMoDeLoopFunctions::Init(t_tree);
-    m_fRandomIndex = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
+    if (m_unPwConfig  == 0)
+        m_fRandomIndex = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
+    else{
+        m_fRandomIndex = (m_unPwConfig * 0.5) - (0.5/2) ;
+    }
 }
 
 /****************************************/
@@ -77,7 +81,11 @@ void SynTrnLoopFunction::Init(TConfigurationNode& t_tree) {
 void SynTrnLoopFunction::Reset() {
     AutoMoDeLoopFunctions::Reset();
     m_fObjectiveFunction = 0;
-    m_fRandomIndex = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
+    if (m_unPwConfig  == 0)
+        m_fRandomIndex = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
+    else{
+        m_fRandomIndex = (m_unPwConfig * 0.5) - (0.5/2) ;
+    }
 }
 
 /****************************************/
