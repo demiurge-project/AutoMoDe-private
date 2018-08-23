@@ -43,6 +43,8 @@ class StopMtcLoopFunction: public AutoMoDeLoopFunctions {
     void ArenaConfigOne();
     void ArenaConfigTwo();
     void ArenaConfigThree();
+    void PrintColor(bool bEvaluate, UInt32 unClock);
+    void PrintScore(bool bEvaluate, UInt32 unClock);
 
 
   private:
@@ -58,6 +60,7 @@ class StopMtcLoopFunction: public AutoMoDeLoopFunctions {
     UInt32 m_unStopTime;
     bool m_bInit;
     bool m_bStopSignal;
+    bool m_bEvaluate;
 
     typedef std::map<CEPuckEntity*, CVector2 > TPosMap;
 

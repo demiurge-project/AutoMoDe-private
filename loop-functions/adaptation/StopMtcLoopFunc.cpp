@@ -22,6 +22,7 @@ StopMtcLoopFunction::StopMtcLoopFunction() {
     m_fRadiusSpot = 0.125;
     m_bStopSignal = false;
     m_bInit = false;
+    m_bEvaluate = false;
 }
 
 /****************************************/
@@ -77,6 +78,8 @@ void StopMtcLoopFunction::Init(TConfigurationNode& t_tree) {
     else{
         m_fRandomIndex = (m_unPwConfig * 0.167) - (0.167/2) ;
     }
+    if (m_unPwExp != 0)
+        m_bEvaluate = true;
 }
 
 /****************************************/
@@ -99,8 +102,10 @@ void StopMtcLoopFunction::Reset() {
 
 void StopMtcLoopFunction::PostStep() {
     UInt32 unClock = GetSpace().GetSimulationClock();
-    ArenaControl(unClock);
+    PrintColorScore(m_bEvaluate, unClock);
+    ArenaControl(unClock); 
     m_fObjectiveFunction += GetStepScore(unClock);
+    PrintTimeScore(m_bEvaluate, unClock);
 }
 
 /****************************************/
@@ -314,6 +319,24 @@ CVector3 StopMtcLoopFunction::GetRandomPosition() {
   Real fPosY = b * m_fDistributionRadius * sin(2 * CRadians::PI.GetValue() * (a/b));
 
   return CVector3((fPosX * 0.8) -0.60 , fPosY*2, 0);
+}
+
+/****************************************/
+/****************************************/
+
+void StopMtcLoopFunction::PrintColor(bool bEvaluate, UInt32 unClock){
+    if (bEvaluate)
+        if (unClock == 400 || unClock == 800 || unClock == 1200)
+            LOG << m_cStopColor << std::endl;
+}
+
+/****************************************/
+/****************************************/
+
+void StopMtcLoopFunction::PrintPartialScore(bool bEvaluate, UInt32 unClock){
+    if (bEvaluate) {
+
+    }
 }
 
 /****************************************/
