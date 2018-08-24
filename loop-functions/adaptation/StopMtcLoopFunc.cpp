@@ -309,6 +309,9 @@ Real StopMtcLoopFunction::GetStepScore(UInt32 unClock) {
     return fScore;
 }
 
+/****************************************/
+/****************************************/
+
 Real StopMtcLoopFunction::AdditionalMetrics(){
     Real fNewMetric = 999999;
     if (m_unPwExp == 1){

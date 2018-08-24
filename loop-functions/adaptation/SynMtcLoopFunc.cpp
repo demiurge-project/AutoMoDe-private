@@ -294,6 +294,28 @@ Real SynMtcLoopFunction::GetStepScore() {
 /****************************************/
 /****************************************/
 
+Real StopMtcLoopFunction::AdditionalMetrics(){
+    Real fNewMetric = 999999;
+    if (m_unPwExp == 1){
+        fNewMetric = (Real)m_unStopTime;
+    }
+    else if (m_unPwExp == 2){
+        if (m_cTriggerColor == CColor::BLACK)
+            fNewMetric = 0;
+        else if (m_cTriggerColor == CColor::MAGENTA)
+            fNewMetric = 1;
+        else if (m_cTriggerColor == CColor::YELLOW)
+            fNewMetric = 2;
+        else if (m_cTriggerColor == CColor::CYAN)
+            fNewMetric = 3;
+    }
+
+    return fNewMetric;
+}
+
+/****************************************/
+/****************************************/
+
 CVector3 SynMtcLoopFunction::GetRandomPosition() {
   Real temp;
   Real a = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
