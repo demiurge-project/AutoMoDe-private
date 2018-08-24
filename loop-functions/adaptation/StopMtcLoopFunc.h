@@ -37,15 +37,13 @@ class StopMtcLoopFunction: public AutoMoDeLoopFunctions {
     CVector3 GetRandomPosition();
 
     Real GetStepScore(UInt32 unClock);
+    Real AdditionalMetrics();
 
     void ArenaControl(UInt32 unClock);
     void ArenaControlSelector(UInt32 unClock);
     void ArenaConfigOne();
     void ArenaConfigTwo();
     void ArenaConfigThree();
-    void PrintColor(bool bEvaluate, UInt32 unClock);
-    void PrintScore(bool bEvaluate, UInt32 unClock);
-
 
   private:
     CVector2 m_cCoordSpot1;
@@ -57,6 +55,7 @@ class StopMtcLoopFunction: public AutoMoDeLoopFunctions {
     Real m_fObjectiveFunction;
     Real m_fRandomIndex;    
     CColor m_cStopColor;
+    CColor m_cTriggerColor;
     UInt32 m_unStopTime;
     bool m_bInit;
     bool m_bStopSignal;

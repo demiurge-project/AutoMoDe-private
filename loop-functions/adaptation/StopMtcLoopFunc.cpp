@@ -21,6 +21,8 @@ StopMtcLoopFunction::StopMtcLoopFunction() {
     m_fSafeDist = 0.16;
     m_fRadiusSpot = 0.125;
     m_bStopSignal = false;
+    m_cStopColor = CColor::BLACK;
+    m_cTriggerColor = CColor::BLACK;
     m_bInit = false;
     m_bEvaluate = false;
 }
@@ -90,6 +92,8 @@ void StopMtcLoopFunction::Reset() {
     m_fObjectiveFunction = 0;
     m_bInit = false;
     m_bStopSignal = false;
+    m_cStopColor = CColor::BLACK;
+    m_cTriggerColor = CColor::BLACK;
     if (m_unPwConfig  == 0)
         m_fRandomIndex = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
     else{
@@ -102,24 +106,26 @@ void StopMtcLoopFunction::Reset() {
 
 void StopMtcLoopFunction::PostStep() {
     UInt32 unClock = GetSpace().GetSimulationClock();
-    PrintColorScore(m_bEvaluate, unClock);
     ArenaControl(unClock); 
     m_fObjectiveFunction += GetStepScore(unClock);
-    PrintTimeScore(m_bEvaluate, unClock);
 }
 
 /****************************************/
 /****************************************/
 
 void StopMtcLoopFunction::PostExperiment() {
-
     if (!m_bStopSignal)
         m_unStopTime = 1200;
 
     Real fTimeScore = (Real)m_unStopTime * (Real)m_unNumberRobots;
     m_fObjectiveFunction += fTimeScore;
 
-    LOG << m_fObjectiveFunction << std::endl;
+    if (m_bEvaluate){
+        Real fNewMetric = AdditionalMetrics();
+        LOG << fNewMetric << std::endl;
+    }
+    else
+        LOG << m_fObjectiveFunction << std::endl;
 }
 
 /****************************************/
@@ -285,6 +291,7 @@ Real StopMtcLoopFunction::GetStepScore(UInt32 unClock) {
 
                 if (dt <= m_fSafeDist)
                     if (cEpuckColor == m_cStopColor) {
+                        m_cTriggerColor = m_cStopColor;
                         m_bStopSignal = true;
                         m_unStopTime = unClock;
                     }
@@ -300,6 +307,25 @@ Real StopMtcLoopFunction::GetStepScore(UInt32 unClock) {
     }
 
     return fScore;
+}
+
+Real StopMtcLoopFunction::AdditionalMetrics(){
+    Real fNewMetric = 999999;
+    if (m_unPwExp == 1){
+        fNewMetric = (Real)m_unStopTime;
+    }
+    else if (m_unPwExp == 2){
+        if (m_cTriggerColor == CColor::BLACK)
+            fNewMetric = 0;
+        else if (m_cTriggerColor == CColor::MAGENTA)
+            fNewMetric = 1;
+        else if (m_cTriggerColor == CColor::YELLOW)
+            fNewMetric = 2;
+        else if (m_cTriggerColor == CColor::CYAN)
+            fNewMetric = 3;
+    }
+
+    return fNewMetric;
 }
 
 /****************************************/
@@ -319,24 +345,6 @@ CVector3 StopMtcLoopFunction::GetRandomPosition() {
   Real fPosY = b * m_fDistributionRadius * sin(2 * CRadians::PI.GetValue() * (a/b));
 
   return CVector3((fPosX * 0.8) -0.60 , fPosY*2, 0);
-}
-
-/****************************************/
-/****************************************/
-
-void StopMtcLoopFunction::PrintColor(bool bEvaluate, UInt32 unClock){
-    if (bEvaluate)
-        if (unClock == 400 || unClock == 800 || unClock == 1200)
-            LOG << m_cStopColor << std::endl;
-}
-
-/****************************************/
-/****************************************/
-
-void StopMtcLoopFunction::PrintPartialScore(bool bEvaluate, UInt32 unClock){
-    if (bEvaluate) {
-
-    }
 }
 
 /****************************************/
