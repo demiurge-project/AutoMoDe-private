@@ -21,6 +21,7 @@ ForagTrnLoopFunction::ForagTrnLoopFunction() {
     m_fRadiusSpot = 0.125;
     m_fTotalObjects = 0;
     m_fTotalRobots = 0;
+    m_bEvaluate = false;
 }
 
 /****************************************/
@@ -76,6 +77,8 @@ void ForagTrnLoopFunction::Init(TConfigurationNode& t_tree) {
     else{
         m_fRandomIndex = (m_unPwConfig * 0.5) - (0.5/2) ;
     }
+    if (m_unPwExp != 0)
+        m_bEvaluate = true;
 }
 
 /****************************************/
@@ -132,7 +135,13 @@ void ForagTrnLoopFunction::PostExperiment() {
     else {
          m_fObjectiveFunction = 0;
     }
-    LOG << m_fObjectiveFunction << std::endl;
+
+    if (m_bEvaluate){
+        Real fNewMetric = AdditionalMetrics();
+        LOG << fNewMetric << std::endl;
+    }
+    else
+        LOG << m_fObjectiveFunction << std::endl;
 }
 
 /****************************************/
@@ -208,6 +217,19 @@ void ForagTrnLoopFunction::GetStepScore(bool bAggregate) {
     }
 
     return;
+}
+
+/****************************************/
+/****************************************/
+
+Real ForagTrnLoopFunction::AdditionalMetrics(){
+    Real fNewMetric = 999999;
+    if (m_unPwExp == 1)
+        fNewMetric = m_fTotalObjects;
+    else if (m_unPwExp == 2)
+        fNewMetric = m_fTotalRobots;
+
+    return fNewMetric;
 }
 
 /****************************************/

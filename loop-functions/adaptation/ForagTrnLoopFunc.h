@@ -37,6 +37,7 @@ class ForagTrnLoopFunction: public AutoMoDeLoopFunctions {
     CVector3 GetRandomPosition();
 
     void GetStepScore(bool bAggregate);
+    Real AdditionalMetrics();
 
     void ArenaControl(UInt32 unClock);
 
@@ -50,6 +51,7 @@ class ForagTrnLoopFunction: public AutoMoDeLoopFunctions {
     Real m_fRandomIndex;
     Real m_fTotalObjects;
     Real m_fTotalRobots;
+    bool m_bEvaluate;
 
     typedef std::map<CEPuckEntity*, bool > TObjectMap;
 
