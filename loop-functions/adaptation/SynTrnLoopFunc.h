@@ -37,6 +37,7 @@ class SynTrnLoopFunction: public AutoMoDeLoopFunctions {
     CVector3 GetRandomPosition();
 
     Real GetStepScore(bool bChange);
+    Real AdditionalMetrics();
 
     void ArenaControl(UInt32 unClock);
 
@@ -46,8 +47,11 @@ class SynTrnLoopFunction: public AutoMoDeLoopFunctions {
     CVector2 m_cCoordSpot3;
     Real m_fRadiusSpot;
     Real m_fObjectiveFunction;
+    Real m_fObjectiveFunctionT1;
+    Real m_fObjectiveFunctionT2;
     Real m_fRandomIndex;    
     CColor m_cSynColor;
+    bool m_bEvaluate;
 
 };
 
