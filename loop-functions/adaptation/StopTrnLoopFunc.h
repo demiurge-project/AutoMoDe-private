@@ -41,6 +41,7 @@ class StopTrnLoopFunction: public AutoMoDeLoopFunctions {
     void GetRobotPositions(bool bSavePositions);
 
     Real GetMissionScore(UInt32 unClock);
+    Real AdditionalMetrics();
 
     Real PwFunctionStop(UInt32 unClock, UInt32 unInitTime, UInt32 unEndTime);
 
@@ -53,7 +54,11 @@ class StopTrnLoopFunction: public AutoMoDeLoopFunctions {
     CVector2 m_cStopCoord;
     Real m_fRadiusSpot;
     Real m_fObjectiveFunction;
+    Real m_fObjectiveFunctionT1;
+    Real m_fObjectiveFunctionT2;
     Real m_fRandomIndex;
+    bool m_bEvaluate;
+
 
     typedef std::map<CEPuckEntity*, CVector2 > TPosMap;
 

@@ -13,11 +13,14 @@
 
 StopTrnLoopFunction::StopTrnLoopFunction() {
     m_fObjectiveFunction = 0;
+    m_fObjectiveFunctionT1 = 0;
+    m_fObjectiveFunctionT2 = 0;
     m_fRandomIndex = 0;
     m_cCoordSpot1 = CVector2(0.54, 0.54);
     m_cCoordSpot2 = CVector2(0.765, 0.00);
     m_cCoordSpot3 = CVector2(0.54,-0.54);
     m_fRadiusSpot = 0.125;
+    m_bEvaluate = false;
 }
 
 /****************************************/
@@ -75,6 +78,8 @@ void StopTrnLoopFunction::Init(TConfigurationNode& t_tree) {
     else{
         m_fRandomIndex = (m_unPwConfig * 0.5) - (0.5/2) ;
     }
+    if (m_unPwExp != 0)
+        m_bEvaluate = true;
 }
 
 /****************************************/
@@ -83,6 +88,8 @@ void StopTrnLoopFunction::Init(TConfigurationNode& t_tree) {
 void StopTrnLoopFunction::Reset() {
     AutoMoDeLoopFunctions::Reset();
     m_fObjectiveFunction = 0;
+    m_fObjectiveFunctionT1 = 0;
+    m_fObjectiveFunctionT2 = 0;
     if (m_unPwConfig  == 0)
         m_fRandomIndex = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
     else{
@@ -100,6 +107,13 @@ void StopTrnLoopFunction::PostStep() {
     GetRobotPositions(false);
     m_fObjectiveFunction += GetMissionScore(unClock);
     m_tMemPositions = m_tPositions;
+
+    if (m_bEvaluate){
+        if (unClock == 600)
+            m_fObjectiveFunctionT1 = m_fObjectiveFunction;
+        if (unClock == 1200)
+            m_fObjectiveFunctionT2 = m_fObjectiveFunction - m_fObjectiveFunctionT1;
+    }
 }
 
 /****************************************/
@@ -107,7 +121,12 @@ void StopTrnLoopFunction::PostStep() {
 
 void StopTrnLoopFunction::PostExperiment() {
 
-  LOG << m_fObjectiveFunction << std::endl;
+    if (m_bEvaluate){
+        Real fNewMetric = AdditionalMetrics();
+        LOG << fNewMetric << std::endl;
+    }
+    else
+        LOG << m_fObjectiveFunction << std::endl;
 }
 
 /****************************************/
@@ -227,6 +246,19 @@ Real StopTrnLoopFunction::PwFunctionMove(UInt32 unClock, UInt32 unInitTime, UInt
     }
 
     return 0;
+}
+
+/****************************************/
+/****************************************/
+
+Real StopTrnLoopFunction::AdditionalMetrics(){
+    Real fNewMetric = 999999;
+    if (m_unPwExp == 1)
+        fNewMetric = m_fObjectiveFunctionT1;
+    else if (m_unPwExp == 2)
+        fNewMetric = m_fObjectiveFunctionT2;
+
+    return fNewMetric;
 }
 
 /****************************************/
