@@ -13,12 +13,16 @@
 
 SynMtcLoopFunction::SynMtcLoopFunction() {
     m_fObjectiveFunction = 0;
+    m_fObjectiveFunctionT1 = 0;
+    m_fObjectiveFunctionT2 = 0;
+    m_fObjectiveFunctionT3 = 0;
     m_fRandomIndex = 0;
     m_cCoordSpot1 = CVector2(0.54, 0.54);
     m_cCoordSpot2 = CVector2(0.765, 0.00);
     m_cCoordSpot3 = CVector2(0.54,-0.54);
     m_fRadiusSpot = 0.125;
     m_fSafeDist = 0.16;
+    m_bEvaluate = false;
 }
 
 /****************************************/
@@ -74,6 +78,8 @@ void SynMtcLoopFunction::Init(TConfigurationNode& t_tree) {
     else{
         m_fRandomIndex = (m_unPwConfig * 0.167) - (0.167/2) ;
     }
+    if (m_unPwExp != 0)
+        m_bEvaluate = true;
 }
 
 /****************************************/
@@ -82,6 +88,9 @@ void SynMtcLoopFunction::Init(TConfigurationNode& t_tree) {
 void SynMtcLoopFunction::Reset() {
     AutoMoDeLoopFunctions::Reset();
     m_fObjectiveFunction = 0;
+    m_fObjectiveFunctionT1 = 0;
+    m_fObjectiveFunctionT2 = 0;
+    m_fObjectiveFunctionT3 = 0;
     if (m_unPwConfig  == 0)
         m_fRandomIndex = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
     else{
@@ -96,13 +105,27 @@ void SynMtcLoopFunction::PostStep() {
     UInt32 unClock = GetSpace().GetSimulationClock();
     m_fObjectiveFunction += GetStepScore();
     ArenaControl(unClock);
+
+    if (m_bEvaluate){
+        if (unClock == 400)
+            m_fObjectiveFunctionT1 = m_fObjectiveFunction;
+        if (unClock == 800)
+            m_fObjectiveFunctionT2 = m_fObjectiveFunction - m_fObjectiveFunctionT1;
+        if (unClock == 1200)
+            m_fObjectiveFunctionT3 = m_fObjectiveFunction - m_fObjectiveFunctionT2 - m_fObjectiveFunctionT1;
+    }
 }
 
 /****************************************/
 /****************************************/
 
 void SynMtcLoopFunction::PostExperiment() {
-    LOG << m_fObjectiveFunction << std::endl;
+    if (m_bEvaluate){
+        Real fNewMetric = AdditionalMetrics();
+        LOG << fNewMetric << std::endl;
+    }
+    else
+        LOG << m_fObjectiveFunction << std::endl;
 }
 
 /****************************************/
@@ -294,21 +317,14 @@ Real SynMtcLoopFunction::GetStepScore() {
 /****************************************/
 /****************************************/
 
-Real StopMtcLoopFunction::AdditionalMetrics(){
+Real SynMtcLoopFunction::AdditionalMetrics(){
     Real fNewMetric = 999999;
-    if (m_unPwExp == 1){
-        fNewMetric = (Real)m_unStopTime;
-    }
-    else if (m_unPwExp == 2){
-        if (m_cTriggerColor == CColor::BLACK)
-            fNewMetric = 0;
-        else if (m_cTriggerColor == CColor::MAGENTA)
-            fNewMetric = 1;
-        else if (m_cTriggerColor == CColor::YELLOW)
-            fNewMetric = 2;
-        else if (m_cTriggerColor == CColor::CYAN)
-            fNewMetric = 3;
-    }
+    if (m_unPwExp == 1)
+        fNewMetric = m_fObjectiveFunctionT1;
+    else if (m_unPwExp == 2)
+        fNewMetric = m_fObjectiveFunctionT2;
+    else if (m_unPwExp == 3)
+        fNewMetric = m_fObjectiveFunctionT3;
 
     return fNewMetric;
 }
