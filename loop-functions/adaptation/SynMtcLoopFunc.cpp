@@ -123,6 +123,7 @@ void SynMtcLoopFunction::PostExperiment() {
     if (m_bEvaluate){
         Real fNewMetric = AdditionalMetrics();
         LOG << fNewMetric << std::endl;
+        m_fObjectiveFunction = fNewMetric;
     }
     else
         LOG << m_fObjectiveFunction << std::endl;
