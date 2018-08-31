@@ -104,30 +104,13 @@ namespace argos {
 			}
 		} else if (unNodeType == 5) { // If an Action node
 			// std::cout << "Action leaf reached" << std::endl;
-			oss << "--af" << strNodeIdentifier;     // Action fixed -> parse action normaly
+			oss << "--a" << strNodeIdentifier;
 			it = std::find(vec_sub_tree.begin(), vec_sub_tree.end(), oss.str());
 			if (it != vec_sub_tree.end()) {
-				// std::cout << "--> Action Fixed (af)" << std::endl;
 				std::vector<std::string> vecRemainingTree(it, vec_sub_tree.end());
 				pcNode = HandleAction(vecRemainingTree);
 			} else {
-				std::ostringstream osss;
-				osss << "--a" << strNodeIdentifier;  // Action defined by IRACE, modify tree to incorporate subtree with obstacle avoidance.
-				it = std::find(vec_sub_tree.begin(), vec_sub_tree.end(), osss.str());
-				if (it != vec_sub_tree.end()) {
-					//  std::cout << "--> Action (a)" << std::endl;
-					std::vector<std::string> vecRemainingTree(it, vec_sub_tree.end());
-
-					std::vector<std::string> additionalSubtree = TransformIntoSelectorSubtree(vecRemainingTree, strNodeIdentifier);
-					pcNode = GetNodeFromType(0);
-					std::vector<std::vector<std::string> > vecBranches = ExtractBranches(additionalSubtree);
-					for (UInt8 i = 0; i < vecBranches.size(); i++) {
-						pcNode->AddChildNode(ParseSubTree(vecBranches.at(i)));
-					}
-
-				}	else {
 					THROW_ARGOSEXCEPTION("Error while parsing action");
-				}
 			}
 		} else if (unNodeType == 6) { // If a Condition node
 			// std::cout << "Condition leaf reached" << std::endl;
@@ -219,7 +202,7 @@ namespace argos {
 		AutoMoDeBehaviour* pcNewBehaviour;
 		std::vector<std::string>::iterator it;
 		// Extraction of the index of the node
-		std::string strNodeIndex =  (*vec_bt_action_config.begin()).substr(4, m_unMaxTreeLevel+1).c_str();
+		std::string strNodeIndex =  (*vec_bt_action_config.begin()).substr(3, m_unMaxTreeLevel+1).c_str();
 		// Extraction of the identifier of the behaviour
 		UInt8 unBehaviourIdentifier =  atoi((*(vec_bt_action_config.begin()+1)).c_str());
 
