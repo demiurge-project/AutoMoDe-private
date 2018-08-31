@@ -48,7 +48,6 @@ namespace argos {
 
 			Real m_fProximityThreshold;
 			CRange<UInt32> m_cRandomStepsRange;
-			Real m_fSuccessProbabilityParameter;
 	};
 }
 

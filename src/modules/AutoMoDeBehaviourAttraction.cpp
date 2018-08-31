@@ -56,16 +56,17 @@ namespace argos {
 			sRabVector = CVector2(cRabReading.Range, cRabReading.Bearing);
 		}
 
-		// LOG << "[" << m_pcRobotDAO->GetRobotIdentifier() << "] " << cRabReading.Range << " " << cRabReading.Bearing << std::endl;
-		// LOG << "[" << m_pcRobotDAO->GetRobotIdentifier() << "] " << sRabVector << std::endl;
+		// Obstacle avoidance
+		CVector2 sDirectionVector(0,CRadians::ZERO);
+		CVector2 sProxVector(0,CRadians::ZERO);
+		sProxVector = CVector2(m_pcRobotDAO->GetProximityReading().Value, m_pcRobotDAO->GetProximityReading().Angle);
+		sDirectionVector = sRabVector - 6*sProxVector;
 
-		if (sRabVector.Length() < 0.1) {
-			sRabVector = CVector2(1.0, CRadians::ZERO);
+		if (sDirectionVector.Length() < 0.1) {
+			sDirectionVector = CVector2(1.0, CRadians::ZERO);
 		}
 
-		LOG << "[" << m_pcRobotDAO->GetRobotIdentifier() << "] " << sRabVector << std::endl;
-
-		m_pcRobotDAO->SetWheelsVelocity(ComputeWheelsVelocityFromVector(sRabVector));
+		m_pcRobotDAO->SetWheelsVelocity(ComputeWheelsVelocityFromVector(sDirectionVector));
 
 		m_bLocked = false;
 	}
@@ -121,6 +122,6 @@ namespace argos {
 	/****************************************/
 
 	bool AutoMoDeBehaviourAttraction::Failed() {
-		return (ObstacleInFront() || (m_pcRobotDAO->GetNumberNeighbors() == 0));
+		return false; // (ObstacleInFront() || (m_pcRobotDAO->GetNumberNeighbors() == 0));
 	}
 }

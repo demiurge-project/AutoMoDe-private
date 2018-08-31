@@ -32,7 +32,6 @@ namespace argos {
 
 		private:
 			UInt8 m_unRepulsionParameter;
-			Real m_fSuccessProbabilityParameter;
 			
 	};
 }

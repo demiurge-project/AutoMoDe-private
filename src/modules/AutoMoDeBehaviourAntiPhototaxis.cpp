@@ -55,14 +55,17 @@ namespace argos {
 
 		sLightVector = CVector2(cLightReading.Value, cLightReading.Angle);
 
-	// LOG << cLightReading.Value << " " << cLightReading.Angle << std::endl;
-	// LOG << sLightVector << std::endl;
+		// Obstacle avoidance
+		CVector2 sDirectionVector(0,CRadians::ZERO);
+		CVector2 sProxVector(0,CRadians::ZERO);
+		sProxVector = CVector2(m_pcRobotDAO->GetProximityReading().Value, m_pcRobotDAO->GetProximityReading().Angle);
+		sDirectionVector = -sLightVector - 5*sProxVector;
 
-		if (sLightVector.Length() < 0.1) {
-			sLightVector = CVector2(1.0, CRadians::ZERO);
+		if (sDirectionVector.Length() < 0.1) {
+			sDirectionVector = CVector2(1.0, CRadians::ZERO);
 		}
 
-		m_pcRobotDAO->SetWheelsVelocity(ComputeWheelsVelocityFromVector(-sLightVector));
+		m_pcRobotDAO->SetWheelsVelocity(ComputeWheelsVelocityFromVector(sDirectionVector));
 
 		m_bLocked = false;
 	}
@@ -108,6 +111,6 @@ namespace argos {
 	/****************************************/
 
 	bool AutoMoDeBehaviourAntiPhototaxis::Failed() {
-		return (ObstacleInFront() || !LightPerceived());
+		return false; //(ObstacleInFront() || !LightPerceived());
 	}
 }

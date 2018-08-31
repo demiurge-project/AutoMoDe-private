@@ -32,7 +32,6 @@ namespace argos {
 			virtual bool Failed();
 
 		private:
-			Real m_fSuccessProbabilityParameter;
 
 			enum RotationState {
 				IDLE, LEFT, RIGHT

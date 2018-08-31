@@ -57,11 +57,17 @@ namespace argos {
 			sRabVector = CVector2(cRabReading.Range, cRabReading.Bearing);
 		}
 
-		if (sRabVector.Length() < 0.1) {
-			sRabVector = CVector2(1.0, CRadians::ZERO);
+		CVector2 sDirectionVector(0,CRadians::ZERO);
+		CVector2 sProxVector(0,CRadians::ZERO);
+		sProxVector = CVector2(m_pcRobotDAO->GetProximityReading().Value, m_pcRobotDAO->GetProximityReading().Angle);
+		sDirectionVector = -sRabVector - 5*sProxVector;;
+
+
+		if (sDirectionVector.Length() < 0.1) {
+			sDirectionVector = CVector2(1.0, CRadians::ZERO);
 		}
 
-		m_pcRobotDAO->SetWheelsVelocity(ComputeWheelsVelocityFromVector(-sRabVector));
+		m_pcRobotDAO->SetWheelsVelocity(ComputeWheelsVelocityFromVector(sDirectionVector));
 
 		m_bLocked = false;
 	}
@@ -117,6 +123,6 @@ namespace argos {
 	/****************************************/
 
 	bool AutoMoDeBehaviourRepulsion::Failed() {
-		return ObstacleInFront();
+		return false; //ObstacleInFront();
 	}
 }

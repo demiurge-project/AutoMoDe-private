@@ -64,6 +64,8 @@ namespace argos {
 			 */
       EpuckDAO* m_pcRobotDAO;
 
+			Real m_fSuccessProbabilityParameter;
+
 		public:
 
 		 virtual ~AutoMoDeBehaviour();
@@ -191,9 +193,11 @@ namespace argos {
 
 			bool EvaluateBernoulliProbability(const Real& f_probability) const;
 
+			Real GetSuccessProbability() const;
+
 			/* Debug functions */
 
-		 UInt32 LogRobotIdientifier() {
+		  UInt32 LogRobotIdientifier() {
 				return m_pcRobotDAO->GetRobotIdentifier();
 			};
 	};

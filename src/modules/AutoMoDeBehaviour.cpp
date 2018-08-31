@@ -164,4 +164,11 @@ namespace argos {
 		return m_pcRobotDAO->GetRandomNumberGenerator()->Bernoulli(f_probability);
 	}
 
+	/****************************************/
+	/****************************************/
+
+	Real AutoMoDeBehaviour::GetSuccessProbability() const {
+		return m_fSuccessProbabilityParameter;
+	}
+
 }
