@@ -49,25 +49,31 @@ namespace argos {
 	/****************************************/
 
 	void AutoMoDeBehaviourPhototaxis::ControlStep() {
-		CCI_EPuckLightSensor::TReadings sReadings = m_pcRobotDAO->GetLightInput();
-	 	CCI_EPuckLightSensor::TReadings::iterator it;
-		CVector2 sLightVectorSum(0,CRadians::ZERO);
-		CVector2 sProxVectorSum(0,CRadians::ZERO);
-		CVector2 sResultVector(0,CRadians::ZERO);
+        CVector2 sResultVector(0,CRadians::ZERO);
+        CVector2 sLightVector(0,CRadians::ZERO);
+        CVector2 sProxVector(0,CRadians::ZERO);
 
-		for (it = sReadings.begin(); it != sReadings.end(); it++) {
-			sLightVectorSum += CVector2(it->Value,it->Angle.SignedNormalize());
-		}
+        /* Compute the light vector */
+        CCI_EPuckLightSensor::SReading cLightReading = m_pcRobotDAO->GetLightReading();
+        sLightVector = CVector2(cLightReading.Value, cLightReading.Angle);
 
-		sProxVectorSum = SumProximityReadings(m_pcRobotDAO->GetProximityInput());
-		sResultVector = sLightVectorSum - 5*sProxVectorSum;
+        /* Compute the proximity vector */
+        CCI_EPuckProximitySensor::SReading cProxReading = m_pcRobotDAO->GetProximityReading();
+        sProxVector = CVector2(cProxReading.Value, cProxReading.Angle);
 
-		if (sResultVector.Length() < 0.1) {
-			sResultVector = CVector2(1, CRadians::ZERO);
-		}
-        m_pcRobotDAO->SetWheelsVelocity(MILowLevelController(sResultVector));
+        /* if robot alone, go straight ahead */
+        if (sLightVector.Length() < 0.1) {
+            sLightVector = CVector2(1, CRadians::ZERO);
+        }
 
-		m_bLocked = false;
+        /* Compute the result vector */
+        sResultVector = sLightVector - 5*sProxVector;
+
+        /* Compute the velocity of the wheels */
+        m_pcRobotDAO->SetWheelsVelocity(MILowLevelController(sResultVector, 1.0, 0.7));
+        //m_pcRobotDAO->SetWheelsVelocity(ComputeWheelsVelocityFromVector(sResultVector));
+
+        m_bLocked = false;
 	}
 
 	/****************************************/

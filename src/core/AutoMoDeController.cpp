@@ -16,7 +16,7 @@ namespace argos {
 	/****************************************/
 
 	AutoMoDeController::AutoMoDeController() {
-		m_pcRobotState = new AutoMoDeRobotDAO();
+        m_pcRobotState = new ReferenceModel1Dot3();
 		m_unTimeStep = 0;
 		m_strFsmConfiguration = "";
 		m_bMaintainHistory = false;
@@ -30,7 +30,9 @@ namespace argos {
 
 	AutoMoDeController::~AutoMoDeController() {
 		delete m_pcRobotState;
-		delete m_pcFsmBuilder;
+		if (m_strFsmConfiguration.compare("") != 0) {
+			delete m_pcFsmBuilder;
+		}
 	}
 
 	/****************************************/
@@ -77,10 +79,8 @@ namespace argos {
 			m_pcProximitySensor = GetSensor<CCI_EPuckProximitySensor>("epuck_proximity");
 			m_pcLightSensor = GetSensor<CCI_EPuckLightSensor>("epuck_light");
 			m_pcGroundSensor = GetSensor<CCI_EPuckGroundSensor>("epuck_ground");
-            m_pcRabSensor = GetSensor<CCI_EPuckRangeAndBearingSensor>("epuck_range_and_bearing");
-            m_pcCameraSensor = GetSensor<CCI_EPuckOmnidirectionalCameraSensor>("epuck_omnidirectional_camera");
-            m_pcCameraSensor = GetSensor<CCI_EPuckOmnidirectionalCameraSensor>("epuck_omnidirectional_camera");
-            m_pcCamRabSensor = GetSensor<CCI_EPuckVirtualCamrabSensor>("epuck_virtual_camrab");
+			 m_pcRabSensor = GetSensor<CCI_EPuckRangeAndBearingSensor>("epuck_range_and_bearing");
+			 m_pcCameraSensor = GetSensor<CCI_EPuckOmnidirectionalCameraSensor>("epuck_omnidirectional_camera");
 		} catch (CARGoSException ex) {
 			LOGERR<<"Error while initializing a Sensor!\n";
 		}
@@ -89,8 +89,6 @@ namespace argos {
 			m_pcWheelsActuator = GetActuator<CCI_EPuckWheelsActuator>("epuck_wheels");
 			m_pcRabActuator = GetActuator<CCI_EPuckRangeAndBearingActuator>("epuck_range_and_bearing");
 			m_pcLEDsActuator = GetActuator<CCI_EPuckRGBLEDsActuator>("epuck_rgb_leds");
-            m_pcCamRabActuator = GetActuator<CCI_EPuckVirtualCamrabActuator>("epuck_virtual_camrab");
-
 		} catch (CARGoSException ex) {
 			LOGERR<<"Error while initializing an Actuator!\n";
 		}
@@ -98,7 +96,7 @@ namespace argos {
 		/*
 		 * Starts actuation.
 		 */
-         InitializeActuation();
+		 InitializeActuation();
 	}
 
 	/****************************************/
@@ -108,6 +106,11 @@ namespace argos {
 		/*
 		 * 1. Update RobotDAO
 		 */
+		if(m_pcRabSensor != NULL){
+            const CCI_EPuckRangeAndBearingSensor::TPackets& packets = m_pcRabSensor->GetPackets();
+			//m_pcRobotState->SetNumberNeighbors(packets.size());
+			m_pcRobotState->SetRangeAndBearingMessages(packets);
+		}
 		if (m_pcGroundSensor != NULL) {
 			const CCI_EPuckGroundSensor::SReadings& readings = m_pcGroundSensor->GetReadings();
 			m_pcRobotState->SetGroundInput(readings);
@@ -120,9 +123,9 @@ namespace argos {
 			const CCI_EPuckProximitySensor::TReadings& readings = m_pcProximitySensor->GetReadings();
 			m_pcRobotState->SetProximityInput(readings);
 		}
-        if (m_pcCamRabSensor != NULL) {
-            const CCI_EPuckVirtualCamrabSensor::TReadings& packets = m_pcCamRabSensor->GetReadings();
-            m_pcRobotState->SetCamRabMessages(packets);
+        if (m_pcCameraSensor != NULL) {
+            const CCI_EPuckOmnidirectionalCameraSensor::SReadings& readings = m_pcCameraSensor->GetReadings();
+            m_pcRobotState->SetCameraInput(readings);
         }
 
 		/*
@@ -137,21 +140,12 @@ namespace argos {
 			m_pcWheelsActuator->SetLinearVelocity(m_pcRobotState->GetLeftWheelVelocity(),m_pcRobotState->GetRightWheelVelocity());
 		}
 
-
-        if (m_pcCamRabActuator != NULL) {
-            UInt8 data[2];
-            data[0] = 0;
-            data[1] = m_unRobotID;
-            m_pcCamRabActuator->SetData(data);
-        }
-
 		/*
 		 * 4. Update variables and sensors
 		 */
-        if (m_pcCamRabSensor != NULL) {
-            m_pcCamRabSensor->ClearReadings();
-        }
-
+		if (m_pcRabSensor != NULL) {
+			m_pcRabSensor->ClearPackets();
+		}
 		m_unTimeStep++;
 
 	}
@@ -167,7 +161,7 @@ namespace argos {
 	void AutoMoDeController::Reset() {
 		m_pcFiniteStateMachine->Reset();
 		m_pcRobotState->Reset();
-		// Restart actuation. 
+		// Restart actuation.
 		InitializeActuation();
 	}
 
@@ -184,19 +178,36 @@ namespace argos {
 	/****************************************/
 	/****************************************/
 
+	void AutoMoDeController::SetHistoryFlag(bool b_history_flag) {
+		if (b_history_flag) {
+			m_pcFiniteStateMachine->MaintainHistory();
+		}
+	}
+
+	/****************************************/
+	/****************************************/
+
 	void AutoMoDeController::InitializeActuation() {
 		/*
 		 * Constantly send range-and-bearing messages containing the robot integer identifier.
 		 */
-        if (m_pcCamRabActuator != NULL) {
-            UInt8 data[2];
-            data[0] = 0;
-            data[1] = m_unRobotID;
-            m_pcCamRabActuator->SetData(data);
+		if (m_pcRabActuator != NULL) {
+			UInt8 data[4];
+			data[0] = m_unRobotID;
+			data[1] = 0;
+			data[2] = 0;
+			data[3] = 0;
+			m_pcRabActuator->SetData(data);
 		}
 
-        m_pcCamRabActuator->PickRandomColor();
+        /* Enable camera filtering */
+        if (m_pcCameraSensor != NULL) {
+           m_pcCameraSensor->Enable();
+        }
 
+        /*If simulation, comment second one, else comment the first one*/
+        m_pcLEDsActuator->SetColors(CColor::CYAN);
+        //m_pcLEDsActuator->SetColors(CColor(0,200,50));
 	}
 
 	REGISTER_CONTROLLER(AutoMoDeController, "automode_controller");

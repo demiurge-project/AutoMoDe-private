@@ -191,7 +191,7 @@ namespace argos {
 	void AutoMoDeFiniteStateMachine::MaintainHistory() {
 		m_bMaintainHistory = true;
 		std::ostringstream sHistoryPath;
-		sHistoryPath << m_strHistoryFolder << "/fsm_history_" <<  m_pcRobotDAO->GetRobotIdentifier() << ".txt";
+		sHistoryPath << m_strHistoryFolder << "./fsm_history_" <<  m_pcRobotDAO->GetRobotIdentifier() << ".txt";
 		m_pcHistory = new AutoMoDeFsmHistory(sHistoryPath.str());
 	}
 
@@ -325,7 +325,7 @@ namespace argos {
 	/****************************************/
 	/****************************************/
 
-	void AutoMoDeFiniteStateMachine::SetRobotDAO(AutoMoDeRobotDAO* pc_robot_DAO) {
+	void AutoMoDeFiniteStateMachine::SetRobotDAO(EpuckDAO* pc_robot_DAO) {
 		m_pcRobotDAO = pc_robot_DAO;
 	}
 

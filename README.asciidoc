@@ -1,4 +1,4 @@
-AutoMoDe-Mate README
+ARGoS3-AutoMoDe README
 =====================
 
 All useful information about the ARGoS3-AutoMoDe package, including installation and utilization instructions,

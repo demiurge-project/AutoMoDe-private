@@ -1,14 +1,14 @@
 /**
-  * @file <src/modules/AutoMoDeBehaviourAttraction.cpp>
+  * @file <src/modules/AutoMoDeBehaviourFormation.cpp>
   *
-  * @author Antoine Ligot - <aligot@ulb.ac.be>
+  * @author Fernando Mendiburu - <fmendiburu@ulb.ac.be>
   *
   * @package ARGoS3-AutoMoDe
   *
   * @license MIT License
   */
 
-#include "AutoMoDeBehaviourAttraction.h"
+#include "AutoMoDeBehaviourFormation.h"
 
 
 namespace argos {
@@ -16,14 +16,14 @@ namespace argos {
 	/****************************************/
 	/****************************************/
 
-	AutoMoDeBehaviourAttraction::AutoMoDeBehaviourAttraction() {
-		m_strLabel = "Attraction";
+    AutoMoDeBehaviourFormation::AutoMoDeBehaviourFormation() {
+        m_strLabel = "Formation";
 	}
 
 	/****************************************/
 	/****************************************/
 
-	AutoMoDeBehaviourAttraction::AutoMoDeBehaviourAttraction(AutoMoDeBehaviourAttraction* pc_behaviour) {
+    AutoMoDeBehaviourFormation::AutoMoDeBehaviourFormation(AutoMoDeBehaviourFormation* pc_behaviour) {
 		m_strLabel = pc_behaviour->GetLabel();
 		m_bLocked = pc_behaviour->IsLocked();
 		m_bOperational = pc_behaviour->IsOperational();
@@ -36,53 +36,62 @@ namespace argos {
 	/****************************************/
 	/****************************************/
 
-	AutoMoDeBehaviourAttraction::~AutoMoDeBehaviourAttraction() {}
+    AutoMoDeBehaviourFormation::~AutoMoDeBehaviourFormation() {}
 
 	/****************************************/
 	/****************************************/
 
-	AutoMoDeBehaviourAttraction* AutoMoDeBehaviourAttraction::Clone() {
-		return new AutoMoDeBehaviourAttraction(this);   // todo: check without *
+    AutoMoDeBehaviourFormation* AutoMoDeBehaviourFormation::Clone() {
+        return new AutoMoDeBehaviourFormation(this);   // todo: check without *
 	}
 
 	/****************************************/
 	/****************************************/
 
-	void AutoMoDeBehaviourAttraction::ControlStep() {
+    void AutoMoDeBehaviourFormation::ControlStep() {
+
+
         CVector2 sCamVector(0,CRadians::ZERO);
         CVector2 sProxVector(0,CRadians::ZERO);
         CVector2 sResultVector(0,CRadians::ZERO);
 
         /* Compute the interaction vector */
-        CCI_EPuckOmnidirectionalCameraSensor::SBlob cCamReading = m_pcRobotDAO->GetNeighborsDirection();
+        CCI_EPuckOmnidirectionalCameraSensor::SBlob cCamReading = m_pcRobotDAO->GetNeighborsCoesion(m_sCoesionParams.Gain,
+                                                                                                    m_sCoesionParams.TargetDistance,
+                                                                                                    m_sCoesionParams.Exponent);
         sCamVector = CVector2(cCamReading.Distance, cCamReading.Angle);
 
         /* Compute the proximity vector */
         CCI_EPuckProximitySensor::SReading cProxReading = m_pcRobotDAO->GetProximityReading();
         sProxVector = CVector2(cProxReading.Value, cProxReading.Angle);
 
-        /* if robot alone, go straight ahead */
-        if (sCamVector.Length() < 0.1) {
-            sCamVector = CVector2(1, CRadians::ZERO);
-        }
-
         /* Compute the result vector, prox is an order the magnitude bigger */
-        sResultVector = m_unAttractionParameter*sCamVector - 6*sProxVector;
+        sResultVector = sCamVector - 5*sProxVector;
 
         /* Compute the velocity of the wheels */
         m_pcRobotDAO->SetWheelsVelocity(MILowLevelController(sResultVector, 1.0, 0.7));
-        //m_pcRobotDAO->SetWheelsVelocity(ComputeWheelsVelocityFromVector(sResultVector));
 
 		m_bLocked = false;
 	}
 
+    /****************************************/
+    /****************************************/
+
+    void AutoMoDeBehaviourFormation::InitializeVariables() {
+        m_sCoesionParams.Exponent = 2;
+        m_sCoesionParams.Gain = 30;
+    }
+
 	/****************************************/
 	/****************************************/
 
-	void AutoMoDeBehaviourAttraction::Init() {
-		std::map<std::string, Real>::iterator it = m_mapParameters.find("att");
-		if (it != m_mapParameters.end()) {
-			m_unAttractionParameter = it->second;
+    void AutoMoDeBehaviourFormation::Init() {
+
+        InitializeVariables();
+
+        std::map<std::string, Real>::iterator itDist = m_mapParameters.find("dij");
+        if (itDist != m_mapParameters.end()) {
+            m_sCoesionParams.TargetDistance = itDist->second;
 		} else {
 			LOGERR << "[FATAL] Missing parameter for the following behaviour:" << m_strLabel << std::endl;
 			THROW_ARGOSEXCEPTION("Missing Parameter");
@@ -92,15 +101,17 @@ namespace argos {
 	/****************************************/
 	/****************************************/
 
-	void AutoMoDeBehaviourAttraction::Reset() {
+    void AutoMoDeBehaviourFormation::Reset() {
 		m_bOperational = false;
+        InitializeVariables();
 		ResumeStep();
 	}
 
 	/****************************************/
 	/****************************************/
 
-	void AutoMoDeBehaviourAttraction::ResumeStep() {
+    void AutoMoDeBehaviourFormation::ResumeStep() {
 		m_bOperational = true;
 	}
+
 }

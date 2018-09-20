@@ -68,18 +68,48 @@ namespace argos {
 	/****************************************/
 	/****************************************/
 
-    CVector2 AutoMoDeBehaviour::MILowLevelController(CVector2 c_vector_to_follow) {
+	CVector2 AutoMoDeBehaviour::ComputeWheelsVelocityFromVector(CVector2 c_vector_to_follow) {
+		Real fLeftVelocity = 0;
+		Real fRightVelocity = 0;
+		CRange<CRadians> cLeftHemisphere(CRadians::ZERO, CRadians::PI);
+		CRange<CRadians> cRightHemisphere(CRadians::PI, CRadians::TWO_PI);
+		CRadians cNormalizedVectorToFollow = c_vector_to_follow.Angle().UnsignedNormalize();
+		// Compute relative wheel velocity
+         if (c_vector_to_follow.GetX() != 0 || c_vector_to_follow.GetY() != 0) {
+            if (cLeftHemisphere.WithinMinBoundExcludedMaxBoundExcluded(cNormalizedVectorToFollow)) {
+                fRightVelocity = 1;
+                fLeftVelocity = Max<Real>(-0.5f, Cos(cNormalizedVectorToFollow));
+            } else {
+                fRightVelocity = Max<Real>(-0.5f, Cos(cNormalizedVectorToFollow));
+                fLeftVelocity = 1;
+            }
+         }
+//		if (c_vector_to_follow.GetX() != 0 || c_vector_to_follow.GetY() != 0) {
+//			if (cLeftHemisphere.WithinMinBoundExcludedMaxBoundExcluded(cNormalizedVectorToFollow)) {
+//				fRightVelocity = 1;
+//				fLeftVelocity = Cos(cNormalizedVectorToFollow);
+//			} else {
+//				fRightVelocity = Cos(cNormalizedVectorToFollow);
+//				fLeftVelocity = 1;
+//			}
+//		}
+
+		// Transform relative velocity according to max velocity allowed
+		Real fVelocityFactor = m_pcRobotDAO->GetMaxVelocity() / Max<Real>(std::abs(fRightVelocity), std::abs(fLeftVelocity));
+		CVector2 cWheelsVelocity = CVector2(fVelocityFactor * fLeftVelocity, fVelocityFactor * fRightVelocity);
+
+		return cWheelsVelocity;
+	}
+
+	/****************************************/
+	/****************************************/
+
+    CVector2 AutoMoDeBehaviour::MILowLevelController(CVector2 c_vector_to_follow, Real VGain, Real WGain) {
 
         Real EpuckVmax = m_pcRobotDAO->GetMaxVelocity();
 
         /* Get the heading angle */
         CRadians fVectorAngle = c_vector_to_follow.Angle().SignedNormalize();
-
-        /* Get the normalization of the heading vector */
-        CVector2 fVectorNorm;
-        if (c_vector_to_follow.Length() != 0)
-            fVectorNorm = c_vector_to_follow/c_vector_to_follow.Length();
-        else fVectorNorm = CVector2();
 
         /* vector matching the orientation of the focal robot */
         CVector2 vFocalRobot;
@@ -88,18 +118,15 @@ namespace argos {
         CRadians AngleFocalRobot = vFocalRobot.Angle().SignedNormalize();
 
         Real fVelLinear, fOmega;
-        Real K1 = 1.0f;
-        Real K2 = 1.0f;
-
 
         /* Avoid that robots go backwards*/
-        if (vFocalRobot.DotProduct(fVectorNorm) >= 0) {
-            fVelLinear = K1*(vFocalRobot.DotProduct(c_vector_to_follow))*EpuckVmax;
+        if (vFocalRobot.DotProduct(c_vector_to_follow) >= 0) {
+            fVelLinear = VGain*(vFocalRobot.DotProduct(c_vector_to_follow))*EpuckVmax;
         }
         else fVelLinear = 0;
 
         /* Proportional controller */
-        fOmega = K2*(fVectorAngle.GetValue() - AngleFocalRobot.GetValue());
+        fOmega = WGain*(fVectorAngle.GetValue() - AngleFocalRobot.GetValue());
 
 
         /* Limit wheels velocities if are higher (lower) than the max
@@ -112,8 +139,9 @@ namespace argos {
         return vLimitWheelsVelocity;
     }
 
-	/****************************************/
-	/****************************************/
+
+    /****************************************/
+    /****************************************/
 
     CVector2 AutoMoDeBehaviour::LimitMotorsUniToDiff(Real fVel, Real fOmega) {
 
@@ -174,19 +202,29 @@ namespace argos {
         return fVelWheels;
     }
 
+
     /****************************************/
     /****************************************/
 
-	CVector2 AutoMoDeBehaviour::SumProximityReadings(CCI_EPuckProximitySensor::TReadings s_prox) {
-		CVector2 cSum(0, 0);
-        for (UInt8 i = 0; i < s_prox.size(); i++) {
-            if (s_prox[i].Value > 0.25f) {
-                // threshold 25%: Obstacle avoidance bhv, sum it!
-                cSum += CVector2(s_prox[i].Value, s_prox[i].Angle);
-            }
-        }
-		return cSum;
-	}
+//    CVector2 AutoMoDeBehaviour::SumProximityReadings(CCI_EPuckProximitySensor::TReadings s_prox) {
+
+//        CVector2 cSum(0, 0);
+
+//        for (UInt8 i = 0; i < s_prox.size(); i++) {
+//            if (s_prox[i].Value > 0.25f) {
+//                // threshold 25%: Obstacle avoidance bhv, sum it!
+//                cSum += CVector2(s_prox[i].Value, s_prox[i].Angle);
+//            }
+//        }
+
+//        if(cSum.Length()>0) {
+//               cSum.Normalize();
+//        }
+
+
+//        return cSum;
+
+//	}
 
 	/****************************************/
 	/****************************************/
@@ -219,7 +257,7 @@ namespace argos {
 	/****************************************/
 	/****************************************/
 
-	void AutoMoDeBehaviour::SetRobotDAO(AutoMoDeRobotDAO* pc_robot_dao) {
+	void AutoMoDeBehaviour::SetRobotDAO(EpuckDAO* pc_robot_dao) {
 		m_pcRobotDAO = pc_robot_dao;
 	}
 

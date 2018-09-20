@@ -1,2 +1,0 @@
-add_library(mate_aac_loopfunc SHARED MateAACLoopFunc.h MateAACLoopFunc.cpp)
-target_link_libraries(mate_aac_loopfunc argos3plugin_${ARGOS_BUILD_FOR}_epuck)

@@ -103,7 +103,7 @@ namespace argos {
 				cNewBehaviour = new AutoMoDeBehaviourRepulsion();
 				break;
             case 6:
-                cNewBehaviour = new AutoMoDeBehaviourHexagonal();
+                cNewBehaviour = new AutoMoDeBehaviourFormation();
                 break;
 		}
 		cNewBehaviour->SetIndex(unBehaviourIndex);

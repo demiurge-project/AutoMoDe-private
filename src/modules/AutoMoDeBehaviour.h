@@ -18,7 +18,7 @@
 #include <argos3/plugins/robots/e-puck/control_interface/ci_epuck_proximity_sensor.h>
 #include <argos3/plugins/robots/e-puck/control_interface/ci_epuck_range_and_bearing_sensor.h>
 
-#include "../core/AutoMoDeRobotDAO.h"
+#include <argos3/demiurge/epuck-dao/EpuckDAO.h>
 
 #include <map>
 
@@ -62,7 +62,7 @@ namespace argos {
 			 * Pointer to the state of the robot. Shared with the controller AutoMoDeController
 			 * and the finite state machine AutoMoDeFiniteStateMachine.
 			 */
-      AutoMoDeRobotDAO* m_pcRobotDAO;
+      EpuckDAO* m_pcRobotDAO;
 
 		public:
 
@@ -154,10 +154,16 @@ namespace argos {
 			const bool IsOperational() const;
 
 			/*
-             * Low level controller. Returns a vector containing the wheels velocity
+			 * Utility function. Returns a vector containing the wheels velocity
 			 * needed for the robot to follow the vector passed as parameter of the method.
 			 */
-            CVector2 MILowLevelController(CVector2 c_vector_to_follow);
+			CVector2 ComputeWheelsVelocityFromVector(CVector2 c_vector_to_follow);
+
+            /*
+             * Low level controller. Returns a vector containing the wheels velocity
+             * needed for the robot to follow the vector passed as parameter of the method.
+             */
+            CVector2 MILowLevelController(CVector2 c_vector_to_follow, Real VGain, Real WGain);
 
             /*
              * This function maintain the angular velocity of the robot as best
@@ -175,12 +181,12 @@ namespace argos {
 			 * Utility function. Returns a vector containing the sum of the
 			 * proximity readings passed as parameter of the method.
 			 */
-			CVector2 SumProximityReadings(CCI_EPuckProximitySensor::TReadings s_prox);
+            //CVector2 SumProximityReadings(CCI_EPuckProximitySensor::TReadings s_prox);
 
 			/*
 			 * Setter for the shared pointer to the representation of the robot state.
 			 */
-			void SetRobotDAO(AutoMoDeRobotDAO* pc_robot_dao);
+			void SetRobotDAO(EpuckDAO* pc_robot_dao);
 	};
 }
 

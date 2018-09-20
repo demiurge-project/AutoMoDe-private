@@ -16,7 +16,8 @@
 #ifndef AUTOMODE_FINITE_STATE_MACHINE_H
 #define AUTOMODE_FINITE_STATE_MACHINE_H
 
-#include "AutoMoDeRobotDAO.h"
+#include <argos3/demiurge/epuck-dao/EpuckDAO.h>
+
 #include "AutoMoDeFsmHistory.h"
 #include "../modules/AutoMoDeBehaviour.h"
 #include "../modules/AutoMoDeBehaviourAttraction.h"
@@ -25,7 +26,7 @@
 #include "../modules/AutoMoDeBehaviourPhototaxis.h"
 #include "../modules/AutoMoDeBehaviourRepulsion.h"
 #include "../modules/AutoMoDeBehaviourStop.h"
-#include "../modules/AutoMoDeBehaviourHexagonal.h"
+#include "../modules/AutoMoDeBehaviourFormation.h"
 #include "../modules/AutoMoDeCondition.h"
 #include "../modules/AutoMoDeConditionBlackFloor.h"
 #include "../modules/AutoMoDeConditionGrayFloor.h"
@@ -122,9 +123,9 @@ namespace argos {
 
 			/*
 			 * Set the pointer to the class representing the state of the robot.
-			 * @see AutoMoDeRobotDAO.
+			 * @see EpuckDAO.
 			 */
-			void SetRobotDAO(AutoMoDeRobotDAO* m_pcRobotDAO);
+			void SetRobotDAO(EpuckDAO* m_pcRobotDAO);
 
 			/*
 			 * Setter for the finite state machine history folder;
@@ -195,9 +196,9 @@ namespace argos {
 
 			/*
 			 * Pointer to the object representing the state of the robot.
-			 * @see AutoMoDeRobotDAO.
+			 * @see EpuckDAO.
 			 */
-			AutoMoDeRobotDAO* m_pcRobotDAO;
+			EpuckDAO* m_pcRobotDAO;
 
 			/*
 			 * Returns a container filled conditions starting from the

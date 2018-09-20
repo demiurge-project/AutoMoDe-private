@@ -49,33 +49,29 @@ namespace argos {
 	/****************************************/
 
 	void AutoMoDeBehaviourRepulsion::ControlStep() {
-        CCI_EPuckVirtualCamrabSensor::TReadings sLastPackets = m_pcRobotDAO->GetCamRabMessages();
-
-        CVector2 sCamRabVectorSum(0,CRadians::ZERO);
-        CVector2 sProxVectorSum(0,CRadians::ZERO);
+        CVector2 sCamVector(0,CRadians::ZERO);
+        CVector2 sProxVector(0,CRadians::ZERO);
         CVector2 sResultVector(0,CRadians::ZERO);
 
-        if (!sLastPackets.empty()) {
-            for(size_t i = 0; i < sLastPackets.size(); ++i) {
-                if ((sLastPackets[i]->Data[1] != (UInt8) m_pcRobotDAO->GetRobotIdentifier())) {
+        /* Compute the interaction vector */
+        CCI_EPuckOmnidirectionalCameraSensor::SBlob cCamReading = m_pcRobotDAO->GetNeighborsDirection();
+        sCamVector = CVector2(cCamReading.Distance, cCamReading.Angle);
 
-                    CRadians anguloR;
+        /* Compute the proximity vector */
+        CCI_EPuckProximitySensor::SReading cProxReading = m_pcRobotDAO->GetProximityReading();
+        sProxVector = CVector2(cProxReading.Value, cProxReading.Angle);
 
-                    anguloR.FromValueInDegrees(sLastPackets[i]->Angle);
-
-                    sCamRabVectorSum += CVector2(m_unRepulsionParameter / (sLastPackets[i]->Distance + 1),anguloR.SignedNormalize());
-                }
-            }
+        /* if robot alone, go straight ahead */
+        if (sCamVector.Length() < 0.1) {
+            sCamVector = -CVector2(1, CRadians::ZERO);
         }
 
-        sProxVectorSum = SumProximityReadings(m_pcRobotDAO->GetProximityInput());
-        sResultVector = -sCamRabVectorSum - 5*sProxVectorSum;
+        /* Compute the result vector, prox is an order the magnitude bigger */
+        sResultVector = -m_unRepulsionParameter*sCamVector - 5*sProxVector;
 
-        if (sResultVector.Length() < 0.1) {
-            sResultVector = CVector2(1, CRadians::ZERO);
-        }
-
-        m_pcRobotDAO->SetWheelsVelocity(MILowLevelController(sResultVector));
+        /* Compute the velocity of the wheels */
+        m_pcRobotDAO->SetWheelsVelocity(MILowLevelController(sResultVector, 1.0, 0.7));
+        //m_pcRobotDAO->SetWheelsVelocity(ComputeWheelsVelocityFromVector(sResultVector));
 
         m_bLocked = false;
 	}

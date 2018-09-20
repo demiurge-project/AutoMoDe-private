@@ -14,9 +14,12 @@
 #include <argos3/core/utility/logging/argos_log.h>
 #include <argos3/core/control_interface/ci_controller.h>
 
+#include <argos3/demiurge/epuck-dao/EpuckDAO.h>
+#include <argos3/demiurge/epuck-dao/ReferenceModel1Dot3.h>
+
+
 #include "./AutoMoDeFiniteStateMachine.h"
 #include "./AutoMoDeFsmBuilder.h"
-#include "./AutoMoDeRobotDAO.h"
 
 #include <argos3/plugins/robots/e-puck/control_interface/ci_epuck_wheels_actuator.h>
 #include <argos3/plugins/robots/e-puck/control_interface/ci_epuck_range_and_bearing_sensor.h>
@@ -26,9 +29,6 @@
 #include <argos3/plugins/robots/e-puck/control_interface/ci_epuck_light_sensor.h>
 #include <argos3/plugins/robots/e-puck/control_interface/ci_epuck_ground_sensor.h>
 #include <argos3/plugins/robots/e-puck/control_interface/ci_epuck_omnidirectional_camera_sensor.h>
-#include <argos3/plugins/robots/e-puck/control_interface/ci_epuck_virtual_camrab_actuator.h>
-#include <argos3/plugins/robots/e-puck/control_interface/ci_epuck_virtual_camrab_sensor.h>
-
 
 namespace argos{
 	class AutoMoDeController: public CCI_Controller {
@@ -68,6 +68,8 @@ namespace argos{
 			 */
 			void SetFiniteStateMachine(AutoMoDeFiniteStateMachine* pc_fine_state_machine);
 
+			void SetHistoryFlag(bool b_history_flag);
+
 		private:
 			/*
 			 * Function that contains all actuations required at the start of an experiment or during the entire experiment.
@@ -86,7 +88,7 @@ namespace argos{
 			 * Pointer to the object representing the state of the robot. This object is
 			 * shared with the finite state object AutoMoDeFiniteStateMachine.
 			 */
-			AutoMoDeRobotDAO* m_pcRobotState;
+			EpuckDAO* m_pcRobotState;
 
 			/*
 			 * Time step variable.
@@ -163,18 +165,6 @@ namespace argos{
 			 * Pointer to the robot omnidirectional camera sensor.
 			 */
 			CCI_EPuckOmnidirectionalCameraSensor* m_pcCameraSensor;
-
-            /*
-             * Pointer to the robot CamRab sensor.
-             */
-            CCI_EPuckVirtualCamrabSensor* m_pcCamRabSensor;
-
-            /*
-             * Pointer to the robot CamRab actuator.
-             */
-            CCI_EPuckVirtualCamrabActuator* m_pcCamRabActuator;
-
-
 
 			bool m_bFiniteStateMachineGiven;
 	};
