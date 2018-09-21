@@ -94,9 +94,9 @@ void AnytimeSelectionDiffLoopFunction::PostStep() {
       LOGERR << "Error while casting: " << ex.what() << std::endl;
     }
   }
-  m_fObjectiveFunction = Abs(m_unScoreSpot1 - m_unScoreSpot2);
+  m_fObjectiveFunction += Abs(m_unScoreSpot1 - m_unScoreSpot2);
 
-  LOG << "Score = " << m_fObjectiveFunction << std::endl;
+  //LOG << "Score = " << m_fObjectiveFunction << std::endl;
 }
 
 /****************************************/
