@@ -23,10 +23,12 @@ void AutoMoDeLoopFunctions::Init(argos::TConfigurationNode& t_tree) {
     GetNodeAttributeOrDefault(cParametersNode, "build_arena", m_bBuildArena, (bool) false);
     GetNodeAttributeOrDefault(cParametersNode, "number_edges", m_unNumberEdges, (UInt32) 3);
     GetNodeAttributeOrDefault(cParametersNode, "number_boxes_per_edge", m_unNumberBoxes, (UInt32) 1);
-    GetNodeAttributeOrDefault(cParametersNode, "lenght_boxes", m_fLenghtBoxes, (Real) 0.20);
-    GetNodeAttributeOrDefault(cParametersNode, "piecewise_config", m_unPwConfig, (UInt32) 0);
-    GetNodeAttributeOrDefault(cParametersNode, "piecewise_exp", m_unPwExp, (UInt32) 0);
-    GetNodeAttributeOrDefault(cParametersNode, "piecewise_time", m_unPwTime, (UInt32) 1200);
+    GetNodeAttributeOrDefault(cParametersNode, "lenght_boxes", m_fLenghtBoxes, (Real) 0.25);
+    GetNodeAttributeOrDefault(cParametersNode, "color_order", m_unColorOrder, (UInt32) 0);
+    GetNodeAttributeOrDefault(cParametersNode, "black_task", m_unBlackTask, (UInt32) 0);
+    GetNodeAttributeOrDefault(cParametersNode, "red_task", m_unRedTask, (UInt32) 0);
+    GetNodeAttributeOrDefault(cParametersNode, "eval_task", m_unEvalTask, (UInt32) 0);
+    GetNodeAttributeOrDefault(cParametersNode, "trn_time", m_unTrnTime, (UInt32) 600);
   } catch(std::exception e) {
     LOGERR << e.what() << std::endl;
   }

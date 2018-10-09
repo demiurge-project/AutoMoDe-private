@@ -108,19 +108,31 @@ class AutoMoDeLoopFunctions: public CLoopFunctions {
     CRandom::CRNG* m_pcRng;
 
     /*
-     * Selector of the piecewise function configuration
+     * Selector of the order of the color in the arena
+     * (0:Random, 1:First Black, 2: FirstRed)
      */
-    UInt32 m_unPwConfig;
+    UInt32 m_unColorOrder;
 
     /*
-     * Selector of the piecewise experiment
+     * Selector of the task executed in black arena
      */
-    UInt32 m_unPwExp;
+    UInt32 m_unBlackTask;
 
     /*
-     * Transition time in piecewise experiments
+     * Selector of the task executed in red arena
      */
-    UInt32 m_unPwTime;
+    UInt32 m_unRedTask;
+
+    /*
+     * Task to be evaluated in sequence experiments
+     * (0:Overall (TODO), 1: Black, 2: Red)
+     */
+    UInt32 m_unEvalTask;
+
+    /*
+     * Transition time in sequence experiments
+     */
+    UInt32 m_unTrnTime;
 
 
 

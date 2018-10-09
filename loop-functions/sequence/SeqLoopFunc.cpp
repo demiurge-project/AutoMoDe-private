@@ -13,14 +13,10 @@
 
 SeqLoopFunction::SeqLoopFunction() {
     m_fObjectiveFunction = 0;
-    m_fObjectiveFunctionT1 = 0;
-    m_fObjectiveFunctionT2 = 0;
-    m_fRandomIndex = 0;
-    m_cCoordSpot1 = CVector2(0.54, 0.54);
-    m_cCoordSpot2 = CVector2(0.765, 0.00);
-    m_cCoordSpot3 = CVector2(0.54,-0.54);
-    m_fRadiusSpot = 0.125;
-    m_bEvaluate = false;
+    m_fObjectiveFunctionBlack = 0;
+    m_fObjectiveFunctionRed = 0;
+    m_bBlackFirst = true;
+    m_cArenaColor = CColor::BLACK;
 }
 
 /****************************************/
@@ -38,6 +34,7 @@ SeqLoopFunction::~SeqLoopFunction() {}
 /****************************************/
 
 void SeqLoopFunction::Destroy() {
+    m_tRobotStates.clear();
 }
 
 /****************************************/
@@ -74,15 +71,11 @@ argos::CColor SeqLoopFunction::GetFloorColor(const argos::CVector2& c_position_o
 
 void SeqLoopFunction::Init(TConfigurationNode& t_tree) {
     AutoMoDeLoopFunctions::Init(t_tree);
-    GetRobotPositions(true);
 
-    if (m_unPwConfig  == 0)
-        m_fRandomIndex = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
-    else{
-        m_fRandomIndex = (m_unPwConfig * 0.5) - (0.5/2) ;
-    }
-    if (m_unPwExp != 0)
-        m_bEvaluate = true;
+    m_bBlackFirst = SelectColorOrder(m_unColorOrder);
+
+    InitRobotStates();
+
 }
 
 /****************************************/
@@ -90,33 +83,34 @@ void SeqLoopFunction::Init(TConfigurationNode& t_tree) {
 
 void SeqLoopFunction::Reset() {
     AutoMoDeLoopFunctions::Reset();
+
     m_fObjectiveFunction = 0;
-    m_fObjectiveFunctionT1 = 0;
-    m_fObjectiveFunctionT2 = 0;
-    if (m_unPwConfig  == 0)
-        m_fRandomIndex = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
-    else{
-        m_fRandomIndex = (m_unPwConfig * 0.5) - (0.5/2) ;
-    }
+    m_fObjectiveFunctionBlack = 0;
+    m_fObjectiveFunctionRed = 0;
+
+    m_bBlackFirst = SelectColorOrder(m_unColorOrder);
+
+    m_tRobotStates.clear();
+    InitRobotStates();
 }
 
 /****************************************/
 /****************************************/
 
 void SeqLoopFunction::PostStep() {
+
     UInt32 unClock = GetSpace().GetSimulationClock();
 
+    ScoreControl(unClock);
     ArenaControl(unClock);
-    GetRobotPositions(false);
-    m_fObjectiveFunction += GetMissionScore(unClock);
-    m_tMemPositions = m_tPositions;
 
-    if (m_bEvaluate){
-        if (unClock == 600)
-            m_fObjectiveFunctionT1 = m_fObjectiveFunction;
-        if (unClock == 1200)
-            m_fObjectiveFunctionT2 = m_fObjectiveFunction - m_fObjectiveFunctionT1;
-    }
+    if (m_unEvalTask == 1)
+        LOG << m_fObjectiveFunctionBlack << std::endl;
+    else if (m_unEvalTask == 2)
+        LOG << m_fObjectiveFunctionRed << std::endl;
+    else
+        LOG << m_fObjectiveFunction << std::endl;
+
 }
 
 /****************************************/
@@ -124,11 +118,10 @@ void SeqLoopFunction::PostStep() {
 
 void SeqLoopFunction::PostExperiment() {
 
-    if (m_bEvaluate){
-        Real fNewMetric = AdditionalMetrics();
-        LOG << fNewMetric << std::endl;
-        m_fObjectiveFunction = fNewMetric;
-    }
+    if (m_unEvalTask == 1)
+        LOG << m_fObjectiveFunctionBlack << std::endl;
+    else if (m_unEvalTask == 2)
+        LOG << m_fObjectiveFunctionRed << std::endl;
     else
         LOG << m_fObjectiveFunction << std::endl;
 }
@@ -138,7 +131,13 @@ void SeqLoopFunction::PostExperiment() {
 
 Real SeqLoopFunction::GetObjectiveFunction() {
 
-  return m_fObjectiveFunction;
+    if (m_unEvalTask == 1)
+        return m_fObjectiveFunctionBlack;
+    else if (m_unEvalTask == 2)
+        return m_fObjectiveFunctionRed;
+    else
+        return m_fObjectiveFunction;
+
 }
 
 /****************************************/
@@ -146,25 +145,33 @@ Real SeqLoopFunction::GetObjectiveFunction() {
 
 void SeqLoopFunction::ArenaControl(UInt32 unClock) {
 
-    if (unClock == 1 && m_fRandomIndex <= 0.5)
-        m_pcArena->SetArenaColor(CColor::BLACK);
-
-    if (unClock == 1 && m_fRandomIndex > 0.5){
-        m_pcArena->SetArenaColor(CColor::BLACK);
-        m_pcArena->SetWallColor(4,CColor::RED);
-        m_pcArena->SetWallColor(3,CColor::RED);
-        m_pcArena->SetWallColor(5,CColor::RED);
+    if (unClock == 1) {
+        if (m_bBlackFirst)
+            m_cArenaColor = CColor::BLACK;
+        else
+            m_cArenaColor = CColor::RED;
     }
 
-    if (unClock == m_unPwTime && m_fRandomIndex <= 0.5) {
-        m_pcArena->SetArenaColor(CColor::BLACK);
-        m_pcArena->SetWallColor(4,CColor::RED);
-        m_pcArena->SetWallColor(3,CColor::RED);
-        m_pcArena->SetWallColor(5,CColor::RED);
+    if (unClock == m_unTrnTime) {
+        if (m_bBlackFirst)
+            m_cArenaColor = CColor::RED;
+        else
+            m_cArenaColor = CColor::BLACK;
     }
 
-    if (unClock == m_unPwTime && m_fRandomIndex > 0.5)
-        m_pcArena->SetArenaColor(CColor::BLACK);
+    if (unClock == 1 || unClock == m_unTrnTime) {
+        m_pcArena->SetArenaColor(m_cArenaColor);
+        m_pcArena->SetBoxColor(2,1,CColor::GREEN);
+        m_pcArena->SetBoxColor(2,2,CColor::GREEN);
+        m_pcArena->SetBoxColor(1,3,CColor::BLUE);
+        m_pcArena->SetBoxColor(3,3,CColor::BLUE);
+        m_pcArena->SetBoxColor(2,4,CColor::BLUE);
+        m_pcArena->SetBoxColor(1,5,CColor::BLUE);
+        m_pcArena->SetBoxColor(3,5,CColor::BLUE);
+        m_pcArena->SetBoxColor(2,6,CColor::GREEN);
+        m_pcArena->SetBoxColor(2,7,CColor::GREEN);
+        m_pcArena->SetBoxColor(2,8,CColor::GREEN);
+    }
 
     return;
 }
@@ -172,28 +179,213 @@ void SeqLoopFunction::ArenaControl(UInt32 unClock) {
 /****************************************/
 /****************************************/
 
-Real SeqLoopFunction::GetMissionScore(UInt32 unClock){
+void SeqLoopFunction::ScoreControl(UInt32 unClock){
 
-    Real unScore = 0;
-
-    if (m_fRandomIndex <= 0.5){
-        unScore += PwFunctionMove(unClock,0,m_unPwTime,false);
-        unScore += PwFunctionStop(unClock,m_unPwTime,(2*m_unPwTime));
-        return unScore;
+    if (m_unEvalTask == 1) {
+        if (m_bBlackFirst){
+            if (unClock <= m_unTrnTime){
+                m_fObjectiveFunctionBlack += GetScore(m_unBlackTask);
+                LOG << "Black in Black first" << std::endl;
+            }
+        }
+        else{
+            if (unClock > m_unTrnTime){
+                m_fObjectiveFunctionBlack += GetScore(m_unBlackTask);
+                LOG << "Black in Black second" << std::endl;
+            }
+        }
     }
-    else{
-        unScore += PwFunctionStop(unClock,0,m_unPwTime);
-        unScore += PwFunctionMove(unClock,m_unPwTime,(2*m_unPwTime),false);
-        return unScore;
+
+    else if (m_unEvalTask == 2) {
+        if (!m_bBlackFirst){
+            if (unClock <= m_unTrnTime){
+                m_fObjectiveFunctionRed += GetScore(m_unRedTask);
+                LOG << "Red in Red first" << std::endl;
+            }
+        }
+        else{
+            if (unClock > m_unTrnTime){
+                m_fObjectiveFunctionRed += GetScore(m_unRedTask);
+                LOG << "Red in Red second" << std::endl;
+            }
+        }
     }
 
-    return 0;
+    else {
+        m_fObjectiveFunction = 888888;
+        m_fObjectiveFunctionBlack = 888888;
+        m_fObjectiveFunctionRed = 888888;
+    }
 }
 
 /****************************************/
 /****************************************/
 
-void SeqLoopFunction::GetRobotPositions(bool bSavePositions) {
+Real SeqLoopFunction::GetScore(UInt32 unTask) {
+
+    Real unScore = 0;
+
+    switch (unTask){
+    case 0:
+        unScore = GetStopScore();
+        break;
+    case 1:
+        unScore = GetAllBlackScore();
+        break;
+    case 2:
+        unScore = GetForageScore();
+        break;
+    case 3:
+        unScore = GetMimicryScore();
+        break;
+    case 4:
+        unScore = GetDistributeScore();
+        break;
+    case 5:
+        unScore = GetAggregationScore();
+        break;
+    default:
+        unScore = 999999;
+        break;
+    }
+
+    return unScore;
+}
+
+/****************************************/
+/****************************************/
+
+Real SeqLoopFunction::GetStopScore() {
+
+    UpdateRobotPositions();
+
+    Real unScore = 0;
+    TRobotStateMap::iterator it;
+    for (it = m_tRobotStates.begin(); it != m_tRobotStates.end(); ++it) {
+        Real d = (it->second.cPosition - it->second.cLastPosition).Length();
+        if (d > 0.0005)
+            unScore+=1;
+    }
+
+    return unScore;
+}
+/****************************************/
+/****************************************/
+
+Real SeqLoopFunction::GetAllBlackScore() {
+
+    UpdateRobotPositions();
+
+    bool bInSource;
+    Real unScore = 0;
+    TRobotStateMap::iterator it;
+    for (it = m_tRobotStates.begin(); it != m_tRobotStates.end(); ++it) {
+        bInSource = IsRobotInSource(it->second.cPosition);
+        if (!bInSource)
+            unScore+=1;
+    }
+
+    return unScore;
+}
+
+/****************************************/
+/****************************************/
+
+Real SeqLoopFunction::GetForageScore() {
+
+    UpdateRobotPositions();
+
+    bool bInNest;
+    bool bInSource;
+    Real unScore = 0;
+    TRobotStateMap::iterator it;
+
+    for (it = m_tRobotStates.begin(); it != m_tRobotStates.end(); ++it) {
+
+        if (it->second.bItem == true){
+            bInNest = IsRobotInNest(it->second.cPosition);
+            if (bInNest) {
+                unScore+=1;
+                it->second.bItem = false;
+            }
+        }
+        else {
+            bInSource = IsRobotInSource(it->second.cPosition);
+            if (bInSource) {
+                it->second.bItem = true;
+            }
+        }
+    }
+
+    return unScore;
+}
+
+/****************************************/
+/****************************************/
+
+Real SeqLoopFunction::GetMimicryScore() {
+
+    UpdateRobotColors();
+
+    Real unScore = 0;
+    TRobotStateMap::iterator it;
+
+    for (it = m_tRobotStates.begin(); it != m_tRobotStates.end(); ++it) {
+
+        if (it->second.cColor != CColor::BLACK &&
+                m_cArenaColor == CColor::BLACK)
+            unScore+=1;
+
+        else if (it->second.cColor != CColor::MAGENTA &&
+                 m_cArenaColor == CColor::RED)
+            unScore+=1;
+    }
+
+    return unScore;
+}
+
+/****************************************/
+/****************************************/
+
+bool SeqLoopFunction::IsRobotInNest (CVector2 tRobotPosition) {
+    if (tRobotPosition.GetX() <= -0.34)
+        return true;
+
+    return false;
+}
+
+/****************************************/
+/****************************************/
+
+bool SeqLoopFunction::IsRobotInSource (CVector2 tRobotPosition){
+
+    if (tRobotPosition.GetX() >= -0.16) {
+        if (tRobotPosition.GetX() >= -0.16 && tRobotPosition.GetX() <= 0.16){
+            if (tRobotPosition.GetY() >= 0.61533 || tRobotPosition.GetY() <= -0.61533)
+                return true;
+        }
+
+        else if (tRobotPosition.GetX() >= 0.61533 && tRobotPosition.GetY() >= -0.16 && tRobotPosition.GetY() <= 0.16)
+            return true;
+
+        else if (tRobotPosition.GetY() >= -tRobotPosition.GetX() + 0.87727913472 &&
+                 tRobotPosition.GetY() <=  tRobotPosition.GetX() + 0.22450640303 &&
+                 tRobotPosition.GetY() >=  tRobotPosition.GetX() - 0.22450640303)
+            return true;
+
+        else if (tRobotPosition.GetY() <=  tRobotPosition.GetX() - 0.87727913472 &&
+                 tRobotPosition.GetY() <= -tRobotPosition.GetX() + 0.22450640303 &&
+                 tRobotPosition.GetY() >= -tRobotPosition.GetX() - 0.22450640303)
+            return true;
+    }
+
+    return false;
+}
+
+/****************************************/
+/****************************************/
+
+void SeqLoopFunction::UpdateRobotPositions() {
     CSpace::TMapPerType& tEpuckMap = GetSpace().GetEntitiesByType("epuck");
     CVector2 cEpuckPosition(0,0);
     for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it) {
@@ -201,68 +393,62 @@ void SeqLoopFunction::GetRobotPositions(bool bSavePositions) {
         cEpuckPosition.Set(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
                            pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
 
-        if (bSavePositions)
-            m_tMemPositions[pcEpuck] = cEpuckPosition;
-        else
-            m_tPositions[pcEpuck] = cEpuckPosition;
+        m_tRobotStates[pcEpuck].cLastPosition = m_tRobotStates[pcEpuck].cPosition;
+        m_tRobotStates[pcEpuck].cPosition = cEpuckPosition;
     }
 }
 
 /****************************************/
 /****************************************/
 
-Real SeqLoopFunction::PwFunctionStop(UInt32 unClock, UInt32 unInitTime, UInt32 unEndTime) {
+void SeqLoopFunction::UpdateRobotColors() {
+    CSpace::TMapPerType& tEpuckMap = GetSpace().GetEntitiesByType("epuck");
+    CColor cEpuckColor;
+    for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it) {
+        CEPuckEntity* pcEpuck = any_cast<CEPuckEntity*>(it->second);
+        cEpuckColor = pcEpuck->GetLEDEquippedEntity().GetLED(10).GetColor();
 
-    if (unClock > unInitTime && unClock <= unEndTime){
-        Real unScore = 0;
-        TPosMap::iterator it, jt;
-        for (it = m_tPositions.begin(), jt = m_tMemPositions.begin(); it != m_tPositions.end(); ++it, ++jt) {
-            Real d = (it->second - jt->second).Length();
-            if (d > 0.0005)
-                unScore+=1;
-        }
-        return unScore;
+        m_tRobotStates[pcEpuck].cColor = cEpuckColor;
     }
-
-    return 0;
 }
 
 /****************************************/
 /****************************************/
 
-Real SeqLoopFunction::PwFunctionMove(UInt32 unClock, UInt32 unInitTime, UInt32 unEndTime, bool bCheckColor) {
+void SeqLoopFunction::InitRobotStates() {
 
-    if (unClock > unInitTime && unClock < unEndTime){
-        Real unScore = 0;
-        TPosMap::iterator it, jt;
-        for (it = m_tPositions.begin(), jt = m_tMemPositions.begin(); it != m_tPositions.end(); ++it, ++jt) {
-            Real d = (it->second - jt->second).Length();
-            if (d > 0.0005){
-                if (bCheckColor){
-                    if(GetFloorColor(it->second) != CColor::GRAY50)
-                        unScore+=1;
-                }
-            }
-            else
-                unScore+=1;
-        }
-        return unScore;
+    CSpace::TMapPerType& tEpuckMap = GetSpace().GetEntitiesByType("epuck");
+    CVector2 cEpuckPosition(0,0);
+    for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it) {
+        CEPuckEntity* pcEpuck = any_cast<CEPuckEntity*>(it->second);
+        cEpuckPosition.Set(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
+                           pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
+
+        m_tRobotStates[pcEpuck].cLastPosition = cEpuckPosition;
+        m_tRobotStates[pcEpuck].cPosition = cEpuckPosition;
+        m_tRobotStates[pcEpuck].cColor = CColor::BLACK;
+        m_tRobotStates[pcEpuck].bItem = false;
     }
-
-    return 0;
 }
 
 /****************************************/
 /****************************************/
 
-Real SeqLoopFunction::AdditionalMetrics(){
-    Real fNewMetric = 999999;
-    if (m_unPwExp == 1)
-        fNewMetric = m_fObjectiveFunctionT1;
-    else if (m_unPwExp == 2)
-        fNewMetric = m_fObjectiveFunctionT2;
+bool SeqLoopFunction::SelectColorOrder(UInt32 un_ColorOrderParam) {
 
-    return fNewMetric;
+    Real fRandomIndex;
+    bool bBlackFirst = true;
+    if (un_ColorOrderParam == 0)
+        fRandomIndex = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
+    else{
+        fRandomIndex = (un_ColorOrderParam * 0.5) - (0.5/2);
+    }
+
+    if (fRandomIndex > 0.5)
+        bBlackFirst = false;
+
+    return bBlackFirst;
+
 }
 
 /****************************************/

@@ -37,33 +37,42 @@ class SeqLoopFunction: public AutoMoDeLoopFunctions {
     CVector3 GetRandomPosition();
 
     void ArenaControl(UInt32 unClock);
+    bool SelectColorOrder(UInt32 un_ColorOrderParam);
 
-    void GetRobotPositions(bool bSavePositions);
+    void InitRobotStates();
+    void UpdateRobotPositions();
+    void UpdateRobotColors();
 
-    Real GetMissionScore(UInt32 unClock);
-    Real AdditionalMetrics();
+    bool IsRobotInNest (CVector2 tRobotPosition);
+    bool IsRobotInSource (CVector2 tRobotPosition);
 
-    Real PwFunctionStop(UInt32 unClock, UInt32 unInitTime, UInt32 unEndTime);
-
-    Real PwFunctionMove(UInt32 unClock, UInt32 unInitTime, UInt32 unEndTime, bool bCheckColor);
+    void ScoreControl(UInt32 unClock);
+    Real GetScore(UInt32 unTask);
+    Real GetStopScore();
+    Real GetAllBlackScore();
+    Real GetForageScore();
+    Real GetMimicryScore();
+    Real GetDistributeScore();
+    Real GetAggregationScore();
 
   private:
-    CVector2 m_cCoordSpot1;
-    CVector2 m_cCoordSpot2;
-    CVector2 m_cCoordSpot3;
-    CVector2 m_cStopCoord;
-    Real m_fRadiusSpot;
+
     Real m_fObjectiveFunction;
-    Real m_fObjectiveFunctionT1;
-    Real m_fObjectiveFunctionT2;
-    Real m_fRandomIndex;
-    bool m_bEvaluate;
+    Real m_fObjectiveFunctionBlack;
+    Real m_fObjectiveFunctionRed;
+    Real m_bBlackFirst;
+    CColor m_cArenaColor;
 
+    struct RobotStateStruct {
+        CVector2 cLastPosition;
+        CVector2 cPosition;
+        CColor cColor;
+        bool bItem;
+    };
 
-    typedef std::map<CEPuckEntity*, CVector2 > TPosMap;
+    typedef std::map<CEPuckEntity*, RobotStateStruct > TRobotStateMap;
 
-    TPosMap m_tMemPositions;
-    TPosMap m_tPositions;
+    TRobotStateMap m_tRobotStates;
 
 };
 

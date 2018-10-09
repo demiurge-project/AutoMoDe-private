@@ -13,14 +13,16 @@
   <!-- ****************** -->
   <loop_functions library="/home/dgarzonr/argos_plugins/AutoMoDe-private/build/loop-functions/sequence/libseq_loopfunc.so"
    label="seq_loop_function">
-       <params number_robots="20"
+       <params number_robots="1"
                build_arena="true"
                number_edges="8"
                number_boxes_per_edge="3"
                lenght_boxes="0.25"
-               piecewise_exp="0"
-               piecewise_config="0"
-               piecewise_time="600"/>
+               color_order="0"
+               black_task="0"
+               red_task="0"
+               eval_task="1"
+               trn_time="600"/>
   </loop_functions>
 
   <!-- *************** -->
@@ -42,7 +44,7 @@
 		    <epuck_ground implementation="rot_z_only" noise_level="0.05" calibrated="true"/>
             <epuck_omnidirectional_camera implementation="rot_z_only" medium="leds" show_rays="false"/>
       </sensors>
-    <params readable="true" history='false' fsm-config="--nstates 2 --s0 1 --cle0 0 --n0 3 --n0x0 0 --c0x0 2 --p0x0 0.02 --n0x1 0 --c0x1 1 --p0x1 0.59 --n0x2 0 --c0x2 2 --p0x2 0.01 --s1 4 --att1 4.38 --cle1 4 --n1 1 --n1x0 0 --c1x0 6 --i1x0 3 --e1x0 5 --l1x0 1 --d1x0 30"/>
+    <params readable="true" history='false' fsm-config="--nstates 1 --s0 1 --cle0 5"/>
 
                                         <!-- From sa -> n0x0 sb = n0x0 sb+1, (a < b) -->
                                         <!-- From sa -> n0x0 sb = n0x0 sb  , (a > b)-->
