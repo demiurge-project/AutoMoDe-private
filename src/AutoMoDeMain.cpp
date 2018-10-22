@@ -39,7 +39,7 @@ const std::string ExplainParameters() {
  */
 int main(int n_argc, char** ppch_argv) {
 
-	bool bHistory = false;
+	bool bHistory = true;
 	bool bReadableFSM = false;
 	std::vector<std::string> vecConfigFsm;
 	bool bFsmControllerFound = false;
