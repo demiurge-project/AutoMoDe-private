@@ -19,11 +19,14 @@ set(AUTOMODE_HEADERS
 	modules/AutoMoDeBehaviourRepulsion.h
     modules/AutoMoDeBehaviourAttractionColor.h
     modules/AutoMoDeBehaviourRepulsionColor.h
+    modules/AutoMoDeBehaviourGoToColor.h
+    modules/AutoMoDeBehaviourGoAwayColor.h
 	modules/AutoMoDeBehaviourStop.h
 	modules/AutoMoDeBehaviourExploration.h
 	# Conditions
 	modules/AutoMoDeCondition.h
     modules/AutoMoDeConditionColor.h
+    modules/AutoMoDeConditionProbColor.h
 	modules/AutoMoDeConditionBlackFloor.h
 	modules/AutoMoDeConditionWhiteFloor.h
 	modules/AutoMoDeConditionGrayFloor.h
@@ -48,11 +51,14 @@ set(AUTOMODE_SOURCES
 	modules/AutoMoDeBehaviourRepulsion.cpp
     modules/AutoMoDeBehaviourAttractionColor.cpp
     modules/AutoMoDeBehaviourRepulsionColor.cpp
+    modules/AutoMoDeBehaviourGoToColor.cpp
+    modules/AutoMoDeBehaviourGoAwayColor.cpp
 	modules/AutoMoDeBehaviourStop.cpp
 	modules/AutoMoDeBehaviourExploration.cpp
 	# Conditions
 	modules/AutoMoDeCondition.cpp
     modules/AutoMoDeConditionColor.cpp
+    modules/AutoMoDeConditionProbColor.cpp
 	modules/AutoMoDeConditionBlackFloor.cpp
 	modules/AutoMoDeConditionWhiteFloor.cpp
 	modules/AutoMoDeConditionGrayFloor.cpp

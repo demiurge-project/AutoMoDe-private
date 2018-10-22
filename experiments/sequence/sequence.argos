@@ -13,15 +13,15 @@
   <!-- ****************** -->
   <loop_functions library="/home/dgarzonr/argos_plugins/AutoMoDe-private/build/loop-functions/sequence/libseq_loopfunc.so"
    label="seq_loop_function">
-       <params number_robots="1"
+       <params number_robots="20"
                build_arena="true"
                number_edges="8"
                number_boxes_per_edge="3"
                lenght_boxes="0.25"
                color_order="0"
-               black_task="0"
-               red_task="0"
-               eval_task="1"
+               black_task="2"
+               red_task="2"
+               eval_task="2"
                trn_time="600"/>
   </loop_functions>
 
@@ -44,11 +44,18 @@
 		    <epuck_ground implementation="rot_z_only" noise_level="0.05" calibrated="true"/>
             <epuck_omnidirectional_camera implementation="rot_z_only" medium="leds" show_rays="false"/>
       </sensors>
-    <params readable="true" history='false' fsm-config="--nstates 1 --s0 1 --cle0 5"/>
+    <params readable="true" history='false' fsm-config="--nstates 2
+
+                                        --s0 8 --att0 1 --cle0 4 --clr0 2
+                                        --n0 1
+                                        --n0x0 0 --c0x0 0 --p0x0 0.2
+                                        
+                                        --s1 8 --att1 1 --cle1 6 --clr1 3
+                                        --n1 1
+                                        --n1x0 0 --c1x0 2 --p1x0 0.2"/>
 
                                         <!-- From sa -> n0x0 sb = n0x0 sb+1, (a < b) -->
                                         <!-- From sa -> n0x0 sb = n0x0 sb  , (a > b)-->
-
     </automode_controller>
     
   </controllers>

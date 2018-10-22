@@ -104,12 +104,14 @@ void SeqLoopFunction::PostStep() {
     ScoreControl(unClock);
     ArenaControl(unClock);
 
+    /*
     if (m_unEvalTask == 1)
         LOG << m_fObjectiveFunctionBlack << std::endl;
     else if (m_unEvalTask == 2)
         LOG << m_fObjectiveFunctionRed << std::endl;
     else
         LOG << m_fObjectiveFunction << std::endl;
+        */
 
 }
 
@@ -185,13 +187,13 @@ void SeqLoopFunction::ScoreControl(UInt32 unClock){
         if (m_bBlackFirst){
             if (unClock <= m_unTrnTime){
                 m_fObjectiveFunctionBlack += GetScore(m_unBlackTask);
-                LOG << "Black in Black first" << std::endl;
+                //LOG << "Black in Black first" << std::endl;
             }
         }
         else{
             if (unClock > m_unTrnTime){
                 m_fObjectiveFunctionBlack += GetScore(m_unBlackTask);
-                LOG << "Black in Black second" << std::endl;
+                //LOG << "Black in Black second" << std::endl;
             }
         }
     }
@@ -200,13 +202,13 @@ void SeqLoopFunction::ScoreControl(UInt32 unClock){
         if (!m_bBlackFirst){
             if (unClock <= m_unTrnTime){
                 m_fObjectiveFunctionRed += GetScore(m_unRedTask);
-                LOG << "Red in Red first" << std::endl;
+                //LOG << "Red in Red first" << std::endl;
             }
         }
         else{
             if (unClock > m_unTrnTime){
                 m_fObjectiveFunctionRed += GetScore(m_unRedTask);
-                LOG << "Red in Red second" << std::endl;
+                //LOG << "Red in Red second" << std::endl;
             }
         }
     }

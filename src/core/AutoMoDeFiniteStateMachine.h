@@ -21,11 +21,13 @@
 #include "../modules/AutoMoDeBehaviour.h"
 #include "../modules/AutoMoDeBehaviourAttraction.h"
 #include "../modules/AutoMoDeBehaviourAttractionColor.h"
+#include "../modules/AutoMoDeBehaviourGoToColor.h"
 #include "../modules/AutoMoDeBehaviourAntiPhototaxis.h"
 #include "../modules/AutoMoDeBehaviourExploration.h"
 #include "../modules/AutoMoDeBehaviourPhototaxis.h"
 #include "../modules/AutoMoDeBehaviourRepulsion.h"
 #include "../modules/AutoMoDeBehaviourRepulsionColor.h"
+#include "../modules/AutoMoDeBehaviourGoAwayColor.h"
 #include "../modules/AutoMoDeBehaviourStop.h"
 #include "../modules/AutoMoDeCondition.h"
 #include "../modules/AutoMoDeConditionBlackFloor.h"
@@ -35,6 +37,7 @@
 #include "../modules/AutoMoDeConditionNeighborsCount.h"
 #include "../modules/AutoMoDeConditionInvertedNeighborsCount.h"
 #include "../modules/AutoMoDeConditionColor.h"
+#include "../modules/AutoMoDeConditionProbColor.h"
 
 #include <string>
 #include <ctime>
