@@ -67,10 +67,6 @@ namespace argos {
 
         sResultVector = -CVector2(m_unRepulsionParameter, sColVectorSum.Angle()) - 5*sProxVectorSum;
 
-		if (sResultVector.Length() < 0.1) {
-			sResultVector = CVector2(1, CRadians::ZERO);
-		}
-
 		m_pcRobotDAO->SetWheelsVelocity(ComputeWheelsVelocityFromVector(sResultVector));
         m_pcRobotDAO->SetLEDsColor(m_cColorEmiterParameter);
 
@@ -81,7 +77,7 @@ namespace argos {
 	/****************************************/
 
     void AutoMoDeBehaviourGoAwayColor::Init() {
-		std::map<std::string, Real>::iterator it = m_mapParameters.find("rep");
+        std::map<std::string, Real>::iterator it = m_mapParameters.find("vel");
 		if (it != m_mapParameters.end()) {
 			m_unRepulsionParameter = it->second;
 		} else {
