@@ -173,9 +173,10 @@ namespace argos {
 			void SetRobotDAO(AutoMoDeRobotDAO* pc_robot_dao);
 
             /*
-             * Data transform for color of the LEDs.
+             * Data transform for color of the omnidirectional camera and LEDs.
              */
-            CColor GetColorParameter(const UInt32& un_value);
+            CColor GetColorParameter(const UInt32& un_value, const bool& b_emiter);
+
 	};
 }
 

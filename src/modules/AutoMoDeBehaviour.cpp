@@ -142,35 +142,75 @@ namespace argos {
     /****************************************/
     /****************************************/
     // Return the color parameter
-    CColor AutoMoDeBehaviour::GetColorParameter(const UInt32& un_value) {
-      //int i_value = round(f_value);
-      CColor cColorParameter;
-      switch(un_value){
-      case 0:
-          cColorParameter = CColor::BLACK;
-          break;
-      case 1:
-          cColorParameter = CColor::RED;
-          break;
-      case 2:
-          cColorParameter = CColor::GREEN;
-          break;
-      case 3:
-          cColorParameter = CColor::BLUE;
-          break;
-      case 4:
-          cColorParameter = CColor::YELLOW;
-          break;
-      case 5:
-          cColorParameter = CColor::MAGENTA;
-          break;
-      case 6:
-          cColorParameter = CColor::CYAN;
-          break;
-      default:
-          cColorParameter = CColor::BLACK;
-      }
-      return cColorParameter;
-    }
+    CColor AutoMoDeBehaviour::GetColorParameter(const UInt32& un_value, const bool& b_emiter) {
 
+        CColor cColorParameter;
+
+        //********************************************************
+        // HARD CODED true for real robots, false for simulation
+        // TODO Change for parameter in xml
+
+        bool b_real_robot = false;
+
+        //********************************************************
+
+        if (b_real_robot && b_emiter){
+            switch(un_value){
+            case 0:
+                cColorParameter = CColor::BLACK;
+                break;
+            case 1:
+                cColorParameter = CColor::RED;
+                break;
+            case 2:
+                cColorParameter = CColor::GREEN;
+                break;
+            case 3:
+                cColorParameter = CColor::BLUE;
+                break;
+            case 4:
+                cColorParameter = CColor(255,255,0);
+                break;
+            case 5:
+                cColorParameter = CColor(255,0,255);
+                break;
+            case 6:
+                cColorParameter = CColor(0,255,255);
+                break;
+            default:
+                cColorParameter = CColor::BLACK;
+            }
+        }
+        else {
+            switch(un_value){
+            case 0:
+                cColorParameter = CColor::BLACK;
+                break;
+            case 1:
+                cColorParameter = CColor::RED;
+                break;
+            case 2:
+                cColorParameter = CColor::GREEN;
+                break;
+            case 3:
+                cColorParameter = CColor::BLUE;
+                break;
+            case 4:
+                cColorParameter = CColor::YELLOW;
+                break;
+            case 5:
+                cColorParameter = CColor::MAGENTA;
+                break;
+            case 6:
+                cColorParameter = CColor::CYAN;
+                break;
+            default:
+                cColorParameter = CColor::BLACK;
+            }
+        }
+
+
+
+        return cColorParameter;
+    }
 }

@@ -56,7 +56,7 @@ namespace argos {
 		CVector2 sResultVector(0,CRadians::ZERO);
 
         for (it = sReadings.BlobList.begin(); it != sReadings.BlobList.end(); it++) {
-            if ((*it)->Color == m_cColorReceiverParameter) {
+            if ((*it)->Color == m_cColorReceiverParameter  && (*it)->Distance >= 6.0) {
                 sColVectorSum += CVector2(1 / (((*it)->Distance) + 1),
                                           (*it)->Angle);
             }
@@ -65,7 +65,10 @@ namespace argos {
 
 		sProxVectorSum = SumProximityReadings(m_pcRobotDAO->GetProximityInput());
 
-        sResultVector = -CVector2(m_unRepulsionParameter, sColVectorSum.Angle()) - 5*sProxVectorSum;
+        if (sColVectorSum.Length() != 0)
+            sResultVector = -CVector2(m_unRepulsionParameter, sColVectorSum.Angle()) - 5*sProxVectorSum;
+        else
+            sResultVector = CVector2(m_unRepulsionParameter, sColVectorSum.Angle()) - 5*sProxVectorSum;
 
 		m_pcRobotDAO->SetWheelsVelocity(ComputeWheelsVelocityFromVector(sResultVector));
         m_pcRobotDAO->SetLEDsColor(m_cColorEmiterParameter);
@@ -86,14 +89,14 @@ namespace argos {
 		}
         it = m_mapParameters.find("cle");
         if (it != m_mapParameters.end()) {
-            m_cColorEmiterParameter = GetColorParameter(it->second);
+            m_cColorEmiterParameter = GetColorParameter(it->second, true);
         } else {
             LOGERR << "[FATAL] Missing parameter for the following behaviour:" << m_strLabel << std::endl;
             THROW_ARGOSEXCEPTION("Missing Parameter");
         }
         it = m_mapParameters.find("clr");
         if (it != m_mapParameters.end()) {
-            m_cColorReceiverParameter = GetColorParameter(it->second);
+            m_cColorReceiverParameter = GetColorParameter(it->second, false);
         } else {
             LOGERR << "[FATAL] Missing parameter for the following behaviour:" << m_strLabel << std::endl;
             THROW_ARGOSEXCEPTION("Missing Parameter");

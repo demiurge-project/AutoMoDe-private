@@ -73,7 +73,7 @@
 
         for (it = sReadings.BlobList.begin(); it != sReadings.BlobList.end(); it++) {
 
-            if ((*it)->Color == m_cColorParameter) {
+            if ((*it)->Color == m_cColorParameter && (*it)->Distance >= 6.0) {
                 return EvaluateBernoulliProbability(m_fProbability);
             }
         }
