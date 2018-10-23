@@ -57,7 +57,7 @@ namespace argos {
 
         for (it = sReadings.BlobList.begin(); it != sReadings.BlobList.end(); it++) {
             if ((*it)->Color == m_cColorReceiverParameter) {
-                sColVectorSum += CVector2(m_unRepulsionParameter / (((*it)->Distance) + 1),
+                sColVectorSum += CVector2(1 / (((*it)->Distance) + 1),
                                           (*it)->Angle);
             }
             // TODO Check sColVectorSum function
@@ -65,7 +65,7 @@ namespace argos {
 
 		sProxVectorSum = SumProximityReadings(m_pcRobotDAO->GetProximityInput());
 
-        sResultVector = -CVector2(0.66, sColVectorSum.Angle()) - 5*sProxVectorSum;
+        sResultVector = -CVector2(m_unRepulsionParameter, sColVectorSum.Angle()) - 5*sProxVectorSum;
 
 		if (sResultVector.Length() < 0.1) {
 			sResultVector = CVector2(1, CRadians::ZERO);

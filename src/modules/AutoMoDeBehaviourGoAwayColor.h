@@ -31,7 +31,7 @@ namespace argos {
             Real m_fDistanceWeightParameter;
             CColor m_cColorEmiterParameter;
             CColor m_cColorReceiverParameter;
-            UInt8 m_unRepulsionParameter;
+            Real m_unRepulsionParameter;
 	};
 }
 
