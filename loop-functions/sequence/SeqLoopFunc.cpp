@@ -235,7 +235,7 @@ Real SeqLoopFunction::GetScore(UInt32 unTask) {
         unScore = GetAllBlackScore();
         break;
     case 2:
-        unScore = GetForageScore();
+        unScore = -GetForageScore();
         break;
     case 3:
         unScore = GetMimicryScore();
@@ -334,12 +334,12 @@ Real SeqLoopFunction::GetMimicryScore() {
 
     for (it = m_tRobotStates.begin(); it != m_tRobotStates.end(); ++it) {
 
-        if (it->second.cColor != CColor::BLACK &&
-                m_cArenaColor == CColor::BLACK)
+        if (m_cArenaColor == CColor::BLACK &&
+            it->second.cColor != CColor::BLACK)
             unScore+=1;
 
-        else if (it->second.cColor != CColor::MAGENTA &&
-                 m_cArenaColor == CColor::RED)
+        else if (m_cArenaColor == CColor::RED &&
+                 it->second.cColor != CColor::MAGENTA)
             unScore+=1;
     }
 
