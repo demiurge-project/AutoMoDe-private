@@ -109,14 +109,14 @@ class AutoMoDeLoopFunctions: public CLoopFunctions {
 
     /*
      * Selector of the order of the color in the arena
-     * (0:Random, 1:First Black, 2: FirstRed)
+     * (0:Random, 1:First Blue, 2: FirstRed)
      */
     UInt32 m_unColorOrder;
 
     /*
-     * Selector of the task executed in black arena
+     * Selector of the task executed in blue arena
      */
-    UInt32 m_unBlackTask;
+    UInt32 m_unBlueTask;
 
     /*
      * Selector of the task executed in red arena
@@ -125,7 +125,7 @@ class AutoMoDeLoopFunctions: public CLoopFunctions {
 
     /*
      * Task to be evaluated in sequence experiments
-     * (0:Overall (TODO), 1: Black, 2: Red)
+     * (0:Overall (TODO), 1: Blue, 2: Red)
      */
     UInt32 m_unEvalTask;
 

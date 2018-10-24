@@ -12,10 +12,11 @@
 /****************************************/
 
 SeqLoopFunction::SeqLoopFunction() {
+    m_unClock = 0;
     m_fObjectiveFunction = 0;
-    m_fObjectiveFunctionBlack = 0;
+    m_fObjectiveFunctionBlue = 0;
     m_fObjectiveFunctionRed = 0;
-    m_bBlackFirst = true;
+    m_bBlueFirst = true;
     m_cArenaColor = CColor::BLACK;
 }
 
@@ -35,6 +36,7 @@ SeqLoopFunction::~SeqLoopFunction() {}
 
 void SeqLoopFunction::Destroy() {
     m_tRobotStates.clear();
+    m_tSourceItems.clear();
 }
 
 /****************************************/
@@ -72,9 +74,10 @@ argos::CColor SeqLoopFunction::GetFloorColor(const argos::CVector2& c_position_o
 void SeqLoopFunction::Init(TConfigurationNode& t_tree) {
     AutoMoDeLoopFunctions::Init(t_tree);
 
-    m_bBlackFirst = SelectColorOrder(m_unColorOrder);
+    m_bBlueFirst = SelectColorOrder(m_unColorOrder);
 
     InitRobotStates();
+    InitSourceItems();
 
 }
 
@@ -84,14 +87,18 @@ void SeqLoopFunction::Init(TConfigurationNode& t_tree) {
 void SeqLoopFunction::Reset() {
     AutoMoDeLoopFunctions::Reset();
 
+    m_unClock = 0;
     m_fObjectiveFunction = 0;
-    m_fObjectiveFunctionBlack = 0;
+    m_fObjectiveFunctionBlue = 0;
     m_fObjectiveFunctionRed = 0;
 
-    m_bBlackFirst = SelectColorOrder(m_unColorOrder);
+    m_bBlueFirst = SelectColorOrder(m_unColorOrder);
 
     m_tRobotStates.clear();
+    m_tSourceItems.clear();
+
     InitRobotStates();
+    InitSourceItems();
 }
 
 /****************************************/
@@ -99,19 +106,10 @@ void SeqLoopFunction::Reset() {
 
 void SeqLoopFunction::PostStep() {
 
-    UInt32 unClock = GetSpace().GetSimulationClock();
+    m_unClock = GetSpace().GetSimulationClock();
 
-    ScoreControl(unClock);
-    ArenaControl(unClock);
-
-    /*
-    if (m_unEvalTask == 1)
-        LOG << m_fObjectiveFunctionBlack << std::endl;
-    else if (m_unEvalTask == 2)
-        LOG << m_fObjectiveFunctionRed << std::endl;
-    else
-        LOG << m_fObjectiveFunction << std::endl;
-        */
+    ScoreControl();
+    ArenaControl();
 
 }
 
@@ -121,7 +119,7 @@ void SeqLoopFunction::PostStep() {
 void SeqLoopFunction::PostExperiment() {
 
     if (m_unEvalTask == 1)
-        LOG << m_fObjectiveFunctionBlack << std::endl;
+        LOG << m_fObjectiveFunctionBlue << std::endl;
     else if (m_unEvalTask == 2)
         LOG << m_fObjectiveFunctionRed << std::endl;
     else
@@ -134,7 +132,7 @@ void SeqLoopFunction::PostExperiment() {
 Real SeqLoopFunction::GetObjectiveFunction() {
 
     if (m_unEvalTask == 1)
-        return m_fObjectiveFunctionBlack;
+        return m_fObjectiveFunctionBlue;
     else if (m_unEvalTask == 2)
         return m_fObjectiveFunctionRed;
     else
@@ -145,31 +143,26 @@ Real SeqLoopFunction::GetObjectiveFunction() {
 /****************************************/
 /****************************************/
 
-void SeqLoopFunction::ArenaControl(UInt32 unClock) {
+void SeqLoopFunction::ArenaControl() {
 
-    if (unClock == 1) {
-        if (m_bBlackFirst)
-            m_cArenaColor = CColor::BLACK;
+    if (m_unClock == 1) {
+        if (m_bBlueFirst)
+            m_cArenaColor = CColor::BLUE;
         else
             m_cArenaColor = CColor::RED;
     }
 
-    if (unClock == m_unTrnTime) {
-        if (m_bBlackFirst)
+    if (m_unClock == m_unTrnTime) {
+        if (m_bBlueFirst)
             m_cArenaColor = CColor::RED;
         else
-            m_cArenaColor = CColor::BLACK;
+            m_cArenaColor = CColor::BLUE;
     }
 
-    if (unClock == 1 || unClock == m_unTrnTime) {
+    if (m_unClock == 1 || m_unClock == m_unTrnTime) {
         m_pcArena->SetArenaColor(m_cArenaColor);
         m_pcArena->SetBoxColor(2,1,CColor::GREEN);
         m_pcArena->SetBoxColor(2,2,CColor::GREEN);
-        m_pcArena->SetBoxColor(1,3,CColor::BLUE);
-        m_pcArena->SetBoxColor(3,3,CColor::BLUE);
-        m_pcArena->SetBoxColor(2,4,CColor::BLUE);
-        m_pcArena->SetBoxColor(1,5,CColor::BLUE);
-        m_pcArena->SetBoxColor(3,5,CColor::BLUE);
         m_pcArena->SetBoxColor(2,6,CColor::GREEN);
         m_pcArena->SetBoxColor(2,7,CColor::GREEN);
         m_pcArena->SetBoxColor(2,8,CColor::GREEN);
@@ -181,32 +174,32 @@ void SeqLoopFunction::ArenaControl(UInt32 unClock) {
 /****************************************/
 /****************************************/
 
-void SeqLoopFunction::ScoreControl(UInt32 unClock){
+void SeqLoopFunction::ScoreControl(){
 
     if (m_unEvalTask == 1) {
-        if (m_bBlackFirst){
-            if (unClock <= m_unTrnTime){
-                m_fObjectiveFunctionBlack += GetScore(m_unBlackTask);
-                //LOG << "Black in Black first" << std::endl;
+        if (m_bBlueFirst){
+            if (m_unClock <= m_unTrnTime){
+                m_fObjectiveFunctionBlue += GetScore(m_unBlueTask);
+                //LOG << "Blue in Blue first" << std::endl;
             }
         }
         else{
-            if (unClock > m_unTrnTime){
-                m_fObjectiveFunctionBlack += GetScore(m_unBlackTask);
-                //LOG << "Black in Black second" << std::endl;
+            if (m_unClock > m_unTrnTime){
+                m_fObjectiveFunctionBlue += GetScore(m_unBlueTask);
+                //LOG << "Blue in Blue second" << std::endl;
             }
         }
     }
 
     else if (m_unEvalTask == 2) {
-        if (!m_bBlackFirst){
-            if (unClock <= m_unTrnTime){
+        if (!m_bBlueFirst){
+            if (m_unClock <= m_unTrnTime){
                 m_fObjectiveFunctionRed += GetScore(m_unRedTask);
                 //LOG << "Red in Red first" << std::endl;
             }
         }
         else{
-            if (unClock > m_unTrnTime){
+            if (m_unClock > m_unTrnTime){
                 m_fObjectiveFunctionRed += GetScore(m_unRedTask);
                 //LOG << "Red in Red second" << std::endl;
             }
@@ -215,7 +208,7 @@ void SeqLoopFunction::ScoreControl(UInt32 unClock){
 
     else {
         m_fObjectiveFunction = 888888;
-        m_fObjectiveFunctionBlack = 888888;
+        m_fObjectiveFunctionBlue = 888888;
         m_fObjectiveFunctionRed = 888888;
     }
 }
@@ -241,10 +234,10 @@ Real SeqLoopFunction::GetScore(UInt32 unTask) {
         unScore = GetMimicryScore();
         break;
     case 4:
-        unScore = GetDistributeScore();
+        unScore = -GetDistributeScore();
         break;
     case 5:
-        unScore = GetAggregationScore();
+        unScore = -GetAggregationScore();
         break;
     default:
         unScore = 999999;
@@ -271,6 +264,7 @@ Real SeqLoopFunction::GetStopScore() {
 
     return unScore;
 }
+
 /****************************************/
 /****************************************/
 
@@ -334,14 +328,80 @@ Real SeqLoopFunction::GetMimicryScore() {
 
     for (it = m_tRobotStates.begin(); it != m_tRobotStates.end(); ++it) {
 
-        if (m_cArenaColor == CColor::BLACK &&
-            it->second.cColor != CColor::BLACK)
+        if (m_cArenaColor == CColor::BLUE &&
+            it->second.cColor != CColor::CYAN)
             unScore+=1;
 
         else if (m_cArenaColor == CColor::RED &&
                  it->second.cColor != CColor::MAGENTA)
             unScore+=1;
     }
+
+    return unScore;
+}
+
+/****************************************/
+/****************************************/
+
+Real SeqLoopFunction::GetDistributeScore() {
+
+    UpdateRobotPositions();
+
+    bool bInNest;
+    UInt32 bInSourceID = 0;
+
+    TRobotStateMap::iterator it;
+
+    for (it = m_tRobotStates.begin(); it != m_tRobotStates.end(); ++it) {
+
+        if (it->second.bItem == true){
+            bInSourceID = IsRobotInSourceID(it->second.cPosition);
+            if (bInSourceID != 0) {
+                m_tSourceItems[bInSourceID] += 1;
+                it->second.bItem = false;
+            }
+        }
+        else {
+            bInNest = IsRobotInNest(it->second.cPosition);
+            if (bInNest) {
+                it->second.bItem = true;
+            }
+        }
+    }
+
+    if (m_unClock == m_unTrnTime || m_unClock == 2*m_unTrnTime){
+        TSourceItemsMap::iterator it;
+        UInt32 unMinInSource = 999999;
+        for (it = m_tSourceItems.begin(); it != m_tSourceItems.end(); ++it) {
+            unMinInSource = Min(unMinInSource,(it->second));
+        }
+        return unMinInSource;
+    }
+    else
+        return 0;
+}
+
+/****************************************/
+/****************************************/
+
+Real SeqLoopFunction::GetAggregationScore() {
+
+    UpdateRobotPositions();
+
+    Real unScore = 0;
+    Real d = 0;
+    Real fCounter = 0;
+    TRobotStateMap::iterator it, jt;
+
+    for (it = m_tRobotStates.begin(); it != m_tRobotStates.end(); ++it) {
+        for (jt = m_tRobotStates.begin(); jt != it; ++jt) {
+            d = (it->second.cPosition - jt->second.cPosition).Length();
+            unScore+=d;
+            fCounter+=1;
+        }
+    }
+
+    unScore = unScore / fCounter;
 
     return unScore;
 }
@@ -382,6 +442,38 @@ bool SeqLoopFunction::IsRobotInSource (CVector2 tRobotPosition){
     }
 
     return false;
+}
+
+/****************************************/
+/****************************************/
+
+UInt32 SeqLoopFunction::IsRobotInSourceID (CVector2 tRobotPosition){
+
+    UInt32 unSourceId = 0;
+
+    if (tRobotPosition.GetX() >= -0.16) {
+        if (tRobotPosition.GetX() >= -0.16 && tRobotPosition.GetX() <= 0.16){
+            if (tRobotPosition.GetY() >= 0.61533)
+                unSourceId = 1;
+            else if (tRobotPosition.GetY() <= -0.61533)
+                unSourceId = 5;
+        }
+
+        else if (tRobotPosition.GetX() >= 0.61533 && tRobotPosition.GetY() >= -0.16 && tRobotPosition.GetY() <= 0.16)
+            unSourceId = 3;
+
+        else if (tRobotPosition.GetY() >= -tRobotPosition.GetX() + 0.87727913472 &&
+                 tRobotPosition.GetY() <=  tRobotPosition.GetX() + 0.22450640303 &&
+                 tRobotPosition.GetY() >=  tRobotPosition.GetX() - 0.22450640303)
+            unSourceId = 2;
+
+        else if (tRobotPosition.GetY() <=  tRobotPosition.GetX() - 0.87727913472 &&
+                 tRobotPosition.GetY() <= -tRobotPosition.GetX() + 0.22450640303 &&
+                 tRobotPosition.GetY() >= -tRobotPosition.GetX() - 0.22450640303)
+            unSourceId = 4;
+    }
+
+    return unSourceId;
 }
 
 /****************************************/
@@ -436,10 +528,20 @@ void SeqLoopFunction::InitRobotStates() {
 /****************************************/
 /****************************************/
 
+void SeqLoopFunction::InitSourceItems() {
+
+    for (UInt32 unSources=1; unSources < 6; ++unSources) {
+        m_tSourceItems[unSources] = 0;
+    }
+}
+
+/****************************************/
+/****************************************/
+
 bool SeqLoopFunction::SelectColorOrder(UInt32 un_ColorOrderParam) {
 
     Real fRandomIndex;
-    bool bBlackFirst = true;
+    bool bBlueFirst = true;
     if (un_ColorOrderParam == 0)
         fRandomIndex = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
     else{
@@ -447,9 +549,9 @@ bool SeqLoopFunction::SelectColorOrder(UInt32 un_ColorOrderParam) {
     }
 
     if (fRandomIndex > 0.5)
-        bBlackFirst = false;
+        bBlueFirst = false;
 
-    return bBlackFirst;
+    return bBlueFirst;
 
 }
 

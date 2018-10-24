@@ -25,7 +25,7 @@ void AutoMoDeLoopFunctions::Init(argos::TConfigurationNode& t_tree) {
     GetNodeAttributeOrDefault(cParametersNode, "number_boxes_per_edge", m_unNumberBoxes, (UInt32) 1);
     GetNodeAttributeOrDefault(cParametersNode, "lenght_boxes", m_fLenghtBoxes, (Real) 0.25);
     GetNodeAttributeOrDefault(cParametersNode, "color_order", m_unColorOrder, (UInt32) 0);
-    GetNodeAttributeOrDefault(cParametersNode, "black_task", m_unBlackTask, (UInt32) 0);
+    GetNodeAttributeOrDefault(cParametersNode, "blue_task", m_unBlueTask, (UInt32) 0);
     GetNodeAttributeOrDefault(cParametersNode, "red_task", m_unRedTask, (UInt32) 0);
     GetNodeAttributeOrDefault(cParametersNode, "eval_task", m_unEvalTask, (UInt32) 0);
     GetNodeAttributeOrDefault(cParametersNode, "trn_time", m_unTrnTime, (UInt32) 600);
