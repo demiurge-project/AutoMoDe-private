@@ -237,7 +237,7 @@ Real SeqLoopFunction::GetScore(UInt32 unTask) {
         unScore = -GetDistributeScore();
         break;
     case 5:
-        unScore = -GetAggregationScore();
+        unScore = GetAggregationScore();
         break;
     default:
         unScore = 999999;

@@ -18,7 +18,7 @@ function write_state() {
   echo "RWM$INDEX   \"--rwm$INDEX \"  i (1,100) | as.numeric(S$INDEX)==0" >> ${TXT_FILE}
   echo "ATT$INDEX   \"--att$INDEX \"  r (1,5) | as.numeric(S$INDEX) %in% c(4)" >> ${TXT_FILE}
   echo "REP$INDEX   \"--rep$INDEX \"  r (1,5) | as.numeric(S$INDEX) %in% c(5)" >> ${TXT_FILE}
-  echo "VEL$INDEX   \"--vel$INDEX \"  c (0.66) | as.numeric(S$INDEX) %in% c(8,9)" >> ${TXT_FILE}
+  echo "VEL$INDEX   \"--vel$INDEX \"  c (1.0) | as.numeric(S$INDEX) %in% c(8,9)" >> ${TXT_FILE}
   echo "CLE$INDEX   \"--cle$INDEX \"  c (0,4,5,6) | as.numeric(S$INDEX) %in% c(0,1,4,5,8,9)" >> ${TXT_FILE}
   echo "CLR$INDEX   \"--clr$INDEX \"  c (1,2,3,4,5,6) | as.numeric(S$INDEX) %in% c(8,9)" >> ${TXT_FILE}
   if [ ${INDEX} == 0 ]; then
