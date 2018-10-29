@@ -118,12 +118,16 @@ void SeqLoopFunction::PostStep() {
 
 void SeqLoopFunction::PostExperiment() {
 
-    if (m_unEvalTask == 1)
+    if (m_unEvalTask == 0){
+        m_fObjectiveFunction = 0.5*GetNormalizedScore(m_fObjectiveFunctionBlue, m_unBlueTask)
+                              +0.5*GetNormalizedScore(m_fObjectiveFunctionRed, m_unRedTask);
+    }
+    else if (m_unEvalTask == 1)
         LOG << m_fObjectiveFunctionBlue << std::endl;
     else if (m_unEvalTask == 2)
         LOG << m_fObjectiveFunctionRed << std::endl;
     else
-        LOG << m_fObjectiveFunction << std::endl;
+        LOG << 888888 << std::endl;
 }
 
 /****************************************/
@@ -131,12 +135,14 @@ void SeqLoopFunction::PostExperiment() {
 
 Real SeqLoopFunction::GetObjectiveFunction() {
 
-    if (m_unEvalTask == 1)
+    if (m_unEvalTask == 0)
+        return m_fObjectiveFunction;
+    else if (m_unEvalTask == 1)
         return m_fObjectiveFunctionBlue;
     else if (m_unEvalTask == 2)
         return m_fObjectiveFunctionRed;
     else
-        return m_fObjectiveFunction;
+        return 888888;
 
 }
 
@@ -176,7 +182,26 @@ void SeqLoopFunction::ArenaControl() {
 
 void SeqLoopFunction::ScoreControl(){
 
-    if (m_unEvalTask == 1) {
+    if (m_unEvalTask == 0) {
+        if (m_bBlueFirst){
+            if (m_unClock <= m_unTrnTime){
+                m_fObjectiveFunctionBlue += GetScore(m_unBlueTask);
+            }
+            else {
+                m_fObjectiveFunctionRed += GetScore(m_unRedTask);
+            }
+        }
+        else{
+            if (m_unClock <= m_unTrnTime){
+                m_fObjectiveFunctionRed += GetScore(m_unRedTask);
+            }
+            else {
+                m_fObjectiveFunctionBlue += GetScore(m_unBlueTask);
+            }
+        }
+    }
+
+    else if (m_unEvalTask == 1) {
         if (m_bBlueFirst){
             if (m_unClock <= m_unTrnTime){
                 m_fObjectiveFunctionBlue += GetScore(m_unBlueTask);
@@ -245,6 +270,40 @@ Real SeqLoopFunction::GetScore(UInt32 unTask) {
     }
 
     return unScore;
+}
+
+/****************************************/
+/****************************************/
+
+Real SeqLoopFunction::GetNormalizedScore(Real fScore, UInt32 unTask) {
+
+    Real fNormalizedScore = 0;
+
+    switch (unTask){
+    case 0:
+        fNormalizedScore = fScore/12000; // 12000 =  (Mission time / 2) * Number of robots
+        break;
+    case 1:
+        fNormalizedScore = fScore/12000;
+        break;
+    case 2:
+        fNormalizedScore = (180+fScore)/180; // 180 = (MaxItemsPerRobot * 20)
+        break;
+    case 3:
+        fNormalizedScore = fScore/12000;
+        break;
+    case 4:
+        fNormalizedScore = (12+fScore)/12; // 12 = (MaxItemsFiveRobots * 4)
+        break;
+    case 5:
+        fNormalizedScore = (fScore-104)/(610); // 104 = Min score obtained with aggregation, 714 = Max score obtained with aggregation, 610 = Max-Min
+        break;
+    default:
+        fNormalizedScore = 999999;
+        break;
+    }
+
+    return fNormalizedScore;
 }
 
 /****************************************/

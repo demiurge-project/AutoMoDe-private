@@ -50,6 +50,7 @@ class SeqLoopFunction: public AutoMoDeLoopFunctions {
 
     void ScoreControl();
     Real GetScore(UInt32 unTask);
+    Real GetNormalizedScore(Real fScore, UInt32 unTask);
     Real GetStopScore();
     Real GetAllBlackScore();
     Real GetForageScore();
