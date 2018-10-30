@@ -121,6 +121,7 @@ void SeqLoopFunction::PostExperiment() {
     if (m_unEvalTask == 0){
         m_fObjectiveFunction = 0.5*GetNormalizedScore(m_fObjectiveFunctionBlue, m_unBlueTask)
                               +0.5*GetNormalizedScore(m_fObjectiveFunctionRed, m_unRedTask);
+        LOG << m_fObjectiveFunction << std::endl;
     }
     else if (m_unEvalTask == 1)
         LOG << m_fObjectiveFunctionBlue << std::endl;
