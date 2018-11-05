@@ -49,31 +49,34 @@ namespace argos {
 	/****************************************/
 
 	void AutoMoDeBehaviourAttraction::ControlStep() {
-        CVector2 sCamVector(0,CRadians::ZERO);
+
+        m_pcRobotDAO->SetLEDsColor(CColor::BLACK);
+
+        CVector2 sRabVector(0,CRadians::ZERO);
         CVector2 sProxVector(0,CRadians::ZERO);
         CVector2 sResultVector(0,CRadians::ZERO);
 
         /* Compute the interaction vector */
-        CCI_EPuckOmnidirectionalCameraSensor::SBlob cCamReading = m_pcRobotDAO->GetNeighborsDirection();
-        sCamVector = CVector2(cCamReading.Distance, cCamReading.Angle);
+        CCI_EPuckRangeAndBearingSensor::SReceivedPacket cRabReading = m_pcRobotDAO->GetNeighborsCenterOfMass();
+        sRabVector = CVector2(cRabReading.Range, cRabReading.Bearing);
 
         /* Compute the proximity vector */
         CCI_EPuckProximitySensor::SReading cProxReading = m_pcRobotDAO->GetProximityReading();
         sProxVector = CVector2(cProxReading.Value, cProxReading.Angle);
 
         /* if robot alone, go straight ahead */
-        if (sCamVector.Length() < 0.1) {
-            sCamVector = CVector2(1, CRadians::ZERO);
+        if (sRabVector.Length() < 0.1) {
+            sRabVector = CVector2(1, CRadians::ZERO);
         }
 
         /* Compute the result vector, prox is an order the magnitude bigger */
-        sResultVector = m_unAttractionParameter*sCamVector - 6*sProxVector;
+        sResultVector = m_unAttractionParameter*sRabVector - 6*sProxVector;
 
         /* Compute the velocity of the wheels */
-        m_pcRobotDAO->SetWheelsVelocity(MILowLevelController(sResultVector, 1.0, 0.7));
-        //m_pcRobotDAO->SetWheelsVelocity(ComputeWheelsVelocityFromVector(sResultVector));
+        //m_pcRobotDAO->SetWheelsVelocity(MILowLevelController(sResultVector, 1.0, 0.7));
+        m_pcRobotDAO->SetWheelsVelocity(ComputeWheelsVelocityFromVector(sResultVector));
 
-		m_bLocked = false;
+        m_bLocked = false;
 	}
 
 	/****************************************/

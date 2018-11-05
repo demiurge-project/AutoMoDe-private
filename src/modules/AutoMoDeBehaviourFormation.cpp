@@ -50,6 +50,10 @@ namespace argos {
 
     void AutoMoDeBehaviourFormation::ControlStep() {
 
+        /*If simulation, comment second one, else comment the first one*/
+        m_pcRobotDAO->SetLEDsColor(CColor::CYAN);
+        //m_pcRobotDAO->SetLEDsColor(CColor(0,200,50));
+
 
         CVector2 sCamVector(0,CRadians::ZERO);
         CVector2 sProxVector(0,CRadians::ZERO);
@@ -79,7 +83,7 @@ namespace argos {
 
     void AutoMoDeBehaviourFormation::InitializeVariables() {
         m_sCoesionParams.Exponent = 2;
-        m_sCoesionParams.Gain = 30;
+        m_sCoesionParams.Gain = 10;
     }
 
 	/****************************************/

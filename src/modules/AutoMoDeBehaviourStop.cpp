@@ -49,6 +49,8 @@ namespace argos {
 	/****************************************/
 
 	void AutoMoDeBehaviourStop::ControlStep() {
+
+        m_pcRobotDAO->SetLEDsColor(CColor::BLACK);
 		m_pcRobotDAO->SetWheelsVelocity(0,0);
 		m_bLocked = false;
 	}

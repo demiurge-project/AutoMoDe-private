@@ -49,6 +49,9 @@ namespace argos {
 	/****************************************/
 
 	void AutoMoDeBehaviourAntiPhototaxis::ControlStep() {
+
+        m_pcRobotDAO->SetLEDsColor(CColor::BLACK);
+
 		CVector2 sResultVector(0,CRadians::ZERO);
 		CVector2 sLightVector(0,CRadians::ZERO);
 		CVector2 sProxVector(0,CRadians::ZERO);

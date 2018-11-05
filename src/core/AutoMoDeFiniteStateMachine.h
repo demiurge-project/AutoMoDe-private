@@ -33,6 +33,7 @@
 #include "../modules/AutoMoDeConditionWhiteFloor.h"
 #include "../modules/AutoMoDeConditionFixedProbability.h"
 #include "../modules/AutoMoDeConditionNeighborsCount.h"
+#include "../modules/AutoMoDeConditionNeighborsState.h"
 #include "../modules/AutoMoDeConditionInvertedNeighborsCount.h"
 
 #include <string>

@@ -197,6 +197,9 @@ namespace argos {
 				case 5:
 					cNewCondition = new AutoMoDeConditionFixedProbability();
 					break;
+                case 6:
+                    cNewCondition = new AutoMoDeConditionNeighborsState();
+                    break;
 			}
 
 			cNewCondition->SetOriginAndExtremity(un_initial_state_index, unToBehaviour);

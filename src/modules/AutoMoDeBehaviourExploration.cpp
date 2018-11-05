@@ -66,6 +66,9 @@ namespace argos {
 	/****************************************/
 
 	void AutoMoDeBehaviourExploration::ControlStep() {
+
+        m_pcRobotDAO->SetLEDsColor(CColor::BLACK);
+
 		switch (m_eExplorationState) {
 			case RANDOM_WALK: {
 				m_pcRobotDAO->SetWheelsVelocity(m_pcRobotDAO->GetMaxVelocity(), m_pcRobotDAO->GetMaxVelocity());
@@ -98,8 +101,8 @@ namespace argos {
 				}
 				break;
 			}
-		}
-		m_bLocked = false;
+        }
+        m_bLocked = false;
 	}
 
 	/****************************************/

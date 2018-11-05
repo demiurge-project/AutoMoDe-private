@@ -31,9 +31,9 @@
       <sensors>
 		    <epuck_proximity implementation="default" show_rays="false" noise_level="0.05" calibrated="false"/> 
 		    <epuck_light implementation="default" show_rays="false" noise_level="0.05" calibrated="false"/>
-		    <epuck_ground implementation="rot_z_only" noise_level="0.05" calibrated="false"/>
+		    <epuck_ground implementation="rot_z_only" noise_level="0.00" calibrated="false"/>
                     <epuck_range_and_bearing implementation="medium" medium="rab" show_rays="false" data_size="2" noise_std_dev="0.1" real_range_noise="false" loss_probability="0.85" calibrated="false"/>
-                    <epuck_omnidirectional_camera implementation="rot_z_only" medium="leds" show_rays="true" noise_std_dev="0.04" calibrated="false"/>
+                    <epuck_omnidirectional_camera implementation="rot_z_only" medium="leds" show_rays="false" noise_std_dev="0.04" calibrated="false"/>
       </sensors>
     <params readable='false' history='false' hist-folder='./fsm-history' fsm-config="--nstates 1 --s0 4 --att0 5"/>
     </automode_controller>

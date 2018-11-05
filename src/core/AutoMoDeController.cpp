@@ -140,6 +140,10 @@ namespace argos {
 			m_pcWheelsActuator->SetLinearVelocity(m_pcRobotState->GetLeftWheelVelocity(),m_pcRobotState->GetRightWheelVelocity());
 		}
 
+        if (m_pcLEDsActuator != NULL) {
+            m_pcLEDsActuator->SetColors(m_pcRobotState->GetLEDsColor());
+        }
+
 		/*
 		 * 4. Update variables and sensors
 		 */
@@ -205,9 +209,7 @@ namespace argos {
            m_pcCameraSensor->Enable();
         }
 
-        /*If simulation, comment second one, else comment the first one*/
-        m_pcLEDsActuator->SetColors(CColor::CYAN);
-        //m_pcLEDsActuator->SetColors(CColor(0,200,50));
+
 	}
 
 	REGISTER_CONTROLLER(AutoMoDeController, "automode_controller");
