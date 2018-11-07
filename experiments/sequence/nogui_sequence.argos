@@ -21,7 +21,7 @@
                color_order="0"
                blue_task="3"
                red_task="3"
-               eval_task="0"
+               eval_task="1"
                trn_time="600"/>
   </loop_functions>
 
@@ -40,11 +40,11 @@
       <sensors>
 		    <epuck_proximity implementation="default" show_rays="false" noise_level="0.05" calibrated="true"/>
         <epuck_range_and_bearing implementation="medium" medium="rab" data_size="4" noise_std_deviation="1.5" loss_probability="0.85" calibrated="true"/>
-		    <epuck_light implementation="default" show_rays="true" noise_level="0.05" calibrated="true"/>
+		    <epuck_light implementation="default" show_rays="false" noise_level="0.05" calibrated="true"/>
 		    <epuck_ground implementation="rot_z_only" noise_level="0.05" calibrated="true"/>
-            <epuck_omnidirectional_camera implementation="rot_z_only" medium="leds" show_rays="true"/>
+            <epuck_omnidirectional_camera implementation="rot_z_only" medium="leds" show_rays="false"/>
       </sensors>
-    <params readable="true" history='false' fsm-config="--nstates 1 --s0 8 --clr0 5 --cle0 5 --vel0 1.0"/>
+    <params readable="false" history='false' fsm-config="--nstates 1 --s0 8 --clr0 5 --cle0 5 --vel0 1.0"/>
 
                                         <!-- From sa -> n0x0 sb = n0x0 sb+1, (a < b) -->
                                         <!-- From sa -> n0x0 sb = n0x0 sb  , (a > b)-->
@@ -99,14 +99,14 @@
   <!-- ***************** -->
   
   <visualization>
-    <qt-opengl>
+    <!--qt-opengl>
       <camera>
         <placement idx="0"
                    position="0,0,2.7"
                    look_at="0,0,0"
                    lens_focal_length="30" />
       </camera>
-    </qt-opengl>
+    </qt-opengl-->
   </visualization>
 
 </argos-configuration>

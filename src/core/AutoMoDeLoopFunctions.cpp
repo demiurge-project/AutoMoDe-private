@@ -129,6 +129,7 @@ void AutoMoDeLoopFunctions::RemoveRobots() {
 
 void AutoMoDeLoopFunctions::PositionArena() {
   CArenaEntity* pcArena;
+  /*
     pcArena = new CArenaEntity("arena",
                                CVector3(0,0,0),
                                CQuaternion().FromEulerAngles(CRadians::ZERO,CRadians::ZERO,CRadians::ZERO), // TODO
@@ -137,9 +138,20 @@ void AutoMoDeLoopFunctions::PositionArena() {
                                m_unNumberBoxes,
                                m_unNumberEdges,
                                0.017f,
-                               1.0f);   
-    AddEntity(*pcArena);
-    m_pcArena = pcArena;
+                               1.0f);   */ // arena with 12 leds per block
+
+  pcArena = new CArenaEntity("arena",
+                             CVector3(0,0,0),
+                             CQuaternion().FromEulerAngles(CRadians::ZERO,CRadians::ZERO,CRadians::ZERO), // TODO
+                             CVector3(0.01,m_fLenghtBoxes,0.1),
+                             "leds",
+                             m_unNumberBoxes,
+                             m_unNumberEdges,
+                             0.125f,
+                             1.0f);
+
+  AddEntity(*pcArena);
+  m_pcArena = pcArena;
 }
 
 /****************************************/

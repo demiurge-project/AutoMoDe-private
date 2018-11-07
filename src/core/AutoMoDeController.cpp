@@ -75,7 +75,7 @@ namespace argos {
 		 */
 		try{
 			m_pcProximitySensor = GetSensor<CCI_EPuckProximitySensor>("epuck_proximity");
-			m_pcLightSensor = GetSensor<CCI_EPuckLightSensor>("epuck_light");
+            m_pcLightSensor = GetSensor<CCI_EPuckLightSensor>("epuck_light");
 			m_pcGroundSensor = GetSensor<CCI_EPuckGroundSensor>("epuck_ground");
 			 m_pcRabSensor = GetSensor<CCI_EPuckRangeAndBearingSensor>("epuck_range_and_bearing");
 			 m_pcCameraSensor = GetSensor<CCI_EPuckOmnidirectionalCameraSensor>("epuck_omnidirectional_camera");
@@ -121,10 +121,10 @@ namespace argos {
 			const CCI_EPuckGroundSensor::SReadings& readings = m_pcGroundSensor->GetReadings();
 			m_pcRobotState->SetGroundInput(readings);
 		}
-		if (m_pcLightSensor != NULL) {
-			const CCI_EPuckLightSensor::TReadings& readings = m_pcLightSensor->GetReadings();
-			m_pcRobotState->SetLightInput(readings);
-		}
+        if (m_pcLightSensor != NULL) {
+            const CCI_EPuckLightSensor::TReadings& readings = m_pcLightSensor->GetReadings();
+            m_pcRobotState->SetLightInput(readings);
+        }
 		if (m_pcProximitySensor != NULL) {
 			const CCI_EPuckProximitySensor::TReadings& readings = m_pcProximitySensor->GetReadings();
 			m_pcRobotState->SetProximityInput(readings);
@@ -133,7 +133,7 @@ namespace argos {
 		/*
 		 * 2. Execute step of FSM
 		 */
-		m_pcFiniteStateMachine->ControlStep();
+        m_pcFiniteStateMachine->ControlStep();
 
 		/*
 		 * 3. Update Actuators
@@ -142,7 +142,8 @@ namespace argos {
 			m_pcWheelsActuator->SetLinearVelocity(m_pcRobotState->GetLeftWheelVelocity(),m_pcRobotState->GetRightWheelVelocity());
 		}
         if (m_pcLEDsActuator != NULL) {
-            m_pcLEDsActuator->SetColors(m_pcRobotState->GetLEDsColor());
+            //m_pcLEDsActuator->SetColors(m_pcRobotState->GetLEDsColor());
+            m_pcLEDsActuator->SetColor(2,m_pcRobotState->GetLEDsColor());
         }
 
 		/*
