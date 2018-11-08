@@ -19,9 +19,10 @@
                number_boxes_per_edge="3"
                lenght_boxes="0.25"
                color_order="0"
+               number_colors="1"
                blue_task="3"
                red_task="3"
-               eval_task="0"
+               eval_task="1"
                trn_time="600"/>
   </loop_functions>
 
@@ -44,7 +45,7 @@
 		    <epuck_ground implementation="rot_z_only" noise_level="0.05" calibrated="true"/>
             <epuck_omnidirectional_camera implementation="rot_z_only" medium="leds" show_rays="true"/>
       </sensors>
-    <params readable="true" history='false' fsm-config="--nstates 1 --s0 8 --clr0 5 --cle0 5 --vel0 1.0"/>
+    <params readable="true" history='false' fsm-config="--nstates 1 --s0 8 --clr0 5 --cle0 0 --vel0 1.0"/>
 
                                         <!-- From sa -> n0x0 sb = n0x0 sb+1, (a < b) -->
                                         <!-- From sa -> n0x0 sb = n0x0 sb  , (a > b)-->
@@ -64,7 +65,7 @@
   <!-- Please note that this light has an intensity equal to 0 -->
   <!-- and therefore does not affect the experiment. -->
   <!-- ARGoS requires at least one light when using the light sensor -->
-    <light id="light" position="0.8,0.8,0.10" orientation="0,0,0" color="yellow" intensity="0.0" medium="leds"/>
+    <light id="light" position="0.8,0.8,0.10" orientation="0,0,0" color="black" intensity="0.0" medium="leds"/>
 
   <!-- ********** -->
   <!-- * E-Puck * -->
