@@ -41,35 +41,7 @@ SeqLoopFunction::~SeqLoopFunction() {}
 void SeqLoopFunction::Destroy() {
     m_tRobotStates.clear();
     m_tSourceItems.clear();
-}
-
-/****************************************/
-/****************************************/
-
-argos::CColor SeqLoopFunction::GetFloorColor(const argos::CVector2& c_position_on_plane) {
-
-    if (c_position_on_plane.GetX() <= -0.375)
-        return CColor::WHITE;
-
-    else if (c_position_on_plane.GetX() >= -0.125 && c_position_on_plane.GetX() <= 0.125){
-        if (c_position_on_plane.GetY() >= 0.65033 || c_position_on_plane.GetY() <= -0.65033)
-            return CColor::BLACK;
-    }
-
-    else if (c_position_on_plane.GetX() >= 0.65033 && c_position_on_plane.GetY() >= -0.125 && c_position_on_plane.GetY() <= 0.125)
-        return CColor::BLACK;
-
-    else if (c_position_on_plane.GetY() >= -c_position_on_plane.GetX() + 0.9267766094 &&
-             c_position_on_plane.GetY() <=  c_position_on_plane.GetX() + 0.1767766953 &&
-             c_position_on_plane.GetY() >=  c_position_on_plane.GetX() - 0.1767766953)
-        return CColor::BLACK;
-
-    else if (c_position_on_plane.GetY() <=  c_position_on_plane.GetX() - 0.9267766094 &&
-             c_position_on_plane.GetY() <= -c_position_on_plane.GetX() + 0.1767766953 &&
-             c_position_on_plane.GetY() >= -c_position_on_plane.GetX() - 0.1767766953)
-        return CColor::BLACK;
-
-    return CColor::GRAY50;
+    m_tSourceOperation.clear();
 }
 
 /****************************************/
@@ -83,7 +55,8 @@ void SeqLoopFunction::Init(TConfigurationNode& t_tree) {
     AsignArenaColors(m_unNumerColors);
 
     InitRobotStates();
-    InitSourceItems();
+    InitSources();
+
 
 }
 
@@ -102,9 +75,10 @@ void SeqLoopFunction::Reset() {
 
     m_tRobotStates.clear();
     m_tSourceItems.clear();
+    m_tSourceOperation.clear();
 
     InitRobotStates();
-    InitSourceItems();
+    InitSources();
 }
 
 /****************************************/
@@ -171,14 +145,21 @@ void SeqLoopFunction::ArenaControl() {
         else
             m_cArenaColor = m_cTaskAsignedColorBlue;
     }
-
+    
     if (m_unClock == 1 || m_unClock == m_unTrnTime) {
-        m_pcArena->SetArenaColor(m_cArenaColor);
-        m_pcArena->SetBoxColor(2,1,CColor::GREEN);
-        m_pcArena->SetBoxColor(2,2,CColor::GREEN);
-        m_pcArena->SetBoxColor(2,6,CColor::GREEN);
-        m_pcArena->SetBoxColor(2,7,CColor::GREEN);
-        m_pcArena->SetBoxColor(2,8,CColor::GREEN);
+        m_pcArena->SetArenaColor(m_cArenaColor);        
+        for (UInt32 unSources=1; unSources < 9; ++unSources) {
+            if (m_tSourceOperation[unSources] > m_unClock)
+                m_pcArena->SetBoxColor(2,unSources,CColor::GREEN);
+            else
+                m_pcArena->SetBoxColor(2,unSources,CColor::BLACK);
+        }
+    }
+    else {
+        for (UInt32 unSources=1; unSources < 9; ++unSources) {
+            if (m_tSourceOperation[unSources] == m_unClock)
+                m_pcArena->SetBoxColor(2,unSources,CColor::BLACK);
+        }
     }
 
     return;
@@ -271,7 +252,7 @@ Real SeqLoopFunction::GetScore(UInt32 unTask) {
     case 5:
         unScore = GetAggregationScore();
         break;
-    case 6:
+    /*case 6:
         unScore = GetColorStopScore();
         break;
     case 7:
@@ -282,7 +263,7 @@ Real SeqLoopFunction::GetScore(UInt32 unTask) {
         break;
     case 9:
         unScore = GetColorAggregationScore();
-        break;
+        break;*/
     default:
         unScore = 999999;
         break;
@@ -317,7 +298,7 @@ Real SeqLoopFunction::GetNormalizedScore(Real fScore, UInt32 unTask) {
     case 5:
         fNormalizedScore = (fScore-104)/(610); // 104 = Min score obtained with aggregation, 714 = Max score obtained with aggregation, 610 = Max-Min
         break;
-    case 6:
+    /*case 6:
         fNormalizedScore = fScore/12000; // 12000 =  (Mission time / 2) * Number of robots
         break;
     case 7:
@@ -331,7 +312,7 @@ Real SeqLoopFunction::GetNormalizedScore(Real fScore, UInt32 unTask) {
         break;
     default:
         fNormalizedScore = 999999;
-        break;
+        break;*/
     }
 
     return fNormalizedScore;
@@ -499,6 +480,38 @@ Real SeqLoopFunction::GetAggregationScore() {
 /****************************************/
 /****************************************/
 
+Real SeqLoopFunction::GetReloadScore() {
+
+    if (m_unClock == m_unTrnTime || m_unClock == 2*m_unTrnTime){
+
+        UpdateRobotPositions();
+
+        Real unScore = 0;
+        Real d = 0;
+        Real fCounter = 0;
+        TRobotStateMap::iterator it, jt;
+
+        for (it = m_tRobotStates.begin(); it != m_tRobotStates.end(); ++it) {
+            for (jt = m_tRobotStates.begin(); jt != it; ++jt) {
+                d = (it->second.cPosition - jt->second.cPosition).Length();
+                unScore+=d;
+                fCounter+=1;
+            }
+        }
+
+        unScore = unScore / fCounter;
+
+        return unScore;
+
+    }
+    else
+        return 0;
+
+}
+
+/****************************************/
+/****************************************/
+
 Real SeqLoopFunction::GetColorStopScore() {
 
     UpdateRobotPositions();
@@ -636,8 +649,43 @@ Real SeqLoopFunction::GetColorAggregationScore() {
 /****************************************/
 /****************************************/
 
+argos::CColor SeqLoopFunction::GetFloorColor(const argos::CVector2& c_position_on_plane) {
+
+    if (c_position_on_plane.GetX() >= -0.125 && c_position_on_plane.GetX() <= 0.125){
+        if (c_position_on_plane.GetY() >= 0.65033 || c_position_on_plane.GetY() <= -0.65033)
+            return CColor::BLACK;
+        else if (c_position_on_plane.GetY() >= -0.125 && c_position_on_plane.GetY() <= 0.125)
+            return CColor::WHITE;
+    }
+
+    else if (c_position_on_plane.GetY() >= -0.125 && c_position_on_plane.GetY() <= 0.125){
+        if (c_position_on_plane.GetX() >= 0.65033 || c_position_on_plane.GetX() <= -0.65033)
+            return CColor::BLACK;
+    }
+    else if (c_position_on_plane.GetY() <=  c_position_on_plane.GetX() + 0.1767766953 &&
+             c_position_on_plane.GetY() >=  c_position_on_plane.GetX() - 0.1767766953){
+        if ( c_position_on_plane.GetY() >= -c_position_on_plane.GetX() + 0.9267766094 ||
+             c_position_on_plane.GetY() <= -c_position_on_plane.GetX() - 0.9267766094)
+            return CColor::BLACK;
+    }
+
+    else if (c_position_on_plane.GetY() <= -c_position_on_plane.GetX() + 0.1767766953 &&
+             c_position_on_plane.GetY() >= -c_position_on_plane.GetX() - 0.1767766953){
+        if ( c_position_on_plane.GetY() >=  c_position_on_plane.GetX() + 0.9267766094 ||
+             c_position_on_plane.GetY() <=  c_position_on_plane.GetX() - 0.9267766094)
+            return CColor::BLACK;
+    }
+
+    return CColor::GRAY50;
+}
+
+/****************************************/
+/****************************************/
+
 bool SeqLoopFunction::IsRobotInNest (CVector2 tRobotPosition) {
-    if (tRobotPosition.GetX() <= -0.34)
+
+    if (tRobotPosition.GetX() >= -0.16 && tRobotPosition.GetX() <= 0.16 &&
+        tRobotPosition.GetY() >= -0.16 && tRobotPosition.GetY() <= 0.16)
         return true;
 
     return false;
@@ -648,24 +696,35 @@ bool SeqLoopFunction::IsRobotInNest (CVector2 tRobotPosition) {
 
 bool SeqLoopFunction::IsRobotInSource (CVector2 tRobotPosition){
 
-    if (tRobotPosition.GetX() >= -0.16) {
+    if (tRobotPosition.Length() >= 0.6) {
+
         if (tRobotPosition.GetX() >= -0.16 && tRobotPosition.GetX() <= 0.16){
-            if (tRobotPosition.GetY() >= 0.61533 || tRobotPosition.GetY() <= -0.61533)
+            if (tRobotPosition.GetY() >= 0.61533)
+                return true;
+            else if (tRobotPosition.GetY() <= -0.61533)
+                return true;
+        }
+        else if (tRobotPosition.GetY() >= -0.16 && tRobotPosition.GetY() <= 0.16){
+            if (tRobotPosition.GetX() >= 0.61533)
+                return true;
+            else if (tRobotPosition.GetX() <= -0.61533)
+                return true;
+        }
+        else if (tRobotPosition.GetY() <=  tRobotPosition.GetX() + 0.22450640303 &&
+                 tRobotPosition.GetY() >=  tRobotPosition.GetX() - 0.22450640303){
+            if ( tRobotPosition.GetY() >= -tRobotPosition.GetX() + 0.87727913472)
+                return true;
+            else if (tRobotPosition.GetY() <= -tRobotPosition.GetX() - 0.87727913472)
                 return true;
         }
 
-        else if (tRobotPosition.GetX() >= 0.61533 && tRobotPosition.GetY() >= -0.16 && tRobotPosition.GetY() <= 0.16)
-            return true;
-
-        else if (tRobotPosition.GetY() >= -tRobotPosition.GetX() + 0.87727913472 &&
-                 tRobotPosition.GetY() <=  tRobotPosition.GetX() + 0.22450640303 &&
-                 tRobotPosition.GetY() >=  tRobotPosition.GetX() - 0.22450640303)
-            return true;
-
-        else if (tRobotPosition.GetY() <=  tRobotPosition.GetX() - 0.87727913472 &&
-                 tRobotPosition.GetY() <= -tRobotPosition.GetX() + 0.22450640303 &&
-                 tRobotPosition.GetY() >= -tRobotPosition.GetX() - 0.22450640303)
-            return true;
+        else if (tRobotPosition.GetY() <= -tRobotPosition.GetX() + 0.22450640303 &&
+                 tRobotPosition.GetY() >= -tRobotPosition.GetX() - 0.22450640303){
+            if ( tRobotPosition.GetY() >=  tRobotPosition.GetX() + 0.87727913472)
+                return true;
+            else if (tRobotPosition.GetY() <=  tRobotPosition.GetX() - 0.87727913472)
+                return true;
+        }
     }
 
     return false;
@@ -678,27 +737,38 @@ UInt32 SeqLoopFunction::IsRobotInSourceID (CVector2 tRobotPosition){
 
     UInt32 unSourceId = 0;
 
-    if (tRobotPosition.GetX() >= -0.16) {
+    if (tRobotPosition.Length() >= 0.6) {
+
         if (tRobotPosition.GetX() >= -0.16 && tRobotPosition.GetX() <= 0.16){
             if (tRobotPosition.GetY() >= 0.61533)
                 unSourceId = 1;
             else if (tRobotPosition.GetY() <= -0.61533)
                 unSourceId = 5;
         }
+        else if (tRobotPosition.GetY() >= -0.16 && tRobotPosition.GetY() <= 0.16){
+            if (tRobotPosition.GetX() >= 0.61533)
+                unSourceId = 3;
+            else if (tRobotPosition.GetX() <= -0.61533)
+                unSourceId = 7;
+        }
+        else if (tRobotPosition.GetY() <=  tRobotPosition.GetX() + 0.22450640303 &&
+                 tRobotPosition.GetY() >=  tRobotPosition.GetX() - 0.22450640303){
+            if ( tRobotPosition.GetY() >= -tRobotPosition.GetX() + 0.87727913472)
+                unSourceId = 2;
+            else if (tRobotPosition.GetY() <= -tRobotPosition.GetX() - 0.87727913472)
+                unSourceId = 6;
+        }
 
-        else if (tRobotPosition.GetX() >= 0.61533 && tRobotPosition.GetY() >= -0.16 && tRobotPosition.GetY() <= 0.16)
-            unSourceId = 3;
-
-        else if (tRobotPosition.GetY() >= -tRobotPosition.GetX() + 0.87727913472 &&
-                 tRobotPosition.GetY() <=  tRobotPosition.GetX() + 0.22450640303 &&
-                 tRobotPosition.GetY() >=  tRobotPosition.GetX() - 0.22450640303)
-            unSourceId = 2;
-
-        else if (tRobotPosition.GetY() <=  tRobotPosition.GetX() - 0.87727913472 &&
-                 tRobotPosition.GetY() <= -tRobotPosition.GetX() + 0.22450640303 &&
-                 tRobotPosition.GetY() >= -tRobotPosition.GetX() - 0.22450640303)
-            unSourceId = 4;
+        else if (tRobotPosition.GetY() <= -tRobotPosition.GetX() + 0.22450640303 &&
+                 tRobotPosition.GetY() >= -tRobotPosition.GetX() - 0.22450640303){
+            if ( tRobotPosition.GetY() >=  tRobotPosition.GetX() + 0.87727913472)
+                unSourceId = 8;
+            else if (tRobotPosition.GetY() <=  tRobotPosition.GetX() - 0.87727913472)
+                unSourceId = 4;
+        }
     }
+
+    LOG << "Robot is in source:" << unSourceId << std::endl;
 
     return unSourceId;
 }
@@ -755,11 +825,16 @@ void SeqLoopFunction::InitRobotStates() {
 /****************************************/
 /****************************************/
 
-void SeqLoopFunction::InitSourceItems() {
+void SeqLoopFunction::InitSources() {
+    UInt32 unExpTime = 2*m_unTrnTime;
 
-    for (UInt32 unSources=1; unSources < 6; ++unSources) {
+    for (UInt32 unSources=1; unSources < 9; ++unSources) {
         m_tSourceItems[unSources] = 0;
+        m_tSourceOperation[unSources] = GetRandomFailure(1, unExpTime);
     }
+
+    m_tSourceOperation[2] = unExpTime;
+
 }
 
 /****************************************/
@@ -810,20 +885,45 @@ void SeqLoopFunction::AsignArenaColors(UInt32 un_NumberColorsParam) {
 /****************************************/
 /****************************************/
 
+CVector2 SeqLoopFunction::GetRandomArenaPoint() {
+
+  Real a = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
+  Real b = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
+
+  CVector2 cArenaPoint;
+  cArenaPoint.FromPolarCoordinates(a*0.85, b*CRadians::TWO_PI);
+
+  return cArenaPoint;
+}
+
+/****************************************/
+/****************************************/
+
 CVector3 SeqLoopFunction::GetRandomPosition() {
   Real temp;
   Real a = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
   Real b = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
+  Real c = m_pcRng->Uniform(CRange<Real>(-1.0f, 1.0f));
+  Real d = m_pcRng->Uniform(CRange<Real>(-1.0f, 1.0f));
   // If b < a, swap them
   if (b < a) {
     temp = a;
     a = b;
     b = temp;
   }
-  Real fPosX = b * m_fDistributionRadius * cos(2 * CRadians::PI.GetValue() * (a/b));
-  Real fPosY = b * m_fDistributionRadius * sin(2 * CRadians::PI.GetValue() * (a/b));
+  m_fDistributionRadius = 0.4;
+  Real fPosX = (c * m_fDistributionRadius / 2) + m_fDistributionRadius * cos(2 * CRadians::PI.GetValue() * (a/b));
+  Real fPosY = (d * m_fDistributionRadius / 2) + m_fDistributionRadius * sin(2 * CRadians::PI.GetValue() * (a/b));
 
-  return CVector3((fPosX * 0.8) -0.60 , fPosY*2, 0);
+  return CVector3(fPosX, fPosY, 0);
+}
+
+/****************************************/
+/****************************************/
+
+UInt32 SeqLoopFunction::GetRandomFailure(UInt32 unMin, UInt32 unMax) {
+  UInt32 unFailureAt = m_pcRng->Uniform(CRange<UInt32>(unMin, unMax));
+  return unFailureAt;
 }
 
 /****************************************/

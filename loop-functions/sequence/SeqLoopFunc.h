@@ -35,13 +35,15 @@ class SeqLoopFunction: public AutoMoDeLoopFunctions {
     Real GetObjectiveFunction();
 
     CVector3 GetRandomPosition();
+    CVector2 GetRandomArenaPoint();
+    UInt32 GetRandomFailure(UInt32 unMin, UInt32 unMax);
 
     void ArenaControl();
     bool SelectColorOrder(UInt32 un_ColorOrderParam);
     void AsignArenaColors(UInt32 un_NumberColorsParam);
 
     void InitRobotStates();
-    void InitSourceItems();
+    void InitSources();
     void UpdateRobotPositions();
     void UpdateRobotColors();
 
@@ -58,10 +60,18 @@ class SeqLoopFunction: public AutoMoDeLoopFunctions {
     Real GetMimicryScore();
     Real GetDistributeScore();
     Real GetAggregationScore();
+
+    Real GetFabricationScore();
+    Real GetSurveillanceScore();
+    Real GetRepairScore();
+    Real GetReloadScore();
+
     Real GetColorStopScore();
     Real GetColorAllBlackScore();
     Real GetColorForageScore();
     Real GetColorAggregationScore();
+
+
 
   private:
 
@@ -85,9 +95,11 @@ class SeqLoopFunction: public AutoMoDeLoopFunctions {
 
     typedef std::map<CEPuckEntity*, RobotStateStruct> TRobotStateMap;
     typedef std::map<UInt32, UInt32> TSourceItemsMap;
+    typedef std::map<UInt32, UInt32> TSourceOperationMap;
 
     TRobotStateMap m_tRobotStates;
     TSourceItemsMap m_tSourceItems;
+    TSourceOperationMap m_tSourceOperation;
 
 };
 
