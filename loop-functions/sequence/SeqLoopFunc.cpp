@@ -512,6 +512,45 @@ Real SeqLoopFunction::GetReloadScore() {
 /****************************************/
 /****************************************/
 
+Real SeqLoopFunction::GetSurveillanceScore() {
+
+    if (m_unClock == m_unTrnTime || m_unClock == 2*m_unTrnTime){
+
+        CVector2 cRandomPoint;
+        Real unNumberPoints = 1000;
+        Real fExpectedDistance = 0;
+        Real unScore = 999999;
+
+        TRobotStateMap::iterator it;
+
+        for(UInt32 unPoint = 0; unPoint < unNumberPoints; unPoint++){
+
+            cRandomPoint = GetRandomArenaPoint();
+            Real fminDistance = 1.86;
+
+            for (it = m_tRobotStates.begin(); it != m_tRobotStates.end(); ++it) {
+                Real distance = (cRandomPoint - it->second.cPosition).Length();
+                if(distance < fminDistance)
+                    fminDistance = distance;
+            }
+            fExpectedDistance = fExpectedDistance + fminDistance;
+        }
+
+        fExpectedDistance = fExpectedDistance / unNumberPoints;
+
+        unScore = fExpectedDistance;
+
+        return unScore;
+
+    }
+    else
+        return 0;
+
+}
+
+/****************************************/
+/****************************************/
+
 Real SeqLoopFunction::GetColorStopScore() {
 
     UpdateRobotPositions();
@@ -887,11 +926,11 @@ void SeqLoopFunction::AsignArenaColors(UInt32 un_NumberColorsParam) {
 
 CVector2 SeqLoopFunction::GetRandomArenaPoint() {
 
-  Real a = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
-  Real b = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
+  Real a = m_pcRng->Uniform(CRange<Real>(0.0f, 1000.0f));
+  Real b = m_pcRng->Uniform(CRange<Real>(0.0f, 1000.0f));
 
   CVector2 cArenaPoint;
-  cArenaPoint.FromPolarCoordinates(a*0.85, b*CRadians::TWO_PI);
+  cArenaPoint.FromPolarCoordinates((a/1000)*0.85, (b/1000)*CRadians::TWO_PI);
 
   return cArenaPoint;
 }
