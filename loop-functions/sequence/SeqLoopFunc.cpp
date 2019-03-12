@@ -90,6 +90,7 @@ void SeqLoopFunction::PostStep() {
 
     ScoreControl();
     ArenaControl();
+    LOG << "Of Blue: " << m_fObjectiveFunctionBlue << std::endl;
 
 }
 
@@ -235,6 +236,24 @@ Real SeqLoopFunction::GetScore(UInt32 unTask) {
 
     switch (unTask){
     case 0:
+        unScore = -GetManufactureScore();
+        break;
+    case 1:
+        unScore = -GetTransportScore();
+        break;
+    case 2:
+        unScore = -GetRestoreScore();
+        break;
+    case 3:
+        unScore = GetRefillScore();
+        break;
+    case 4:
+        unScore = GetSurveillanceScore();
+        break;
+    case 5:
+        unScore = -GetRechargeScore();
+        break;
+    /*case 0:
         unScore = GetStopScore();
         break;
     case 1:
@@ -252,7 +271,7 @@ Real SeqLoopFunction::GetScore(UInt32 unTask) {
     case 5:
         unScore = GetAggregationScore();
         break;
-    /*case 6:
+    case 6:
         unScore = GetColorStopScore();
         break;
     case 7:
@@ -281,6 +300,24 @@ Real SeqLoopFunction::GetNormalizedScore(Real fScore, UInt32 unTask) {
 
     switch (unTask){
     case 0:
+        fNormalizedScore = 999999;
+        break;
+    case 1:
+        fNormalizedScore = 999999;
+        break;
+    case 2:
+        fNormalizedScore = 999999;
+        break;
+    case 3:
+        fNormalizedScore = 999999;
+        break;
+    case 4:
+        fNormalizedScore = 999999;
+        break;
+    case 5:
+        fNormalizedScore = 999999;
+        break;
+    /*case 0:
         fNormalizedScore = fScore/12000; // 12000 =  (Mission time / 2) * Number of robots
         break;
     case 1:
@@ -298,7 +335,7 @@ Real SeqLoopFunction::GetNormalizedScore(Real fScore, UInt32 unTask) {
     case 5:
         fNormalizedScore = (fScore-104)/(610); // 104 = Min score obtained with aggregation, 714 = Max score obtained with aggregation, 610 = Max-Min
         break;
-    /*case 6:
+    case 6:
         fNormalizedScore = fScore/12000; // 12000 =  (Mission time / 2) * Number of robots
         break;
     case 7:
@@ -309,10 +346,10 @@ Real SeqLoopFunction::GetNormalizedScore(Real fScore, UInt32 unTask) {
         break;
     case 9:
         fNormalizedScore = (fScore-104)/(115900); // 104 = Min score obtained with aggregation, 714 = Max score obtained with aggregation, 610 = Max-Min
-        break;
+        break;*/
     default:
         fNormalizedScore = 999999;
-        break;*/
+        break;
     }
 
     return fNormalizedScore;
@@ -476,11 +513,27 @@ Real SeqLoopFunction::GetAggregationScore() {
 
     return unScore;
 }
+/****************************************/
+/****************************************/
+
+Real SeqLoopFunction::GetRechargeScore() {
+
+    UpdateRobotPositions();
+
+    Real unScore = 0;
+    TRobotStateMap::iterator it;
+    for (it = m_tRobotStates.begin(); it != m_tRobotStates.end(); ++it) {
+        if (IsRobotInDock(it->second.cPosition))
+            unScore+=1;
+    }
+
+    return unScore;
+}
 
 /****************************************/
 /****************************************/
 
-Real SeqLoopFunction::GetReloadScore() {
+Real SeqLoopFunction::GetRefillScore() {
 
     if (m_unClock == m_unTrnTime || m_unClock == 2*m_unTrnTime){
 
@@ -516,6 +569,8 @@ Real SeqLoopFunction::GetSurveillanceScore() {
 
     if (m_unClock == m_unTrnTime || m_unClock == 2*m_unTrnTime){
 
+        UpdateRobotPositions();
+
         CVector2 cRandomPoint;
         Real unNumberPoints = 1000;
         Real fExpectedDistance = 0;
@@ -534,6 +589,7 @@ Real SeqLoopFunction::GetSurveillanceScore() {
                     fminDistance = distance;
             }
             fExpectedDistance = fExpectedDistance + fminDistance;
+            LOG << fExpectedDistance << std::endl;
         }
 
         fExpectedDistance = fExpectedDistance / unNumberPoints;
@@ -546,6 +602,116 @@ Real SeqLoopFunction::GetSurveillanceScore() {
     else
         return 0;
 
+}
+
+/****************************************/
+/****************************************/
+
+Real SeqLoopFunction::GetTransportScore() {
+
+    UpdateRobotPositions();
+
+    bool bInNest;
+    UInt32 unInSource = 0;
+    Real unScore = 0;
+    TRobotStateMap::iterator it;
+
+    for (it = m_tRobotStates.begin(); it != m_tRobotStates.end(); ++it) {
+
+        if (it->second.bItem == true){
+            bInNest = IsRobotInNest(it->second.cPosition);
+            if (bInNest) {
+                unScore+=1;
+                it->second.bItem = false;
+            }
+        }
+        else {
+            unInSource = IsRobotInSourceID(it->second.cPosition);
+            if (unInSource != 0){
+                if (m_tSourceOperation[unInSource] <= m_unClock){
+                    it->second.bItem = true;
+                }
+            }
+        }
+    }
+
+    return unScore;
+}
+
+/****************************************/
+/****************************************/
+
+Real SeqLoopFunction::GetManufactureScore() {
+
+    UpdateRobotPositions();
+
+    UInt32 unInSource = 0;
+    Real unScore = 0;
+    TRobotStateMap::iterator it;
+
+    for (it = m_tRobotStates.begin(); it != m_tRobotStates.end(); ++it) {
+
+        unInSource = IsRobotInSourceID(it->second.cPosition);
+        if (unInSource != 0){
+            if (m_tSourceOperation[unInSource] > m_unClock){
+                m_tSourceItems[unInSource] += 1;
+            }
+            if (m_tSourceItems[unInSource] == 100){
+                m_tSourceItems[unInSource] = 0;
+                unScore+=1;
+            }
+        }
+    }
+
+    return unScore;
+}
+
+/****************************************/
+/****************************************/
+
+Real SeqLoopFunction::GetRestoreScore() {
+
+    UpdateRobotPositions();
+
+    UInt32 unInSource = 0;
+    UInt32 unExpTime = 2*m_unTrnTime;
+    Real unScore = 0;
+    TRobotStateMap::iterator it;
+
+    for (UInt32 unSources=1; unSources < 9; ++unSources) {
+        m_tSourceRestoring[unSources] = false;
+    }
+
+    for (it = m_tRobotStates.begin(); it != m_tRobotStates.end(); ++it) {
+
+        unInSource = IsRobotInSourceID(it->second.cPosition);
+        if (unInSource != 0){
+            if (m_tSourceOperation[unInSource] <= m_unClock){
+                m_tSourceRestoring[unInSource] = true;
+            }
+        }
+    }
+
+    for (UInt32 unSources=1; unSources < 9; ++unSources) {
+
+        if (m_tSourceOperation[unSources] <= m_unClock){
+
+            if (m_tSourceRestoring[unSources] == true)
+                m_tSourceReparation[unSources] += 1;
+            else
+                m_tSourceReparation[unSources] = 0;
+
+            if (m_tSourceReparation[unSources] == 50){
+                m_tSourceReparation[unSources] = 0;
+                m_tSourceOperation[unSources] = GetRandomTime(m_unClock, unExpTime);
+                m_pcArena->SetBoxColor(2,unSources,CColor::GREEN);
+                unScore+=1;
+            }
+        }
+    }
+
+
+    return unScore;
 }
 
 /****************************************/
@@ -733,6 +899,47 @@ bool SeqLoopFunction::IsRobotInNest (CVector2 tRobotPosition) {
 /****************************************/
 /****************************************/
 
+bool SeqLoopFunction::IsRobotInDock (CVector2 tRobotPosition){
+
+    if (tRobotPosition.Length() >= 0.65033) {
+
+        if (tRobotPosition.GetX() >= -0.16 && tRobotPosition.GetX() <= 0.16){
+            if (tRobotPosition.GetY() >= 0.61533)
+                return false;
+            else if (tRobotPosition.GetY() <= -0.61533)
+                return false;
+        }
+        else if (tRobotPosition.GetY() >= -0.16 && tRobotPosition.GetY() <= 0.16){
+            if (tRobotPosition.GetX() >= 0.61533)
+                return false;
+            else if (tRobotPosition.GetX() <= -0.61533)
+                return false;
+        }
+        else if (tRobotPosition.GetY() <=  tRobotPosition.GetX() + 0.22450640303 &&
+                 tRobotPosition.GetY() >=  tRobotPosition.GetX() - 0.22450640303){
+            if ( tRobotPosition.GetY() >= -tRobotPosition.GetX() + 0.87727913472)
+                return false;
+            else if (tRobotPosition.GetY() <= -tRobotPosition.GetX() - 0.87727913472)
+                return false;
+        }
+
+        else if (tRobotPosition.GetY() <= -tRobotPosition.GetX() + 0.22450640303 &&
+                 tRobotPosition.GetY() >= -tRobotPosition.GetX() - 0.22450640303){
+            if ( tRobotPosition.GetY() >=  tRobotPosition.GetX() + 0.87727913472)
+                return false;
+            else if (tRobotPosition.GetY() <=  tRobotPosition.GetX() - 0.87727913472)
+                return false;
+        }
+
+        return true;
+    }
+
+    return false;
+}
+
+/****************************************/
+/****************************************/
+
 bool SeqLoopFunction::IsRobotInSource (CVector2 tRobotPosition){
 
     if (tRobotPosition.Length() >= 0.6) {
@@ -780,34 +987,32 @@ UInt32 SeqLoopFunction::IsRobotInSourceID (CVector2 tRobotPosition){
 
         if (tRobotPosition.GetX() >= -0.16 && tRobotPosition.GetX() <= 0.16){
             if (tRobotPosition.GetY() >= 0.61533)
-                unSourceId = 1;
+                unSourceId = 2;
             else if (tRobotPosition.GetY() <= -0.61533)
-                unSourceId = 5;
+                unSourceId = 6;
         }
         else if (tRobotPosition.GetY() >= -0.16 && tRobotPosition.GetY() <= 0.16){
             if (tRobotPosition.GetX() >= 0.61533)
-                unSourceId = 3;
+                unSourceId = 8;
             else if (tRobotPosition.GetX() <= -0.61533)
-                unSourceId = 7;
+                unSourceId = 4;
         }
         else if (tRobotPosition.GetY() <=  tRobotPosition.GetX() + 0.22450640303 &&
                  tRobotPosition.GetY() >=  tRobotPosition.GetX() - 0.22450640303){
             if ( tRobotPosition.GetY() >= -tRobotPosition.GetX() + 0.87727913472)
-                unSourceId = 2;
+                unSourceId = 1;
             else if (tRobotPosition.GetY() <= -tRobotPosition.GetX() - 0.87727913472)
-                unSourceId = 6;
+                unSourceId = 5;
         }
 
         else if (tRobotPosition.GetY() <= -tRobotPosition.GetX() + 0.22450640303 &&
                  tRobotPosition.GetY() >= -tRobotPosition.GetX() - 0.22450640303){
             if ( tRobotPosition.GetY() >=  tRobotPosition.GetX() + 0.87727913472)
-                unSourceId = 8;
+                unSourceId = 3;
             else if (tRobotPosition.GetY() <=  tRobotPosition.GetX() - 0.87727913472)
-                unSourceId = 4;
+                unSourceId = 7;
         }
     }
-
-    LOG << "Robot is in source:" << unSourceId << std::endl;
 
     return unSourceId;
 }
@@ -869,7 +1074,9 @@ void SeqLoopFunction::InitSources() {
 
     for (UInt32 unSources=1; unSources < 9; ++unSources) {
         m_tSourceItems[unSources] = 0;
-        m_tSourceOperation[unSources] = GetRandomFailure(1, unExpTime);
+        m_tSourceOperation[unSources] = GetRandomTime(1, unExpTime);
+        m_tSourceRestoring[unSources] = false;
+        m_tSourceReparation[unSources] = 0;
     }
 
     m_tSourceOperation[2] = unExpTime;
@@ -960,7 +1167,7 @@ CVector3 SeqLoopFunction::GetRandomPosition() {
 /****************************************/
 /****************************************/
 
-UInt32 SeqLoopFunction::GetRandomFailure(UInt32 unMin, UInt32 unMax) {
+UInt32 SeqLoopFunction::GetRandomTime(UInt32 unMin, UInt32 unMax) {
   UInt32 unFailureAt = m_pcRng->Uniform(CRange<UInt32>(unMin, unMax));
   return unFailureAt;
 }
