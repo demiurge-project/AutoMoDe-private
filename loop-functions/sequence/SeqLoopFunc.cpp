@@ -42,6 +42,8 @@ void SeqLoopFunction::Destroy() {
     m_tRobotStates.clear();
     m_tSourceItems.clear();
     m_tSourceOperation.clear();
+    m_tSourceReparation.clear();
+    m_tSourceRestoring.clear();
 }
 
 /****************************************/
@@ -76,6 +78,8 @@ void SeqLoopFunction::Reset() {
     m_tRobotStates.clear();
     m_tSourceItems.clear();
     m_tSourceOperation.clear();
+    m_tSourceReparation.clear();
+    m_tSourceRestoring.clear();
 
     InitRobotStates();
     InitSources();
