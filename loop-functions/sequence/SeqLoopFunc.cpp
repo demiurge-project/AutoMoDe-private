@@ -94,7 +94,6 @@ void SeqLoopFunction::PostStep() {
 
     ScoreControl();
     ArenaControl();
-    LOG << "Of Blue: " << m_fObjectiveFunctionBlue << std::endl;
 
 }
 
@@ -593,7 +592,6 @@ Real SeqLoopFunction::GetSurveillanceScore() {
                     fminDistance = distance;
             }
             fExpectedDistance = fExpectedDistance + fminDistance;
-            LOG << fExpectedDistance << std::endl;
         }
 
         fExpectedDistance = fExpectedDistance / unNumberPoints;
