@@ -630,7 +630,7 @@ Real SeqLoopFunction::GetTransportScore() {
         else {
             unInSource = IsRobotInSourceID(it->second.cPosition);
             if (unInSource != 0){
-                if (m_tSourceOperation[unInSource] <= m_unClock){
+                if (m_tSourceOperation[unInSource] > m_unClock){
                     it->second.bItem = true;
                 }
             }
