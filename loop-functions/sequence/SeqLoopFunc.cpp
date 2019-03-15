@@ -248,7 +248,7 @@ Real SeqLoopFunction::GetScore(UInt32 unTask) {
         unScore = -GetRestoreScore();
         break;
     case 3:
-        unScore = GetRefillScore();
+        unScore = -GetPickUpScore();
         break;
     case 4:
         unScore = GetSurveillanceScore();
@@ -538,7 +538,7 @@ Real SeqLoopFunction::GetRechargeScore() {
 
 Real SeqLoopFunction::GetRefillScore() {
 
-    if (m_unClock == m_unTrnTime || m_unClock == 2*m_unTrnTime){
+    //if (m_unClock == m_unTrnTime || m_unClock == 2*m_unTrnTime){
 
         UpdateRobotPositions();
 
@@ -559,9 +559,9 @@ Real SeqLoopFunction::GetRefillScore() {
 
         return unScore;
 
-    }
-    else
-        return 0;
+    //}
+    //else
+        //return 0;
 
 }
 
@@ -630,9 +630,9 @@ Real SeqLoopFunction::GetTransportScore() {
         else {
             unInSource = IsRobotInSourceID(it->second.cPosition);
             if (unInSource != 0){
-                if (m_tSourceOperation[unInSource] > m_unClock){
+                //if (m_tSourceOperation[unInSource] > m_unClock){
                     it->second.bItem = true;
-                }
+                //}
             }
         }
     }
@@ -712,6 +712,37 @@ Real SeqLoopFunction::GetRestoreScore() {
         }
     }
 
+
+    return unScore;
+}
+
+/****************************************/
+/****************************************/
+
+Real SeqLoopFunction::GetPickUpScore() {
+
+    UpdateRobotPositions();
+
+    bool bInNest;
+    Real unScore = 0;
+    TRobotStateMap::iterator it;
+
+    for (it = m_tRobotStates.begin(); it != m_tRobotStates.end(); ++it) {
+
+        if (it->second.bMaterial == true){
+            bInNest = IsRobotInNest(it->second.cPosition);
+            if (bInNest == false) {
+                unScore+=1;
+                it->second.bMaterial = false;
+            }
+        }
+        else {
+            bInNest = IsRobotInNest(it->second.cPosition);
+            if (bInNest){
+                    it->second.bMaterial = true;
+            }
+        }
+    }
 
     return unScore;
 }
@@ -1065,6 +1096,7 @@ void SeqLoopFunction::InitRobotStates() {
         m_tRobotStates[pcEpuck].cPosition = cEpuckPosition;
         m_tRobotStates[pcEpuck].cColor = CColor::BLACK;
         m_tRobotStates[pcEpuck].bItem = false;
+        m_tRobotStates[pcEpuck].bMaterial = false;
     }
 }
 

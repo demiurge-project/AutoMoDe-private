@@ -68,6 +68,7 @@ class SeqLoopFunction: public AutoMoDeLoopFunctions {
     Real GetSurveillanceScore();
     Real GetRestoreScore();
     Real GetRefillScore();
+    Real GetPickUpScore();
 
     Real GetColorStopScore();
     Real GetColorAllBlackScore();
@@ -94,6 +95,7 @@ class SeqLoopFunction: public AutoMoDeLoopFunctions {
         CVector2 cPosition;
         CColor cColor;
         bool bItem;
+        bool bMaterial;
     };
 
     typedef std::map<CEPuckEntity*, RobotStateStruct> TRobotStateMap;
