@@ -44,6 +44,7 @@ class SeqLoopFunction: public AutoMoDeLoopFunctions {
 
     void InitRobotStates();
     void InitSources();
+    void GetArenaPoints(UInt32 unNumberPoints);
     void UpdateRobotPositions();
     void UpdateRobotColors();
 
@@ -96,18 +97,21 @@ class SeqLoopFunction: public AutoMoDeLoopFunctions {
         CColor cColor;
         bool bItem;
         bool bMaterial;
+        bool bMoving;
     };
 
     typedef std::map<CEPuckEntity*, RobotStateStruct> TRobotStateMap;
     typedef std::map<UInt32, UInt32> TSourceItemsMap;
     typedef std::map<UInt32, UInt32> TSourceOperationMap;
-    typedef std::map<UInt32, bool> TSourceRestoringMap;
+    typedef std::map<UInt32, UInt32> TSourceRestoringMap;
+    typedef std::vector<CVector2> TArenaPoints;
 
     TRobotStateMap m_tRobotStates;
     TSourceItemsMap m_tSourceItems;
     TSourceOperationMap m_tSourceOperation;
     TSourceOperationMap m_tSourceReparation;
     TSourceRestoringMap m_tSourceRestoring;
+    TArenaPoints m_tArenaPoints;
 
 };
 

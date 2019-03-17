@@ -44,6 +44,7 @@ void SeqLoopFunction::Destroy() {
     m_tSourceOperation.clear();
     m_tSourceReparation.clear();
     m_tSourceRestoring.clear();
+    m_tArenaPoints.clear();
 }
 
 /****************************************/
@@ -80,6 +81,7 @@ void SeqLoopFunction::Reset() {
     m_tSourceOperation.clear();
     m_tSourceReparation.clear();
     m_tSourceRestoring.clear();
+    m_tArenaPoints.clear();
 
     InitRobotStates();
     InitSources();
@@ -570,39 +572,49 @@ Real SeqLoopFunction::GetRefillScore() {
 
 Real SeqLoopFunction::GetSurveillanceScore() {
 
-    if (m_unClock == m_unTrnTime || m_unClock == 2*m_unTrnTime){
+    Real unNumberPoints = 1000;
 
-        UpdateRobotPositions();
+    if (m_tArenaPoints.empty()) {
+        GetArenaPoints(unNumberPoints);
+    }
 
-        CVector2 cRandomPoint;
-        Real unNumberPoints = 1000;
-        Real fExpectedDistance = 0;
-        Real unScore = 999999;
+    UpdateRobotPositions();
 
-        TRobotStateMap::iterator it;
+    CVector2 cRandomPoint;
 
-        for(UInt32 unPoint = 0; unPoint < unNumberPoints; unPoint++){
+    Real fminDistance = 1.96;
+    Real fExpectedDistance = 0;
+    Real unScore;
 
-            cRandomPoint = GetRandomArenaPoint();
-            Real fminDistance = 1.86;
+    TRobotStateMap::iterator it;
+    TArenaPoints::iterator jt;
 
-            for (it = m_tRobotStates.begin(); it != m_tRobotStates.end(); ++it) {
+    for (it = m_tRobotStates.begin(); it != m_tRobotStates.end(); ++it) {
+        Real d = (it->second.cPosition - it->second.cLastPosition).Length();
+        if (d > 0.0005){
+            it->second.bMoving = true;
+        }
+    }
+
+    for(jt = m_tArenaPoints.begin(); jt != m_tArenaPoints.end(); ++jt){
+        cRandomPoint = *jt;
+        for (it = m_tRobotStates.begin(); it != m_tRobotStates.end(); ++it) {
+            if (it->second.bMoving == true) {
+                it->second.bMoving == false;
                 Real distance = (cRandomPoint - it->second.cPosition).Length();
                 if(distance < fminDistance)
                     fminDistance = distance;
             }
-            fExpectedDistance = fExpectedDistance + fminDistance;
         }
-
-        fExpectedDistance = fExpectedDistance / unNumberPoints;
-
-        unScore = fExpectedDistance;
-
-        return unScore;
-
+        fExpectedDistance = fExpectedDistance + fminDistance;
     }
-    else
-        return 0;
+
+    fExpectedDistance = fExpectedDistance / unNumberPoints;
+
+    unScore = fExpectedDistance;
+
+    return unScore;
+
 
 }
 
@@ -681,7 +693,7 @@ Real SeqLoopFunction::GetRestoreScore() {
     TRobotStateMap::iterator it;
 
     for (UInt32 unSources=1; unSources < 9; ++unSources) {
-        m_tSourceRestoring[unSources] = false;
+        m_tSourceRestoring[unSources] = 0;
     }
 
     for (it = m_tRobotStates.begin(); it != m_tRobotStates.end(); ++it) {
@@ -689,7 +701,7 @@ Real SeqLoopFunction::GetRestoreScore() {
         unInSource = IsRobotInSourceID(it->second.cPosition);
         if (unInSource != 0){
             if (m_tSourceOperation[unInSource] <= m_unClock){
-                m_tSourceRestoring[unInSource] = true;
+                m_tSourceRestoring[unInSource] += 1;
             }
         }
     }
@@ -698,7 +710,7 @@ Real SeqLoopFunction::GetRestoreScore() {
 
         if (m_tSourceOperation[unSources] <= m_unClock){
 
-            if (m_tSourceRestoring[unSources] == true)
+            if (m_tSourceRestoring[unSources] >= 2)
                 m_tSourceReparation[unSources] += 1;
             else
                 m_tSourceReparation[unSources] = 0;
@@ -1097,6 +1109,7 @@ void SeqLoopFunction::InitRobotStates() {
         m_tRobotStates[pcEpuck].cColor = CColor::BLACK;
         m_tRobotStates[pcEpuck].bItem = false;
         m_tRobotStates[pcEpuck].bMaterial = false;
+        m_tRobotStates[pcEpuck].bMoving = false;
     }
 }
 
@@ -1109,7 +1122,7 @@ void SeqLoopFunction::InitSources() {
     for (UInt32 unSources=1; unSources < 9; ++unSources) {
         m_tSourceItems[unSources] = 0;
         m_tSourceOperation[unSources] = GetRandomTime(1, unExpTime);
-        m_tSourceRestoring[unSources] = false;
+        m_tSourceRestoring[unSources] = 0;
         m_tSourceReparation[unSources] = 0;
     }
 
@@ -1165,13 +1178,27 @@ void SeqLoopFunction::AsignArenaColors(UInt32 un_NumberColorsParam) {
 /****************************************/
 /****************************************/
 
+void SeqLoopFunction::GetArenaPoints(UInt32 unNumberPoints) {
+
+        CVector2 cRandomPoint;
+
+        for(UInt32 unPoint = 0; unPoint < unNumberPoints; unPoint++){
+
+            cRandomPoint = GetRandomArenaPoint();
+            m_tArenaPoints.push_back(cRandomPoint);
+        }
+}
+
+/****************************************/
+/****************************************/
+
 CVector2 SeqLoopFunction::GetRandomArenaPoint() {
 
   Real a = m_pcRng->Uniform(CRange<Real>(0.0f, 1000.0f));
   Real b = m_pcRng->Uniform(CRange<Real>(0.0f, 1000.0f));
 
   CVector2 cArenaPoint;
-  cArenaPoint.FromPolarCoordinates((a/1000)*0.85, (b/1000)*CRadians::TWO_PI);
+  cArenaPoint.FromPolarCoordinates((a/1000)*0.98, (b/1000)*CRadians::TWO_PI);
 
   return cArenaPoint;
 }
