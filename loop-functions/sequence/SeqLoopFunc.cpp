@@ -253,7 +253,7 @@ Real SeqLoopFunction::GetScore(UInt32 unTask) {
         unScore = -GetPickUpScore();
         break;
     case 4:
-        unScore = GetSurveillanceScore();
+        unScore = -GetDispersionScore();
         break;
     case 5:
         unScore = -GetRechargeScore();
@@ -600,7 +600,7 @@ Real SeqLoopFunction::GetSurveillanceScore() {
         cRandomPoint = *jt;
         for (it = m_tRobotStates.begin(); it != m_tRobotStates.end(); ++it) {
             if (it->second.bMoving == true) {
-                it->second.bMoving == false;
+                it->second.bMoving = false;
                 Real distance = (cRandomPoint - it->second.cPosition).Length();
                 if(distance < fminDistance)
                     fminDistance = distance;
@@ -755,6 +755,31 @@ Real SeqLoopFunction::GetPickUpScore() {
             }
         }
     }
+
+    return unScore;
+}
+
+/****************************************/
+/****************************************/
+
+Real SeqLoopFunction::GetDispersionScore() {
+
+    UpdateRobotPositions();
+
+    Real unScore = 0;
+    Real fMinDistance = 1.96;
+    Real fDistance = 0;
+    TRobotStateMap::iterator it, jt;
+
+    for (it = m_tRobotStates.begin(); it != m_tRobotStates.end(); ++it) {
+        for (jt = m_tRobotStates.begin(); jt != it; ++jt) {
+            fDistance = (it->second.cPosition - jt->second.cPosition).Length();
+            if(fDistance < fMinDistance)
+                fMinDistance = fDistance;
+        }
+    }
+
+    unScore = fMinDistance;
 
     return unScore;
 }

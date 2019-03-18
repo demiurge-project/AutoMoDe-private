@@ -70,6 +70,7 @@ class SeqLoopFunction: public AutoMoDeLoopFunctions {
     Real GetRestoreScore();
     Real GetRefillScore();
     Real GetPickUpScore();
+    Real GetDispersionScore();
 
     Real GetColorStopScore();
     Real GetColorAllBlackScore();
