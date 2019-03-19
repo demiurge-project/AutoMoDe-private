@@ -198,17 +198,15 @@ void SeqLoopFunction::ScoreControl(){
         if (m_bBlueFirst){
             if (m_unClock <= m_unTrnTime){
                 m_fObjectiveFunctionBlue += GetScore(m_unBlueTask);
-                //LOG << "Blue in Blue first" << std::endl;
             }
         }
         else{
             if (m_unClock > m_unTrnTime){
                 m_fObjectiveFunctionBlue += GetScore(m_unBlueTask);
-                //LOG << "Blue in Blue second" << std::endl;
             }
-            else if (m_unRedTask == 2){
-                ExecuteRestore();
-            }
+            //else if (m_unRedTask == 2){ // Enable for restore
+            //    ExecuteRestore();
+            //}
         }
     }
 
@@ -216,17 +214,15 @@ void SeqLoopFunction::ScoreControl(){
         if (!m_bBlueFirst){
             if (m_unClock <= m_unTrnTime){
                 m_fObjectiveFunctionRed += GetScore(m_unRedTask);
-                //LOG << "Red in Red first" << std::endl;
             }
         }
         else{
             if (m_unClock > m_unTrnTime){
                 m_fObjectiveFunctionRed += GetScore(m_unRedTask);
-                //LOG << "Red in Red second" << std::endl;
             }
-            else if (m_unBlueTask == 2){
-                ExecuteRestore();
-            }
+            //else if (m_unBlueTask == 2){ // Enable for restore
+            //    ExecuteRestore();
+            //}
         }
     }
 
@@ -252,7 +248,7 @@ Real SeqLoopFunction::GetScore(UInt32 unTask) {
         unScore = -GetTransportScore();
         break;
     case 2:
-        unScore = -GetRestoreScore();
+        unScore = -GetCleaningScore();
         break;
     case 3:
         unScore = -GetPickUpScore();
@@ -828,6 +824,51 @@ Real SeqLoopFunction::GetDispersionScore() {
     }
 
     unScore = fMinDistance;
+
+    return unScore;
+}
+
+/****************************************/
+/****************************************/
+
+Real SeqLoopFunction::GetCleaningScore() {
+
+    UpdateRobotPositions();
+
+    UInt32 unInSource = 0;
+    Real unScore = 0;
+    TRobotStateMap::iterator it;
+
+    for (UInt32 unSources=1; unSources < 9; ++unSources) {
+        m_tSourceRestoring[unSources] = 0;
+    }
+
+    for (it = m_tRobotStates.begin(); it != m_tRobotStates.end(); ++it) {
+
+        unInSource = IsRobotInSourceID(it->second.cPosition);
+        if (unInSource != 0){
+            if (m_tSourceOperation[unInSource] <= m_unClock){
+                m_tSourceRestoring[unInSource] += 1;
+            }
+        }
+    }
+
+    for (UInt32 unSources=1; unSources < 9; ++unSources) {
+
+        if (m_tSourceOperation[unSources] <= m_unClock){
+
+            if (m_tSourceRestoring[unSources] >= 2)
+                m_tSourceReparation[unSources] += 1;
+            else
+                m_tSourceReparation[unSources] = 0;
+
+            if (m_tSourceReparation[unSources] == 50){
+                m_tSourceReparation[unSources] = 0;
+                unScore+=1;
+            }
+        }
+    }
+
 
     return unScore;
 }
