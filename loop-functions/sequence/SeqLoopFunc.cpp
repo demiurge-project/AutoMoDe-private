@@ -104,8 +104,8 @@ void SeqLoopFunction::PostStep() {
 void SeqLoopFunction::PostExperiment() {
 
     if (m_unEvalTask == 0){
-        m_fObjectiveFunction = 0.5*GetNormalizedScore(m_fObjectiveFunctionBlue, m_unBlueTask)
-                              +0.5*GetNormalizedScore(m_fObjectiveFunctionRed, m_unRedTask);
+        m_fObjectiveFunction = (m_fAlphaValue)*GetNormalizedScore(m_fObjectiveFunctionBlue, m_unBlueTask)
+                              +(1-m_fAlphaValue)*GetNormalizedScore(m_fObjectiveFunctionRed, m_unRedTask);
         LOG << m_fObjectiveFunction << std::endl;
     }
     else if (m_unEvalTask == 1)
@@ -306,22 +306,22 @@ Real SeqLoopFunction::GetNormalizedScore(Real fScore, UInt32 unTask) {
 
     switch (unTask){
     case 0:
-        fNormalizedScore = 999999;
+        fNormalizedScore = fScore;
         break;
     case 1:
-        fNormalizedScore = 999999;
+        fNormalizedScore = fScore;
         break;
     case 2:
-        fNormalizedScore = 999999;
+        fNormalizedScore = fScore;
         break;
     case 3:
-        fNormalizedScore = 999999;
+        fNormalizedScore = fScore;
         break;
     case 4:
-        fNormalizedScore = 999999;
+        fNormalizedScore = fScore;
         break;
     case 5:
-        fNormalizedScore = 999999;
+        fNormalizedScore = fScore;
         break;
     /*case 0:
         fNormalizedScore = fScore/12000; // 12000 =  (Mission time / 2) * Number of robots
