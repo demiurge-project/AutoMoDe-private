@@ -519,6 +519,7 @@ Real SeqLoopFunction::GetAggregationScore() {
 
     return unScore;
 }
+
 /****************************************/
 /****************************************/
 

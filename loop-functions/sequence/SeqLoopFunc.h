@@ -79,8 +79,6 @@ class SeqLoopFunction: public AutoMoDeLoopFunctions {
     Real GetColorForageScore();
     Real GetColorAggregationScore();
 
-
-
   private:
 
     UInt32 m_unClock;
