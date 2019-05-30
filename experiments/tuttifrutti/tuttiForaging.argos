@@ -11,18 +11,13 @@
   <!-- ****************** -->
   <!-- * Loop functions * -->
   <!-- ****************** -->
-  <loop_functions library="/home/dgarzonr/argos_plugins/AutoMoDe-private/build/loop-functions/sequence/libseq_loopfunc.so"
-   label="seq_loop_function">
+  <loop_functions library="/home/dgarzonr/argos_plugins/AutoMoDe-private/build/loop-functions/tuttifrutti/libtutti_fr_loopfunc.so"
+   label="tutti_fr_loop_function">
        <params number_robots="20"
                build_arena="true"
-               number_edges="8"
-               number_boxes_per_edge="3"
-               lenght_boxes="0.25"
-               color_order="0"
-               blue_task="3"
-               red_task="3"
-               eval_task="1"
-               trn_time="600"/>
+               number_edges="4"
+               number_boxes_per_edge="6"
+               lenght_boxes="0.25"/>
   </loop_functions>
 
   <!-- *************** -->
@@ -33,18 +28,18 @@
     <automode_controller id="automode"
                         library="/home/dgarzonr/argos_plugins/AutoMoDe-private/build/src/libautomode.so">
       <actuators>
-        <epuck_wheels implementation="default" noise_std_dev="0.05"/>
+        <epuck_wheels implementation="default" noise_std_dev="0.15"/>
         <epuck_rgb_leds implementation="default" medium="leds"/>
         <epuck_range_and_bearing implementation="medium" medium="rab" data_size="4" range="0.5"/>
       </actuators>
       <sensors>
 		    <epuck_proximity implementation="default" show_rays="false" noise_level="0.05" calibrated="true"/>
-        <epuck_range_and_bearing implementation="medium" medium="rab" data_size="4" noise_std_deviation="1.5" loss_probability="0.85" calibrated="true"/>
-		    <epuck_light implementation="default" show_rays="false" noise_level="0.05" calibrated="true"/>
+        <epuck_range_and_bearing implementation="medium" medium="rab" data_size="4" noise_std_dev="1.5" loss_probability="0.9" calibrated="true"/>
+		    <epuck_light implementation="default" show_rays="true" noise_level="0.05" calibrated="true"/>
 		    <epuck_ground implementation="rot_z_only" noise_level="0.05" calibrated="true"/>
-            <epuck_omnidirectional_camera implementation="rot_z_only" medium="leds" show_rays="false"/>
+            <epuck_omnidirectional_camera noise_std_dev="0.15" implementation="rot_z_only" medium="leds" show_rays="true"/>
       </sensors>
-    <params readable="false" history='false' fsm-config="--nstates 1 --s0 8 --clr0 5 --cle0 5 --vel0 1.0"/>
+    <params readable="true" history='false' fsm-config="--nstates 1 --s0 0 --rwm0 1 --cle0 5"/>
 
                                         <!-- From sa -> n0x0 sb = n0x0 sb+1, (a < b) -->
                                         <!-- From sa -> n0x0 sb = n0x0 sb  , (a > b)-->
@@ -64,7 +59,7 @@
   <!-- Please note that this light has an intensity equal to 0 -->
   <!-- and therefore does not affect the experiment. -->
   <!-- ARGoS requires at least one light when using the light sensor -->
-    <light id="light" position="0.8,0.8,0.10" orientation="0,0,0" color="yellow" intensity="0.0" medium="leds"/>
+    <light id="light" position="0.8,0.8,0.10" orientation="0,0,0" color="black" intensity="0.0" medium="leds"/>
 
   <!-- ********** -->
   <!-- * E-Puck * -->
@@ -75,6 +70,10 @@
   <!-- ********** -->
   <!-- * Walls * -->
   <!-- ********** -->
+
+  <box id="sep" size="0.15,.012,0.15" movable="false">
+    <body position="0.675,0,0" orientation="0,0,0"/>
+  </box>
 
   <!-- The walls are distributed by the AutoMoDeLoopFunctions. -->
   </arena>
@@ -99,14 +98,14 @@
   <!-- ***************** -->
   
   <visualization>
-    <!--qt-opengl>
+    <qt-opengl>
       <camera>
         <placement idx="0"
                    position="0,0,2.7"
                    look_at="0,0,0"
                    lens_focal_length="30" />
       </camera>
-    </qt-opengl-->
+    </qt-opengl>
   </visualization>
 
 </argos-configuration>

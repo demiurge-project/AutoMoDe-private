@@ -8,8 +8,8 @@
   * @license MIT License
   */
 
-#ifndef TUTTI_LOOP_FUNC
-#define TUTTI_LOOP_FUNC
+#ifndef TUTTI_FR_LOOP_FUNC
+#define TUTTI_FR_LOOP_FUNC
 
 #include <argos3/core/simulator/space/space.h>
 #include <argos3/plugins/robots/e-puck/simulator/epuck_entity.h>
@@ -18,11 +18,11 @@
 
 using namespace argos;
 
-class TuttiLoopFunction: public AutoMoDeLoopFunctions {
+class TuttiFrLoopFunction: public AutoMoDeLoopFunctions {
   public:
-    TuttiLoopFunction();
-    TuttiLoopFunction(const TuttiLoopFunction& orig);
-    virtual ~TuttiLoopFunction();
+    TuttiFrLoopFunction();
+    TuttiFrLoopFunction(const TuttiFrLoopFunction& orig);
+    virtual ~TuttiFrLoopFunction();
 
     virtual void Destroy();
 
@@ -40,29 +40,23 @@ class TuttiLoopFunction: public AutoMoDeLoopFunctions {
     void ArenaControl();
 
     void InitRobotStates();
-    void GetArenaPoints(UInt32 unNumberPoints);
     void UpdateRobotPositions();
 
     bool IsRobotInNest (CVector2 tRobotPosition);
-    bool IsRobotInSource (CVector2 tRobotPosition);
     UInt32 IsRobotInSourceID (CVector2 tRobotPosition);
 
     void ScoreControl();
-    Real GetScore(UInt32 unTask);
-    Real GetStopScore();  
-    Real GetAllBlackScore();  
     Real GetForageScore();
 
   private:
 
     UInt32 m_unClock;
-    UInt32 m_unStopTime;
     Real m_fObjectiveFunction;
 
     struct RobotStateStruct {
         CVector2 cLastPosition;
         CVector2 cPosition;
-        bool bItem;
+        UInt32 unItem;
     };
 
     typedef std::map<CEPuckEntity*, RobotStateStruct> TRobotStateMap;

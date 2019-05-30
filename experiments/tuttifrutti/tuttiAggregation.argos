@@ -11,20 +11,13 @@
   <!-- ****************** -->
   <!-- * Loop functions * -->
   <!-- ****************** -->
-  <loop_functions library="/home/dgarzonr/argos_plugins/AutoMoDe-private/build/loop-functions/sequence/libseq_loopfunc.so"
-   label="seq_loop_function">
+  <loop_functions library="/home/dgarzonr/argos_plugins/AutoMoDe-private/build/loop-functions/tuttifrutti/libtutti_ag_loopfunc.so"
+   label="tutti_ag_loop_function">
        <params number_robots="20"
                build_arena="true"
-               number_edges="8"
-               number_boxes_per_edge="3"
-               lenght_boxes="0.25"
-               color_order="0"
-               number_colors="2"
-               blue_task="0"
-               red_task="1"
-               eval_task="2"
-               trn_time="600"
-               alpha_value="0.5"/>
+               number_edges="6"
+               number_boxes_per_edge="4"
+               lenght_boxes="0.25"/>
   </loop_functions>
 
   <!-- *************** -->
@@ -46,7 +39,7 @@
 		    <epuck_ground implementation="rot_z_only" noise_level="0.05" calibrated="true"/>
             <epuck_omnidirectional_camera noise_std_dev="0.15" implementation="rot_z_only" medium="leds" show_rays="false"/>
       </sensors>
-    <params readable="true" history='false' fsm-config="--nstates 4 --s0 9 --vel0 1.0 --cle0 5 --clr0 5 --n0 3 --n0x0 1 --c0x0 7 --p0x0 0.89 --l0x0 1 --n0x1 1 --c0x1 3 --p0x1 5 --w0x1 10.38 --n0x2 0 --c0x2 3 --p0x2 8 --w0x2 18.62 --s1 8 --vel1 1.0 --cle1 4 --clr1 6 --n1 4 --n1x0 2 --c1x0 5 --p1x0 0.97 --n1x1 0 --c1x1 4 --p1x1 9 --w1x1 4.7 --n1x2 1 --c1x2 2 --p1x2 0.11 --n1x3 2 --c1x3 0 --p1x3 0.36 --s2 8 --vel2 1.0 --cle2 4 --clr2 1 --n2 4 --n2x0 1 --c2x0 2 --p2x0 0.28 --n2x1 1 --c2x1 0 --p2x1 0.84 --n2x2 1 --c2x2 3 --p2x2 9 --w2x2 10.51 --n2x3 1 --c2x3 3 --p2x3 7 --w2x3 16.82 --s3 9 --vel3 1.0 --cle3 0 --clr3 3 --n3 3 --n3x0 2 --c3x0 2 --p3x0 0.01 --n3x1 1 --c3x1 1 --p3x1 0.85 --n3x2 2 --c3x2 5 --p3x2 0.9"/>
+    <params readable="true" history='false' fsm-config="--nstates 1 --s0 1 --cle0 1 "/>
 
                                         <!-- From sa -> n0x0 sb = n0x0 sb+1, (a < b) -->
                                         <!-- From sa -> n0x0 sb = n0x0 sb  , (a > b)-->
