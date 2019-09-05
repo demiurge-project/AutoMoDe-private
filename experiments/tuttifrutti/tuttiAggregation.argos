@@ -28,23 +28,23 @@
     <automode_controller id="automode"
                         library="/home/dgarzonr/argos_plugins/AutoMoDe-private/build/src/libautomode.so">
       <actuators>
-        <epuck_wheels implementation="default" noise_std_dev="0.15"/>
+        <epuck_wheels implementation="default" noise_std_dev="0.05"/>
         <epuck_rgb_leds implementation="default" medium="leds"/>
         <epuck_range_and_bearing implementation="medium" medium="rab" data_size="4" range="0.5"/>
       </actuators>
       <sensors>
 		    <epuck_proximity implementation="default" show_rays="false" noise_level="0.05" calibrated="true"/>
-        <epuck_range_and_bearing implementation="medium" medium="rab" data_size="4" noise_std_dev="1.5" loss_probability="0.9" calibrated="true"/>
-		    <epuck_light implementation="default" show_rays="true" noise_level="0.05" calibrated="true"/>
+        <epuck_range_and_bearing implementation="medium" medium="rab" data_size="4" noise_std_deviation="1.5" loss_probability="0.85" calibrated="true"/>
+		    <epuck_light implementation="default" show_rays="false" noise_level="0.05" calibrated="true"/>
 		    <epuck_ground implementation="rot_z_only" noise_level="0.05" calibrated="true"/>
-            <epuck_omnidirectional_camera noise_std_dev="0.15" implementation="rot_z_only" medium="leds" show_rays="false"/>
+            <epuck_omnidirectional_camera implementation="rot_z_only" medium="leds" show_rays="false"/>
       </sensors>
-    <params readable="true" history='false' fsm-config="--nstates 1 --s0 1 --cle0 1 "/>
+    <params readable="true" history='false' fsm-config="--nstates 2 --s0 8 --vel0 1.0 --cle0 4 --clr0 6 --n0 1 --n0x0 0 --c0x0 7 --p0x0 0.6 --l0x0 2 --s1 8 --vel1 1.0 --cle1 6 --clr1 2 --n1 4 --n1x0 0 --c1x0 5 --p1x0 0.29 --n1x1 0 --c1x1 2 --p1x1 0.66 --n1x2 0 --c1x2 1 --p1x2 0.51 --n1x3 0 --c1x3 3 --p1x3 4 --w1x3 4.44"/>
 
                                         <!-- From sa -> n0x0 sb = n0x0 sb+1, (a < b) -->
                                         <!-- From sa -> n0x0 sb = n0x0 sb  , (a > b)-->
     </automode_controller>
-    
+
   </controllers>
 
   <!-- ********* -->
@@ -92,7 +92,7 @@
   <!-- ***************** -->
   <!-- * Visualization * -->
   <!-- ***************** -->
-  
+
   <visualization>
     <qt-opengl>
       <camera>
