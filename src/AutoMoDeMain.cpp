@@ -19,7 +19,7 @@
 #include "./core/AutoMoDeFsmBuilder.h"
 #include "./core/AutoMoDeController.h"
 
-#include <argos3/demiurge/loop-functions/CoreLoopFunctions.h>
+#include <argos3/demiurge/generic-loop-functions/Missions/GenericLoopFunctions.h>
 
 using namespace argos;
 
@@ -120,9 +120,9 @@ int main(int n_argc, char** ppch_argv) {
 				cSimulator.Execute();
 
 				// Retrieval of the score of the swarm driven by the Finite State Machine
-				CoreLoopFunctions& cLoopFunctions = dynamic_cast<CoreLoopFunctions&> (cSimulator.GetLoopFunctions());
-				Real fObjectiveFunction = cLoopFunctions.GetObjectiveFunction();
-				std::cout << "Score " << fObjectiveFunction << std::endl;
+				GenericLoopFunctions& cLoopFunctions = dynamic_cast<GenericLoopFunctions&> (cSimulator.GetLoopFunctions());
+				Real fScore = cLoopFunctions.GetScore();
+				std::cout << "Score " << fScore << std::endl;
 
 				break;
 			}
