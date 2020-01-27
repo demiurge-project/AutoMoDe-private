@@ -1,6 +1,9 @@
 ARGoS3-AutoMoDe README
 =====================
 
+This version uses GenericLoopFunctions rather than CoreLoopFunctions
+
+
 All useful information about the ARGoS3-AutoMoDe package, including installation and utilization instructions,
 are regrouped in the following technical report [[[techrep]]]. Please cite this report if you use the ARGoS3-AutoMoDe package.
 
