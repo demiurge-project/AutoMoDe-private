@@ -23,8 +23,6 @@
 #include <argos3/core/utility/plugins/dynamic_loading.h>
 #include <argos3/core/simulator/argos_command_line_arg_parser.h>
 
-#include <argos3/demiurge/loop-functions/CoreLoopFunctions.h>
-
 #include "./core/AutoMoDeFiniteStateMachine.h"
 #include "./core/AutoMoDeFsmBuilder.h"
 #include "./core/AutoMoDeController.h"
@@ -34,7 +32,8 @@ using namespace argos;
 const std::string ExplainParameters() {
 	std::string strExplanation = "The possible parameters are: \n\n"
 		" --fsm-config CONF \t A description of a finite state machine [OPTIONAL]\n"
-		" --fsm-file FILE \t A file containing descriptions of finite state machines [OPTIONAL]\n";
+		" --fsm-file FILE \t A file containing descriptions of finite state machines [OPTIONAL]\n"
+		" -s \t To indicate a PNG file with the finite state machine should be generated [OPTIONAL]\n";
 	return strExplanation;
 }
 
@@ -67,18 +66,26 @@ int main(int n_argc, char** ppch_argv) {
 	std::vector<std::string> vecConfigFsm;
 	bool bFsmControllerFound = false;
 	bool bFsmFileFound = false;
+	bool bSavePNG = false;
 	std::string strFsmFile;
 
 	std::vector<AutoMoDeFiniteStateMachine*> vecFsm;
 
 	try {
 		// Cutting off the FSM configuration from the command line
-
 		int nCurrentArgument = 1;
 		while(!bFsmControllerFound && nCurrentArgument < n_argc) {
 			if(strcmp(ppch_argv[nCurrentArgument], "--help") == 0) {
 				std::cout << ExplainParameters() << std::endl;
 				return 0;
+			}
+			nCurrentArgument++;
+		}
+
+		nCurrentArgument = 1;
+		while(!bFsmControllerFound && nCurrentArgument < n_argc) {
+			if (strcmp(ppch_argv[nCurrentArgument], "-s") == 0)  {
+				bSavePNG = true;
 			}
 			nCurrentArgument++;
 		}
@@ -105,27 +112,41 @@ int main(int n_argc, char** ppch_argv) {
 				nCurrentArgument++;
 				strFsmFile = std::string(ppch_argv[nCurrentArgument]);
       }
+			n_argc = n_argc - 1;
+			nCurrentArgument++;
 		}
 
 		AutoMoDeFsmBuilder cBuilder = AutoMoDeFsmBuilder();
+
 
 		if (bFsmControllerFound) {
 			AutoMoDeFiniteStateMachine* pcFiniteStateMachine = cBuilder.BuildFiniteStateMachine(vecConfigFsm);
 
 			std::string strFiniteStateMachineURL = pcFiniteStateMachine->GetReadableFormat();
-			//std::cout << strFiniteStateMachineURL << std::endl;
+			std::cout << strFiniteStateMachineURL << std::endl;
 
 			std::string strBrowser = "firefox \"";
 			strBrowser.append(EncodeURL(strFiniteStateMachineURL));
 			strBrowser.append("\"");
 
-			system(strBrowser.c_str());
+			if (bSavePNG) {
+				time_t t = time(0);   // get time now
+		    struct tm * now = localtime( & t );
+
+		    char buffer [80];
+		    strftime (buffer,80,"%Y-%m-%d-%T",now);
+				std::string strCommand = "wget " + strBrowser + " -O fsm_" + buffer + ".png";
+				system(strCommand.c_str());
+			} else {
+				system(strBrowser.c_str());
+			}
 		}
 
 		if (bFsmFileFound) {
 			std::ifstream file(strFsmFile.c_str()); // pass file name as argment
 		  std::string linebuffer;
 
+			UInt32 unFSMcounter = 0;
 			while (file && getline(file, linebuffer)){
 				if (linebuffer.length() == 0)continue;
 				AutoMoDeFiniteStateMachine* pcFiniteStateMachine = cBuilder.BuildFiniteStateMachine(linebuffer.c_str());
@@ -137,11 +158,18 @@ int main(int n_argc, char** ppch_argv) {
 				strBrowser.append(EncodeURL(strFiniteStateMachineURL));
 				strBrowser.append("\"");
 
-				system(strBrowser.c_str());
+				if (bSavePNG) {
+					std::string strCommand = "wget " + strBrowser + " -O fsm_" + std::to_string(unFSMcounter) + ".png";
+					system(strCommand.c_str());
+				} else {
+					system(strBrowser.c_str());
+				}
+				unFSMcounter++;
 			}
 		}
 	} catch(std::exception& ex) {
     // A fatal error occurred: dispose of data, print error and exit
+		std::cout << ex.what() << std::endl;
     LOGERR << ex.what() << std::endl;
     return 1;
   }

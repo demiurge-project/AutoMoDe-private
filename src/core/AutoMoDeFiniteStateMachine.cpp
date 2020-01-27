@@ -175,14 +175,14 @@ namespace argos {
 
 	const std::string AutoMoDeFiniteStateMachine::GetReadableFormat() {
 		std::stringstream ssUrl;
-		//ssUrl << "http://chart.googleapis.com/chart?cht=gv:dot&chl=digraph finite_state_machine{rankir=LR;" ;
-		ssUrl << "https://dreampuf.github.io/GraphvizOnline/#digraph finite_state_machine{rankdir=LR;" ;
+		ssUrl << "http://chart.googleapis.com/chart?cht=gv:dot&chl=digraph finite_state_machine{rankir=LR;" ;
+		//ssUrl << "https://dreampuf.github.io/GraphvizOnline/#digraph finite_state_machine{rankdir=LR;" ;
 		ssUrl << FillWithInitialState();
 		ssUrl << FillWithNonInitialStates();
 		ssUrl << FillWithConditions();
 		ssUrl << "}" ;
 		std::string strUrl = ssUrl.str();
-		//std::replace(strUrl.begin(), strUrl.end(), ' ', '+');
+		std::replace(strUrl.begin(), strUrl.end(), ' ', '+');
 		return strUrl;
 	}
 
