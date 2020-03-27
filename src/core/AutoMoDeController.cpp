@@ -144,8 +144,8 @@ namespace argos {
 			m_pcWheelsActuator->SetLinearVelocity(m_pcRobotState->GetLeftWheelVelocity(),m_pcRobotState->GetRightWheelVelocity());
 		}
         if (m_pcLEDsActuator != NULL) {
-            //m_pcLEDsActuator->SetColors(m_pcRobotState->GetLEDsColor());
-            m_pcLEDsActuator->SetColor(2,m_pcRobotState->GetLEDsColor());
+            m_pcLEDsActuator->SetColors(m_pcRobotState->GetLEDsColor());
+            //m_pcLEDsActuator->SetColor(2,m_pcRobotState->GetLEDsColor());
         }
 
 		/*

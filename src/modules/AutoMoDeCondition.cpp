@@ -136,13 +136,13 @@ namespace argos {
           cColorParameter = CColor::BLACK;
           break;
       case 1:
-          cColorParameter = CColor::RED;
-          break;
-      case 2:
           cColorParameter = CColor::GREEN;
           break;
-      case 3:
+      case 2:
           cColorParameter = CColor::BLUE;
+          break;
+      case 3:
+          cColorParameter = CColor::RED;
           break;
       case 4:
           cColorParameter = CColor::YELLOW;

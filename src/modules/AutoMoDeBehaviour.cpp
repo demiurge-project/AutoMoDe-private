@@ -158,7 +158,7 @@ namespace argos {
         // HARD CODED true for real robots, false for simulation
         // TODO Change for parameter in xml
 
-        bool b_real_robot = false;
+        bool b_real_robot = true;
 
         //********************************************************
 
@@ -168,22 +168,22 @@ namespace argos {
                 cColorParameter = CColor::BLACK;
                 break;
             case 1:
-                cColorParameter = CColor::RED;
-                break;
-            case 2:
                 cColorParameter = CColor::GREEN;
                 break;
-            case 3:
+            case 2:
                 cColorParameter = CColor::BLUE;
                 break;
+            case 3:
+                cColorParameter = CColor::RED;
+                break;
             case 4:
-                cColorParameter = CColor(255,255,0);
+                cColorParameter = CColor(250,80,0);
                 break;
             case 5:
-                cColorParameter = CColor(255,0,255);
+                cColorParameter = CColor(150,0,60);
                 break;
             case 6:
-                cColorParameter = CColor(0,255,255);
+                cColorParameter = CColor(0,200,50);
                 break;
             default:
                 cColorParameter = CColor::BLACK;
@@ -195,13 +195,13 @@ namespace argos {
                 cColorParameter = CColor::BLACK;
                 break;
             case 1:
-                cColorParameter = CColor::RED;
-                break;
-            case 2:
                 cColorParameter = CColor::GREEN;
                 break;
-            case 3:
+            case 2:
                 cColorParameter = CColor::BLUE;
+                break;
+            case 3:
+                cColorParameter = CColor::RED;
                 break;
             case 4:
                 cColorParameter = CColor::YELLOW;
