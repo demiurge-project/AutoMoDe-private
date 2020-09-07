@@ -68,44 +68,10 @@ namespace argos {
 	/****************************************/
 	/****************************************/
 
-	CVector2 AutoMoDeBehaviour::ComputeWheelsVelocityFromVector(CVector2 c_vector_to_follow) {
-		Real fLeftVelocity = 0;
-		Real fRightVelocity = 0;
-		CRange<CRadians> cLeftHemisphere(CRadians::ZERO, CRadians::PI);
-		CRange<CRadians> cRightHemisphere(CRadians::PI, CRadians::TWO_PI);
-		CRadians cNormalizedVectorToFollow = c_vector_to_follow.Angle().UnsignedNormalize();
-		// Compute relative wheel velocity
-         if (c_vector_to_follow.GetX() != 0 || c_vector_to_follow.GetY() != 0) {
-            if (cLeftHemisphere.WithinMinBoundExcludedMaxBoundExcluded(cNormalizedVectorToFollow)) {
-                fRightVelocity = 1;
-                fLeftVelocity = Max<Real>(-0.5f, Cos(cNormalizedVectorToFollow));
-            } else {
-                fRightVelocity = Max<Real>(-0.5f, Cos(cNormalizedVectorToFollow));
-                fLeftVelocity = 1;
-            }
-         }
-//		if (c_vector_to_follow.GetX() != 0 || c_vector_to_follow.GetY() != 0) {
-//			if (cLeftHemisphere.WithinMinBoundExcludedMaxBoundExcluded(cNormalizedVectorToFollow)) {
-//				fRightVelocity = 1;
-//				fLeftVelocity = Cos(cNormalizedVectorToFollow);
-//			} else {
-//				fRightVelocity = Cos(cNormalizedVectorToFollow);
-//				fLeftVelocity = 1;
-//			}
-//		}
+    CVector2 AutoMoDeBehaviour::MILowLevelController(CVector2 c_vector_to_follow) {
 
-		// Transform relative velocity according to max velocity allowed
-		Real fVelocityFactor = m_pcRobotDAO->GetMaxVelocity() / Max<Real>(std::abs(fRightVelocity), std::abs(fLeftVelocity));
-		CVector2 cWheelsVelocity = CVector2(fVelocityFactor * fLeftVelocity, fVelocityFactor * fRightVelocity);
-
-		return cWheelsVelocity;
-	}
-
-	/****************************************/
-	/****************************************/
-
-    CVector2 AutoMoDeBehaviour::MILowLevelController(CVector2 c_vector_to_follow, Real VGain, Real WGain) {
-
+        Real gain_v = 1.0;
+        Real gain_w = 0.7;
         Real EpuckVmax = m_pcRobotDAO->GetMaxVelocity();
 
         /* Get the heading angle */
@@ -121,12 +87,12 @@ namespace argos {
 
         /* Avoid that robots go backwards*/
         if (vFocalRobot.DotProduct(c_vector_to_follow) >= 0) {
-            fVelLinear = VGain*(vFocalRobot.DotProduct(c_vector_to_follow))*EpuckVmax;
+            fVelLinear = gain_v*(vFocalRobot.DotProduct(c_vector_to_follow))*EpuckVmax;
         }
         else fVelLinear = 0;
 
         /* Proportional controller */
-        fOmega = WGain*(fVectorAngle.GetValue() - AngleFocalRobot.GetValue());
+        fOmega = gain_w*(fVectorAngle.GetValue() - AngleFocalRobot.GetValue());
 
 
         /* Limit wheels velocities if are higher (lower) than the max
@@ -201,30 +167,6 @@ namespace argos {
 
         return fVelWheels;
     }
-
-
-    /****************************************/
-    /****************************************/
-
-//    CVector2 AutoMoDeBehaviour::SumProximityReadings(CCI_EPuckProximitySensor::TReadings s_prox) {
-
-//        CVector2 cSum(0, 0);
-
-//        for (UInt8 i = 0; i < s_prox.size(); i++) {
-//            if (s_prox[i].Value > 0.25f) {
-//                // threshold 25%: Obstacle avoidance bhv, sum it!
-//                cSum += CVector2(s_prox[i].Value, s_prox[i].Angle);
-//            }
-//        }
-
-//        if(cSum.Length()>0) {
-//               cSum.Normalize();
-//        }
-
-
-//        return cSum;
-
-//	}
 
 	/****************************************/
 	/****************************************/

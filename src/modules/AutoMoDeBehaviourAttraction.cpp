@@ -73,8 +73,7 @@ namespace argos {
         sResultVector = m_unAttractionParameter*sRabVector - 6*sProxVector;
 
         /* Compute the velocity of the wheels */
-        //m_pcRobotDAO->SetWheelsVelocity(MILowLevelController(sResultVector, 1.0, 0.7));
-        m_pcRobotDAO->SetWheelsVelocity(ComputeWheelsVelocityFromVector(sResultVector));
+        m_pcRobotDAO->SetWheelsVelocity(MILowLevelController(sResultVector));
 
         m_bLocked = false;
 	}

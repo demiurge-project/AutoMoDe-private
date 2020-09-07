@@ -153,17 +153,11 @@ namespace argos {
 			 */
 			const bool IsOperational() const;
 
-			/*
-			 * Utility function. Returns a vector containing the wheels velocity
-			 * needed for the robot to follow the vector passed as parameter of the method.
-			 */
-			CVector2 ComputeWheelsVelocityFromVector(CVector2 c_vector_to_follow);
-
             /*
              * Low level controller. Returns a vector containing the wheels velocity
              * needed for the robot to follow the vector passed as parameter of the method.
              */
-            CVector2 MILowLevelController(CVector2 c_vector_to_follow, Real VGain, Real WGain);
+            CVector2 MILowLevelController(CVector2 c_vector_to_follow);
 
             /*
              * This function maintain the angular velocity of the robot as best

@@ -15,7 +15,7 @@
 #include <argos3/core/control_interface/ci_controller.h>
 
 #include <argos3/demiurge/epuck-dao/EpuckDAO.h>
-#include <argos3/demiurge/epuck-dao/ReferenceModel1Dot3.h>
+#include <argos3/demiurge/epuck-dao/ReferenceModel3Dot1.h>
 
 
 #include "./AutoMoDeFiniteStateMachine.h"

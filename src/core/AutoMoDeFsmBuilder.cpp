@@ -102,12 +102,12 @@ namespace argos {
 			case 5:
 				cNewBehaviour = new AutoMoDeBehaviourRepulsion();
 				break;
-            case 6:
-                cNewBehaviour = new AutoMoDeBehaviourFormation();
-                break;
-		}
-		cNewBehaviour->SetIndex(unBehaviourIndex);
-		cNewBehaviour->SetIdentifier(unBehaviourIdentifier);
+                        case 6:
+                                cNewBehaviour = new AutoMoDeBehaviourFormation();
+                                break;
+                            }
+                            cNewBehaviour->SetIndex(unBehaviourIndex);
+                            cNewBehaviour->SetIdentifier(unBehaviourIdentifier);
 
 		// Checking for parameters
         std::string vecPossibleParameters[] = {"rwm", "att", "rep", "dij"};

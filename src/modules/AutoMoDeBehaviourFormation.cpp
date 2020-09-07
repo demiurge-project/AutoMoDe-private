@@ -50,10 +50,8 @@ namespace argos {
 
     void AutoMoDeBehaviourFormation::ControlStep() {
 
-        /*If simulation, comment second one, else comment the first one*/
-        m_pcRobotDAO->SetLEDsColor(CColor::CYAN);
-        //m_pcRobotDAO->SetLEDsColor(CColor(0,200,50));
 
+        m_pcRobotDAO->SetLEDsColor(CColor::CYAN);
 
         CVector2 sCamVector(0,CRadians::ZERO);
         CVector2 sProxVector(0,CRadians::ZERO);
@@ -73,7 +71,7 @@ namespace argos {
         sResultVector = sCamVector - 5*sProxVector;
 
         /* Compute the velocity of the wheels */
-        m_pcRobotDAO->SetWheelsVelocity(MILowLevelController(sResultVector, 1.0, 0.7));
+        m_pcRobotDAO->SetWheelsVelocity(MILowLevelController(sResultVector));
 
 		m_bLocked = false;
 	}

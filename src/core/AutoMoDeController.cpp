@@ -16,7 +16,7 @@ namespace argos {
 	/****************************************/
 
 	AutoMoDeController::AutoMoDeController() {
-        m_pcRobotState = new ReferenceModel1Dot3();
+        m_pcRobotState = new ReferenceModel3Dot1();
 		m_unTimeStep = 0;
 		m_strFsmConfiguration = "";
 		m_bMaintainHistory = false;
@@ -130,27 +130,32 @@ namespace argos {
 
 		/*
 		 * 2. Execute step of FSM
-		 */
-		m_pcFiniteStateMachine->ControlStep();
+                 */
+            m_pcFiniteStateMachine->ControlStep();
 
 		/*
 		 * 3. Update Actuators
-		 */
-		if (m_pcWheelsActuator != NULL) {
-			m_pcWheelsActuator->SetLinearVelocity(m_pcRobotState->GetLeftWheelVelocity(),m_pcRobotState->GetRightWheelVelocity());
-		}
+         */
 
-        if (m_pcLEDsActuator != NULL) {
-            m_pcLEDsActuator->SetColors(m_pcRobotState->GetLEDsColor());
-        }
+
+            if (m_pcWheelsActuator != NULL) {
+                m_pcWheelsActuator->SetLinearVelocity(m_pcRobotState->GetLeftWheelVelocity(),m_pcRobotState->GetRightWheelVelocity());
+            }
+
+            if (m_pcLEDsActuator != NULL) {
+                m_pcLEDsActuator->SetColors(m_pcRobotState->GetLEDsColor());
+            }
+
+
+
 
 		/*
 		 * 4. Update variables and sensors
 		 */
 		if (m_pcRabSensor != NULL) {
 			m_pcRabSensor->ClearPackets();
-		}
-		m_unTimeStep++;
+                }
+                m_unTimeStep++;
 
 	}
 
@@ -163,6 +168,7 @@ namespace argos {
 	/****************************************/
 
 	void AutoMoDeController::Reset() {
+        m_unTimeStep = 0;
 		m_pcFiniteStateMachine->Reset();
 		m_pcRobotState->Reset();
 		// Restart actuation.

@@ -41,12 +41,6 @@ namespace argos {
             /* The coesion interaction parameters. */
             SCoesionParams m_sCoesionParams;
 
-//            /* The coesion pattern function. */
-//            CVector2 Coesion(CCI_EPuckOmnidirectionalCameraSensor::SReadings sReadings);
-
-//            /* The Lenard-Jones function. */
-//            Real LJMagnitude(Real fDistance, Real fGain);
-
 	};
 }
 
