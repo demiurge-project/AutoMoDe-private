@@ -52,7 +52,7 @@ namespace argos {
 			UInt8 unRootNodeType = atoi((*(it+1)).c_str());
 			pcRootNode = GetNodeFromType(unRootNodeType);
 		}
-		catch (std::exception e) {
+		catch (std::exception const& e) {
 			THROW_ARGOSEXCEPTION("[Error while parsing]: Could not instanciate Root Node");
 		}
 
@@ -63,7 +63,7 @@ namespace argos {
 				pcRootNode->AddChildNode(ParseSubTree(vecBranches.at(i)));
 			}
 		}
-		catch (std::exception e) {
+		catch (std::exception const& e) {
 			THROW_ARGOSEXCEPTION("[Error while parsing]: Error while parsing Root's childs");
 		}
 
@@ -170,7 +170,8 @@ namespace argos {
 		oss << *(vec_action_config.begin() + 1) << " ";
 
 		// Checking for parameters
-		std::string vecPossibleParameters[] = {"rwm", "att", "rep", "p", "r"};
+		std::string vecPossibleParameters[] =
+		    {"rwm", "att", "rep", "p", "r", "min", "max", "sig", "dmin", "tmax"};
 		UInt8 unNumberPossibleParameters = sizeof(vecPossibleParameters) / sizeof(vecPossibleParameters[0]);
 		std::vector<std::string>::iterator it;
 		for (UInt8 i = 0; i < unNumberPossibleParameters; i++) {
@@ -235,12 +236,28 @@ namespace argos {
 			case 8:
 				pcNewBehaviour = new AutoMoDeBehaviourCurve();
 				break;
+			case 9:
+				pcNewBehaviour = new AutoMoDeBehaviourGrouping();
+				break;
+			case 10:
+				pcNewBehaviour = new AutoMoDeBehaviourIsolation();
+				break;
+			case 11:
+				pcNewBehaviour = new AutoMoDeBehaviourEmitSignal();
+				break;
+			case 12:
+				pcNewBehaviour = new AutoMoDeBehaviourMeeting();
+				break;
+			case 13:
+				pcNewBehaviour = new AutoMoDeBehaviourAcknowledgment();
+				break;
 		}
 		pcNewBehaviour->SetIndex(0);
 		pcNewBehaviour->SetIdentifier(unBehaviourIdentifier);
 
 		// Checking for parameters
-		std::string vecPossibleParameters[] = {"rwm", "att", "rep", "p", "r"};
+		std::string vecPossibleParameters[] =
+		    {"rwm", "att", "rep", "p", "r", "min", "max", "sig", "dmin", "tmax"};
 		UInt8 unNumberPossibleParameters = sizeof(vecPossibleParameters) / sizeof(vecPossibleParameters[0]);
 		for (UInt8 i = 0; i < unNumberPossibleParameters; i++) {
 			std::string strCurrentParameter = vecPossibleParameters[i];
@@ -297,6 +314,9 @@ namespace argos {
 			case 8:
 				pcNewCondition = new AutoMoDeConditionCloseToNeighbors();
 				break;
+			case 9:
+			    pcNewCondition = new AutoMoDeConditionReceivingSignal();
+			    break;
 		}
 
 		pcNewCondition->SetOriginAndExtremity(0, 0);  // No need of origin and extremity in cas of Behavior Trees. Set them to random value.
@@ -306,7 +326,7 @@ namespace argos {
 
 		// Checking for parameters
 		std::vector<std::string>::iterator it;
-		std::string vecPossibleParameters[] = {"p", "w", "d"};
+		std::string vecPossibleParameters[] = {"p", "w", "d", "sig"};
 		UInt8 unNumberPossibleParameters = sizeof(vecPossibleParameters) / sizeof(vecPossibleParameters[0]);
 		for (UInt8 i = 0; i < unNumberPossibleParameters; i++) {
 			std::string strCurrentParameter = vecPossibleParameters[i];

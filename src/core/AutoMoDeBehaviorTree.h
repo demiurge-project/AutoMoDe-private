@@ -26,11 +26,16 @@
 #include "../modules/AutoMoDeBehaviourAntiPhototaxis.h"
 #include "../modules/AutoMoDeBehaviourCurve.h"
 #include "../modules/AutoMoDeBehaviourExploration.h"
+#include "../modules/AutoMoDeBehaviourGrouping.h"
+#include "../modules/AutoMoDeBehaviourIsolation.h"
 #include "../modules/AutoMoDeBehaviourPhototaxis.h"
 #include "../modules/AutoMoDeBehaviourRepulsion.h"
 #include "../modules/AutoMoDeBehaviourRotation.h"
 #include "../modules/AutoMoDeBehaviourStop.h"
 #include "../modules/AutoMoDeBehaviourStraight.h"
+#include "../modules/AutoMoDeBehaviourEmitSignal.h"
+#include "../modules/AutoMoDeBehaviourMeeting.h"
+#include "../modules/AutoMoDeBehaviourAcknowledgment.h"
 #include "../modules/AutoMoDeCondition.h"
 #include "../modules/AutoMoDeConditionBlackFloor.h"
 #include "../modules/AutoMoDeConditionGrayFloor.h"
@@ -41,6 +46,7 @@
 #include "../modules/AutoMoDeConditionCloseToNeighbors.h"
 #include "../modules/AutoMoDeConditionLight.h"
 #include "../modules/AutoMoDeConditionObstacleInFront.h"
+#include "../modules/AutoMoDeConditionReceivingSignal.h"
 
 #include <string>
 #include <ctime>

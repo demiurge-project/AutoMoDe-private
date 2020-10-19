@@ -26,6 +26,11 @@ set(BEHAVIOR_TREE_HEADERS
 	modules/AutoMoDeBehaviourRotation.h
 	modules/AutoMoDeBehaviourStop.h
 	modules/AutoMoDeBehaviourStraight.h
+	modules/AutoMoDeBehaviourGrouping.h
+	modules/AutoMoDeBehaviourIsolation.h
+	modules/AutoMoDeBehaviourEmitSignal.h
+	modules/AutoMoDeBehaviourMeeting.h
+	modules/AutoMoDeBehaviourAcknowledgment.h
 	# Conditions
 	modules/AutoMoDeCondition.h
 	modules/AutoMoDeConditionBlackFloor.h
@@ -36,7 +41,9 @@ set(BEHAVIOR_TREE_HEADERS
 	modules/AutoMoDeConditionInvertedNeighborsCount.h
 	modules/AutoMoDeConditionLight.h
 	modules/AutoMoDeConditionObstacleInFront.h
-	modules/AutoMoDeConditionFixedProbability.h)
+	modules/AutoMoDeConditionFixedProbability.h
+	modules/AutoMoDeConditionReceivingSignal.h
+)
 
 
 set(BEHAVIOR_TREE_SOURCES
@@ -63,6 +70,11 @@ set(BEHAVIOR_TREE_SOURCES
 	modules/AutoMoDeBehaviourRotation.cpp
 	modules/AutoMoDeBehaviourStop.cpp
 	modules/AutoMoDeBehaviourStraight.cpp
+	modules/AutoMoDeBehaviourGrouping.cpp
+	modules/AutoMoDeBehaviourIsolation.cpp
+	modules/AutoMoDeBehaviourEmitSignal.cpp
+	modules/AutoMoDeBehaviourMeeting.cpp
+	modules/AutoMoDeBehaviourAcknowledgment.cpp
 	# Conditions
 	modules/AutoMoDeCondition.cpp
 	modules/AutoMoDeConditionBlackFloor.cpp
@@ -73,7 +85,9 @@ set(BEHAVIOR_TREE_SOURCES
 	modules/AutoMoDeConditionInvertedNeighborsCount.cpp
 	modules/AutoMoDeConditionLight.cpp
 	modules/AutoMoDeConditionObstacleInFront.cpp
-	modules/AutoMoDeConditionFixedProbability.cpp)
+	modules/AutoMoDeConditionFixedProbability.cpp
+	modules/AutoMoDeConditionReceivingSignal.cpp
+)
 
 
 

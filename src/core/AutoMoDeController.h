@@ -18,7 +18,7 @@
 #include "./AutoMoDeBehaviorTreeBuilder.h"
 
 #include <argos3/demiurge/epuck-dao/EpuckDAO.h>
-#include <argos3/demiurge/epuck-dao/ReferenceModel1Dot2.h>
+#include <argos3/demiurge/epuck-dao/ReferenceModelBtModules.h>
 
 #include <argos3/plugins/robots/e-puck/control_interface/ci_epuck_wheels_actuator.h>
 #include <argos3/plugins/robots/e-puck/control_interface/ci_epuck_range_and_bearing_sensor.h>

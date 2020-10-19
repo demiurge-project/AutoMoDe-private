@@ -16,7 +16,7 @@ namespace argos {
 	/****************************************/
 
 	AutoMoDeControllerBehaviorTree::AutoMoDeControllerBehaviorTree() {
-		m_pcRobotState = new ReferenceModel1Dot2();
+		m_pcRobotState = new ReferenceModelBtModules();
 		m_unTimeStep = 0;
 		m_strBtConfiguration = "";
 		m_bMaintainHistory = false;
@@ -77,7 +77,7 @@ namespace argos {
 			m_pcGroundSensor = GetSensor<CCI_EPuckGroundSensor>("epuck_ground");
 			 m_pcRabSensor = GetSensor<CCI_EPuckRangeAndBearingSensor>("epuck_range_and_bearing");
 			 m_pcCameraSensor = GetSensor<CCI_EPuckOmnidirectionalCameraSensor>("epuck_omnidirectional_camera");
-		} catch (CARGoSException ex) {
+		} catch (CARGoSException const& ex) {
 			LOGERR<<"Error while initializing a Sensor!\n";
 		}
 
@@ -85,7 +85,7 @@ namespace argos {
 			m_pcWheelsActuator = GetActuator<CCI_EPuckWheelsActuator>("epuck_wheels");
 			m_pcRabActuator = GetActuator<CCI_EPuckRangeAndBearingActuator>("epuck_range_and_bearing");
 			m_pcLEDsActuator = GetActuator<CCI_EPuckRGBLEDsActuator>("epuck_rgb_leds");
-		} catch (CARGoSException ex) {
+		} catch (CARGoSException const& ex) {
 			LOGERR<<"Error while initializing an Actuator!\n";
 		}
 
@@ -104,7 +104,8 @@ namespace argos {
 		 */
 		if(m_pcRabSensor != NULL){
 			const CCI_EPuckRangeAndBearingSensor::TPackets& packets = m_pcRabSensor->GetPackets();
-			//m_pcRobotState->SetNumberNeighbors(packets.size());
+
+			m_pcRobotState->SetNumberNeighbors(packets.size());
 			m_pcRobotState->SetRangeAndBearingMessages(packets);
 		}
 		if (m_pcGroundSensor != NULL) {
@@ -120,6 +121,8 @@ namespace argos {
 			m_pcRobotState->SetProximityInput(readings);
 		}
 
+        m_pcRobotState->SetWheelsVelocity(CVector2(0.0, 0.0));
+
 		/*
 		 * 2. Execute step of running Action of BT
 		 */
@@ -130,6 +133,14 @@ namespace argos {
 		 */
 		if (m_pcWheelsActuator != NULL) {
 			m_pcWheelsActuator->SetLinearVelocity(m_pcRobotState->GetLeftWheelVelocity(),m_pcRobotState->GetRightWheelVelocity());
+		}
+		if (m_pcRabActuator != NULL) {
+		    // send signal
+		    CCI_EPuckRangeAndBearingActuator::TData data;
+		    m_pcRobotState->GetRangeAndBearingSignalToSend(data);
+		    m_pcRabActuator->SetData(data);
+		    // reset signal in DAO
+		    m_pcRobotState->SetSignalToSend(0);
 		}
 
 		/*
