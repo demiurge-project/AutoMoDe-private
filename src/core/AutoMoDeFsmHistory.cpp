@@ -82,7 +82,8 @@ namespace argos {
 		if(t_active > 0) {
                		ssInput << "--a " << t_active << " "; //printing number of active transitions
 		}
-                        ssInput << "--n " << pc_current_state->GetRobotDAO()->GetNumberNeighbors(); //Printing number of neighbors
+                        ssInput << "--n " << pc_current_state->GetRobotDAO()->GetNumberNeighbors() << " "; //Printing number of neighbors
+                        ssInput << "--f " << pc_current_state->GetRobotDAO()->GetGroundReading() << " "; //Printing ground floor reading
 		//m_ofHistoryFile << ssInput.str() << std::endl;
 		m_buffer.push_back(ssInput.str());
 	}
