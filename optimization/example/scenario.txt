@@ -9,7 +9,7 @@
 parameterFile = "./new_grammar.txt"
 
 #File that contains the options for parameter dependencies
-dependencyFile = "./depend_config.txt"
+.dependencyFile = "./depend_config.txt"
 
 ## Directory where the programs will be run.
 execDir = "./execution-folder"
