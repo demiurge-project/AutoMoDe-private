@@ -17,7 +17,7 @@
 # Path to the AutoMoDe software:
 # Note that this script is ran from the execution directory
 
-EXE=$(pwd)/../../../bin/automode_main
+EXE=/home/jkuckling/AutoMoDe-FSM/bin/automode_main
 
 CONFIG_ID="$1"
 INSTANCE_ID="$2"
@@ -39,10 +39,6 @@ if [ ! -x "${EXE}" ]; then
 fi
 
 
-# Saving the FSM configuration
-FSM_LOG="fsm_log.txt"
-echo ${CONFIG_PARAMS} >> $FSM_LOG
-
 start=`date +%s`
 
 # Now we can call AutoMoDe by building a command line with all parameters for it
@@ -59,7 +55,10 @@ fi
 
 #TIME=$(echo "$end - $start" | bc -l)
 
-echo " score $SCORE" >> $FSM_LOG
+# Saving the FSM configuration
+#FSM_LOG="fsm_log.txt"
+#echo ${CONFIG_PARAMS} >> $FSM_LOG
+#echo " score $SCORE" >> $FSM_LOG
 
 # Print score!
 echo "-$SCORE"

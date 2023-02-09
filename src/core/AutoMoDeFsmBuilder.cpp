@@ -52,6 +52,9 @@ namespace argos {
 				std::ostringstream oss;
 				oss << "--s" << i;
 				first_state = std::find(vec_fsm_config.begin(), vec_fsm_config.end(), oss.str());
+
+				std::cout << "AutoMoDe debug first state: " << first_state[0];
+
 				if (i+1 < m_unNumberStates) {
 					std::ostringstream oss;
 					oss << "--s" << i+1;
