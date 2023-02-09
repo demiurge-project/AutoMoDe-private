@@ -17,7 +17,8 @@
 # Path to the AutoMoDe software:
 # Note that this script is ran from the execution directory
 
-EXE=$(pwd)/../../../bin/automode_main
+EXE=/home/vagrant/AutoMoDe/bin/automode_main
+IRL=/home/vagrant/medirl/irl_majorana.py
 
 CONFIG_ID="$1"
 INSTANCE_ID="$2"
@@ -39,16 +40,12 @@ if [ ! -x "${EXE}" ]; then
 fi
 
 
-# Saving the FSM configuration
-FSM_LOG="fsm_log.txt"
-echo ${CONFIG_PARAMS} >> $FSM_LOG
-
 start=`date +%s`
 
 # Now we can call AutoMoDe by building a command line with all parameters for it
 # and we collect its output that contains the score
 OUTPUT=$($EXE -n -c $INSTANCE --seed $SEED --fsm-config ${CONFIG_PARAMS})
-
+#OUTPUT=$(python3 $IRL "--fsm-config ${CONFIG_PARAMS}")  #format: Score x
 #end=`date +%s`
 
 # Extract the score from the AutoMoDe (i.e. and ARGoS) output
@@ -59,9 +56,13 @@ fi
 
 #TIME=$(echo "$end - $start" | bc -l)
 
-echo " score $SCORE" >> $FSM_LOG
+# Saving the FSM configuration
+#FSM_LOG="fsm_log.txt"
+#echo ${CONFIG_PARAMS} >> $FSM_LOG
+#echo " score $SCORE" >> $FSM_LOG
 
 # Print score!
-echo "-$SCORE"
+echo "$SCORE"
 
 exit 0
+
