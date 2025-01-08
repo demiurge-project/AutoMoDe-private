@@ -5,15 +5,16 @@ link_directories(${ARGOS_LIBRARY_DIRS})
 # Headers
 set(AUTOMODE_HEADERS
 	core/AutoMoDeController.h
+	core/AutoMoDePatchController.h
 	core/AutoMoDeFiniteStateMachine.h
 	core/AutoMoDeFsmBuilder.h
 	core/AutoMoDeFsmHistory.h
 	# Behaviours
 	modules/AutoMoDeBehaviour.h
-	modules/AutoMoDeBehaviourAntiPhototaxis.h
-	modules/AutoMoDeBehaviourPhototaxis.h
 	modules/AutoMoDeBehaviourAttraction.h
 	modules/AutoMoDeBehaviourRepulsion.h
+	modules/AutoMoDeBehaviourGoToPatch.h
+	modules/AutoMoDeBehaviourGoAwayFromPatch.h
 	modules/AutoMoDeBehaviourStop.h
 	modules/AutoMoDeBehaviourExploration.h
 	# Conditions
@@ -28,15 +29,16 @@ set(AUTOMODE_HEADERS
 # Sources
 set(AUTOMODE_SOURCES
 	core/AutoMoDeController.cpp
+	core/AutoMoDePatchController.cpp
 	core/AutoMoDeFiniteStateMachine.cpp
 	core/AutoMoDeFsmBuilder.cpp
 	core/AutoMoDeFsmHistory.cpp
 	# Behaviours
 	modules/AutoMoDeBehaviour.cpp
-	modules/AutoMoDeBehaviourAntiPhototaxis.cpp
-	modules/AutoMoDeBehaviourPhototaxis.cpp
 	modules/AutoMoDeBehaviourAttraction.cpp
 	modules/AutoMoDeBehaviourRepulsion.cpp
+	modules/AutoMoDeBehaviourGoToPatch.cpp
+	modules/AutoMoDeBehaviourGoAwayFromPatch.cpp
 	modules/AutoMoDeBehaviourStop.cpp
 	modules/AutoMoDeBehaviourExploration.cpp
 	# Conditions
@@ -51,6 +53,9 @@ set(AUTOMODE_SOURCES
 
 add_library(automode SHARED ${AUTOMODE_HEADERS} ${AUTOMODE_SOURCES})
 target_link_libraries(automode argos3plugin_${ARGOS_BUILD_FOR}_epuck)
+
+add_library(patchautomode SHARED ${AUTOMODE_HEADERS} ${AUTOMODE_SOURCES})
+target_link_libraries(patchautomode argos3plugin_${ARGOS_BUILD_FOR}_epuck)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 add_executable(automode_main AutoMoDeMain.cpp)

@@ -41,7 +41,7 @@
   /****************************************/
 
   void AutoMoDeConditionBlackFloor::Init() {
-    m_fGroundThreshold = 0.1;
+    m_fDistanceThreshold = 0.3;
 	  std::map<std::string, Real>::iterator it = m_mapParameters.find("p");
     if (it != m_mapParameters.end()) {
       m_fProbability = it->second;
@@ -62,7 +62,10 @@
   /****************************************/
 
 	bool AutoMoDeConditionBlackFloor::Verify() {
-		if (m_pcRobotDAO->GetGroundReading() <= m_fGroundThreshold) {
+		// LOG << "In the verification of black floor" << std::endl;
+    LOG << "Range is " << m_pcRobotDAO->GetMinimumRangeFromPatch(1) << std::endl;
+		if (m_pcRobotDAO->GetMinimumRangeFromPatch(1) <= m_fDistanceThreshold) {
+			// LOG << "Distance is sufficiently small" << std::endl;
       return EvaluateBernoulliProbability(m_fProbability);
     }
     else {

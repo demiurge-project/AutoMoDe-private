@@ -28,7 +28,7 @@
 	/****************************************/
 
 	bool AutoMoDeConditionWhiteFloor::Verify() {
-    if (m_pcRobotDAO->GetGroundReading() >= m_fGroundThreshold) {
+    if (m_pcRobotDAO->GetMinimumRangeFromPatch(2) >= m_fDistanceThreshold) {
       return EvaluateBernoulliProbability(m_fProbability);
     }
     else {
@@ -60,7 +60,7 @@
 	/****************************************/
 
 	void AutoMoDeConditionWhiteFloor::Init() {
-		m_fGroundThreshold = 0.95;
+		m_fDistanceThreshold = 0.3;
 		std::map<std::string, Real>::iterator it = m_mapParameters.find("p");
 		if (it != m_mapParameters.end()) {
 			m_fProbability = it->second;

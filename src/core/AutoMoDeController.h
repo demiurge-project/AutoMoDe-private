@@ -15,7 +15,7 @@
 #include <argos3/core/control_interface/ci_controller.h>
 
 #include <argos3/demiurge/epuck-dao/EpuckDAO.h>
-#include <argos3/demiurge/epuck-dao/ReferenceModel1Dot2.h>
+#include <argos3/demiurge/epuck-dao/ReferenceModel4Dot0.h>
 
 
 #include "./AutoMoDeFiniteStateMachine.h"
@@ -62,6 +62,12 @@ namespace argos{
 			 *
 			 */
 			virtual void Destroy();
+
+			/*
+			 *
+			 */
+			virtual void SetColor(UInt8 color);
+
 
 			/*
 			 * Setter for the AutoMoDeFiniteStateMachine.

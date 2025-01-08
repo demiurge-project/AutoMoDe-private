@@ -121,7 +121,7 @@ namespace argos {
 	/****************************************/
 	/****************************************/
 
-	bool AutoMoDeBehaviourExploration::IsObstacleInFront(CCI_EPuckRangeAndBearingSensor::SReceivedPacket s_rab_reading) {
+	bool AutoMoDeBehaviourExploration::IsObstacleInFront(CCI_EPuckProximitySensor::SReading s_rab_reading) {
 		CRadians cAngle = s_rab_reading.Angle;
 		if (s_rab_reading.Value >= m_fProximityThreshold && ((cAngle <= CRadians::PI_OVER_TWO) && (cAngle >= -CRadians::PI_OVER_TWO))) {
 			return true;

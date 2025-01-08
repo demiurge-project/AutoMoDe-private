@@ -90,11 +90,11 @@ namespace argos {
 			case 1:
 				cNewBehaviour = new AutoMoDeBehaviourStop();
 				break;
-			case 2:
-				cNewBehaviour = new AutoMoDeBehaviourPhototaxis();
+			case 2: 
+				cNewBehaviour = new AutoMoDeBehaviourGoToPatch();
 				break;
-			case 3:
-				cNewBehaviour = new AutoMoDeBehaviourAntiPhototaxis();
+			case 3: 
+				cNewBehaviour = new AutoMoDeBehaviourGoAwayFromPatch();
 				break;
 			case 4:
 				cNewBehaviour = new AutoMoDeBehaviourAttraction();
@@ -107,7 +107,7 @@ namespace argos {
 		cNewBehaviour->SetIdentifier(unBehaviourIdentifier);
 
 		// Checking for parameters
-		std::string vecPossibleParameters[] = {"rwm", "att", "rep"};
+		std::string vecPossibleParameters[] = {"rwm", "got", "gaf", "att", "rep"};
 		UInt8 unNumberPossibleParameters = sizeof(vecPossibleParameters) / sizeof(vecPossibleParameters[0]);
 		for (UInt8 i = 0; i < unNumberPossibleParameters; i++) {
 			std::string strCurrentParameter = vecPossibleParameters[i];

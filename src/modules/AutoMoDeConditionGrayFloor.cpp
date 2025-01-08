@@ -48,7 +48,7 @@
   /****************************************/
 
 	bool AutoMoDeConditionGrayFloor::Verify() {
-    if (m_fGroundThresholdRange.WithinMinBoundExcludedMaxBoundExcluded(m_pcRobotDAO->GetGroundReading())) {
+    if (m_pcRobotDAO->GetMinimumRangeFromPatch(1) > m_fDistanceThreshold && m_pcRobotDAO->GetMinimumRangeFromPatch(2) > m_fDistanceThreshold) {
       return EvaluateBernoulliProbability(m_fProbability);
     }
     else {
@@ -60,7 +60,7 @@
   /****************************************/
 
 	void AutoMoDeConditionGrayFloor::Init() {
-		m_fGroundThresholdRange.Set(0.1, 0.95);
+		m_fDistanceThreshold = 0.3;
 		std::map<std::string, Real>::iterator it = m_mapParameters.find("p");
 		if (it != m_mapParameters.end()) {
 			m_fProbability = it->second;
